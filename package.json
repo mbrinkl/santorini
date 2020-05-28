@@ -50,7 +50,7 @@
     "test": "react-scripts test",
     "client": "react-scripts start",
     "server": "ts-node-dev --no-notify -P ./tsconfig.server.json ./src/server/index.ts",
-    "server:prod": "ts-node -P ./tsconfig.server.json -T ./src/server/index.ts"
+    "server:prod": "ts-node -T -P ./tsconfig.server.json ./src/server/index.ts"
   },
   "eslintConfig": {
     "extends": "react-app"

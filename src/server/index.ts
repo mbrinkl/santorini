@@ -5,7 +5,7 @@ import { Server } from "boardgame.io/server";
 import { DEFAULT_PORT } from "../config";
 import { SantoriniGame } from "../game";
 
-const root = path.join(__dirname, "../build");
+const root = path.join(__dirname, "../../build");
 const PORT = process.env.PORT || DEFAULT_PORT; 
 
 const server = Server({ games: [SantoriniGame] });
