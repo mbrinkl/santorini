@@ -1,0 +1,24 @@
+@import "~styles/shared";
+
+.input {
+  border-radius: 10px;
+  border: none;
+  padding: 12px 42px;
+  text-align: center;
+  font-size: 20px;
+  font-weight: 500;
+  color: $c-white;
+  outline: none;
+  background: darken($c-blue, 10%);
+  @include inverse-shadow($color: $c-blue);
+
+  &[disabled] {
+    background: $c-blue;
+  }
+
+  &::placeholder {
+    color: lighten($c-blue, 10%);
+    font-size: 18px;
+    font-weight: 500;
+  }
+}

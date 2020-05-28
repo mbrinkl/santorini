@@ -1,0 +1,39 @@
+@import "styles/shared";
+
+.text {
+  margin: 0px 0 40px;
+  max-width: 600px;
+  color: $c-white;
+  text-align: center;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.5;
+}
+
+.logo {
+  max-width: 100%;
+}
+
+.buttonsDiv {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 12px;
+}
+
+.buttons {
+  margin-left: 20px;
+}
+
+@media only screen and (max-width: 599px) {
+  .logo {
+    margin: -20px
+  }
+}
+
+@media only screen and (min-width: 600px) {
+  .text {
+    font-size: 20px;
+    font-weight: 500;
+    line-height: 1.5;
+  }
+}

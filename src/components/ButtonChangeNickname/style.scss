@@ -1,0 +1,23 @@
+@import "~styles/shared";
+
+.Nickname {
+  position: absolute;
+  bottom: 40px;
+  right: 60px;
+  color: $c-white;
+}
+
+.NicknameDisplay {
+  font-weight: bold;
+  text-align: right;
+}
+
+.ButtonChangeNickname {
+  opacity: 0.7;
+  text-decoration: none;
+  color: $c-white;
+
+  &:hover {
+    opacity: 1;
+  }
+}

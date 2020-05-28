@@ -1,0 +1,24 @@
+@import "~styles/shared";
+
+.Logo {
+  color: $c-pink;
+
+  &--large {
+    width: 600px;
+  }
+
+  &--medium {
+    width: 320px;
+    height: 60px;
+  }
+
+  &--small {
+    width: 135px;
+    height: 30px;
+  }
+
+  &--tiny {
+    width: 100px;
+    height: 25px;
+  }
+}

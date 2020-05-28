@@ -1,0 +1,109 @@
+@import "~styles/shared";
+
+.Lobby {
+  &__title {
+    font-size: 42px;
+    color: $c-white;
+    font-weight: 500;
+    margin: 0;
+  }
+
+  &__subtitle {
+    font-size: 20px;
+    color: $c-white;
+    margin: 12px 0 0;
+  }
+
+  &__link {
+    display: flex;
+    margin: 36px 0;
+  }
+
+  &__link-box {
+    border: 3px solid darken($c-blue, 10%);
+    background: darken($c-blue, 5%);
+    font-size: 18px;
+    color: $c-white;
+    padding: 12px 32px;
+    font-weight: 400;
+    text-align: center;
+    border-radius: 10px;
+  }
+
+  &__link-button {
+    margin-left: 20px;
+  }
+
+  &__options {
+    display: flex;
+  }
+
+  &__players {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: $c-white;
+    font-weight: 500;
+    font-size: 18px;
+  }
+
+  &__player {
+    margin: 12px 0;
+    font-weight: 500;
+
+    &::after {
+      display: block;
+      content: "";
+      width: 100%;
+      height: 5px;
+      margin-top: 6px;
+      border-radius: 10px;
+    }
+
+    &--active::after {
+      background-color: $c-green;
+    }
+
+    &--inactive::after {
+      background-color: $c-yellow;
+    }
+  }
+
+  &__status-message {
+    margin-top: 20px;
+    color: $c-white;
+    font-size: 20px;
+    font-weight: 500;
+    line-height: 1.3;
+    text-align: center;
+  }
+}
+
+@media only screen and (max-width: 599px) {
+  .Lobby {
+    &__link {
+      display: inline-block;
+      margin: 36px 0;
+      width: 100%;
+      text-align: center;
+    }
+  
+    &__link-box {
+      border: 3px solid darken($c-blue, 10%);
+      background: darken($c-blue, 5%);
+      font-size: 9px;
+      color: $c-white;
+      padding: 12px 32px;
+      font-weight: 400;
+      text-align: center;
+      border-radius: 10px;
+    }
+  
+    &__link-button {
+      display: inline-block;
+      padding-top: 10px;
+      margin: 0 auto;
+    }
+  }
+}

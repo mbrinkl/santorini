@@ -1,0 +1,38 @@
+@import "~styles/shared";
+
+.lobbyPage {
+  position: relative;
+  padding: 40px 60px;
+  width: 100%;
+  height: 100vh;
+  background: $c-blue;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.smallLogo {
+  position: absolute;
+  top: 40px;
+  left: 60px;
+}
+
+.githubLink {
+  color: $c-white;
+  position: fixed;
+  top: 0px;
+  right: 0px;
+
+  width: 100px;
+
+  &:hover{
+    opacity: 0.7;
+  }
+}
+
+@media only screen and (max-width: 599px) {
+  .githubLink {
+    width: 75px;
+  }
+}
