@@ -37,7 +37,6 @@ export const GameOver = () => {
                 <span>
                   {place === 0 ? playerName : opponentName}
                 </span>
-                <span> </span>
               </div>
 
               <div className="GameOver__ranking-result" key={2}>
@@ -45,7 +44,6 @@ export const GameOver = () => {
                 <span>
                   {place === 1 ? playerName : opponentName}
                 </span>
-                <span> </span>
               </div>
 
         </div>

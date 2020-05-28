@@ -113,9 +113,7 @@
   background-color: #f7f8fb;
   display: inline-grid;
   grid-template-columns: 1fr;
-  grid-column-gap: em(60);
   box-shadow: 0px em(2) em(2) rgba(0, 0, 0, 0.25);
-  margin-left: em(20);
   position: relative;
 
   &--waiting {
@@ -239,6 +237,54 @@
     &:nth-child(n + 3) {
       font-size: 14px;
       opacity: 0.5;
+    }
+  }
+}
+
+@media only screen and (max-width: 599px) {
+
+  #canvas {
+    height: 50vh;
+    width: 75vw;
+    outline: none;
+    -webkit-tap-highlight-color: rgba(255, 255, 255, 0); 
+  }
+
+  .PlayerBoard {
+    font-size: 16px;
+    padding: em(20);
+    border-radius: em(10);
+    background-color: #f7f8fb;
+    display: inline-grid;
+    grid-template-columns: 1fr;
+  
+    &--waiting {
+      box-shadow: 0 0 0 4px rgba($c-yellow, 0.5);
+    }
+  
+    &--active {
+      box-shadow: 0 0 0 4px rgba($c-green, 0.7);
+    }
+  
+    &__hint {
+      max-width: 100%;
+      width: 100%;
+      font-size: 14px;
+      text-transform: uppercase;
+      font-weight: 800;
+      position: absolute;
+      top: 0;
+      text-align: center;
+      transform: translate(0, calc(-100% - 10px));
+      color: darken($c-yellow, 5%);
+    }
+  
+    &__hint-accent {
+      color: darken($c-yellow, 15%);
+    }
+  
+    &--active &__hint {
+      color: $c-green;
     }
   }
 }

@@ -6,7 +6,6 @@ import {Engine, Scene} from 'react-babylonjs';
 import {Vector3, Color3, Color4} from '@babylonjs/core';
 
 
-
 export const PlayerBoard: React.FC = () => {
 
   const {
@@ -23,6 +22,7 @@ export const PlayerBoard: React.FC = () => {
   var buildings_level2 : JSX.Element[] = [];
   var buildings_level3 : JSX.Element[] = [];
   var domes : JSX.Element[] = [];
+  var indicators : JSX.Element[] = [];
 
   const GROUND_SIZE = 5;
   const GROUND_PADDING = 0.5;
@@ -30,6 +30,9 @@ export const PlayerBoard: React.FC = () => {
   let x_positions : number[] = [];
   let z_positions : number[] = [];
 
+  const [rotation, setRotation] = useState(Vector3.Zero());
+  let [position, setPosition] = useState(2);
+  
   const currentPlayerName = playersInfo.find(
     (p) => String(p.id) === ctx.currentPlayer
   )!.name;
@@ -93,6 +96,13 @@ export const PlayerBoard: React.FC = () => {
         </sphere>
       );
 
+      indicators.push(
+        <cylinder name="cylinder" diameterTop={2} diameterBottom={0} height={2} updatable={true}
+        position={new Vector3(x_positions[counter], position, z_positions[counter])}>
+        <standardMaterial name="mat" diffuseColor={Color3.Yellow()} />
+        </cylinder>
+      )
+
       counter++;
     }
   }
@@ -113,9 +123,6 @@ export const PlayerBoard: React.FC = () => {
     moves.SelectSpace(position);
   }
 
-  const [rotation, setRotation] = useState(Vector3.Zero());
-  const [position, setPosition] = useState(new Vector3(x_positions[0], 1, z_positions[0]));
-
   useEffect(() => {
 
     let lastTime = Date.now();
@@ -124,21 +131,21 @@ export const PlayerBoard: React.FC = () => {
     let direction = 1;
   
     const animate = _ => {
-      if (position.y > 3) {
+      if (position > 3) {
         direction = -1;
-      } else if (position.y < 1) {
+      } else if (position < 1) {
         direction = 1;
       }
   
       const velocity = 0.05 * direction;
-      position.y += velocity;
+      position += velocity;
       const rpm = 10;
       const now = Date.now()
       const deltaTimeInMillis = now - lastTime;
       lastTime = now;
       const rotationRads = ((rpm / 60) * Math.PI * 2 * (deltaTimeInMillis / 1000));
       rotation.y += rotationRads;
-      setPosition(position.clone());
+      setPosition(position);
       setRotation(rotation.clone());
       timer = requestAnimationFrame(animate);
     };
@@ -172,18 +179,10 @@ export const PlayerBoard: React.FC = () => {
         <arcRotateCamera name="camera" 
           alpha={Math.PI/4} beta={Math.PI/4} radius={50}
           upperBetaLimit={Math.PI/3} lowerRadiusLimit={50} upperRadiusLimit={50}
-          target={Vector3.Zero()} />
+          target={new Vector3(x_positions[12], 0, z_positions[12])} />
         <hemisphericLight name="light" intensity={0.7} direction={Vector3.Up()} />
 
         {ground}
-
-        { isActive && 
-        
-        <cylinder name="cylinder" diameterTop={2} diameterBottom={0} height={2} updatable={true}
-          position={position}>
-          <standardMaterial name="mat" diffuseColor={Color3.Black()} />
-        </cylinder>
-        }
 
         {State.char1.workers.map( worker => 
           <sphere name={"workersprite_" + worker.pos} diameter={2} segments={16}
@@ -199,7 +198,7 @@ export const PlayerBoard: React.FC = () => {
             position={new Vector3(x_positions[worker.pos], 
               worker.height === 0 ? 1 : worker.height === 1 ? 4 : worker.height === 2 ? 6 : 8, 
               z_positions[worker.pos])}>
-            <standardMaterial name="mat" diffuseColor={Color3.Black()} />
+            <standardMaterial name="mat" diffuseColor={Color3.Gray()} />
           </sphere> 
         )}
 
@@ -209,7 +208,19 @@ export const PlayerBoard: React.FC = () => {
             {space.height >= 2 && buildings_level2[space.pos]}
             {space.height >= 3 && buildings_level3[space.pos]}
             {space.height >= 4 && domes[space.pos]}
+            {/* {isActive && State.valids.includes(space.pos) && indicators[space.pos]} */}
           </>
+        )}
+
+        {isActive && State.valids.map( pos =>
+          <cylinder name="cylinder" diameterTop={2} diameterBottom={0} height={2} updatable={true}
+          position={new Vector3(x_positions[pos], 
+            position + (State.spaces[pos].height === 0 ? 0 : State.spaces[pos].height === 1 ? 4 : State.spaces[pos].height === 2 ? 6 : 8) + (State.spaces[pos].inhabited ? 2 : 0), 
+            z_positions[pos])}>
+
+            <standardMaterial name="mat" diffuseColor={Color3.Yellow()} />
+
+          </cylinder>
         )}
 
       </Scene>
