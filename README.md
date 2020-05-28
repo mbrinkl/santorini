@@ -1,6 +1,6 @@
 # Santorini Game
 
-![Header](https://github.com/mbrinkl/mosaic/blob/master/public/header.png)
+![Header](https://github.com/mbrinkl/santorini/blob/master/public/header.png)
 
 ### What is Santorini
 
