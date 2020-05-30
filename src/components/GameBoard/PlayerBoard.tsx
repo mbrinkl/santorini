@@ -4,6 +4,7 @@ import { useBoardContext } from "./BoardContext";
 import classNames from "classnames";
 import {Engine, Scene} from 'react-babylonjs';
 import {Vector3, Color3, Color4} from '@babylonjs/core';
+import { HelpText } from "./HelpText";
 
 
 export const PlayerBoard: React.FC = () => {
@@ -11,8 +12,8 @@ export const PlayerBoard: React.FC = () => {
   const {
     State,
     moves,
-    //playerID,
-    playersInfo,
+    playerID,
+    //playersInfo,
     isActive,
     ctx,
   } = useBoardContext();
@@ -32,10 +33,6 @@ export const PlayerBoard: React.FC = () => {
 
   const [rotation, setRotation] = useState(Vector3.Zero());
   let [position, setPosition] = useState(2);
-  
-  const currentPlayerName = playersInfo.find(
-    (p) => String(p.id) === ctx.currentPlayer
-  )!.name;
 
   var counter = 0;
 
@@ -107,7 +104,7 @@ export const PlayerBoard: React.FC = () => {
     }
   }
 
-  function meshPicked(mesh)
+  function meshPicked(mesh, scene)
   {
     let position = -1;
 
@@ -157,22 +154,11 @@ export const PlayerBoard: React.FC = () => {
   return (
     <div className={classNames(
       "PlayerBoard",
+      !!ctx.gameover ? (ctx.gameover['winner'] === playerID ? "PlayerBoard--winner" : "PlayerBoard--loser") :
       isActive ? "PlayerBoard--active" : "PlayerBoard--waiting"
       )}>
 
-    <span className="PlayerBoard__hint">
-      {isActive ? 
-        State.stage === 'place' ? <span>Place two workers</span>
-        : State.stage === 'select' ? <span>Select a worker</span>
-        : State.stage === 'move' ? <span>Move</span>
-        : State.stage === 'build' ? <span>Build</span>
-        : <span>End Turn or Undo</span>
-      : 
-        <span className="PlayerBoard__hint-accent">
-          { currentPlayerName } is making a move...
-        </span>
-      }
-    </span>
+    <HelpText />
 
     <Engine canvasId="canvas" antialias={true}>
       <Scene clearColor={new Color4(0, 0, 0, 0)} onMeshPicked={meshPicked}>
@@ -208,7 +194,6 @@ export const PlayerBoard: React.FC = () => {
             {space.height >= 2 && buildings_level2[space.pos]}
             {space.height >= 3 && buildings_level3[space.pos]}
             {space.height >= 4 && domes[space.pos]}
-            {/* {isActive && State.valids.includes(space.pos) && indicators[space.pos]} */}
           </>
         )}
 

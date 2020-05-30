@@ -124,6 +124,35 @@
     box-shadow: 0 0 0 4px rgba($c-green, 0.7);
   }
 
+  @keyframes victory {
+    0% {
+      box-shadow: 0 0 0 4px rgba($c-violet, 0.5);
+    }
+    20% {
+      box-shadow: 0 0 0 4px rgba($c-blue, 0.5);
+    }
+    40% {
+      box-shadow: 0 0 0 4px rgba($c-green, 0.5);
+    }
+    60% {
+      box-shadow: 0 0 0 4px rgba($c-ocean-blue, 0.5);
+    }
+    80% {
+      box-shadow: 0 0 0 4px rgba($c-pink, 0.5);
+    }
+    100% {
+      box-shadow: 0 0 0 4px rgba($c-ocean-green, 0.5);
+    }
+  }
+
+  &--winner {
+    animation: victory 5s ease infinite;
+  }
+
+  &--loser {
+    box-shadow: 0 0 0 4px rgba($c-red, 0.7);
+  }
+
   &__hint {
     max-width: 100%;
     width: 100%;
@@ -143,6 +172,14 @@
 
   &--active &__hint {
     color: $c-green;
+  }
+
+  &--winner &__hint {
+    color: $c-violet;
+  }
+
+  &--loser &__hint {
+    color: $c-red;
   }
 }
 

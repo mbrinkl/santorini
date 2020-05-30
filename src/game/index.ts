@@ -103,7 +103,11 @@ export const SantoriniGame = {
     return initialState;
   },
 
-  moves: { SelectSpace, EndTurn },
+  moves: { 
+    SelectSpace,
+    EndTurn,
+    Rematch
+  },
 
   endIf: (G: GameState, ctx) => {
     if (WinCondition(G, ctx)) 
@@ -131,7 +135,38 @@ function SelectSpace(G: GameState, ctx, pos) {
   }
 }
 
+function Rematch(G: GameState, ctx) {
+  G.char1.workers = []
+  G.char1.num_workers_to_place = 2
+  G.char1.selected_worker = -1
+
+  G.char2.workers = []
+  G.char2.num_workers_to_place = 2
+  G.char2.selected_worker = -1
+
+  for (let i = 0; i < 25; i++)
+  {
+    G.spaces[i] = ({
+      pos: i,
+      height: 0,
+      inhabited: false,
+      inhabitant: null,
+      is_domed: false
+    });
+  }
+
+  G.stage = "place";
+  G.canEndTurn = false;
+  G.valids = [];
+
+  ctx.currentPlayer = "0";
+  ctx.playOrderPos = 0;
+  ctx.turn = 1;
+  ctx.numMoves = 0;
+}
+
 function Place(G: GameState, ctx, pos) {
+
 
   let currentChar = ctx.currentPlayer === '0' ? G.char1 : G.char2;
 
@@ -250,13 +285,13 @@ function valid_moves(G: GameState, originalPos: number)  : number[] {
   originalPos = +originalPos;
 
   adjacents.forEach( pos => {
-      if (!G.spaces[pos].inhabited &&
-        !G.spaces[pos].is_domed &&
-        G.spaces[pos].height - G.spaces[originalPos].height < 2
-        )
-      {
-        valids.push(pos);
-      }
+    if (!G.spaces[pos].inhabited &&
+      !G.spaces[pos].is_domed &&
+      G.spaces[pos].height - G.spaces[originalPos].height < 2
+      )
+    {
+      valids.push(pos);
+    }
   })
 
   return valids;
@@ -295,17 +330,21 @@ function get_adjacent_positions(pos) : number[] {
   let y : number = coords[1];
 
   if (x !== 0)
+  {
       valid_range.push(coord_to_pos(x - 1, y))
       if (y !== 0)
           valid_range.push(coord_to_pos(x - 1, y - 1))
       if (y !== 4)
           valid_range.push(coord_to_pos(x - 1, y + 1))
+  }
   if (x !== 4)
+  {
       valid_range.push(coord_to_pos(x + 1, y))
       if (y !== 0)
           valid_range.push(coord_to_pos(x + 1, y - 1))
       if (y !== 4)
           valid_range.push(coord_to_pos(x + 1, y + 1))
+  }
   if (y !== 0)
       valid_range.push(coord_to_pos(x, y - 1))
   if (y !== 4)

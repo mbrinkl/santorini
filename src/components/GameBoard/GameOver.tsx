@@ -13,13 +13,9 @@ export const GameOver = () => {
   };
 
   const place = winner === playerID ? 0 : 1;
-  console.log('pid ==== ', playerID);
-  console.log('pinfo ==== ', playersInfo);
 
   const playerName = playersInfo[playerID].name + " (You)";
   const opponentName = playersInfo[(+playerID + 1) % 2].name;
-
-  console.log(playerName, opponentName);
 
   return (
     <div className="GameOver">
