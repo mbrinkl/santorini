@@ -1,58 +1,67 @@
+import { times } from "lodash";
+import { ActivePlayers } from 'boardgame.io/core';
+import { Ctx } from "boardgame.io";
 import { GAME_ID } from "../config";
-
-type PlayerID = string;
+import {Space, Board} from "./space";
+import {characterList, Worker, Character, Mortal} from "./character"
+import { Apollo } from "./characters/Apollo"
+import { Artemis } from "./characters/Artemis"
+import { Athena } from "./characters/Athena"
+import { Atlas } from "./characters/Atlas"
+import { Demeter } from "./characters/Demeter"
 
 export interface Player {
-  id: PlayerID;
+  id: string;
+  opponentId: string;
+  ready: boolean;
+  char: Character;
 }
-
-export interface Worker {
-  pos: number;
-  height: number;
-}
-
-export interface Character {
-  workers: Worker[];
-  num_workers: number;
-  num_workers_to_place: number;
-  selected_worker: number;
-}
-
-// export interface Apollo extends Character {
-//   move: number;
-// }
-
-export interface Space {
-  pos: number;
-  height: number;
-  inhabited: boolean;
-  inhabitant: Worker | null;
-  is_domed: boolean;
-}
-
-//   build() {
-//     if (this.height < 4)
-//       this.height++;
-//     else
-//       this.is_domed = true;
-//   }
-
-//   place(worker: Worker) {
-//     this.inhabited = true;
-//     this.inhabitant = worker;
-//     worker.space = this;
-//   }
-// }
 
 export interface GameState {
-  char1: Character,
-  char2: Character,
+  ready: boolean,
   stage: string,
   canEndTurn: boolean,
   spaces: Space[],
   players: { [key: string]: Player },
-  shouldEndGame: boolean,
+  endTurnTime: number,
   valids: number[]
+}
+
+function getCharacter(name: string) : any {
+  let char: any;
+
+  switch(name)
+  {
+    case "Mortal": char = Mortal; break;
+    case "Apollo": char = Apollo; break;
+    case "Artemis": char = Artemis; break;
+    case "Athena": char = Athena; break;
+    case "Atlas": char = Atlas; break;
+    case "Demeter": char = Demeter; break;
+    default: char = Mortal; break;
+  }
+
+  return char;
+}
+
+function initCharacter(name: string) : Character
+{
+  let char: any = getCharacter(name);
+
+  const character : Character = {
+    name: name,
+    desc: char.desc,
+    buttonActive: false,
+    buttonText: char.buttonText,
+    moveUpHeight: char.moveUpHeight,
+    workers: [],
+    numWorkers: char.numWorkers,
+    numWorkersToPlace: char.numWorkers,
+    selectedWorker: -1,
+    attributes: char.attributes
+  }
+
+  return character;
 }
 
 
@@ -61,21 +70,20 @@ export const SantoriniGame = {
 
   setup: (ctx) => {
 
-    const players = {};
-
-    const char1 : Character = {
-      workers: [],
-      num_workers: 2,
-      num_workers_to_place: 2,
-      selected_worker: -1
+    const players = {
+      '0': {
+        id: '0',
+        opponentId: '1',
+        ready: false,
+        char: initCharacter("Random")
+      },
+      '1': {
+        id: '1',
+        opponentId: '0',
+        ready: false,
+        char: initCharacter("Random")
+      }
     };
-
-    const char2 : Character = {
-      workers: [],
-      num_workers: 2,
-      num_workers_to_place: 2,
-      selected_worker: -1
-    }
 
     const spaces : Space[] = [];
     for (let i = 0; i < 25; i++)
@@ -84,40 +92,57 @@ export const SantoriniGame = {
         pos: i,
         height: 0,
         inhabited: false,
-        inhabitant: null,
+        inhabitant: {
+          playerId: '',
+          workerNum: -1,
+        },
         is_domed: false
       });
     }
 
     const initialState: GameState = {
       players,
-      char1,
-      char2,
       spaces,
       canEndTurn: false,
       stage: 'place',
-      shouldEndGame: false,
+      endTurnTime: 3,
+      ready: false,
       valids: []
     };
 
     return initialState;
   },
 
-  moves: { 
-    SelectSpace,
-    EndTurn,
-    Rematch
-  },
+  phases: {
+    selectCharacters: {
+      start: true,
+      next: 'main',
+      endIf: (G: GameState) => G.ready,
+      turn: {
+        activePlayers: ActivePlayers.ALL
+      },
+      moves: {
+        SetChar,
+        Ready,
+        CancelReady
+      }
+    },
 
-  endIf: (G: GameState, ctx) => {
-    if (WinCondition(G, ctx)) 
-    {
-      return { winner: ctx.currentPlayer };
+    main: {
+      onBegin: (G: GameState, ctx) => {
+        setRandomCharacters(G, ctx);
+      },
+      moves: { 
+        SelectSpace,
+        CharButtonPressed,
+        EndTurn,
+        Rematch
+      },
     }
   }
 };
 
-function SelectSpace(G: GameState, ctx, pos) {
+function SelectSpace(G: GameState, ctx: Ctx, pos) {
   switch(G.stage)
   {
     case 'place':
@@ -135,58 +160,64 @@ function SelectSpace(G: GameState, ctx, pos) {
   }
 }
 
+function CharButtonPressed(G: GameState, ctx: Ctx) {
+  let currPlayer = G.players[ctx.currentPlayer];
+  let currChar = currPlayer.char;
+
+  let char: any = getCharacter(currChar.name);
+
+  char.buttonPressed(G, ctx, currPlayer, currChar);
+}
+
+function setRandomCharacters(G: GameState, ctx: Ctx) {
+  times(ctx.numPlayers, (index) => {
+    const id = index.toString();
+    if (G.players[id].char.name === "Random") {
+      const randomCharName = characterList[Math.floor(Math.random() * characterList.length - 1)];
+      G.players[id].char = initCharacter(randomCharName);
+    }
+  });
+}
+
+function SetChar(G: GameState, ctx: Ctx, id: string, name: string) {
+  G.players[id].char = initCharacter(name);
+}
+
+function Ready(G: GameState, ctx: Ctx, id: string) {
+
+  G.players[id].ready = true;
+
+  if (G.players['0'].ready && G.players['1'].ready)
+    G.ready = true;
+}
+
+function CancelReady(G: GameState, ctx, id) {
+  G.players[id].ready = false;
+}
+
 function Rematch(G: GameState, ctx) {
-  G.char1.workers = []
-  G.char1.num_workers_to_place = 2
-  G.char1.selected_worker = -1
-
-  G.char2.workers = []
-  G.char2.num_workers_to_place = 2
-  G.char2.selected_worker = -1
-
-  for (let i = 0; i < 25; i++)
-  {
-    G.spaces[i] = ({
-      pos: i,
-      height: 0,
-      inhabited: false,
-      inhabitant: null,
-      is_domed: false
-    });
-  }
-
-  G.stage = "place";
-  G.canEndTurn = false;
-  G.valids = [];
-
-  ctx.currentPlayer = "0";
-  ctx.playOrderPos = 0;
-  ctx.turn = 1;
-  ctx.numMoves = 0;
+  //ctx.playAgain();
 }
 
 function Place(G: GameState, ctx, pos) {
 
+  let currentChar = G.players[ctx.currentPlayer].char;
 
-  let currentChar = ctx.currentPlayer === '0' ? G.char1 : G.char2;
-
-  if (!G.spaces[pos].inhabited && currentChar.num_workers_to_place > 0) {
+  if (!G.spaces[pos].inhabited && currentChar.numWorkersToPlace > 0) {
 
     let worker : Worker = {
       pos: pos,
       height: G.spaces[pos].height
     };
 
-    G.spaces[pos].inhabited = true;
-    //G.spaces[pos].inhabitant = worker;
-
     currentChar.workers.push(worker);
+    Board.place(G, pos, ctx.currentPlayer, currentChar.workers.length - 1);
 
-    if (--currentChar.num_workers_to_place === 0)
+    if (--currentChar.numWorkersToPlace === 0)
     {
       G.canEndTurn = true;
 
-      if (G.char1.num_workers_to_place === 0 && G.char2.num_workers_to_place === 0)
+      if (G.players['0'].char.numWorkersToPlace === 0 && G.players['1'].char.numWorkersToPlace === 0)
       {
         G.stage = 'end';
       }
@@ -196,159 +227,106 @@ function Place(G: GameState, ctx, pos) {
 
 function Select(G: GameState, ctx, pos) {
   
-  let currentChar = ctx.currentPlayer === '0' ? G.char1 : G.char2;
+  let currPlayer = G.players[ctx.currentPlayer];
+  let currChar = currPlayer.char;
 
-  if (currentChar.workers[0].pos === pos)
-    currentChar.selected_worker = 0;
-  else if (currentChar.workers[1].pos === pos)
-    currentChar.selected_worker = 1;
+  if (currChar.workers[0].pos === pos)
+    currChar.selectedWorker = 0;
+  else if (currChar.workers[1].pos === pos)
+    currChar.selectedWorker = 1;
 
-  if (currentChar.selected_worker !== -1)
+  if (currChar.selectedWorker !== -1)
   {
+    let char: any = getCharacter(currChar.name);
+
+    G.valids = char.valid_move(G, ctx, currPlayer, currChar, currChar.workers[currChar.selectedWorker].pos);
+
     G.stage = 'move';
-    G.valids = valid_moves(G, currentChar.workers[currentChar.selected_worker].pos);
   }
 }
 
-function Move(G: GameState, ctx, pos) {
+function Move(G: GameState, ctx: Ctx, pos: number) {
+  if (G.valids.includes(pos)) {
+    let currPlayer = G.players[ctx.currentPlayer];
+    let currChar = currPlayer.char;
 
-  let currentChar = ctx.currentPlayer === '0' ? G.char1 : G.char2;
+    let before_height = currChar.workers[currChar.selectedWorker].height;
 
-  let originalPos = currentChar.workers[currentChar.selected_worker].pos;
+    let char: any = getCharacter(currChar.name);
 
-  if (G.valids.includes(pos))
-  {
-    currentChar.workers[currentChar.selected_worker].pos = pos;
-    let before_height = currentChar.workers[currentChar.selected_worker].height;
-    currentChar.workers[currentChar.selected_worker].height = G.spaces[pos].height;
-    let after_height = currentChar.workers[currentChar.selected_worker].height;
+    G.stage = char.move(G, ctx, currPlayer, currChar, pos);
+    G.valids = G.stage === 'move' ? 
+      char.valid_move(G, ctx, currPlayer, currChar, currChar.workers[currChar.selectedWorker].pos) : 
+      char.valid_build(G, ctx, currPlayer, currChar, currChar.workers[currChar.selectedWorker].pos);
 
-    G.spaces[originalPos].inhabited = false;
-    G.spaces[pos].inhabited = true;
-
+    let after_height = currChar.workers[currChar.selectedWorker].height;
     CheckWinByMove(G, ctx, before_height, after_height)
-    G.valids = valid_builds(G, currentChar.workers[currentChar.selected_worker].pos);
-    G.stage = 'build';
   }
 }
 
-function Build(G: GameState, ctx, pos) {
+function Build(G: GameState, ctx: Ctx, pos: number) {
 
-  //let currentChar = ctx.currentPlayer === '0' ? G.char1 : G.char2;
+  if (G.valids.includes(pos)) {
+    let currPlayer = G.players[ctx.currentPlayer];
+    let currChar = currPlayer.char;
 
-  if (G.valids.includes(pos))
-  {
-    G.spaces[pos].height++;
-    G.stage = 'end';
-    G.canEndTurn = true;
-    G.valids = [];
+    let char: any = getCharacter(currChar.name);
+  
+    G.stage = char.build(G, ctx, currPlayer, currChar, pos);
+    G.valids = G.stage === 'move' ? 
+      char.valid_move(G, ctx, currPlayer, currChar, currChar.workers[currChar.selectedWorker].pos) : G.stage === 'build' ? 
+      char.valid_build(G, ctx, currPlayer, currChar, currChar.workers[currChar.selectedWorker].pos) :
+      [];
+  
+    if (G.stage === 'end')
+    {
+        G.canEndTurn = true;
+    }
   }
 }
 
-function EndTurn(G: GameState, ctx) {
-  if (G.stage === 'end')
-  {
-    G.stage = 'select';
-    G.valids = ctx.currentPlayer === '0' ? 
-      [G.char2.workers[0].pos, G.char2.workers[1].pos] : 
-      [G.char1.workers[0].pos, G.char1.workers[1].pos];
-  }
+function EndTurn(G: GameState, ctx: Ctx) {
 
-  G.char1.selected_worker = -1;
-  G.char2.selected_worker = -1;
+  let nextPlayer = G.players[G.players[ctx.currentPlayer].opponentId];
 
-  ctx.events.endTurn();
+  ctx.events!.endTurn!(); //not null assertion
   G.canEndTurn = false;
+
+  // to avoid changing to select stage during the place stage at beginning of game
+  if (G.stage === 'end') {
+    let currChar = nextPlayer.char;
+
+    let char: any = getCharacter(currChar.name);
+
+    G.stage = 'select';
+    G.valids = char.valid_select(G, ctx, nextPlayer, currChar);
+
+    G.players['0'].char.selectedWorker = -1;
+    G.players['1'].char.selectedWorker = -1;
+
+    CheckWinByTrap(G, ctx);
+  }
 }
 
-function WinCondition(G: GameState, ctx) {
+function CheckWinByTrap(G: GameState, ctx:Ctx) {
 
-  return false;
-}
+  let nextPlayer = G.players[G.players[ctx.currentPlayer].opponentId];
+  let currChar = nextPlayer.char;
 
-function CheckWinByMove(G: GameState, ctx, before_height, after_height) {
-  if (before_height < 3 && after_height === 3)
-  {
-    ctx.events.endGame({
-      winner: ctx.currentPlayer
+  let char: any = getCharacter(currChar.name);
+
+  if (!char.hasValidMoves(G, ctx, nextPlayer, currChar)) {
+    ctx.events!.endGame!({ // not null assertion
+      winner: nextPlayer.opponentId
     })
   }
 }
 
-
-
-
-function valid_moves(G: GameState, originalPos: number)  : number[] {
-  let adjacents : number[] = get_adjacent_positions(originalPos);
-  let valids : number[] = []
-  
-  originalPos = +originalPos;
-
-  adjacents.forEach( pos => {
-    if (!G.spaces[pos].inhabited &&
-      !G.spaces[pos].is_domed &&
-      G.spaces[pos].height - G.spaces[originalPos].height < 2
-      )
-    {
-      valids.push(pos);
-    }
-  })
-
-  return valids;
-}
-
-function valid_builds(G: GameState, originalPos: number) : number[] {
-  let adjacents : number[] = get_adjacent_positions(originalPos);
-  let valids : number[] = []
-
-  adjacents.forEach( pos => {
-    if (!G.spaces[pos].inhabited &&
-      !G.spaces[pos].is_domed
-      )
-    {
-      valids.push(pos);
-    }
-  })
-
-  return valids;
-}
-
-function coord_to_pos(x, y) : number {
-  return y * 5 + x;
-}
-
-function pos_to_coord(pos) : number[] {
-  let x = pos % 5;
-  let y = (pos - x) / 5;
-  return [x, y]
-}
-
-function get_adjacent_positions(pos) : number[] {
-  let valid_range : number[] = [];
-  let coords : number[] = pos_to_coord(pos);
-  let x : number = coords[0];
-  let y : number = coords[1];
-
-  if (x !== 0)
+function CheckWinByMove(G: GameState, ctx:Ctx, before_height: number, after_height: number) {
+  if (before_height < 3 && after_height === 3)
   {
-      valid_range.push(coord_to_pos(x - 1, y))
-      if (y !== 0)
-          valid_range.push(coord_to_pos(x - 1, y - 1))
-      if (y !== 4)
-          valid_range.push(coord_to_pos(x - 1, y + 1))
+    ctx.events!.endGame!({ // not null assertion
+      winner: ctx.currentPlayer
+    })
   }
-  if (x !== 4)
-  {
-      valid_range.push(coord_to_pos(x + 1, y))
-      if (y !== 0)
-          valid_range.push(coord_to_pos(x + 1, y - 1))
-      if (y !== 4)
-          valid_range.push(coord_to_pos(x + 1, y + 1))
-  }
-  if (y !== 0)
-      valid_range.push(coord_to_pos(x, y - 1))
-  if (y !== 4)
-      valid_range.push(coord_to_pos(x, y + 1))
-
-  return valid_range
 }

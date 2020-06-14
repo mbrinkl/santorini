@@ -4,7 +4,7 @@
 
 ### What is Santorini
 
-It's an online multiplayer version of the board game heavily by Roxley.
+It's an online multiplayer version of the board game by Roxley.
 
 If you are new to Santorini, you can watch a how-to-play on [youtube](https://www.youtube.com/watch?v=EZi-MZEylRQ) or read the [rulebook](http://files.roxley.com/Santorini-Rulebook-Web-2016.08.14.pdf)
 
@@ -17,4 +17,3 @@ The core of the game is:
 - React
 - Node.js
 - Babylon.js
-

@@ -4,14 +4,14 @@ import style from "./style.module.scss";
 import { Link, LinkProps } from "react-router-dom";
 
 export interface ButtonProps {
-  theme?: "pink" | "yellow" | "blue" | "green";
+  theme?: "red" | "yellow" | "blue" | "green";
   size?: "small" | "medium";
 }
 
 export const Button = React.forwardRef<
   HTMLButtonElement,
   ButtonProps & ButtonHTMLAttributes<HTMLButtonElement>
->(({ className, theme = "pink", size = "medium", ...props }, ref) => {
+>(({ className, theme = "blue", size = "medium", ...props }, ref) => {
   return (
     <button
       ref={ref}
@@ -28,7 +28,7 @@ export const Button = React.forwardRef<
 
 export const ButtonLink: React.FC<ButtonProps & LinkProps> = ({
   className,
-  theme = "pink",
+  theme = "blue",
   size = "medium",
   ...props
 }) => {

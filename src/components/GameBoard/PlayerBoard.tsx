@@ -5,7 +5,9 @@ import classNames from "classnames";
 import {Engine, Scene} from 'react-babylonjs';
 import {Vector3, Color3, Color4} from '@babylonjs/core';
 import { HelpText } from "./HelpText";
-
+import { Ground } from "./Ground";
+import { BuildingBase, BuildingMid, BuildingTop, Dome } from "./Buildings"
+import { Indicator } from "./Indicator";
 
 export const PlayerBoard: React.FC = () => {
 
@@ -22,8 +24,6 @@ export const PlayerBoard: React.FC = () => {
   var buildings_level1 : JSX.Element[] = [];
   var buildings_level2 : JSX.Element[] = [];
   var buildings_level3 : JSX.Element[] = [];
-  var domes : JSX.Element[] = [];
-  var indicators : JSX.Element[] = [];
 
   const GROUND_SIZE = 5;
   const GROUND_PADDING = 0.5;
@@ -32,7 +32,7 @@ export const PlayerBoard: React.FC = () => {
   let z_positions : number[] = [];
 
   const [rotation, setRotation] = useState(Vector3.Zero());
-  let [position, setPosition] = useState(2);
+  const [position, setPosition] = useState(2);
 
   var counter = 0;
 
@@ -43,68 +43,16 @@ export const PlayerBoard: React.FC = () => {
       x_positions[counter] = GROUND_PADDING + (GROUND_PADDING * i) + (GROUND_SIZE * i)
       z_positions[counter] = GROUND_PADDING + (GROUND_PADDING * j) + (GROUND_SIZE * j)
 
-      ground.push(
-        <ground name={"ground_" + counter}
-        width={GROUND_SIZE} height={GROUND_SIZE} subdivisions={2}
-        position={new Vector3(
-          x_positions[counter], 
-          0, 
-          z_positions[counter]
-        )}>
-        
-        <standardMaterial name="ground_mat" diffuseColor={Color3.Green()} specularColor={Color3.Black()} />
-
-        </ground>
-      );
-
-      buildings_level1.push(
-        <box name={"building1_" + counter} height={3} width={5} depth={5}
-        position={new Vector3(x_positions[counter], 1, z_positions[counter])}>
-
-        <standardMaterial name="mat" diffuseColor={Color3.White()} />
-
-        </box>
-      );
-
-      buildings_level2.push(
-        <box name={"building2_" + counter} height={2} width={4} depth={4}
-        position={new Vector3(x_positions[counter], 4, z_positions[counter])}>
-
-        <standardMaterial name="mat" diffuseColor={Color3.White()} />
-
-        </box>
-      );
-
-      buildings_level3.push(
-        <box name={"building3_" + counter} height={2} width={3} depth={3}
-        position={new Vector3(x_positions[counter], 6, z_positions[counter])}>
-
-        <standardMaterial name="mat" diffuseColor={Color3.White()} />
-
-        </box>
-      );
-
-      domes.push(
-        <sphere name="dome" diameter={3} segments={16} 
-        position={new Vector3(x_positions[counter], 7, z_positions[counter])}>
-
-        <standardMaterial name="mat" diffuseColor={Color3.Blue()} />
-
-        </sphere>
-      );
-
-      indicators.push(
-        <cylinder name="cylinder" diameterTop={2} diameterBottom={0} height={2} updatable={true}
-        position={new Vector3(x_positions[counter], position, z_positions[counter])}>
-        <standardMaterial name="mat" diffuseColor={Color3.Yellow()} />
-        </cylinder>
-      )
+      ground.push(<Ground xPos={x_positions[counter]} zPos={z_positions[counter]} />);
+      buildings_level1.push(<BuildingBase xPos={x_positions[counter]} zPos={z_positions[counter]} />);
+      buildings_level2.push(<BuildingMid xPos={x_positions[counter]} zPos={z_positions[counter]} />);
+      buildings_level3.push(<BuildingTop xPos={x_positions[counter]} zPos={z_positions[counter]} />);
 
       counter++;
     }
   }
 
-  function meshPicked(mesh, scene)
+  function meshPicked(mesh)
   {
     let position = -1;
 
@@ -135,7 +83,7 @@ export const PlayerBoard: React.FC = () => {
       }
   
       const velocity = 0.05 * direction;
-      position += velocity;
+      setPosition(position + velocity);
       const rpm = 10;
       const now = Date.now()
       const deltaTimeInMillis = now - lastTime;
@@ -170,7 +118,7 @@ export const PlayerBoard: React.FC = () => {
 
         {ground}
 
-        {State.char1.workers.map( worker => 
+        {State.players['0'].char.workers.map( worker => 
           <sphere name={"workersprite_" + worker.pos} diameter={2} segments={16}
             position={new Vector3(x_positions[worker.pos], 
               worker.height === 0 ? 1 : worker.height === 1 ? 4 : worker.height === 2 ? 6 : 8, 
@@ -179,7 +127,7 @@ export const PlayerBoard: React.FC = () => {
           </sphere>
         )}
 
-        {State.char2.workers.map( worker => 
+        {State.players['1'].char.workers.map( worker => 
           <sphere name={"workersprite_" + worker.pos} diameter={2} segments={16}
             position={new Vector3(x_positions[worker.pos], 
               worker.height === 0 ? 1 : worker.height === 1 ? 4 : worker.height === 2 ? 6 : 8, 
@@ -193,19 +141,19 @@ export const PlayerBoard: React.FC = () => {
             {space.height >= 1 && buildings_level1[space.pos]}
             {space.height >= 2 && buildings_level2[space.pos]}
             {space.height >= 3 && buildings_level3[space.pos]}
-            {space.height >= 4 && domes[space.pos]}
+            {space.is_domed && 
+              <Dome xPos={x_positions[space.pos]} 
+                yPos={space.height === 0 ? 0 : space.height === 1 ? 3 : space.height === 2 ? 5 : 7} 
+                zPos={z_positions[space.pos]} 
+              />
+            }
           </>
         )}
 
         {isActive && State.valids.map( pos =>
-          <cylinder name="cylinder" diameterTop={2} diameterBottom={0} height={2} updatable={true}
-          position={new Vector3(x_positions[pos], 
-            position + (State.spaces[pos].height === 0 ? 0 : State.spaces[pos].height === 1 ? 4 : State.spaces[pos].height === 2 ? 6 : 8) + (State.spaces[pos].inhabited ? 2 : 0), 
-            z_positions[pos])}>
-
-            <standardMaterial name="mat" diffuseColor={Color3.Yellow()} />
-
-          </cylinder>
+          <Indicator xPos={x_positions[pos]} 
+          yPos={position + (State.spaces[pos].height === 0 ? 0 : State.spaces[pos].height === 1 ? 4 : State.spaces[pos].height === 2 ? 6 : 8) + (State.spaces[pos].inhabited ? 2 : 0)} 
+          zPos={z_positions[pos]} />
         )}
 
       </Scene>

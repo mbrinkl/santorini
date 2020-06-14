@@ -6,6 +6,8 @@ import { PlayerBoard } from "./PlayerBoard";
 import "./style.scss";
 import classNames from "classnames";
 import { PlayerControls } from "./PlayerControls";
+import { CharacterSelect } from "../CharacterSelect";
+
 
 export const GameBoard: React.FC<BoardProps<GameState>> = ({
   G: State,
@@ -28,13 +30,16 @@ export const GameBoard: React.FC<BoardProps<GameState>> = ({
         undo,
         playersInfo: gameMetadata,
       }}
-    >
-
-    
+    >    
+    {ctx.phase === 'selectCharacters' ? 
+      <CharacterSelect />
+      :
       <div className={classNames("GameBoard")}>
-          <PlayerBoard />
-          <PlayerControls />
+        <PlayerBoard />
+        <PlayerControls />
       </div>
+    }
+
     </BoardContext.Provider>
   );
 }

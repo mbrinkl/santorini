@@ -22,10 +22,11 @@
   font-size: 20px;
   font-weight: 600;
   color: $c-white;
+  outline: none;
   cursor: pointer;
 
-  &--pink {
-    @include buttonTheme($c-pink);
+  &--red {
+    @include buttonTheme($c-red);
   }
 
   &--yellow {

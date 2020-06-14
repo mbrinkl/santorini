@@ -1,12 +1,34 @@
-import React from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useBoardContext } from "./BoardContext";
 import { Button } from "components/Button";
 
 export const PlayerControls = () => {
-  const { State, isActive, moves, ctx, undo } = useBoardContext();
+  const { playerID, State, isActive, moves, ctx, undo } = useBoardContext();
 
-  function undoAll(numMoves)
-  {
+  const [counter, setCounter] = useState(3);
+  let intervalID: any = useRef(null); 
+
+  useEffect(() => {
+    intervalID.current = setInterval(() => {
+      if (State.canEndTurn && isActive) {
+
+        if (counter > 0)
+          setCounter(counter - 1)
+        else
+        {
+          clearInterval(intervalID.current);
+          setCounter(3);
+          moves.EndTurn();
+        }
+      }
+    }, 1000);
+
+    return () => clearInterval(intervalID.current);
+  }, [counter, intervalID, State, moves, isActive]);
+
+  function undoAll(numMoves) {
+    clearInterval(intervalID.current);
+    setCounter(3);
     while (numMoves > 0)
     {
       numMoves--;
@@ -14,8 +36,13 @@ export const PlayerControls = () => {
     }
   }
 
-  function exit()
-  {
+  function endTurn() {
+    clearInterval(intervalID.current);
+    setCounter(3);
+    moves.EndTurn();
+  }
+
+  function exit() {
     window.open("/", "_self");
   }
 
@@ -25,7 +52,7 @@ export const PlayerControls = () => {
       <div className="PlayerControls">
 
       <Button
-        theme="blue"
+        theme="red"
         onClick={exit}
         className="PlayerControls__button"
         size="small"
@@ -45,8 +72,19 @@ export const PlayerControls = () => {
     :
 
     <div className="PlayerControls">
+
       <Button
         theme="blue"
+        size="small"
+        className="PlayerControls__button"
+        disabled={!State.players[playerID].char.buttonActive}
+        onClick={() => moves.CharButtonPressed()}
+      >
+        {State.players[playerID].char.buttonText}
+      </Button>
+
+      <Button
+        theme="red"
         size="small"
         className="PlayerControls__button"
         disabled={!ctx.numMoves || !isActive}
@@ -57,12 +95,12 @@ export const PlayerControls = () => {
 
       <Button
         theme="green"
-        onClick={() => moves.EndTurn()}
+        onClick={() => endTurn()}
         className="PlayerControls__button"
         size="small"
         disabled={!(State.canEndTurn && isActive) || !isActive}
       >
-        End Turn
+        ({counter}) End Turn
       </Button>
     </div>
 

@@ -22,9 +22,9 @@ const GameClient = Client({
 export const GameLobby = () => {
   const [isGameRunning, setGameRunning] = useState(false);
 
-  return isGameRunning ? (
-    <GameLobbyPlay />
-  ) : (
+  return (
+    isGameRunning ? 
+    <GameLobbyPlay /> : 
     <GameLobbySetup startGame={() => setGameRunning(true)} />
   );
 };
