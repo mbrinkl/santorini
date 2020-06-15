@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from "react";
+import React, {useState, useEffect, useRef} from "react";
 // import { Player } from "../../game";
 import { useBoardContext } from "./BoardContext";
 import classNames from "classnames";
@@ -20,10 +20,10 @@ export const PlayerBoard: React.FC = () => {
     ctx,
   } = useBoardContext();
 
-  var ground : JSX.Element[] = [];
-  var buildings_level1 : JSX.Element[] = [];
-  var buildings_level2 : JSX.Element[] = [];
-  var buildings_level3 : JSX.Element[] = [];
+  let ground : JSX.Element[] = [];
+  let buildings_level1 : JSX.Element[] = [];
+  let buildings_level2 : JSX.Element[] = [];
+  let buildings_level3 : JSX.Element[] = [];
 
   const GROUND_SIZE = 5;
   const GROUND_PADDING = 0.5;
@@ -31,15 +31,36 @@ export const PlayerBoard: React.FC = () => {
   let x_positions : number[] = [];
   let z_positions : number[] = [];
 
-  const [rotation, setRotation] = useState(Vector3.Zero());
-  const [position, setPosition] = useState(2);
+  const [indicatorPos, setIndicatorPos] = useState(2);
 
-  var counter = 0;
+  let counter = 0;
 
-  for(var i = -2; i < 3; i++)
-  {
-    for(var j = -2; j < 3; j++)
-    {
+  const requestRef : any = useRef();
+  const previousTimeRef : any = useRef();
+  const direction : any = useRef(1);
+  
+  useEffect(() => {
+    if (indicatorPos > 3) {
+      direction.current = -1;
+    } else if (indicatorPos < 1) {
+      direction.current = 1;
+    }
+
+    const animate = time => {
+      if (previousTimeRef.current !== undefined) {
+        const velocity = 0.03 * direction.current;
+        setIndicatorPos(prevCount => (prevCount + velocity));
+      }
+      previousTimeRef.current = time;
+      requestRef.current = requestAnimationFrame(animate);
+    }
+
+    requestRef.current = requestAnimationFrame(animate);
+    return () => cancelAnimationFrame(requestRef.current);
+  }, [indicatorPos]);
+
+  for(var i = -2; i < 3; i++) {
+    for(var j = -2; j < 3; j++) {
       x_positions[counter] = GROUND_PADDING + (GROUND_PADDING * i) + (GROUND_SIZE * i)
       z_positions[counter] = GROUND_PADDING + (GROUND_PADDING * j) + (GROUND_SIZE * j)
 
@@ -52,14 +73,11 @@ export const PlayerBoard: React.FC = () => {
     }
   }
 
-  function meshPicked(mesh)
-  {
+  function meshPicked(mesh) {
     let position = -1;
 
-    for(let i = 0; i < 25; i++)
-    {
-      if (x_positions[i] === mesh.position.x && z_positions[i] === mesh.position.z)
-      {
+    for(let i = 0; i < 25; i++) {
+      if (x_positions[i] === mesh.position.x && z_positions[i] === mesh.position.z) {
         position = i;
         break;
       }
@@ -67,37 +85,6 @@ export const PlayerBoard: React.FC = () => {
 
     moves.SelectSpace(position);
   }
-
-  useEffect(() => {
-
-    let lastTime = Date.now();
-
-    let timer;
-    let direction = 1;
-  
-    const animate = _ => {
-      if (position > 3) {
-        direction = -1;
-      } else if (position < 1) {
-        direction = 1;
-      }
-  
-      const velocity = 0.05 * direction;
-      setPosition(position + velocity);
-      const rpm = 10;
-      const now = Date.now()
-      const deltaTimeInMillis = now - lastTime;
-      lastTime = now;
-      const rotationRads = ((rpm / 60) * Math.PI * 2 * (deltaTimeInMillis / 1000));
-      rotation.y += rotationRads;
-      setPosition(position);
-      setRotation(rotation.clone());
-      timer = requestAnimationFrame(animate);
-    };
-
-    timer = requestAnimationFrame(animate);
-    return () => cancelAnimationFrame(timer);
-  }, [rotation, position]);
 
   return (
     <div className={classNames(
@@ -152,7 +139,7 @@ export const PlayerBoard: React.FC = () => {
 
         {isActive && State.valids.map( pos =>
           <Indicator xPos={x_positions[pos]} 
-          yPos={position + (State.spaces[pos].height === 0 ? 0 : State.spaces[pos].height === 1 ? 4 : State.spaces[pos].height === 2 ? 6 : 8) + (State.spaces[pos].inhabited ? 2 : 0)} 
+          yPos={indicatorPos + (State.spaces[pos].height === 0 ? 0 : State.spaces[pos].height === 1 ? 4 : State.spaces[pos].height === 2 ? 6 : 8) + (State.spaces[pos].inhabited ? 2 : 0)} 
           zPos={z_positions[pos]} />
         )}
 
