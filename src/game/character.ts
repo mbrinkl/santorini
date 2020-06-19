@@ -12,11 +12,11 @@ export const characterList : string[] = [
   "Athena",
   "Atlas",
   "Demeter",
-  // "Hephaestus",
-  // "Hermes",
-  // "Minotaur",
-  // "Pan",
-  // "Prometheus",
+  "Hephaestus",
+  "Hermes",
+  "Minotaur",
+  "Pan",
+  "Prometheus",
 
   // Advanced Gods
   // "Aphrodite",
@@ -109,9 +109,24 @@ export class Mortal {
 
   public static desc = 'No ability';
   public static buttonText = 'No ability';
+  public static buttonActive = false;
   public static numWorkers = 2;
   public static moveUpHeight = 1;
   public static attributes: any = undefined;
+
+  public static onTurnBegin(
+    G: GameState, 
+    ctx: Ctx,
+    player: Player, 
+    char: Character
+  ) : void {}
+
+  public static onTurnEnd(
+    G: GameState, 
+    ctx: Ctx,
+    player: Player, 
+    char: Character
+  ) : void {}
 
   public static valid_select(
     G: GameState, 
@@ -130,6 +145,17 @@ export class Mortal {
     return valids;
   }
 
+  public static select(
+    G: GameState, 
+    ctx: Ctx,
+    player: Player, 
+    char: Character,
+    pos: number
+  ) : string {
+    char.selectedWorker = G.spaces[pos].inhabitant.workerNum;
+    return 'move';
+  }
+  
   public static valid_move(
     G: GameState, 
     ctx: Ctx,
@@ -225,5 +251,9 @@ export class Mortal {
     char: Character
   ) : void {
 
+  }
+
+  public static check_win_by_move(G: GameState, beforeHeight: number, afterHeight: number) : boolean {
+    return beforeHeight < 3 && afterHeight === 3;
   }
 }

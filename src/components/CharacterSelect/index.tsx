@@ -1,9 +1,12 @@
 import React from "react";
+import Slider from "react-slick"
 import classNames from "classnames";
 import { Button } from "../Button";
 import { useStoreState } from "../../store";
 import { characterList } from "../../game/character"
 import { useBoardContext } from "../GameBoard/BoardContext";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 import "./style.scss";
 
 export const CharacterBox: React.FC<{ name: string }> = ({ name }) => {
@@ -53,11 +56,21 @@ export const CharacterSelect = () => {
     const activeRoomPlayer = useStoreState((s) => s.activeRoomPlayer);
     let playerID = String(activeRoomPlayer?.playerID)
 
-
     return (
         <div className="characterSelect">
             
             <h1>Select a Character</h1>
+
+            <Slider dots={true} infinite={true} speed={500} slidesToShow={2}
+                slidesToScroll={1} className="charactersCarousel">
+
+            {characterList.map( character => 
+            <div>                
+                <CharacterBox name={character} />
+            </div>
+            )}
+
+            </Slider>
 
             <div className="characters">
             {characterList.map( character => 
@@ -67,7 +80,7 @@ export const CharacterSelect = () => {
 
             <div className="selectedCharacters">
                 <div className="char1selection">
-                    <span>{roomMetadata?.players[0].name}</span>
+                    <span className="char1name">{roomMetadata?.players[0].name}</span>
                     <SelectedCharacterBox name={State.players['0'].char.name} playerID='0' />
                     <span>
                         {State.players['0'].char.name === "Random" ? 
@@ -76,7 +89,7 @@ export const CharacterSelect = () => {
                     </span>
                 </div>
                 <div className="char2selection">
-                    <span>{roomMetadata?.players[1].name}</span>
+                    <span className="char2name">{roomMetadata?.players[1].name}</span>
                     <SelectedCharacterBox name={State.players['1'].char.name} playerID='1' />
                     <span>
                         {State.players['1'].char.name === "Random" ? 

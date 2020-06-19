@@ -15,6 +15,9 @@
   width: 100vh;
   outline: none;
   -webkit-tap-highlight-color: rgba(255, 255, 255, 0); 
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
 }
 
 .GameBoard {
