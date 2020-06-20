@@ -109,18 +109,6 @@ export const PlayerBoard: React.FC = () => {
           target={new Vector3(x_positions[12], 0, z_positions[12])} />
         <hemisphericLight name="light" intensity={0.7} direction={Vector3.Up()} />
 
-
-        {/* <transformNode name="trans" position={new Vector3(x_positions[0], 
-              0.5,
-              z_positions[0])}
-              rotation={new Vector3(0, indicatorPos, 0)}>
-        <ribbon name="ribeye" 
-          pathArray={[[new Vector3(1, 1, 0), new Vector3(0, 1, 1), new Vector3(-1, 1, 0), new Vector3(0, 1, -1), new Vector3(1, 1, 0)], 
-            [new Vector3(2, 1, 0), new Vector3(0, 1, 2), new Vector3(-2, 1, 0), new Vector3(0, 1, -2), new Vector3(2, 1, 0)]]}>
-          <standardMaterial name="mat" diffuseColor={Color3.Yellow()} />
-        </ribbon>
-        </transformNode> */}
-
         {ground}
 
         {State.players['0'].char.workers.map( worker => 

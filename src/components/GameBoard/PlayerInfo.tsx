@@ -1,0 +1,52 @@
+import React, { useState } from "react";
+import { useBoardContext } from "./BoardContext";
+import { useStoreState } from "../../store";
+import "./style.scss";
+
+export const PlayerInfo = () => {
+  const { playerID, State } = useBoardContext();
+
+  const roomMetadata = useStoreState((s) => s.roomMetadata);
+
+  const [showP1Desc, setShowP1Desc] = useState(false);
+  const [showP2Desc, setShowP2Desc] = useState(false);
+
+
+  function toggleP1Desc() {
+    setShowP1Desc(!showP1Desc);
+    setShowP2Desc(false);
+  }
+
+  function toggleP2Desc() {
+    setShowP1Desc(false);
+    setShowP2Desc(!showP2Desc);
+  }
+
+  return (
+    <>
+    <div className="PlayerInfo">
+      <div className="PlayerInfo__P1QuestionMark" onClick={toggleP1Desc}>
+        <span>&nbsp;?&nbsp;</span>
+      </div>
+      <div className="PlayerInfo__P1Name" onClick={toggleP1Desc}>
+        <h2>{roomMetadata?.players[0].name + (playerID === '0' ? ' (you)' : '')}</h2>
+        <span>{State.players[0].char.name}</span>
+      </div>
+      <div className="PlayerInfo__P2QuestionMark" onClick={toggleP2Desc}>
+        <span>&nbsp;?&nbsp;</span>
+      </div>
+      <div className="PlayerInfo__P2Name" onClick={toggleP2Desc}>
+        <h2>{roomMetadata?.players[1].name + (playerID === '1' ? ' (you)' : '')}</h2>
+        <span>{State.players[1].char.name}</span>
+      </div>
+    </div>
+    
+    <div className="PlayerDescription" style={{display: showP1Desc || showP2Desc ? 'block' : 'none' }}>
+      <span>
+        {showP1Desc ? State.players[0].char.desc : showP2Desc ? State.players[1].char.desc : ''}
+      </span>
+    </div>
+    </>
+
+  );
+};

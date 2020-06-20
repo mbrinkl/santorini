@@ -74,16 +74,6 @@ export const PlayerControls = () => {
     <div className="PlayerControls">
 
       <Button
-        theme="blue"
-        size="small"
-        className="PlayerControls__button"
-        disabled={!State.players[playerID].char.buttonActive}
-        onClick={() => moves.CharButtonPressed()}
-      >
-        {State.players[playerID].char.buttonText}
-      </Button>
-
-      <Button
         theme="red"
         size="small"
         className="PlayerControls__button"
@@ -91,6 +81,16 @@ export const PlayerControls = () => {
         onClick={() => undoAll(ctx.numMoves)}
       >
         Undo
+      </Button>
+
+      <Button
+        theme="blue"
+        size="small"
+        className="PlayerControls__button"
+        disabled={!State.players[playerID].char.buttonActive}
+        onClick={() => moves.CharButtonPressed()}
+      >
+        {State.players[playerID].char.buttonText}
       </Button>
 
       <Button
