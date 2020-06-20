@@ -3,11 +3,11 @@ import React, {useState, useEffect, useRef} from "react";
 import { useBoardContext } from "./BoardContext";
 import classNames from "classnames";
 import {Engine, Scene} from 'react-babylonjs';
-import {Vector3, Color3, Color4} from '@babylonjs/core';
+import {Vector3, Color3, Color4 } from '@babylonjs/core';
 import { HelpText } from "./HelpText";
 import { Ground } from "./Ground";
 import { BuildingBase, BuildingMid, BuildingTop, Dome } from "./Buildings"
-import { Indicator } from "./Indicator";
+import { SelectIndicator, MoveIndicator, BuildIndicator } from "./Indicators";
 
 export const PlayerBoard: React.FC = () => {
 
@@ -76,6 +76,8 @@ export const PlayerBoard: React.FC = () => {
   function meshPicked(mesh) {
     let position = -1;
 
+    console.log(mesh.name);
+
     for(let i = 0; i < 25; i++) {
       if (x_positions[i] === mesh.position.x && z_positions[i] === mesh.position.z) {
         position = i;
@@ -83,8 +85,12 @@ export const PlayerBoard: React.FC = () => {
       }
     }
 
+    console.log(position);
+
     moves.SelectSpace(position);
   }
+
+
 
   return (
     <div className={classNames(
@@ -102,6 +108,18 @@ export const PlayerBoard: React.FC = () => {
           upperBetaLimit={Math.PI/3} lowerRadiusLimit={50} upperRadiusLimit={50}
           target={new Vector3(x_positions[12], 0, z_positions[12])} />
         <hemisphericLight name="light" intensity={0.7} direction={Vector3.Up()} />
+
+
+        {/* <transformNode name="trans" position={new Vector3(x_positions[0], 
+              0.5,
+              z_positions[0])}
+              rotation={new Vector3(0, indicatorPos, 0)}>
+        <ribbon name="ribeye" 
+          pathArray={[[new Vector3(1, 1, 0), new Vector3(0, 1, 1), new Vector3(-1, 1, 0), new Vector3(0, 1, -1), new Vector3(1, 1, 0)], 
+            [new Vector3(2, 1, 0), new Vector3(0, 1, 2), new Vector3(-2, 1, 0), new Vector3(0, 1, -2), new Vector3(2, 1, 0)]]}>
+          <standardMaterial name="mat" diffuseColor={Color3.Yellow()} />
+        </ribbon>
+        </transformNode> */}
 
         {ground}
 
@@ -138,9 +156,26 @@ export const PlayerBoard: React.FC = () => {
         )}
 
         {isActive && State.valids.map( pos =>
-          <Indicator xPos={x_positions[pos]} 
+          
+          State.stage === 'select' ? 
+          
+          <SelectIndicator xPos={x_positions[pos]} 
           yPos={indicatorPos + (State.spaces[pos].height === 0 ? 0 : State.spaces[pos].height === 1 ? 4 : State.spaces[pos].height === 2 ? 6 : 8) + (State.spaces[pos].inhabited ? 2 : 0)} 
           zPos={z_positions[pos]} />
+          
+          : State.stage === 'move' ?
+
+          <MoveIndicator xPos={x_positions[pos]} 
+          yPos={State.spaces[pos].height === 0 ? 0 : State.spaces[pos].height === 1 ? 3 : State.spaces[pos].height === 2 ? 5 : 7}
+          zPos={z_positions[pos]}
+          rot={indicatorPos} />
+
+          : // assume stage is bulid
+
+          <BuildIndicator xPos={x_positions[pos]} 
+          yPos={indicatorPos + (State.spaces[pos].height === 0 ? 0 : State.spaces[pos].height === 1 ? 3 : State.spaces[pos].height === 2 ? 5 : 7)} 
+          zPos={z_positions[pos]}/>
+
         )}
 
       </Scene>
