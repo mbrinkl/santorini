@@ -94,9 +94,9 @@ export const PlayerBoard: React.FC = () => {
 
   return (
     <div className={classNames(
-      "PlayerBoard",
-      !!ctx.gameover ? (ctx.gameover['winner'] === playerID ? "PlayerBoard--winner" : "PlayerBoard--loser") :
-      isActive ? "PlayerBoard--active" : "PlayerBoard--waiting"
+      "PlayerBoard", //!!ctx.gameover ? 
+        ctx.phase === 'gameOver' ? (State.winner === playerID ? "PlayerBoard--winner" : "PlayerBoard--loser") :
+        isActive ? "PlayerBoard--active" : "PlayerBoard--waiting"
       )}>
 
     <HelpText />
@@ -143,7 +143,7 @@ export const PlayerBoard: React.FC = () => {
           </>
         )}
 
-        {isActive && State.valids.map( pos =>
+        {isActive && ctx.phase !== 'gameOver' && State.valids.map( pos =>
           
           State.stage === 'select' ? 
           

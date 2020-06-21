@@ -28,8 +28,8 @@ export interface GameState {
   canEndTurn: boolean,
   spaces: Space[],
   players: { [key: string]: Player },
-  endTurnTime: number,
-  valids: number[]
+  valids: number[],
+  winner: string
 }
 
 function getCharacter(name: string) : any {
@@ -138,9 +138,9 @@ export const SantoriniGame = {
       spaces,
       canEndTurn: false,
       stage: 'place',
-      endTurnTime: 3,
       ready: false,
-      valids: []
+      valids: [],
+      winner: ''
     };
 
     return initialState;
@@ -165,10 +165,20 @@ export const SantoriniGame = {
       onBegin: (G: GameState, ctx: Ctx) => {
         setRandomCharacters(G, ctx);
       },
+      next: 'gameOver',
       moves: { 
         SelectSpace,
         CharButtonPressed,
         EndTurn,
+      },
+    },
+
+    // can potentially remove this phase when boardgame.io updates to allow rematches
+    gameOver: {
+      turn: {
+        activePlayers: ActivePlayers.ALL
+      },
+      moves: { 
         Rematch
       },
     }
@@ -226,15 +236,54 @@ function Ready(G: GameState, ctx: Ctx, id: string) {
     G.ready = true;
 }
 
-function CancelReady(G: GameState, ctx, id) {
+function CancelReady(G: GameState, ctx: Ctx, id: number) {
   G.players[id].ready = false;
 }
 
-function Rematch(G: GameState, ctx) {
-  //ctx.playAgain();
+function Rematch(G: GameState, ctx: Ctx) {
+
+  const players = {
+    '0': {
+      id: '0',
+      opponentId: '1',
+      ready: false,
+      char: initCharacter("Random")
+    },
+    '1': {
+      id: '1',
+      opponentId: '0',
+      ready: false,
+      char: initCharacter("Random")
+    }
+  };
+
+  const spaces : Space[] = [];
+  for (let i = 0; i < 25; i++)
+  {
+    spaces.push({
+      pos: i,
+      height: 0,
+      inhabited: false,
+      inhabitant: {
+        playerId: '',
+        workerNum: -1,
+      },
+      is_domed: false
+    });
+  }
+
+  G.players = players;
+  G.spaces = spaces;
+  G.canEndTurn = false;
+  G.stage = 'place';
+  G.ready = false;
+  G.valids = [];
+  G.winner = '';
+
+  ctx.events!.setPhase!('selectCharacters');
 }
 
-function Place(G: GameState, ctx, pos) {
+function Place(G: GameState, ctx: Ctx, pos: number) {
 
   let currentChar = G.players[ctx.currentPlayer].char;
 
@@ -347,9 +396,13 @@ function CheckWinByTrap(G: GameState, ctx:Ctx) {
   let char: any = getCharacter(currChar.name);
 
   if (!char.hasValidMoves(G, ctx, nextPlayer, currChar)) {
-    ctx.events!.endGame!({ // not null assertion
-      winner: nextPlayer.opponentId
-    })
+
+    ctx.events!.endPhase!();
+    G.winner = nextPlayer.opponentId;
+
+    // ctx.events!.endGame!({ // not null assertion
+    //   winner: nextPlayer.opponentId
+    // })
   }
 }
 
@@ -361,8 +414,12 @@ function CheckWinByMove(G: GameState, ctx:Ctx, before_height: number, after_heig
   let char: any = getCharacter(currChar.name);
 
   if (char.check_win_by_move(G, before_height, after_height)) {
-    ctx.events!.endGame!({ // not null assertion
-      winner: ctx.currentPlayer
-    })
+
+    ctx.events!.endPhase!();
+    G.winner = ctx.currentPlayer;
+
+    // ctx.events!.endGame!({ // not null assertion
+    //   winner: ctx.currentPlayer
+    // })
   }
 }

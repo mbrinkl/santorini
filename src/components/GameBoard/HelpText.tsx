@@ -11,8 +11,9 @@ export const HelpText = () => {
   return (
     <span className="PlayerBoard__hint">
       {
-      !!ctx.gameover ? 
-      (ctx.gameover['winner'] === playerID ? <span>You win!</span> :
+      //!!ctx.gameover ?
+      ctx.phase === 'gameOver' ?
+      (State.winner === playerID ? <span>You win!</span> :
         <span>You Lose</span>) :
       isActive ? 
         State.stage === 'place' ? <span>Place two workers</span>

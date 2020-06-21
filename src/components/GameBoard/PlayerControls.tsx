@@ -47,7 +47,8 @@ export const PlayerControls = () => {
   }
 
   return (
-    !!ctx.gameover ? 
+    //!!ctx.gameover ? 
+    ctx.phase === 'gameOver' ? 
 
       <div className="PlayerControls">
 
@@ -64,6 +65,7 @@ export const PlayerControls = () => {
         theme="green"
         className="PlayerControls__button"
         size="small"
+        onClick={() => moves.Rematch()}
       >
         Rematch
       </Button>
