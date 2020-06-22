@@ -1,5 +1,20 @@
 @import "~styles/shared";
 
+.characterSelect {
+
+    background-color: $c-blue;
+    position: absolute; top: 0; left: 0;
+    width: 100%;
+    height: 100%;
+    overflow-y: auto;
+    margin: 0 auto;
+    text-align: center;
+
+    h1, span {
+        color: white;
+    }
+}
+
 .Mortal {
     background-image: url('../../assets/images/mortal.png')
 }
@@ -138,12 +153,6 @@
     width:100%;
     bottom:0;
     text-align:center;
-}
-
-.characterSelect {
-    width: 100%;
-    margin: 0 auto;
-    text-align: center;
 }
 
 .char1selection, .char2selection {
