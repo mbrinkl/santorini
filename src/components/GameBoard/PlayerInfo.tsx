@@ -14,11 +14,9 @@ export const PlayerInfo = () => {
 
   function toggleP1Desc() {
     setShowP1Desc(!showP1Desc);
-    setShowP2Desc(false);
   }
 
   function toggleP2Desc() {
-    setShowP1Desc(false);
     setShowP2Desc(!showP2Desc);
   }
 
@@ -41,10 +39,17 @@ export const PlayerInfo = () => {
       </div>
     </div>
     
-    <div className="PlayerDescription" style={{display: showP1Desc || showP2Desc ? 'block' : 'none' }}>
-      <span>
-        {showP1Desc ? State.players[0].char.desc : showP2Desc ? State.players[1].char.desc : ''}
-      </span>
+    <div className="PlayerDescriptions">
+      <div className="PlayerDescriptions__1" style={{display: showP1Desc ? 'block' : 'none' }}>
+        <span>
+          {showP1Desc ? State.players[0].char.desc : ''}
+        </span>
+      </div>
+      <div className="PlayerDescriptions__2" style={{display: showP2Desc ? 'block' : 'none' }}>
+        <span>
+          {showP2Desc ? State.players[1].char.desc : ''}
+        </span>
+      </div>
     </div>
     </>
 

@@ -61,7 +61,7 @@ export const CharacterSelect = () => {
             
             <h1>Select a Character</h1>
 
-            <Slider dots={true} infinite={true} speed={500} slidesToShow={2}
+            <Slider dots={true} infinite={true} speed={500} slidesToShow={3}
                 slidesToScroll={1} className="charactersCarousel">
 
             {characterList.map( character => 

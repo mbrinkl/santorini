@@ -125,17 +125,17 @@
 
 .characterBox {
     position: relative;
-    width: 150px;
-    height: 100px;
+    width: 100px;
+    height: 150px;
     background-size: cover;
     background-repeat: no-repeat;
     text-align: left;
     color: $c-white;
-    font-size: 18px;
+    font-size: 16px;
     font-weight: 500;
     text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
     border: 2px solid transparent;
-    border-radius: 25px;
+    border-radius: 10%;
     margin: auto;
 }
 

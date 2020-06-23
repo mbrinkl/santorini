@@ -13,8 +13,8 @@
 }
 
 #canvas {
-  height: 50vh;
-  width: 100vh;
+  height: 65vh;
+  width: 50vw;
   padding-left: 0;
   padding-right: 0;
   margin-left: auto;
@@ -81,17 +81,31 @@
   }
 }
 
-.PlayerDescription{
+.PlayerDescriptions__1 {
+  color: red;
+  font-size: 14px;
   position: absolute;
   display: none;
-  top: 50px;
-  text-align: center;
+  top: 65px;
+  left: 12px;
+  width: 20vw;
+  text-align: left;
+}
+
+.PlayerDescriptions__2 {
+  color: gray;
+  font-size: 14px;
+  position: absolute;
+  display: none;
+  top: 65px;
+  right: 12px;
+  width: 20vw;
+  text-align: right;
 }
 
 .PlayerBoard {
   font-size: 16px;
-  padding: em(20);
-  margin-top: em(20);
+  margin-top: em(50);
   border-radius: em(10);
   background-color: #f7f8fb;
   display: inline-grid;
@@ -179,10 +193,16 @@
     padding: 0;
   }
 
-  .PlayerDescription{
+  .PlayerDescriptions {
     position: static;
-    margin-top: 75px;
-    margin-bottom: 25px;
-    text-align: center;
+    margin-top: 70px;
+    //margin-bottom: 25px;
+    
+    &__1, &__2 {
+      position: static;
+      margin-top: 5px;
+      width: 100vw;
+      text-align: center;
+    }
   }
 }

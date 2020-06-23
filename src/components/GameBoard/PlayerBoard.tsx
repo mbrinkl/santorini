@@ -32,6 +32,7 @@ export const PlayerBoard: React.FC = () => {
   let z_positions : number[] = [];
 
   const [indicatorPos, setIndicatorPos] = useState(2);
+  const [indicatorRot, setIndicatorRot] = useState(0);
 
   let counter = 0;
 
@@ -48,8 +49,9 @@ export const PlayerBoard: React.FC = () => {
 
     const animate = time => {
       if (previousTimeRef.current !== undefined) {
-        const velocity = 0.03 * direction.current;
-        setIndicatorPos(prevCount => (prevCount + velocity));
+        const velocity = 0.03;
+        setIndicatorPos(prevCount => (prevCount + (velocity * direction.current)));
+        setIndicatorRot(prevCount => (prevCount + velocity) % (2 * Math.PI))
       }
       previousTimeRef.current = time;
       requestRef.current = requestAnimationFrame(animate);
@@ -57,7 +59,7 @@ export const PlayerBoard: React.FC = () => {
 
     requestRef.current = requestAnimationFrame(animate);
     return () => cancelAnimationFrame(requestRef.current);
-  }, [indicatorPos]);
+  }, [indicatorPos, indicatorRot]);
 
   for(var i = -2; i < 3; i++) {
     for(var j = -2; j < 3; j++) {
@@ -156,7 +158,7 @@ export const PlayerBoard: React.FC = () => {
           <MoveIndicator xPos={x_positions[pos]} 
           yPos={State.spaces[pos].height === 0 ? 0 : State.spaces[pos].height === 1 ? 3 : State.spaces[pos].height === 2 ? 5 : 7}
           zPos={z_positions[pos]}
-          rot={indicatorPos} />
+          rot={indicatorRot} />
 
           : // assume stage is bulid
 

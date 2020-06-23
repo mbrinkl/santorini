@@ -142,7 +142,7 @@ export const GameLobbySetup: React.FC<{ startGame(): void }> = ({
         {gameRoomFull ? (
           <p>Starting Game...</p>
         ) : (
-          <p>Game will start when all players join!</p>
+          <p>Game will start when both players join</p>
         )}
       </div>
     </LobbyPage>

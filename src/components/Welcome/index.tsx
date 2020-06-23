@@ -46,10 +46,6 @@ export const Welcome = () => {
       <ButtonChangeNickname />
 
       <Logo className={style.logo} size="large" />
-      <p className={style.text}>
-          Online multiplayer boardgame to play with a friend! Build towers and be 
-          the first to move up to a level 3 building to win.
-      </p>
 
       <div className={style.buttonsDiv}>
         <Button theme="yellow" 
