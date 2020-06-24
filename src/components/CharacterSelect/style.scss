@@ -114,6 +114,33 @@
     url('../../assets/images/prometheus.png')
 }
 
+.Bia {
+    background-image: url('../../assets/images/bia.png')
+}
+
+.Bia.checked {
+    background-image: url('../../assets/images/check.png'),
+    url('../../assets/images/bia.png')
+}
+
+.Heracles {
+    background-image: url('../../assets/images/heracles.png')
+}
+
+.Heracles.checked {
+    background-image: url('../../assets/images/check.png'),
+    url('../../assets/images/heracles.png')
+}
+
+.Odysseus {
+    background-image: url('../../assets/images/odysseus.png')
+}
+
+.Odysseus.checked {
+    background-image: url('../../assets/images/check.png'),
+    url('../../assets/images/odysseus.png')
+}
+
 .Random {
     background-image: url('../../assets/images/random.png')
 }

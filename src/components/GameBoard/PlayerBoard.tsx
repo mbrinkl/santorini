@@ -78,8 +78,6 @@ export const PlayerBoard: React.FC = () => {
   function meshPicked(mesh) {
     let position = -1;
 
-    console.log(mesh.name);
-
     for(let i = 0; i < 25; i++) {
       if (x_positions[i] === mesh.position.x && z_positions[i] === mesh.position.z) {
         position = i;

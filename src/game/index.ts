@@ -14,6 +14,9 @@ import { Hermes } from "./characters/Hermes"
 import { Minotaur } from "./characters/Minotaur"
 import { Pan } from "./characters/Pan"
 import { Prometheus } from "./characters/Prometheus"
+import { Bia } from "./characters/Bia"
+import { Heracles } from "./characters/Heracles"
+import { Odysseus } from "./characters/Odysseus"
 
 export interface Player {
   id: string;
@@ -48,6 +51,9 @@ function getCharacter(name: string) : any {
     case "Minotaur": char = Minotaur; break;
     case "Pan": char = Pan; break;
     case "Prometheus": char = Prometheus; break;
+    case "Bia": char = Bia; break;
+    case "Heracles": char = Heracles; break;
+    case "Odysseus": char = Odysseus; break;
     default: char = Mortal; break;
   }
 
@@ -164,6 +170,19 @@ export const SantoriniGame = {
     main: {
       onBegin: (G: GameState, ctx: Ctx) => {
         setRandomCharacters(G, ctx);
+      },
+      turn: {
+        activePlayers: null,
+        order: {
+          first: (G: GameState, ctx: Ctx) => {  
+              let startingPlayer = 0;
+              if (G.players['1'].char.name === 'Bia') {
+                startingPlayer = 1;
+              }
+              return startingPlayer;
+            },
+          next: (G: GameState, ctx: Ctx) => (ctx.playOrderPos + 1) % ctx.numPlayers,
+        }
       },
       next: 'gameOver',
       moves: { 

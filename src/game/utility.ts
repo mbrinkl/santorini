@@ -8,7 +8,7 @@ function pos_to_coord(pos: number) : number[] {
     return [x, y]
 }
 
-export function get_adjacent_positions(pos) : number[] {
+export function get_adjacent_positions(pos: number) : number[] {
     let valid_range : number[] = [];
     let coords : number[] = pos_to_coord(pos);
     let x : number = coords[0];

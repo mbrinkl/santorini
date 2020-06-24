@@ -21,7 +21,7 @@ export const characterList : string[] = [
   // Advanced Gods
   // "Aphrodite",
   // "Ares",
-  // "Bia",
+  "Bia",
   // "Chaos",
   // "Charon",
   // "Chronus",
@@ -62,10 +62,10 @@ export const characterList : string[] = [
   // "Adonis",
   // "Atlanta",
   // "Bellerophon",
-  // "Heracles",
+  "Heracles",
   // "Jason",
   // "Medea",
-  // "Odysseus",
+  "Odysseus",
   // "Polyphemus",
   // "Theseus",
 
@@ -242,6 +242,23 @@ export class Mortal {
   ) : string {
     Board.build(G, pos);
     return 'end'
+  }
+
+  public static hasValidBuild(
+    G: GameState,
+    ctx: Ctx,
+    player: Player, 
+    char: Character,
+  ) : boolean {
+    let hasBuild = false;
+
+    char.workers.forEach(worker => {
+      if (this.valid_build(G, ctx, player, char, worker.pos).length > 0) {
+        hasBuild = true;
+      }
+    })
+
+    return hasBuild
   }
 
   public static buttonPressed(
