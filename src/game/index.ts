@@ -172,7 +172,7 @@ export const SantoriniGame = {
         setRandomCharacters(G, ctx);
       },
       turn: {
-        activePlayers: null,
+        activePlayers: undefined,
         order: {
           first: (G: GameState, ctx: Ctx) => {  
               let startingPlayer = 0;
