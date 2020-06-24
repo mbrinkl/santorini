@@ -102,7 +102,7 @@ export interface Character {
     moveUpHeight: number;
     buttonText: string;
     buttonActive: boolean;
-    attributes: any;
+    attrs: any;
 }
 
 export class Mortal {
@@ -112,7 +112,7 @@ export class Mortal {
   public static buttonActive = false;
   public static numWorkers = 2;
   public static moveUpHeight = 1;
-  public static attributes: any = undefined;
+  public static attrs: any = undefined;
 
   public static onTurnBegin(
     G: GameState, 

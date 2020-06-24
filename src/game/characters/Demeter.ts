@@ -4,11 +4,16 @@ import { GameState, Player } from '../index'
 import { Board } from '../space'
 import { Ctx } from 'boardgame.io';
 
+interface attrsType {
+  numBuilds: number,
+  firstBuildPos: number,
+}
+
 export class Demeter extends Mortal {
 
   public static desc = `Your Build: Your worker may build one additional time, but not on the same space.`;
   public static buttonText = 'Skip 2nd Build';
-  public static attributes: any = {
+  public static attrs: attrsType = {
     numBuilds: 0,
     firstBuildPos: -1,
   };
@@ -20,7 +25,7 @@ export class Demeter extends Mortal {
     char: Character
   ) : void {
     // reset stuff
-    char.attributes.numBuilds = 0;
+    char.attrs.numBuilds = 0;
     char.buttonActive = false;
   
     // set game stage
@@ -39,7 +44,7 @@ export class Demeter extends Mortal {
     let adjacents : number[] = get_adjacent_positions(originalPos);
     let valids : number[] = []
   
-    if (char.attributes.numBuilds === 0) {
+    if (char.attrs.numBuilds === 0) {
       adjacents.forEach( pos => {
         if (!G.spaces[pos].inhabited && !G.spaces[pos].is_domed) {
           valids.push(pos);
@@ -48,7 +53,7 @@ export class Demeter extends Mortal {
     }
     else {
       adjacents.forEach( pos => {
-        if (!G.spaces[pos].inhabited && !G.spaces[pos].is_domed && pos !== char.attributes.firstBuildPos) {
+        if (!G.spaces[pos].inhabited && !G.spaces[pos].is_domed && pos !== char.attrs.firstBuildPos) {
           valids.push(pos);
         }
       })
@@ -65,16 +70,16 @@ export class Demeter extends Mortal {
     pos: number
   ) : string { 
 
-    char.attributes.numBuilds++;
+    char.attrs.numBuilds++;
 
-    if (char.attributes.numBuilds === 1) {
-      char.attributes.firstBuildPos = pos;
+    if (char.attrs.numBuilds === 1) {
+      char.attrs.firstBuildPos = pos;
       Board.build(G, pos);
       char.buttonActive = true;
       return 'build'
     }
     else {
-      char.attributes.numBuilds = 0;
+      char.attrs.numBuilds = 0;
       char.buttonActive = false;
       Board.build(G, pos);
       return 'end'

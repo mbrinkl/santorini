@@ -4,13 +4,19 @@ import { Mortal, Character } from '../character'
 import { GameState, Player } from '../index'
 import { Board } from '../space'
 
+interface attrsType {
+  numMoves: number,
+  prevTile: number,
+  newTile: number
+}
+
 export class Artemis extends Mortal {
   
   public static desc = `Your Move: Your worker may move one additional time, but not back to
       its initial space.`;
 
-  public static attributes = {
-      numberOfMoves: 0,
+  public static attrs : attrsType = {
+      numMoves: 0,
       prevTile: -1,
       newTile: -1
   };
@@ -27,10 +33,10 @@ export class Artemis extends Mortal {
     let valids : number[] = []
     
     if (char.selectedWorker !== -1)
-      if (char.attributes.numberOfMoves === 0)
-        char.attributes.prevTile = char.workers[char.selectedWorker].pos;
+      if (char.attrs.numMoves === 0)
+        char.attrs.prevTile = char.workers[char.selectedWorker].pos;
       else if (char.selectedWorker !== -1)
-        char.attributes.newTile = char.workers[char.selectedWorker].pos;
+        char.attrs.newTile = char.workers[char.selectedWorker].pos;
   
     adjacents.forEach( pos => {
       if (!G.spaces[pos].inhabited && !G.spaces[pos].is_domed &&
@@ -39,14 +45,14 @@ export class Artemis extends Mortal {
       {
         valids.push(pos);
 
-        if (char.attributes.prevTile !== -1 && valids.includes(char.attributes.prevTile))
+        if (char.attrs.prevTile !== -1 && valids.includes(char.attrs.prevTile))
         {
-          const index: number = valids.indexOf(char.attributes.prevTile);
+          const index: number = valids.indexOf(char.attrs.prevTile);
           valids.splice(index, 1);
         }
 
-        if (char.attributes.newTile !== -1)
-          valids.push(char.attributes.newTile)
+        if (char.attrs.newTile !== -1)
+          valids.push(char.attrs.newTile)
       }
     })
   
@@ -61,7 +67,7 @@ export class Artemis extends Mortal {
     pos: number
   ) : string {
 
-      char.attributes.numberOfMoves++;
+      char.attrs.numMoves++;
   
       // free the space that is being moved from
       Board.free(G, char.workers[char.selectedWorker].pos);
@@ -69,17 +75,13 @@ export class Artemis extends Mortal {
       // place the worker on the selected space
       Board.place(G, pos, player.id, char.selectedWorker);
 
-      if (char.attributes.numberOfMoves === 2) {
-        Artemis.reset(char);
+      if (char.attrs.numMoves === 2) {
+        char.attrs.numMoves = 0;
+        char.attrs.prevTile = -1;
+        char.attrs.newTile = -1;
         return 'build';
       }
       else
           return 'move'
-  }
-
-  private static reset(char: Character) {
-    char.attributes.numberOfMoves = 0;
-    char.attributes.prevTile = -1;
-    char.attributes.newTile = -1;
   }
 }

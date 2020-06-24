@@ -3,11 +3,15 @@ import { GameState, Player } from '../index'
 import { Board } from '../space'
 import { Ctx } from 'boardgame.io';
 
+interface attrsType {
+  specialActive: boolean
+}
+
 export class Atlas extends Mortal {
 
   public static desc = `Your Build: Your worker may build a dome at any level.`;
   public static buttonText = 'Build Dome';
-  public static attributes: any = {
+  public static attrs: attrsType = {
     specialActive: false
   };
 
@@ -28,8 +32,8 @@ export class Atlas extends Mortal {
     player: Player,
     char: Character
   ) : void {
-    char.attributes.specialActive = !char.attributes.specialActive;
-    char.buttonText = char.attributes.specialActive ?  'Cancel' : 'Build Dome';
+    char.attrs.specialActive = !char.attrs.specialActive;
+    char.buttonText = char.attrs.specialActive ?  'Cancel' : 'Build Dome';
   }
 
   public static build (
@@ -40,12 +44,12 @@ export class Atlas extends Mortal {
     pos: number
   ) : string { 
 
-    if (char.attributes.specialActive)
+    if (char.attrs.specialActive)
       G.spaces[pos].is_domed = true;
     else
       Board.build(G, pos);
 
-    char.attributes.specialActive = false;
+    char.attrs.specialActive = false;
     char.buttonActive = false;
     char.buttonText = 'Build Dome'
     return 'end'

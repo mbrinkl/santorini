@@ -5,13 +5,19 @@ import { Mortal, Character } from '../character'
 import { GameState, Player } from '../index'
 import { Board } from '../space'
 
+interface attrsType {
+  movedUpOrDown: boolean,
+  isMoving: boolean,
+  canMoveUp: boolean
+}
+
 export class Hermes extends Mortal {
   
   public static desc = `Your Turn: If your Workers do not move up or down, they may 
     each move any number of times (even zero), and then either builds`;
   public static buttonText = 'End Move'
 
-  public static attributes = {
+  public static attrs: attrsType = {
     movedUpOrDown: false,
     isMoving: false,
     canMoveUp: true
@@ -37,7 +43,7 @@ export class Hermes extends Mortal {
     let adjacents : number[] = get_adjacent_positions(originalPos);
     let valids : number[] = []
         
-    if (char.attributes.canMoveUp) {
+    if (char.attrs.canMoveUp) {
       adjacents.forEach( pos => {
         if (!G.spaces[pos].inhabited && !G.spaces[pos].is_domed &&
           G.spaces[pos].height - G.spaces[originalPos].height <= char.moveUpHeight
@@ -70,13 +76,13 @@ export class Hermes extends Mortal {
     let returnStage = 'build';
 
     if (G.spaces[pos].height === char.workers[char.selectedWorker].height) {
-      char.attributes.canMoveUp = false;
-      char.attributes.isMoving = true;
+      char.attrs.canMoveUp = false;
+      char.attrs.isMoving = true;
       char.buttonText = 'Switch Workers';
       returnStage = 'move';
     }
     else {
-      char.attributes.movedUpOrDown = true;
+      char.attrs.movedUpOrDown = true;
       char.buttonActive = false;
     }
 
@@ -100,7 +106,7 @@ export class Hermes extends Mortal {
     let adjacents : number[] = [];
     
     // normal build
-    if (char.attributes.movedUpOrDown) {
+    if (char.attrs.movedUpOrDown) {
       adjacents = get_adjacent_positions(originalPos);
     }
 
@@ -129,9 +135,9 @@ export class Hermes extends Mortal {
     pos: number
   ) : string {
 
-    char.attributes.isMoving = false;
-    char.attributes.canMoveUp = true;
-    char.attributes.movedUpOrDown = false;
+    char.attrs.isMoving = false;
+    char.attrs.canMoveUp = true;
+    char.attrs.movedUpOrDown = false;
 
     Board.build(G, pos);
     return 'end'
@@ -144,8 +150,8 @@ export class Hermes extends Mortal {
     char: Character
   ) : void {
 
-    if (char.attributes.isMoving) {
-      char.attributes.isMoving = false;
+    if (char.attrs.isMoving) {
+      char.attrs.isMoving = false;
       char.buttonText = 'End Move';
       // change the selected worker
       if (char.workers.length > 1)

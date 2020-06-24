@@ -3,12 +3,17 @@ import { Mortal, Character } from "../character"
 import { GameState, Player } from "../index"
 import { Board } from '../space'
 
+interface attrsType {
+    setOpponentHeight: boolean,
+    opponentMoveUpHeight: number,
+}
+
 export class Athena extends Mortal {
 
     public static desc = `Opponent's Turn: If one of your workers moved up on your last turn, 
         opponent workers cannot move up this turn.`;
 
-    public static attributes = {
+    public static attrs : attrsType = {
         setOpponentHeight: false,
         opponentMoveUpHeight: -1
     }
@@ -22,13 +27,13 @@ export class Athena extends Mortal {
     ) : string {
     
         // if the opponent move up height has not been set yet
-        if (!char.attributes.setOpponentHeight)
+        if (!char.attrs.setOpponentHeight)
             // set it now
-            char.attributes.opponentMoveUpHeight = G.players[player.opponentId].char.moveUpHeight;
-            char.attributes.setOpponentHeight = true;
+            char.attrs.opponentMoveUpHeight = G.players[player.opponentId].char.moveUpHeight;
+            char.attrs.setOpponentHeight = true;
 
         // reset the move up height for the opponent at the beginning of the turn
-        G.players[player.opponentId].char.moveUpHeight = char.attributes.opponentMoveUpHeight
+        G.players[player.opponentId].char.moveUpHeight = char.attrs.opponentMoveUpHeight
 
         // note the height before moving
         let beforeHeight = char.workers[char.selectedWorker].height

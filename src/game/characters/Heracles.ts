@@ -5,12 +5,18 @@ import { GameState, Player } from '../index';
 import { Board } from '../space';
 import { Ctx } from 'boardgame.io';
 
+interface attrsType {
+  specialActive: boolean,
+  specialUsed: boolean,
+  numBuilds: number
+}
+
 export class Heracles extends Mortal {
 
   public static desc = `End of Your Turn: Once, both your Workers build any number 
     of domes (even zero) at any level.`;
   public static buttonText = `Build Domes`;
-  public static attributes = {
+  public static attrs: attrsType = {
     specialActive: false,
     specialUsed: false,
     numBuilds: 0
@@ -22,19 +28,19 @@ export class Heracles extends Mortal {
     player: Player,
     char: Character
   ) : void {
-    char.attributes.specialActive = !char.attributes.specialActive;
+    char.attrs.specialActive = !char.attrs.specialActive;
     
-    if (char.attributes.specialUsed) {
+    if (char.attrs.specialUsed) {
       // reset stuff
       char.buttonActive = false;
-      char.attributes.specialActive = false;
+      char.attrs.specialActive = false;
       char.buttonText = 'Build Domes';
 
       //set game stage
       G.stage = 'end'
       G.canEndTurn = true;
     }
-    else if (char.attributes.specialActive) {
+    else if (char.attrs.specialActive) {
       char.buttonText = 'Cancel';
     }
     else {
@@ -50,8 +56,8 @@ export class Heracles extends Mortal {
     pos: number
   ) : string {
 
-    if (!char.attributes.specialUsed) {
-      char.attributes.numBuilds = 0;
+    if (!char.attrs.specialUsed) {
+      char.attrs.numBuilds = 0;
       char.buttonActive = true;
     }
     return super.move(G, ctx, player, char, pos);
@@ -65,7 +71,7 @@ export class Heracles extends Mortal {
     originalPos: number
   ) : number[] {
 
-    if (!char.attributes.specialActive) {
+    if (!char.attrs.specialActive) {
       return super.valid_build(G, ctx, player, char, originalPos);
     }
     else {
@@ -95,10 +101,10 @@ export class Heracles extends Mortal {
     pos: number
   ) : string {
 
-    if (char.attributes.specialActive) {
-      char.attributes.specialUsed = true;
+    if (char.attrs.specialActive) {
+      char.attrs.specialUsed = true;
       char.buttonText = 'End Build';
-      char.attributes.numBuilds++;
+      char.attrs.numBuilds++;
       G.spaces[pos].is_domed = true;
 
       if (super.hasValidBuild(G, ctx, player, char)) {
@@ -110,7 +116,7 @@ export class Heracles extends Mortal {
     }
 
     char.buttonActive = false;
-    char.attributes.specialActive = false;
+    char.attrs.specialActive = false;
     char.buttonText = 'Build Domes';
     return 'end';
   }

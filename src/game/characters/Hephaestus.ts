@@ -4,11 +4,16 @@ import { GameState, Player } from '../index'
 import { Board } from '../space'
 import { Ctx } from 'boardgame.io';
 
+interface attrsType {
+  numBuilds: number,
+  firstBuildPos: number,
+}
+
 export class Hephaestus extends Mortal {
 
   public static desc = `Your Build: Your Worker may build one additional block (not dome) on top of your first block.`;
   public static buttonText = 'Skip 2nd Build';
-  public static attributes: any = {
+  public static attrs: attrsType = {
     numBuilds: 0,
     firstBuildPos: -1,
   };
@@ -20,7 +25,7 @@ export class Hephaestus extends Mortal {
     char: Character
   ) : void {
     // reset stuff
-    char.attributes.numBuilds = 0;
+    char.attrs.numBuilds = 0;
     char.buttonActive = false;
   
     // set game stage
@@ -39,7 +44,7 @@ export class Hephaestus extends Mortal {
     let adjacents : number[] = get_adjacent_positions(originalPos);
     let valids : number[] = []
   
-    if (char.attributes.numBuilds === 0) {
+    if (char.attrs.numBuilds === 0) {
       adjacents.forEach( pos => {
         if (!G.spaces[pos].inhabited && !G.spaces[pos].is_domed) {
           valids.push(pos);
@@ -47,7 +52,7 @@ export class Hephaestus extends Mortal {
       })
     }
     else {
-      valids.push(char.attributes.firstBuildPos);
+      valids.push(char.attrs.firstBuildPos);
     }
   
     return valids;
@@ -61,24 +66,24 @@ export class Hephaestus extends Mortal {
     pos: number
   ) : string { 
 
-    char.attributes.numBuilds++;
+    char.attrs.numBuilds++;
 
-    if (char.attributes.numBuilds === 1) {
+    if (char.attrs.numBuilds === 1) {
       
       Board.build(G, pos);
 
       if (G.spaces[pos].height > 2) {
-        char.attributes.numBuilds = 0;
+        char.attrs.numBuilds = 0;
         return 'end';
       }
       else {
-        char.attributes.firstBuildPos = pos;
+        char.attrs.firstBuildPos = pos;
         char.buttonActive = true;
         return 'build';
       }
     }
     else {
-      char.attributes.numBuilds = 0;
+      char.attrs.numBuilds = 0;
       char.buttonActive = false;
       Board.build(G, pos);
       return 'end'

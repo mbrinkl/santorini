@@ -97,7 +97,7 @@ function initCharacter(name: string) : Character
     numWorkers: char.numWorkers,
     numWorkersToPlace: char.numWorkers,
     selectedWorker: -1,
-    attributes: char.attributes
+    attrs: char.attrs
   }
 
   return character;

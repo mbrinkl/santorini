@@ -4,12 +4,19 @@ import { GameState, Player } from '../index'
 import { Board } from '../space'
 import { Ctx } from 'boardgame.io';
 
+interface attrsType {
+  specialActive: boolean,
+  specialUsed: boolean,
+  movingOpponent: boolean,
+  workerToMovePos: number
+}
+
 export class Odysseus extends Mortal {
 
   public static desc = `Start of Your Turn: Once, force to unoccupied corner spaces any 
     number of opponent Workers that neighbor your Workers.`;
   public static buttonText = 'Move Opponent';
-  public static attributes = {
+  public static attrs: attrsType = {
     specialActive: false,
     specialUsed: false,
     movingOpponent: false,
@@ -22,7 +29,7 @@ export class Odysseus extends Mortal {
     player: Player, 
     char: Character
   ) : void {
-    if (!char.attributes.specialUsed) {
+    if (!char.attrs.specialUsed) {
       char.buttonActive = this.checkForValidSpecial(G, ctx, player, char);
     }
   }
@@ -33,7 +40,7 @@ export class Odysseus extends Mortal {
     player: Player, 
     char: Character
   ) : boolean {
-    char.attributes.specialActive = true;
+    char.attrs.specialActive = true;
     let returnValue = false;
 
     if (char.selectedWorker !== -1) {
@@ -50,7 +57,7 @@ export class Odysseus extends Mortal {
       })
     }
 
-    char.attributes.specialActive = false
+    char.attrs.specialActive = false
     return returnValue;
   }
 
@@ -60,14 +67,14 @@ export class Odysseus extends Mortal {
     player: Player,
     char: Character
   ) : void {
-    char.attributes.specialActive = !char.attributes.specialActive;
+    char.attrs.specialActive = !char.attrs.specialActive;
 
-    if (char.attributes.specialUsed) {
+    if (char.attrs.specialUsed) {
       char.buttonActive = false;
-      char.attributes.specialActive = false;
+      char.attrs.specialActive = false;
       char.buttonText = 'Move Opponent'
     }
-    else if (char.attributes.specialActive) {
+    else if (char.attrs.specialActive) {
       char.buttonText = 'Cancel';
     }
     else {
@@ -86,9 +93,9 @@ export class Odysseus extends Mortal {
 
     let valids : number[] = []
 
-    if (char.attributes.specialActive) {
+    if (char.attrs.specialActive) {
       let adjacents : number[] = get_adjacent_positions(originalPos);
-      if (!char.attributes.movingOpponent) {
+      if (!char.attrs.movingOpponent) {
         G.players[player.opponentId].char.workers.forEach( worker => {
           if (adjacents.includes(worker.pos)) {
             valids.push(worker.pos);
@@ -118,28 +125,28 @@ export class Odysseus extends Mortal {
     pos: number
   ) : string {
 
-    if (char.attributes.specialActive) {
-      char.attributes.specialUsed = true;
+    if (char.attrs.specialActive) {
+      char.attrs.specialUsed = true;
       char.buttonText = 'End Ability';
 
-      if (!char.attributes.movingOpponent) {
-        char.attributes.movingOpponent = true;
-        char.attributes.workerToMovePos = pos;
+      if (!char.attrs.movingOpponent) {
+        char.attrs.movingOpponent = true;
+        char.attrs.workerToMovePos = pos;
         return 'move';
       }
       else {
-        char.attributes.movingOpponent = false;
-        const oppWorkerNum = G.spaces[char.attributes.workerToMovePos].inhabitant.workerNum;
-        Board.free(G, char.attributes.workerToMovePos);
+        char.attrs.movingOpponent = false;
+        const oppWorkerNum = G.spaces[char.attrs.workerToMovePos].inhabitant.workerNum;
+        Board.free(G, char.attrs.workerToMovePos);
         Board.place(G, pos, player.opponentId, oppWorkerNum);
 
         if (!this.checkForValidSpecial(G, ctx, player, char)) {
-          char.attributes.specialActive = false;
+          char.attrs.specialActive = false;
           char.buttonText = 'Move Opponent';
           char.buttonActive = false;
         }
         else {
-          char.attributes.specialActive = true;
+          char.attrs.specialActive = true;
         }
 
         return 'move';
@@ -147,7 +154,7 @@ export class Odysseus extends Mortal {
     }
     else {
       char.buttonActive = false;
-      char.attributes.specialActive = false;
+      char.attrs.specialActive = false;
       return super.move(G, ctx, player, char, pos);
     }
   }

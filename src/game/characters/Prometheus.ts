@@ -4,13 +4,19 @@ import { Mortal, Character } from '../character'
 import { GameState, Player } from '../index'
 import { Board } from '../space'
 
+interface attrsType {
+  specialActive: boolean,
+  specialUsed: boolean,
+  originalPos: number
+}
+
 export class Prometheus extends Mortal {
   
   public static desc = `Your Turn: If your Worker does not move up, it may build both before and after moving.`;
   public static buttonText = 'Bulid Before Move'
   // public static buttonActive = true;
 
-  public static attributes = {
+  public static attrs: attrsType = {
       specialActive: false,
       specialUsed: false,
       originalPos: -1,
@@ -33,7 +39,7 @@ export class Prometheus extends Mortal {
     pos: number
   ) : string {
     char.selectedWorker = G.spaces[pos].inhabitant.workerNum;
-    if (char.attributes.specialActive)
+    if (char.attrs.specialActive)
       return 'build';
     else
       return 'move';
@@ -47,9 +53,9 @@ export class Prometheus extends Mortal {
     originalPos: number
   ) : number[] {
         
-    let height = (char.attributes.specialUsed ? 0 : char.moveUpHeight)
-    if (char.attributes.specialUsed) {
-      originalPos = char.attributes.originalPos;
+    let height = (char.attrs.specialUsed ? 0 : char.moveUpHeight)
+    if (char.attrs.specialUsed) {
+      originalPos = char.attrs.originalPos;
     }
 
     let adjacents : number[] = get_adjacent_positions(originalPos);
@@ -96,19 +102,19 @@ export class Prometheus extends Mortal {
   ) : string {
     Board.build(G, pos);
 
-    if (char.attributes.specialActive) {
-      char.attributes.specialUsed = true;
-      char.attributes.originalPos = char.workers[char.selectedWorker].pos;
+    if (char.attrs.specialActive) {
+      char.attrs.specialUsed = true;
+      char.attrs.originalPos = char.workers[char.selectedWorker].pos;
 
       char.buttonActive = false;
-      char.attributes.specialActive = false;
+      char.attrs.specialActive = false;
       char.buttonText = 'Build Before Move';
 
       return 'move';
     }
     else {
-      char.attributes.specialUsed = false;
-      char.attributes.originalPos = -1;
+      char.attrs.specialUsed = false;
+      char.attrs.originalPos = -1;
       return 'end';
     }
   }
@@ -119,9 +125,9 @@ export class Prometheus extends Mortal {
     player: Player,
     char: Character
   ) : void {
-    char.attributes.specialActive = !char.attributes.specialActive;
+    char.attrs.specialActive = !char.attrs.specialActive;
 
-    if (char.attributes.specialActive) {
+    if (char.attrs.specialActive) {
       char.buttonText = 'Cancel';
       if (G.stage === 'move')
         G.stage = 'build';
