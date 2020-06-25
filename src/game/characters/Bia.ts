@@ -3,6 +3,7 @@ import { Mortal, Character } from '../character'
 import { GameState, Player } from '../index'
 import { Board } from '../space'
 import { Ctx } from 'boardgame.io';
+import { getNextPosition } from '../utility';
 
 export class Bia extends Mortal {
 
@@ -17,18 +18,17 @@ export class Bia extends Mortal {
     pos: number
   ) : string {
 
-    const direction = char.workers[char.selectedWorker].pos - pos
-    const pos_to_kill = pos - direction;
+    const posToKill = getNextPosition(char.workers[char.selectedWorker].pos, pos);
 
-    if (pos_to_kill >= 0 || pos_to_kill < 25) {
-      if (G.spaces[pos_to_kill].inhabited) {
-        if (G.spaces[pos_to_kill].inhabitant.playerId === player.opponentId) {
+    if (posToKill !== -1) {
+      if (G.spaces[posToKill].inhabited) {
+        if (G.spaces[posToKill].inhabitant.playerId === player.opponentId) {
 
           // find the opponent worker to remove from their worker array
           G.players[player.opponentId].char.workers.forEach( worker => {
-            if (worker.pos === pos_to_kill) {
+            if (worker.pos === posToKill) {
               // free the space
-              Board.free(G, pos_to_kill);
+              Board.free(G, posToKill);
               remove(G.players[player.opponentId].char.workers, worker);
 
               // check if no workers left and end game if none

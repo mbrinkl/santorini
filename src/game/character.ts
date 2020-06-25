@@ -1,7 +1,7 @@
 import { Ctx } from 'boardgame.io';
 import { GameState, Player } from './index'
 import { Board } from './space'
-import { get_adjacent_positions } from './utility'
+import { getAdjacentPositions } from './utility'
 
 export const characterList : string[] = [
   "Mortal",
@@ -79,9 +79,9 @@ export const characterList : string[] = [
   // "Asteria",
   // "Hippolyta",
   // "Hydra",
-  // "Iris",
+  "Iris",
   // "Nyx",
-  // "Pegasus",
+  "Pegasus",
 
   // Keeping this last for now to avoid changing commas when commenting out characters
   "Random"
@@ -163,7 +163,7 @@ export class Mortal {
     char: Character,
     originalPos: number
   ) : number[] {
-    let adjacents : number[] = get_adjacent_positions(originalPos);
+    let adjacents : number[] = getAdjacentPositions(originalPos);
     let valids : number[] = []
         
     adjacents.forEach( pos => {
@@ -218,7 +218,7 @@ export class Mortal {
     char: Character,
     originalPos: number
   ) : number[] {
-    let adjacents : number[] = get_adjacent_positions(originalPos);
+    let adjacents : number[] = getAdjacentPositions(originalPos);
     let valids : number[] = []
   
     adjacents.forEach( pos => {

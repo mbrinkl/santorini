@@ -1,6 +1,6 @@
 import { union } from "lodash"
 import { Ctx } from "boardgame.io";
-import { get_adjacent_positions } from '../utility'
+import { getAdjacentPositions } from '../utility'
 import { Mortal, Character } from '../character'
 import { GameState, Player } from '../index'
 import { Board } from '../space'
@@ -40,7 +40,7 @@ export class Hermes extends Mortal {
     originalPos: number
   ) : number[] {
 
-    let adjacents : number[] = get_adjacent_positions(originalPos);
+    let adjacents : number[] = getAdjacentPositions(originalPos);
     let valids : number[] = []
         
     if (char.attrs.canMoveUp) {
@@ -107,14 +107,14 @@ export class Hermes extends Mortal {
     
     // normal build
     if (char.attrs.movedUpOrDown) {
-      adjacents = get_adjacent_positions(originalPos);
+      adjacents = getAdjacentPositions(originalPos);
     }
 
     // special build, within range of either worker
     else {
       for (let i = 0; i < char.numWorkers; i++) {
         // add on the adjacent positions of each worker
-        adjacents = union(adjacents, get_adjacent_positions(char.workers[i].pos));
+        adjacents = union(adjacents, getAdjacentPositions(char.workers[i].pos));
       }
     }
   

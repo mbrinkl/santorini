@@ -141,6 +141,24 @@
     url('../../assets/images/odysseus.png')
 }
 
+.Iris {
+    background-image: url('../../assets/images/iris.png')
+}
+
+.Iris.checked {
+    background-image: url('../../assets/images/check.png'),
+    url('../../assets/images/iris.png')
+}
+
+.Pegasus {
+    background-image: url('../../assets/images/pegasus.png')
+}
+
+.Pegasus.checked {
+    background-image: url('../../assets/images/check.png'),
+    url('../../assets/images/pegasus.png')
+}
+
 .Random {
     background-image: url('../../assets/images/random.png')
 }

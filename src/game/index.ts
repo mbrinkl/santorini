@@ -17,6 +17,8 @@ import { Prometheus } from "./characters/Prometheus"
 import { Bia } from "./characters/Bia"
 import { Heracles } from "./characters/Heracles"
 import { Odysseus } from "./characters/Odysseus"
+import { Iris } from "./characters/Iris"
+import { Pegasus } from "./characters/Pegasus"
 
 export interface Player {
   id: string;
@@ -54,6 +56,8 @@ function getCharacter(name: string) : any {
     case "Bia": char = Bia; break;
     case "Heracles": char = Heracles; break;
     case "Odysseus": char = Odysseus; break;
+    case "Iris": char = Iris; break;
+    case "Pegasus": char = Pegasus; break;
     default: char = Mortal; break;
   }
 

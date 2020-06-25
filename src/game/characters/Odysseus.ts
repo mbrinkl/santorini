@@ -1,4 +1,4 @@
-import { get_adjacent_positions } from '../utility';
+import { getAdjacentPositions } from '../utility';
 import { Mortal, Character } from '../character'
 import { GameState, Player } from '../index'
 import { Board } from '../space'
@@ -94,7 +94,7 @@ export class Odysseus extends Mortal {
     let valids : number[] = []
 
     if (char.attrs.specialActive) {
-      let adjacents : number[] = get_adjacent_positions(originalPos);
+      let adjacents : number[] = getAdjacentPositions(originalPos);
       if (!char.attrs.movingOpponent) {
         G.players[player.opponentId].char.workers.forEach( worker => {
           if (adjacents.includes(worker.pos)) {

@@ -1,5 +1,5 @@
 import { Ctx } from "boardgame.io";
-import { get_adjacent_positions } from '../utility'
+import { getAdjacentPositions } from '../utility'
 import { Mortal, Character } from '../character'
 import { GameState, Player } from '../index'
 import { Board } from '../space'
@@ -29,7 +29,7 @@ export class Artemis extends Mortal {
     originalPos: number
   ) : number[] {
 
-    let adjacents : number[] = get_adjacent_positions(originalPos);
+    let adjacents : number[] = getAdjacentPositions(originalPos);
     let valids : number[] = []
     
     if (char.selectedWorker !== -1)

@@ -1,5 +1,5 @@
 import { Mortal, Character } from '../character'
-import { get_adjacent_positions } from '../utility'
+import { getAdjacentPositions } from '../utility'
 import { GameState, Player } from '../index'
 import { Board } from '../space'
 import { Ctx } from 'boardgame.io';
@@ -41,7 +41,7 @@ export class Demeter extends Mortal {
     char: Character,
     originalPos: number
   ) : number[] {
-    let adjacents : number[] = get_adjacent_positions(originalPos);
+    let adjacents : number[] = getAdjacentPositions(originalPos);
     let valids : number[] = []
   
     if (char.attrs.numBuilds === 0) {

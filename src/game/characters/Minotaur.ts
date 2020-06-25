@@ -1,5 +1,5 @@
 import { Ctx } from "boardgame.io";
-import { get_adjacent_positions } from '../utility'
+import { getAdjacentPositions, getNextPosition } from '../utility'
 import { Mortal, Character } from '../character'
 import { GameState, Player } from '../index'
 import { Board } from '../space'
@@ -18,7 +18,7 @@ export class Minotaur extends Mortal {
     originalPos: number
   ) : number[] {
 
-    let adjacents : number[] = get_adjacent_positions(originalPos);
+    let adjacents : number[] = getAdjacentPositions(originalPos);
     let valids : number[] = []
   
     adjacents.forEach( pos => {
@@ -28,12 +28,10 @@ export class Minotaur extends Mortal {
         if (!G.spaces[pos].inhabited) {
           valids.push(pos);
         } 
-        else if (G.spaces[pos].inhabitant.playerId !== player.id && char.selectedWorker !== -1) {
-          // TODO: potential wrong end game check if a block is detected [not checking by selected worker]
-          let direction = char.workers[char.selectedWorker].pos - pos;
-          let pos_to_push = pos - direction;
+        else if (G.spaces[pos].inhabitant.playerId !== player.id) {
+          let posToPush = getNextPosition(originalPos, pos);
           let opponent = G.players[player.opponentId];
-          if ( super.valid_move(G, ctx, opponent, opponent.char, pos).includes(pos_to_push)) {
+          if ( super.valid_move(G, ctx, opponent, opponent.char, pos).includes(posToPush)) {
             valids.push(pos);
           }
         }
@@ -51,13 +49,10 @@ export class Minotaur extends Mortal {
     pos: number
   ) : string {
 
-    // subtract 2nd (moved to) value from 1st (moved from) value
-    // directions = { 5 : 'N', 4 : 'NE', -1 : 'E', -6 : 'SE', -5 : 'S', -4 : 'SW', 1 : 'W', 6 : 'NW'}
-    let direction = char.workers[char.selectedWorker].pos - pos;
-    let pos_to_push = pos - direction;
+    let posToPush = getNextPosition(char.workers[char.selectedWorker].pos, pos);
 
     if (G.spaces[pos].inhabited) {
-      Board.place(G, pos_to_push, G.spaces[pos].inhabitant.playerId, G.spaces[pos].inhabitant.workerNum);
+      Board.place(G, posToPush, G.spaces[pos].inhabitant.playerId, G.spaces[pos].inhabitant.workerNum);
     }
 
     Board.free(G, char.workers[char.selectedWorker].pos);

@@ -1,5 +1,5 @@
 import { union } from 'lodash';
-import { get_adjacent_positions } from '../utility';
+import { getAdjacentPositions } from '../utility';
 import { Mortal, Character } from '../character';
 import { GameState, Player } from '../index';
 import { Board } from '../space';
@@ -80,7 +80,7 @@ export class Heracles extends Mortal {
 
       for (let i = 0; i < char.numWorkers; i++) {
         // add on the adjacent positions of each worker
-        adjacents = union(adjacents, get_adjacent_positions(char.workers[i].pos));
+        adjacents = union(adjacents, getAdjacentPositions(char.workers[i].pos));
       }
 
       adjacents.forEach( pos => {
