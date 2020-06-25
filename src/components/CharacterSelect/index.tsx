@@ -1,6 +1,5 @@
 import React from "react";
 import Slider from "react-slick"
-import classNames from "classnames";
 import { Button } from "../Button";
 import { useStoreState } from "../../store";
 import { characterList } from "../../game/character"
@@ -22,13 +21,10 @@ export const CharacterBox: React.FC<{ name: string }> = ({ name }) => {
     }
 
     return (
-        <div className={classNames(
-            "characterBox",
-            name,
-          )}
+        <div style={{ backgroundImage: "url(" + require(`../../assets/images/${name}.png`) + ")" }} 
+            className="characterBox"
             onClick={select}>
             <span>{name}</span>
-                
         </div>
     )
 }
@@ -38,11 +34,10 @@ export const SelectedCharacterBox: React.FC<{ name: string, playerID: string }> 
     const { State } = useBoardContext();
 
     return (
-        <div className={classNames(
-            "characterBox",
-            name,
-            State.players[playerID].ready ? "checked" : ""
-          )}>
+        <div style={{backgroundImage: State.players[playerID].ready ? 
+            "url(" + require(`../../assets/images/check.png`)  + "," + require(`../../assets/images/${name}.png`) + ")" : 
+            "url(" + require(`../../assets/images/${name}.png`) + ")"}}
+            className="characterBox">
             <span>{name}</span>
         </div>
     )
