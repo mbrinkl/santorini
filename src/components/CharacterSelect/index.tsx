@@ -35,7 +35,7 @@ export const SelectedCharacterBox: React.FC<{ name: string, playerID: string }> 
 
     return (
         <div style={{backgroundImage: State.players[playerID].ready ? 
-            "url(" + require(`../../assets/images/check.png`)  + "," + require(`../../assets/images/${name}.png`) + ")" : 
+            "url(" + require('../../assets/images/check.png')  + "), url(" + require(`../../assets/images/${name}.png`) + ")" : 
             "url(" + require(`../../assets/images/${name}.png`) + ")"}}
             className="characterBox">
             <span>{name}</span>

@@ -30,6 +30,7 @@ export class Bia extends Mortal {
               // free the space
               Board.free(G, posToKill);
               remove(G.players[player.opponentId].char.workers, worker);
+              G.players[player.opponentId].char.numWorkers--;
 
               // check if no workers left and end game if none
               if (G.players[player.opponentId].char.workers.length === 0) {

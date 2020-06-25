@@ -13,10 +13,10 @@ export const HelpText = () => {
       {
       //!!ctx.gameover ?
       ctx.phase === 'gameOver' ?
-      (State.winner === playerID ? <span>You win!</span> :
+      (State.winner === playerID ? <span>You Win!</span> :
         <span>You Lose</span>) :
       isActive ? 
-        State.stage === 'place' ? <span>Place two workers</span>
+        State.stage === 'place' ? <span>Place {State.players[playerID].char.numWorkers} workers</span>
         : State.stage === 'select' ? <span>Select a worker</span>
         : State.stage === 'move' ? <span>Move</span>
         : State.stage === 'build' ? <span>Build</span>

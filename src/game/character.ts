@@ -38,7 +38,7 @@ export const characterList : string[] = [
   // "Poseidon",
   // "Selene",
   // "Triton",
-  // "Zeus",
+  "Zeus",
 
   // Golden Fleece Gods
   // "Aeuolus",
@@ -46,7 +46,7 @@ export const characterList : string[] = [
   // "Clio",
   // "Europa & Talus",
   // "Gaea",
-  // "Graeae",
+  "Graeae",
   // "Hades",
   // "Harpies",
   // "Hecate",

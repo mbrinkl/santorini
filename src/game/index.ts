@@ -15,6 +15,8 @@ import { Minotaur } from "./characters/Minotaur"
 import { Pan } from "./characters/Pan"
 import { Prometheus } from "./characters/Prometheus"
 import { Bia } from "./characters/Bia"
+import { Zeus } from "./characters/Zeus"
+import { Graeae } from "./characters/Graeae"
 import { Heracles } from "./characters/Heracles"
 import { Odysseus } from "./characters/Odysseus"
 import { Iris } from "./characters/Iris"
@@ -54,6 +56,8 @@ function getCharacter(name: string) : any {
     case "Pan": char = Pan; break;
     case "Prometheus": char = Prometheus; break;
     case "Bia": char = Bia; break;
+    case "Zeus": char = Zeus; break;
+    case "Graeae": char = Graeae; break;
     case "Heracles": char = Heracles; break;
     case "Odysseus": char = Odysseus; break;
     case "Iris": char = Iris; break;
