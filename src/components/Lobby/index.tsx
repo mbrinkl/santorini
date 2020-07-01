@@ -7,6 +7,7 @@ import { SERVER_URL } from "../../config/client";
 import { SantoriniGame } from "../../game";
 import { useStoreActions, useStoreState } from "../../store";
 import { GameBoard } from "../GameBoard";
+import { ButtonBack } from "../ButtonBack";
 import "./style.scss";
 import { LobbyPage } from "components/LobbyPage";
 import { Button } from "components/Button";
@@ -29,6 +30,27 @@ export const GameLobby = () => {
   );
 };
 
+//https://stackoverflow.com/questions/21741841/detecting-ios-android-operating-system
+export function getMobileOS() {
+  var userAgent = navigator.userAgent || navigator.vendor || (window as any).opera;
+
+  // Windows Phone must come first because its UA also contains "Android"
+  if (/windows phone/i.test(userAgent)) {
+    return "Windows Phone";
+  }
+  
+  if (/android/i.test(userAgent)) {
+    return "Android";
+  }
+  
+  // iOS detection from: http://stackoverflow.com/a/9039885/177710
+  if (/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream) {
+    return "iOS";
+  }
+  
+  return "unknown";
+}
+
 export const GameLobbySetup: React.FC<{ startGame(): void }> = ({
   startGame,
 }) => {
@@ -39,6 +61,7 @@ export const GameLobbySetup: React.FC<{ startGame(): void }> = ({
   const joinRoom = useStoreActions((s) => s.joinRoom);
   const activeRoomPlayer = useStoreState((s) => s.activeRoomPlayer);
   const [tooltipVisible, setTooltipVisible] = useState(false);
+  const os = getMobileOS();
 
   const supportsCopying = !!document.queryCommandSupported("copy");
   function copyToClipboard(value: string) {
@@ -84,6 +107,7 @@ export const GameLobbySetup: React.FC<{ startGame(): void }> = ({
 
   return (
     <LobbyPage>
+      <ButtonBack to="/" />
 
       <div className="Lobby__title">
         Invite
@@ -92,14 +116,14 @@ export const GameLobbySetup: React.FC<{ startGame(): void }> = ({
         Send a link to a friend to invite them to your game
       </div>
       <div className="Lobby__link">
-        <div className="Lobby__link-box">{window.location.href}</div>
+      <div className="Lobby__link-box">{window.location.href}</div>
         {supportsCopying && (
           <Tippy
             visible={tooltipVisible}
             offset={[0, 12]}
             content={<p>Copied!</p>}
           >
-            <div className="Lobby__link-button">
+            <div className="Lobby__link-buttons">
               <Button
                 theme="blue"
                 onClick={() => {
@@ -110,6 +134,29 @@ export const GameLobbySetup: React.FC<{ startGame(): void }> = ({
               >
                 Copy
               </Button>
+
+              {os === 'iOS' || os === 'Android' ? 
+                os === 'iOS' ?
+                  <Button
+                    theme="blue"
+                    onClick={() => {
+                      window.open(`sms:&body=${window.location.href}`)
+                    }}
+                  >
+                    Share
+                  </Button>
+                :
+                  <Button
+                    theme="blue"
+                    onClick={() => {
+                      window.open(`sms:?body=${window.location.href}`)
+                    }}
+                  >
+                    Share
+                  </Button> 
+                :
+                <></>
+              }
             </div>
           </Tippy>
         )}

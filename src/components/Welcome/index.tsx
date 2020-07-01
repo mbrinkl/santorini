@@ -1,11 +1,11 @@
-import React from "react";
+import React, {useState, useEffect} from "react";
 import { LobbyPage } from "components/LobbyPage";
 import { Logo } from "components/Logo";
 import { Button, ButtonProps } from "components/Button";
 import style from "./style.module.scss";
 import { ButtonChangeNickname } from "../ButtonChangeNickname";
 import { useStoreActions, useStoreState } from "../../store";
-import { Redirect } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 
 interface Props {
   playerCount: number;
@@ -30,16 +30,30 @@ const CreateGameButton: React.FC<ButtonProps & Props> = ({
 
 export const Welcome = () => {
 
+  const [redirect, setRedirect] = useState(false);
   const createGameRoom = useStoreActions((s) => s.createGameRoom);
-  // const nickname = useStoreState((s) => s.nickname);
   const roomID = useStoreState((s) => s.roomID);
+  const history = useHistory();
 
-  if (roomID) return <Redirect to={`/rooms/${roomID}`} />;
+  function OnCreate(numPlayers: number) {
+    if (!roomID) {
+      createGameRoom(numPlayers);
+    }
 
-  function onHowToPlay()
-  {
+    setRedirect(true);
+  }
+
+  function onHowToPlay() {
     window.open("http://files.roxley.com/Santorini-Rulebook-Web-2016.08.14.pdf", "_blank");
   }
+
+  useEffect(() => {
+    if (redirect && roomID) {
+      history.push({
+        pathname: `/rooms/${roomID}`,
+      });
+    }
+  }, [roomID, redirect, history]);
 
   return (
     <LobbyPage>
@@ -57,7 +71,7 @@ export const Welcome = () => {
 
         <CreateGameButton theme="green" 
           playerCount={2}
-          onClick={createGameRoom}
+          onClick={OnCreate}
         >
           Play!
         </CreateGameButton>

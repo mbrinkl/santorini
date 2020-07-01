@@ -21,3 +21,12 @@
     opacity: 1;
   }
 }
+
+@media only screen and (max-width: 599px) {
+  .Nickname {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    color: $c-white;
+  }
+}

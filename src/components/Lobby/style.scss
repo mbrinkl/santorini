@@ -12,6 +12,7 @@
     font-size: 20px;
     color: $c-white;
     margin: 12px 0 0;
+    text-align: center;
   }
 
   &__link {
@@ -30,7 +31,7 @@
     border-radius: 10px;
   }
 
-  &__link-button {
+  &__link-buttons {
     margin-left: 20px;
   }
 
@@ -82,28 +83,30 @@
 
 @media only screen and (max-width: 599px) {
   .Lobby {
+    &__title {
+      padding-top: 40px;
+    }
+
     &__link {
       display: inline-block;
-      margin: 36px 0;
       width: 100%;
       text-align: center;
     }
   
     &__link-box {
-      border: 3px solid darken($c-blue, 10%);
-      background: darken($c-blue, 5%);
-      font-size: 9px;
-      color: $c-white;
-      padding: 12px 32px;
-      font-weight: 400;
-      text-align: center;
-      border-radius: 10px;
+      overflow: scroll;
     }
   
-    &__link-button {
-      display: inline-block;
+    &__link-buttons {
+      display: flex;
+      justify-content: center;
       padding-top: 10px;
       margin: 0 auto;
     }
+  }
+
+  Button {
+    margin-left: 10px;
+    margin-right: 10px;
   }
 }

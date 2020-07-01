@@ -1,18 +1,15 @@
 @import "~styles/shared";
 
-.PlayerControls {
+.GameBoard {
+  height: 100%;
   display: flex;
-  flex-direction: row;
-  justify-content: space-evenly;
-  margin-top: 12px;
-
-  &__button {
-    margin-left: 10px;
-    margin-right: 10px;
-  }
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
 }
 
 #canvas {
+  position: flex;
   height: 65vh;
   width: 50vw;
   padding-left: 0;
@@ -27,19 +24,68 @@
   -ms-user-select: none;
 }
 
-.GameBoard {
-  height: 100vh;
+.PlayerControls {
   display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
+  flex-direction: row;
+  justify-content: space-evenly;
+  margin-top: 12px;
+
+  &__button {
+    margin-left: 10px;
+    margin-right: 10px;
+  }
 }
 
 .PlayerInfo {
   position: absolute;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+
+  h2 {
+    margin: 0;
+  }
+
+  &__P1Name {
+    position: absolute;
+    color: red;
+    top: 10px;
+    left: 10px;
+  }
+
+  &__P2Name {
+    position: absolute;
+    color: gray;
+    top: 10px;
+    right: 10px;
+    text-align: right;
+  }
+
+  &__P1Description {
+    color: red;
+    font-size: 14px;
+    position: absolute;
+    bottom: 10px;
+    left: 12px;
+    width: 20vw;
+    text-align: left;
+  }
+
+  &__P2Description {
+    color: gray;
+    font-size: 14px;
+    position: absolute;
+    bottom: 10px;
+    right: 12px;
+    width: 20vw;
+    text-align: right;
+  }
+}
+
+.PlayerInfoMobile {
+  position: absolute;
   width: 100vw;
-  top: 15px;
-  cursor: pointer;
+  top: 10px;
 
   h2 {
     margin: 0;
@@ -53,7 +99,6 @@
     color: white;
     background-color: red;
     border-radius: 50%;
-    cursor: pointer;
   }
 
   &__P2QuestionMark {
@@ -64,51 +109,65 @@
     color: white;
     background-color: gray;
     border-radius: 50%;
-    cursor: pointer;
   }
 
   &__P1Name {
     position: absolute;
     color: red;
     left: 40px;
+    font-size: 14px;
   }
 
   &__P2Name {
     position: absolute;
     color: gray;
     right: 40px;
+    font-size: 14px;
     text-align: right;
   }
 }
 
-.PlayerDescriptions__1 {
-  color: red;
-  font-size: 14px;
+.MobileOverlay {
   position: absolute;
-  display: none;
-  top: 65px;
-  left: 12px;
-  width: 20vw;
-  text-align: left;
-}
+  z-index: 10;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: transparentize($c-black, 0.10);
+  
+  &__p1 {
+    position: absolute;
+    top: 15%;
+    right: 10px;
+    left: 10px;
+    text-align: center;
+    color: red;
+  }
 
-.PlayerDescriptions__2 {
-  color: gray;
-  font-size: 14px;
-  position: absolute;
-  display: none;
-  top: 65px;
-  right: 12px;
-  width: 20vw;
-  text-align: right;
+  &__mid {
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    left: 10px;
+    text-align: center;
+    color: white;
+  }
+
+  &__p2 {
+    position: absolute;
+    bottom: 15%;
+    right: 10px;
+    left: 10px;
+    text-align: center;
+    color: gray;
+  }
 }
 
 .PlayerBoard {
   font-size: 16px;
-  margin-top: em(50);
   border-radius: em(10);
   background-color: #f7f8fb;
-  display: inline-grid;
   box-shadow: 0px em(2) em(2) rgba(0, 0, 0, 0.25);
   position: relative;
 
@@ -180,29 +239,16 @@
 }
 
 @media only screen and (max-width: 599px) {
-
   #canvas {
-    height: 60vh;
-    width: 100vw;
+    height: 60%;
+    width: 100%;
     outline: none;
     -webkit-tap-highlight-color: rgba(255, 255, 255, 0); 
   }
 
   .PlayerBoard {
-    width: 95vw;
+    width: 95%;
+    margin-top: em(85);
     padding: 0;
-  }
-
-  .PlayerDescriptions {
-    position: static;
-    margin-top: 70px;
-    //margin-bottom: 25px;
-    
-    &__1, &__2 {
-      position: static;
-      margin-top: 5px;
-      width: 100vw;
-      text-align: center;
-    }
   }
 }

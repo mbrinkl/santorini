@@ -22,6 +22,13 @@ export interface JoinRoomParams {
   playerName: string;
 }
 
+export interface UpdatePlayerParams {
+  roomID: string;
+  playerID: number;
+  credentials: string;
+  newName: string;
+}
+
 export class LobbyService {
   api: typeof ky;
 
@@ -50,6 +57,16 @@ export class LobbyService {
     return {
       playerCredentials
     };
+  }
+
+  async updatePlayer({
+    roomID,
+    ...json
+  }: UpdatePlayerParams) : Promise<void> {
+    await this.api
+    .post(roomID + "/update", {
+      json: json
+    });
   }
 
   async getRoomMetadata(roomID: string): Promise<RoomMetadata> {

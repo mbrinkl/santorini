@@ -21,19 +21,16 @@
 }
 
 .buttons {
-  margin-left: 20px;
+  margin-left: 10px;
+  margin-right: 10px;
 }
 
 @media only screen and (max-width: 599px) {
+  .text {
+    font-size: 14;
+  }
+
   .logo {
     margin: -20px
-  }
-}
-
-@media only screen and (min-width: 600px) {
-  .text {
-    font-size: 20px;
-    font-weight: 500;
-    line-height: 1.5;
   }
 }

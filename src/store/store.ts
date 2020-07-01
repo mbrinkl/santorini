@@ -3,6 +3,7 @@ import { StoreInjections } from ".";
 import {
   RoomMetadata,
   JoinRoomParams,
+  UpdatePlayerParams,
   ActiveRoomPlayer,
 } from "../services/lobby-service";
 
@@ -18,6 +19,7 @@ export interface StoreModel {
   activeRoomPlayer: ActiveRoomPlayer | null;
   setActiveRoomPlayer: Action<StoreModel, ActiveRoomPlayer>;
   joinRoom: Thunk<StoreModel, JoinRoomParams, StoreInjections>;
+  updatePlayer: Thunk<StoreModel, UpdatePlayerParams, StoreInjections>;
   reset: Action;
 }
 
@@ -68,6 +70,10 @@ export const store: StoreModel = {
       credential: playerCredentials,
       playerID: payload.playerID,
     });
+  }),
+
+  updatePlayer: thunk(async (actions, payload, { injections }) => {
+    await injections.lobbyApi.updatePlayer(payload);
   }),
 
   reset: action(() => initState),
