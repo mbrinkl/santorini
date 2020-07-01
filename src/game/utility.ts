@@ -28,6 +28,11 @@ export function getNextPosition(fromPos: number, toPos: number) : number {
    return nextPos;
 }
 
+export function posIsPerimeter(pos: number) : boolean {
+    const perimeters = [0, 1, 2, 3, 4, 5, 9, 10, 14, 15, 19, 20, 21, 22, 23, 24];
+    return perimeters.includes(pos);
+}
+
 export function getAdjacentPositions(pos: number) : number[] {
     let valid_range : number[] = [];
     const [x, y] : number[] = posToCoord(pos);
