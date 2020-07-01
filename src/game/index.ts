@@ -245,7 +245,7 @@ function setRandomCharacters(G: GameState, ctx: Ctx) {
   times(ctx.numPlayers, (index) => {
     const id = index.toString();
     if (G.players[id].char.name === "Random") {
-      const randomCharName = characterList[Math.floor(Math.random() * characterList.length - 1)];
+      const randomCharName = characterList[Math.floor(Math.random() * (characterList.length - 1))];
       G.players[id].char = initCharacter(randomCharName);
     }
   });
