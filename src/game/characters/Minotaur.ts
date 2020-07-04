@@ -1,6 +1,6 @@
 import { Ctx } from "boardgame.io";
 import { getAdjacentPositions, getNextPosition } from '../utility'
-import { Mortal, Character } from '../character'
+import { Mortal, Character } from '.'
 import { GameState, Player } from '../index'
 import { Board } from '../space'
 
@@ -10,7 +10,7 @@ export class Minotaur extends Mortal {
     if their Worker can be forced one space straight backwards to an 
     unoccupied space at any level.`;
 
-  public static valid_move(
+  public static validMove(
     G: GameState,
     ctx: Ctx,
     player: Player,
@@ -31,7 +31,7 @@ export class Minotaur extends Mortal {
         else if (G.spaces[pos].inhabitant.playerId !== player.id) {
           let posToPush = getNextPosition(originalPos, pos);
           let opponent = G.players[player.opponentId];
-          if ( super.valid_move(G, ctx, opponent, opponent.char, pos).includes(posToPush)) {
+          if ( super.validMove(G, ctx, opponent, opponent.char, pos).includes(posToPush)) {
             valids.push(pos);
           }
         }

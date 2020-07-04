@@ -1,4 +1,4 @@
-import { Mortal, Character } from '../character'
+import { Mortal, Character } from '.'
 import { getAdjacentPositions, getNextPosition } from '../utility'
 import { GameState, Player } from '../index'
 import { Ctx } from 'boardgame.io';
@@ -8,7 +8,7 @@ export class Iris extends Mortal {
     public static desc = `Your Move: If there is a Worker neighboring your Worker and the space directly on the 
       other side of it is unoccupied, your worker may move to that space regardless of its level.`;
 
-    public static valid_move(
+    public static validMove(
       G: GameState, 
       ctx: Ctx,
       player: Player,

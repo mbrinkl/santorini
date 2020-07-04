@@ -31,7 +31,6 @@ const App: React.FC = () => {
   return (
     <div className="App">
       <Switch>
-        {/* TODO: Use modal for nickname creation instead of conditional rendering */}
         <Route exact path="/">
           <Welcome />
         </Route>

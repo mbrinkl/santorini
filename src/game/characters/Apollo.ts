@@ -1,4 +1,4 @@
-import { Mortal, Character } from '../character'
+import { Mortal, Character } from '.'
 import { getAdjacentPositions } from '../utility'
 import { GameState, Player } from '../index'
 import { Board } from '../space'
@@ -9,7 +9,7 @@ export class Apollo extends Mortal {
     public static desc = `Your Move : Your worker may move into an opponent worker's space by 
       forcing their worker to the space you just vacated.`;
 
-    public static valid_move(
+    public static validMove(
       G: GameState, 
       ctx: Ctx,
       player: Player,

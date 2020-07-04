@@ -1,18 +1,18 @@
-import { Mortal } from '../character'
+import { Mortal } from '.'
 import { Ctx } from 'boardgame.io';
-import { Character } from '../character'
+import { Character } from '.'
 import { GameState, Player } from '../index'
 
 export class Zeus extends Mortal {
   
   public static desc = `Your Build: Your Worker may build a block under itself.`;
 
-  public static check_win_by_move(G: GameState, beforeHeight: number, afterHeight: number) : boolean {
-    return (beforeHeight < 3 && afterHeight === 3) ||
-      (beforeHeight - afterHeight > 1)
+  public static checkWinByMove(G: GameState, heightBefore: number, heightAfter: number) : boolean {
+    return (heightBefore < 3 && heightAfter === 3) ||
+      (heightBefore - heightAfter > 1)
   }
 
-  public static valid_build(
+  public static validBuild(
     G: GameState, 
     ctx: Ctx,
     player: Player, 
@@ -20,7 +20,7 @@ export class Zeus extends Mortal {
     originalPos: number
   ) : number[] {
 
-    let valids: number[] = super.valid_build(G, ctx, player, char, originalPos);
+    let valids: number[] = super.validBuild(G, ctx, player, char, originalPos);
 
     if (char.workers[char.selectedWorker].height < 3)
       valids.push(char.workers[char.selectedWorker].pos);

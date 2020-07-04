@@ -1,4 +1,4 @@
-import { Mortal, Character } from '../character'
+import { Mortal, Character } from '.'
 import { GameState, Player } from '../index'
 import { Board } from '../space'
 import { Ctx } from 'boardgame.io';

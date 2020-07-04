@@ -1,8 +1,8 @@
-import { Mortal } from '../character'
+import { Mortal } from '.'
 import { Ctx } from 'boardgame.io';
 import { Board } from '../space'
 import { posIsPerimeter } from '../utility';
-import { Character } from '../character'
+import { Character } from '.'
 import { GameState, Player } from '../index'
 
 export class Triton extends Mortal {

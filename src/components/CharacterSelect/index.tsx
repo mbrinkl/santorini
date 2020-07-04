@@ -2,7 +2,7 @@ import React from "react";
 import Slider from "react-slick"
 import { Button } from "../Button";
 import { useStoreState } from "../../store";
-import { characterList } from "../../game/character"
+import { characterList } from "../../game/characters"
 import { useBoardContext } from "../GameBoard/BoardContext";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
@@ -10,37 +10,36 @@ import "./style.scss";
 
 export const CharacterBox: React.FC<{ name: string }> = ({ name }) => {
     
-    const { moves } = useBoardContext();
-    
-    const activeRoomPlayer = useStoreState((s) => s.activeRoomPlayer);
-    let playerID=String(activeRoomPlayer?.playerID)
+  const { moves } = useBoardContext();
+  
+  const activeRoomPlayer = useStoreState((s) => s.activeRoomPlayer);
+  const playerID = String(activeRoomPlayer?.playerID);
 
-    function select()
-    {
-        moves.SetChar(playerID, name);
-    }
+  function select() {
+    moves.SetChar(playerID, name);
+  }
 
-    return (
-        <div style={{ backgroundImage: "url(" + require(`../../assets/images/${name}.png`) + ")" }} 
-            className="characterBox"
-            onClick={select}>
-            <span>{name}</span>
-        </div>
-    )
+  return (
+    <div style={{ backgroundImage: "url(" + require(`../../assets/images/${name}.png`) + ")" }} 
+        className="characterBox"
+        onClick={select}>
+        <span>{name}</span>
+    </div>
+  );
 }
 
-export const SelectedCharacterBox: React.FC<{ name: string, playerID: string }> = ({ name, playerID }) => {
-    
-    const { State } = useBoardContext();
+export const SelectedCharacterBox: React.FC<{ name: string, playerID: string }> = ({ name, playerID }) => {    
+  
+  const { State } = useBoardContext();
 
-    return (
-        <div style={{backgroundImage: State.players[playerID].ready ? 
-            "url(" + require('../../assets/images/check.png')  + "), url(" + require(`../../assets/images/${name}.png`) + ")" : 
-            "url(" + require(`../../assets/images/${name}.png`) + ")"}}
-            className="characterBox">
-            <span>{name}</span>
-        </div>
-    )
+  return (
+    <div style={{backgroundImage: State.players[playerID].ready ? 
+        "url(" + require('../../assets/images/check.png')  + "), url(" + require(`../../assets/images/${name}.png`) + ")" : 
+        "url(" + require(`../../assets/images/${name}.png`) + ")"}}
+        className="characterBox">
+        <span>{name}</span>
+    </div>
+  );
 }
 
 export const CharacterSelect = () => {
@@ -49,7 +48,7 @@ export const CharacterSelect = () => {
 
     const roomMetadata = useStoreState((s) => s.roomMetadata);
     const activeRoomPlayer = useStoreState((s) => s.activeRoomPlayer);
-    let playerID = String(activeRoomPlayer?.playerID)
+    const playerID = String(activeRoomPlayer?.playerID);
 
     return (
         <div className="characterSelect">

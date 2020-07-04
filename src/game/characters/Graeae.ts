@@ -1,5 +1,5 @@
 import { union } from 'lodash'
-import { Mortal, Character } from '../character'
+import { Mortal, Character } from '.'
 import { GameState, Player } from '../index'
 import { Ctx } from 'boardgame.io';
 import { getAdjacentPositions } from '../utility';
@@ -11,7 +11,7 @@ export class Graeae extends Mortal {
     Banned VS: Nemesis`;
   public static numWorkers = 3;
 
-  public static valid_build(
+  public static validBuild(
     G: GameState, 
     ctx: Ctx,
     player: Player, 

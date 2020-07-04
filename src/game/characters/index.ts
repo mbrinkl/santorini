@@ -1,7 +1,7 @@
 import { Ctx } from 'boardgame.io';
-import { GameState, Player } from './index'
-import { Board } from './space'
-import { getAdjacentPositions } from './utility'
+import { GameState, Player } from '../index'
+import { Board } from '../space'
+import { getAdjacentPositions } from '../utility'
 
 export const characterList : string[] = [
   "Mortal",
@@ -128,7 +128,7 @@ export class Mortal {
     char: Character
   ) : void {}
 
-  public static valid_select(
+  public static validSelect(
     G: GameState, 
     ctx: Ctx,
     player: Player, 
@@ -137,7 +137,7 @@ export class Mortal {
     let valids: number[] = [];
 
     char.workers.forEach(worker => {
-      if (this.valid_move(G, ctx, player, char, worker.pos).length > 0) {
+      if (this.validMove(G, ctx, player, char, worker.pos).length > 0) {
         valids.push(worker.pos);
       }
     })
@@ -156,7 +156,7 @@ export class Mortal {
     return 'move';
   }
   
-  public static valid_move(
+  public static validMove(
     G: GameState, 
     ctx: Ctx,
     player: Player, 
@@ -187,7 +187,7 @@ export class Mortal {
   ) : boolean {
     let hasMove: boolean = false;
     char.workers.forEach(worker => {
-      if (this.valid_move(G, ctx, player, char, worker.pos).length > 0) {
+      if (this.validMove(G, ctx, player, char, worker.pos).length > 0) {
         hasMove = true;
       }
     })
@@ -211,7 +211,7 @@ export class Mortal {
       return "build"
   }
 
-  public static valid_build(
+  public static validBuild(
     G: GameState, 
     ctx: Ctx,
     player: Player, 
@@ -233,6 +233,23 @@ export class Mortal {
     return valids;
   }
 
+  public static hasValidBuild(
+    G: GameState,
+    ctx: Ctx,
+    player: Player, 
+    char: Character,
+  ) : boolean {
+    let hasBuild = false;
+
+    char.workers.forEach(worker => {
+      if (this.validBuild(G, ctx, player, char, worker.pos).length > 0) {
+        hasBuild = true;
+      }
+    })
+
+    return hasBuild
+  }
+
   public static build (
     G: GameState,
     ctx: Ctx,
@@ -244,33 +261,18 @@ export class Mortal {
     return 'end'
   }
 
-  public static hasValidBuild(
-    G: GameState,
-    ctx: Ctx,
-    player: Player, 
-    char: Character,
-  ) : boolean {
-    let hasBuild = false;
-
-    char.workers.forEach(worker => {
-      if (this.valid_build(G, ctx, player, char, worker.pos).length > 0) {
-        hasBuild = true;
-      }
-    })
-
-    return hasBuild
-  }
-
   public static buttonPressed(
     G: GameState, 
     ctx: Ctx,
     player: Player,
     char: Character
-  ) : void {
+  ) : void {}
 
-  }
-
-  public static check_win_by_move(G: GameState, beforeHeight: number, afterHeight: number) : boolean {
-    return beforeHeight < 3 && afterHeight === 3;
+  public static checkWinByMove(
+    G: GameState, 
+    heightBefore: number, 
+    heightAfter: number
+  ) : boolean {
+    return heightBefore < 3 && heightAfter === 3;
   }
 }

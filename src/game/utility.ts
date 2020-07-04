@@ -9,7 +9,6 @@ export function posToCoord(pos: number) : number[] {
 }
 
 export function getNextPosition(fromPos: number, toPos: number) : number {
-
    let nextPos = -1
 
    const [fromX, fromY] : number[] = posToCoord(fromPos);

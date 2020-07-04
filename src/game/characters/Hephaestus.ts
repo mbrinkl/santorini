@@ -1,4 +1,4 @@
-import { Mortal, Character } from '../character'
+import { Mortal, Character } from '.'
 import { getAdjacentPositions } from '../utility'
 import { GameState, Player } from '../index'
 import { Board } from '../space'
@@ -34,7 +34,7 @@ export class Hephaestus extends Mortal {
   }
 
 
-  public static valid_build(
+  public static validBuild(
     G: GameState, 
     ctx: Ctx,
     player: Player, 

@@ -1,7 +1,7 @@
 import { union } from "lodash"
 import { Ctx } from "boardgame.io";
 import { getAdjacentPositions } from '../utility'
-import { Mortal, Character } from '../character'
+import { Mortal, Character } from '.'
 import { GameState, Player } from '../index'
 import { Board } from '../space'
 
@@ -32,7 +32,7 @@ export class Hermes extends Mortal {
     char.buttonActive = true;
   }
 
-  public static valid_move(
+  public static validMove(
     G: GameState,
     ctx: Ctx,
     player: Player,
@@ -95,7 +95,7 @@ export class Hermes extends Mortal {
     return returnStage;
   }
 
-  public static valid_build(
+  public static validBuild(
     G: GameState, 
     ctx: Ctx,
     player: Player, 

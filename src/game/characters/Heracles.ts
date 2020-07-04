@@ -1,6 +1,6 @@
 import { union } from 'lodash';
 import { getAdjacentPositions } from '../utility';
-import { Mortal, Character } from '../character';
+import { Mortal, Character } from '.';
 import { GameState, Player } from '../index';
 import { Board } from '../space';
 import { Ctx } from 'boardgame.io';
@@ -63,7 +63,7 @@ export class Heracles extends Mortal {
     return super.move(G, ctx, player, char, pos);
   }
 
-  public static valid_build(
+  public static validBuild(
     G: GameState, 
     ctx: Ctx,
     player: Player, 
@@ -72,7 +72,7 @@ export class Heracles extends Mortal {
   ) : number[] {
 
     if (!char.attrs.specialActive) {
-      return super.valid_build(G, ctx, player, char, originalPos);
+      return super.validBuild(G, ctx, player, char, originalPos);
     }
     else {
       let valids: number[] = [];

@@ -1,5 +1,5 @@
 import { getAdjacentPositions } from '../utility';
-import { Mortal, Character } from '../character'
+import { Mortal, Character } from '.'
 import { GameState, Player } from '../index'
 import { Board } from '../space'
 import { Ctx } from 'boardgame.io';
@@ -45,13 +45,13 @@ export class Odysseus extends Mortal {
 
     if (char.selectedWorker !== -1) {
       const worker = char.workers[char.selectedWorker];
-      if (this.valid_move(G, ctx, player, char, worker.pos).length > 0) {
+      if (this.validMove(G, ctx, player, char, worker.pos).length > 0) {
         returnValue = true;
       }
     }
     else {
       char.workers.forEach(worker => {
-        if (this.valid_move(G, ctx, player, char, worker.pos).length > 0) {
+        if (this.validMove(G, ctx, player, char, worker.pos).length > 0) {
           returnValue = true;
         }
       })
@@ -83,7 +83,7 @@ export class Odysseus extends Mortal {
   }
 
     
-  public static valid_move(
+  public static validMove(
     G: GameState, 
     ctx: Ctx,
     player: Player, 
@@ -113,7 +113,7 @@ export class Odysseus extends Mortal {
       return valids;
     }
     else {
-      return super.valid_move(G, ctx, player, char, originalPos);
+      return super.validMove(G, ctx, player, char, originalPos);
     }
   }
 
