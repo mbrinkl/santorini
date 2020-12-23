@@ -1,92 +1,96 @@
 @import "~styles/shared";
 
-.characterSelect {
-
-    background-color: $c-blue;
-    position: absolute; top: 0; left: 0;
-    width: 100%;
-    height: 100%;
-    overflow-y: auto;
-    margin: 0 auto;
-    text-align: center;
-
-    h1, span {
-        color: white;
-    }
+.characterBox, .characterBoxSelectable {
+  position: relative;
+  width: 100px;
+  height: 150px;
+  background-size: cover;
+  background-repeat: no-repeat;
+  text-align: left;
+  color: $c-white;
+  font-size: 16px;
+  font-weight: 500;
+  text-shadow: -1px -1px 0 black, 1px -1px 0 black, -1px 1px 0 black, 1px 1px 0 black;
+  border: 2px solid transparent;
+  border-radius: 10%;
+  margin: auto;
 }
 
-.characterBox {
-    position: relative;
-    width: 100px;
-    height: 150px;
-    background-size: cover;
-    background-repeat: no-repeat;
-    text-align: left;
-    color: $c-white;
-    font-size: 16px;
-    font-weight: 500;
-    text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
-    border: 2px solid transparent;
-    border-radius: 10%;
-    margin: auto;
+.characterBox span, .characterBoxSelectable span {
+  position:absolute;
+  width:100%;
+  bottom:0;
+  text-align:center;
 }
 
-.characterBox:hover {
-    border: 2px solid lime;
+.characterBoxSelectable {
+  cursor: pointer;  
 }
 
-.char1name, .char2name {
-    font-size: 18px;
-    font-weight: bold;
+.characterBoxSelectable:hover {
+  border: 2px solid lime;
 }
 
-.characterBox span {
-    position:absolute;
-    width:100%;
-    bottom:0;
-    text-align:center;
-}
+.charSelect {
+  background-color: $c-blue;
+  position: absolute; top: 0; left: 0;
+  width: 100%;
+  height: 100%;
+  overflow-y: auto;
+  margin: 0 auto;
+  text-align: center;
 
-.char1selection, .char2selection {
-    position: relative;
-    width: 40%;
-}
+  h1, span {
+      color: white;
+  }
 
-.characters {
+  Button {
+    margin: 50px auto;
+  }
+
+  .slick-prev {
+    left: 3% !important;
+    z-index: 1;
+  }
+
+  .slick-next {
+    right: 3% !important;
+    z-index: 1;
+  }
+
+  &__characters {
     display: flex;
     flex-wrap: wrap;
     flex-direction: row;
     justify-content: center;
-}
+  }
 
-.selectedCharacters {
+  &__playerName {
+    font-size: 18px;
+    font-weight: bold;
+  }
+
+  &__selectedCharDiv {
     display: flex;
     flex-direction: row;
     margin-top: 50px;
     justify-content: space-evenly;
-}
+  }
 
-.button {
-    margin: 50px auto;
-}
-
-.slick-prev {
-    left: 3% !important;
-    z-index: 1;
-}
-.slick-next {
-    right: 3% !important;
-    z-index: 1;
+  &__selectedChar {
+    position: relative;
+    width: 40%;
+  }
 }
 
 @media only screen and (max-width: 599px) {
-    .characters {
-      display: none;
-    }
+  .charSelect__characters {
+    display: none;
   }
+}
   
-  @media only screen and (min-width: 600px) {
-    .charactersCarousel {
-        display: none;
-    }
+@media only screen and (min-width: 600px) {
+  .charSelect__carousel {
+    display: none;
+  }
 }

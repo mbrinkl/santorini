@@ -17,9 +17,9 @@ declare module "boardgame.io/react" {
     G: GameStatePlayerView;
     ctx: Omit<Context<PlayerID, PhaseID>, "playerID">;
     moves: Moves;
-    gameID: string;
+    matchID: string;
     playerID: PlayerID;
-    gameMetadata: any;
+    matchData: any;
     isActive: boolean;
     log: any;
     isMultiplayer: boolean;
@@ -47,7 +47,7 @@ declare module "boardgame.io/react" {
   }
 
   export interface ClientProps<PlayerID = DefaultPlayerID> {
-    gameID?: string;
+    matchID?: string;
     playerID?: PlayerID;
     credentials?: string;
     debug?: boolean;

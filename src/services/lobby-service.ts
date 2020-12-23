@@ -17,13 +17,13 @@ export interface ActiveRoomPlayer {
 }
 
 export interface JoinRoomParams {
-  roomID: string;
+  matchID: string;
   playerID: number;
   playerName: string;
 }
 
 export interface UpdatePlayerParams {
-  roomID: string;
+  matchID: string;
   playerID: number;
   credentials: string;
   newName: string;
@@ -39,17 +39,17 @@ export class LobbyService {
   async createRoom(numPlayers: number): Promise<string> {
     const data = await this.api
       .post("create", { json: { numPlayers } })
-      .json<{ gameID: string }>();
+      .json<{ matchID: string }>();
 
-    return data.gameID;
+    return data.matchID;
   }
 
   async joinRoom({
-    roomID,
+    matchID,
     ...json
   }: JoinRoomParams): Promise<{ playerCredentials: string }> {
     const { playerCredentials } = await this.api
-      .post(roomID + "/join", {
+      .post(matchID + "/join", {
         json: json
       })
       .json<{ playerCredentials: string }>();
@@ -60,16 +60,16 @@ export class LobbyService {
   }
 
   async updatePlayer({
-    roomID,
+    matchID,
     ...json
   }: UpdatePlayerParams) : Promise<void> {
     await this.api
-    .post(roomID + "/update", {
+    .post(matchID + "/update", {
       json: json
     });
   }
 
-  async getRoomMetadata(roomID: string): Promise<RoomMetadata> {
-    return await this.api.get(roomID).json<{ players: Player[] }>();
+  async getRoomMetadata(matchID: string): Promise<RoomMetadata> {
+    return await this.api.get(matchID).json<{ players: Player[] }>();
   }
 }

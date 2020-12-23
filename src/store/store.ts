@@ -10,8 +10,8 @@ import {
 export interface StoreModel {
   nickname: string | null;
   setNickname: Action<StoreModel, string>;
-  roomID: string | null;
-  setRoomID: Action<StoreModel, string>;
+  matchID: string | null;
+  setMatchID: Action<StoreModel, string>;
   createGameRoom: Thunk<StoreModel, number, StoreInjections>;
   roomMetadata: RoomMetadata | null;
   setRoomMetadata: Action<StoreModel, RoomMetadata>;
@@ -41,13 +41,13 @@ export const store: StoreModel = {
     state.nickname = nickname;
   }),
 
-  roomID: null,
-  setRoomID: action((state, payload) => {
-    state.roomID = payload;
+  matchID: null,
+  setMatchID: action((state, payload) => {
+    state.matchID = payload;
   }),
   createGameRoom: thunk(async (actions, payload, { injections }) => {
-    const roomID = await injections.lobbyApi.createRoom(payload);
-    actions.setRoomID(roomID);
+    const matchID = await injections.lobbyApi.createRoom(payload);
+    actions.setMatchID(matchID);
   }),
 
   roomMetadata: null,

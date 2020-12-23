@@ -13,7 +13,7 @@ export const SetupNickname: React.FC<{ onSubmit?: () => void }> = ({
   const initialNickname = useStoreState((s) => s.nickname);
   const persistNickname = useStoreActions((s) => s.setNickname);
   const [nickname, setNickname] = useState(initialNickname || "");
-  const roomID = useStoreState((s) => s.roomID);
+  const matchID = useStoreState((s) => s.matchID);
   const roomMetadata = useStoreState((s) => s.roomMetadata);
   const activeRoomPlayer = useStoreState((s) => s.activeRoomPlayer);
   const loadRoomMetadata = useStoreActions((s) => s.loadRoomMetadata);
@@ -29,15 +29,15 @@ export const SetupNickname: React.FC<{ onSubmit?: () => void }> = ({
   };
 
   async function asyncUpdatePlayer() {
-    if (roomID && roomMetadata && activeRoomPlayer) {
+    if (matchID && roomMetadata && activeRoomPlayer) {
       await updatePlayer({ 
-        roomID: roomID, 
+        matchID: matchID, 
         playerID: activeRoomPlayer.playerID,
         credentials: activeRoomPlayer.credential,
         newName: nickname 
       });
 
-      await loadRoomMetadata(roomID);
+      await loadRoomMetadata(matchID);
     }
   }
 

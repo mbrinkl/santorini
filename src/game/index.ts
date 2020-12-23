@@ -249,6 +249,7 @@ function setRandomCharacters(G: GameState, ctx: Ctx) {
 }
 
 function SetChar(G: GameState, ctx: Ctx, id: string, name: string) {
+  G.players[id].ready = false;
   G.players[id].char = initCharacter(name);
 }
 

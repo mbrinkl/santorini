@@ -27,11 +27,17 @@ export const PlayerControls = () => {
   }, [counter, intervalID, State, moves, isActive]);
 
   function undoAll(numMoves) {
+
+    console.log(`undoing all: ${numMoves}`)
+
     clearInterval(intervalID.current);
     setCounter(3);
+
     while (numMoves > 0)
     {
+
       numMoves--;
+      console.log(`calling undo`);
       undo();
     }
   }

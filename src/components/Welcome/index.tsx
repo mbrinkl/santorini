@@ -32,11 +32,11 @@ export const Welcome = () => {
 
   const [redirect, setRedirect] = useState(false);
   const createGameRoom = useStoreActions((s) => s.createGameRoom);
-  const roomID = useStoreState((s) => s.roomID);
+  const matchID = useStoreState((s) => s.matchID);
   const history = useHistory();
 
   function OnCreate(numPlayers: number) {
-    if (!roomID) {
+    if (!matchID) {
       createGameRoom(numPlayers);
     }
 
@@ -48,12 +48,12 @@ export const Welcome = () => {
   }
 
   useEffect(() => {
-    if (redirect && roomID) {
+    if (redirect && matchID) {
       history.push({
-        pathname: `/rooms/${roomID}`,
+        pathname: `/rooms/${matchID}`,
       });
     }
-  }, [roomID, redirect, history]);
+  }, [matchID, redirect, history]);
 
   return (
     <LobbyPage>

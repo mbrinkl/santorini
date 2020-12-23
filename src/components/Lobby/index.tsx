@@ -18,6 +18,7 @@ const GameClient = Client({
   game: SantoriniGame,
   board: GameBoard,
   multiplayer: SocketIO({ server: SERVER_URL }),
+  debug: false // TODO: debug false only on mobile
 });
 
 export const GameLobby = () => {
@@ -100,7 +101,7 @@ export const GameLobbySetup: React.FC<{ startGame(): void }> = ({
     });
 
     if (!alreadyJoined && emptySeatID !== undefined && nickname && id) {
-      joinRoom({ playerID: emptySeatID, playerName: nickname, roomID: id });
+      joinRoom({ playerID: emptySeatID, playerName: nickname, matchID: id });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [roomMetadata]);
@@ -202,7 +203,7 @@ export const GameLobbyPlay = () => {
 
   return (
     <GameClient 
-      gameID={id}
+      matchID={id}
       playerID={String(activeRoomPlayer?.playerID)}
       credentials={activeRoomPlayer?.credential}
       debug={!isProduction}

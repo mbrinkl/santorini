@@ -85,7 +85,7 @@ export const PlayerBoard: React.FC = () => {
       }
     }
 
-    console.log(position);
+    // console.log(position);
 
     moves.SelectSpace(position);
   }

@@ -18,7 +18,7 @@ export const GameBoard: React.FC<BoardProps<GameState>> = ({
   ctx,
   playerID,
   undo,
-  gameMetadata,
+  matchData,
 }) => {
 
   return(
@@ -30,7 +30,7 @@ export const GameBoard: React.FC<BoardProps<GameState>> = ({
         isActive,
         ctx,
         undo,
-        playersInfo: gameMetadata,
+        playersInfo: matchData,
       }}
     >    
     {ctx.phase === 'selectCharacters' ? 
