@@ -18,44 +18,46 @@ const GameClient = Client({
   game: SantoriniGame,
   board: GameBoard,
   multiplayer: SocketIO({ server: SERVER_URL }),
-  debug: false // TODO: debug false only on mobile
+  debug: false, // TODO: debug false only on mobile
 });
 
 export const GameLobby = () => {
   const [isGameRunning, setGameRunning] = useState(false);
 
-  return (
-    isGameRunning ? 
-    <GameLobbyPlay /> : 
+  return isGameRunning ? (
+    <GameLobbyPlay />
+  ) : (
     <GameLobbySetup startGame={() => setGameRunning(true)} />
   );
 };
 
 //https://stackoverflow.com/questions/21741841/detecting-ios-android-operating-system
 export function getMobileOS() {
-  var userAgent = navigator.userAgent || navigator.vendor || (window as any).opera;
+  var userAgent =
+    navigator.userAgent || navigator.vendor || (window as any).opera;
 
   // Windows Phone must come first because its UA also contains "Android"
   if (/windows phone/i.test(userAgent)) {
     return "Windows Phone";
   }
-  
+
   if (/android/i.test(userAgent)) {
     return "Android";
   }
-  
+
   // iOS detection from: http://stackoverflow.com/a/9039885/177710
-  if (/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream) {
+  if (/iPad|iPhone|iPod/.test(userAgent)) {
+    // && !window.MSStream) {
     return "iOS";
   }
-  
+
   return "unknown";
 }
 
 export const GameLobbySetup: React.FC<{ startGame(): void }> = ({
   startGame,
 }) => {
-  const { id } = useParams();
+  const { id } = useParams<{ id: string }>();
   const nickname = useStoreState((s) => s.nickname);
   const roomMetadata = useStoreState((s) => s.roomMetadata);
   const loadRoomMetadata = useStoreActions((s) => s.loadRoomMetadata);
@@ -110,14 +112,12 @@ export const GameLobbySetup: React.FC<{ startGame(): void }> = ({
     <LobbyPage>
       <ButtonBack to="/" />
 
-      <div className="Lobby__title">
-        Invite
-      </div>
+      <div className="Lobby__title">Invite</div>
       <div className="Lobby__subtitle">
         Send a link to a friend to invite them to your game
       </div>
       <div className="Lobby__link">
-      <div className="Lobby__link-box">{window.location.href}</div>
+        <div className="Lobby__link-box">{window.location.href}</div>
         {supportsCopying && (
           <Tippy
             visible={tooltipVisible}
@@ -136,28 +136,29 @@ export const GameLobbySetup: React.FC<{ startGame(): void }> = ({
                 Copy
               </Button>
 
-              {os === 'iOS' || os === 'Android' ? 
-                os === 'iOS' ?
+              {os === "iOS" || os === "Android" ? (
+                os === "iOS" ? (
                   <Button
                     theme="blue"
                     onClick={() => {
-                      window.open(`sms:&body=${window.location.href}`)
+                      window.open(`sms:&body=${window.location.href}`);
                     }}
                   >
                     Share
                   </Button>
-                :
+                ) : (
                   <Button
                     theme="blue"
                     onClick={() => {
-                      window.open(`sms:?body=${window.location.href}`)
+                      window.open(`sms:?body=${window.location.href}`);
                     }}
                   >
                     Share
-                  </Button> 
-                :
+                  </Button>
+                )
+              ) : (
                 <></>
-              }
+              )}
             </div>
           </Tippy>
         )}
@@ -198,11 +199,11 @@ export const GameLobbySetup: React.FC<{ startGame(): void }> = ({
 };
 
 export const GameLobbyPlay = () => {
-  const { id } = useParams();
+  const { id } = useParams<{ id: string }>();
   const activeRoomPlayer = useStoreState((s) => s.activeRoomPlayer);
 
   return (
-    <GameClient 
+    <GameClient
       matchID={id}
       playerID={String(activeRoomPlayer?.playerID)}
       credentials={activeRoomPlayer?.credential}
