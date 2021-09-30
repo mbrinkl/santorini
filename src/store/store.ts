@@ -20,7 +20,7 @@ export interface StoreModel {
   setActiveRoomPlayer: Action<StoreModel, ActiveRoomPlayer>;
   joinRoom: Thunk<StoreModel, JoinRoomParams, StoreInjections>;
   updatePlayer: Thunk<StoreModel, UpdatePlayerParams, StoreInjections>;
-  reset: Action;
+  reset: Action<StoreModel, string>;
 }
 
 // nickname is used between games to simplify room user creation
@@ -76,5 +76,5 @@ export const store: StoreModel = {
     await injections.lobbyApi.updatePlayer(payload);
   }),
 
-  reset: action(() => initState),
+  reset: action((state, payload) => initState),
 };
