@@ -1,17 +1,17 @@
-import React from "react";
-import Slider from "react-slick"
+import React, { lazy } from "react";
+import Slider from "react-slick";
 import { Button } from "../Button";
 import { useStoreState } from "../../store";
-import { characterList } from "../../game/characters"
+import { characterList } from "../../game/characters";
 import { useBoardContext } from "../GameBoard/BoardContext";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import "./style.scss";
+import DemeterPng from "../../assets/images/*.png";
 
 export const CharacterBox: React.FC<{ name: string }> = ({ name }) => {
-    
   const { moves } = useBoardContext();
-  
+
   const activeRoomPlayer = useStoreState((s) => s.activeRoomPlayer);
   const playerID = String(activeRoomPlayer?.playerID);
 
@@ -20,30 +20,47 @@ export const CharacterBox: React.FC<{ name: string }> = ({ name }) => {
   }
 
   return (
-    <div style={{ backgroundImage: "url(" + require(`../../assets/images/${name}.png`) + ")" }} 
+    <div
+      style={{
+        backgroundImage: `url('${
+          process.env.PUBLIC_URL + `/CharacterImages/${name}.png`
+        }')`,
+      }}
       className="characterBoxSelectable"
-      onClick={select}>
+      onClick={select}
+    >
       <span>{name}</span>
     </div>
   );
-}
+};
 
-export const SelectedCharacterBox: React.FC<{ name: string, playerID: string }> = ({ name, playerID }) => {    
-  
+export const SelectedCharacterBox: React.FC<{
+  name: string;
+  playerID: string;
+}> = ({ name, playerID }) => {
   const { State } = useBoardContext();
 
   return (
-    <div style={{backgroundImage: State.players[playerID].ready ? 
-      "url(" + require('../../assets/images/check.png')  + "), url(" + require(`../../assets/images/${name}.png`) + ")" : 
-      "url(" + require(`../../assets/images/${name}.png`) + ")"}}
-      className="characterBox">
+    <div
+      style={{
+        backgroundImage: State.players[playerID].ready
+          ? "url(" +
+            process.env.PUBLIC_URL +
+            `/CharacterImages/check.png` +
+            "), url(" +
+            process.env.PUBLIC_URL +
+            `/CharacterImages/${name}.png` +
+            ")"
+          : "url(" + process.env.PUBLIC_URL + `/CharacterImages/${name}.png`,
+      }}
+      className="characterBox"
+    >
       <span>{name}</span>
     </div>
   );
-}
+};
 
 export const CharacterSelect = () => {
-
   const { State, moves } = useBoardContext();
 
   const roomMetadata = useStoreState((s) => s.roomMetadata);
@@ -52,65 +69,81 @@ export const CharacterSelect = () => {
 
   return (
     <div className="charSelect">
-        
       <h1>Select a Character</h1>
 
-      <Slider dots={false} infinite={true} speed={500} slidesToShow={3}
-        slidesToScroll={1} className="charSelect__carousel">
-
-      {characterList.map( character => 
-      <div>                
-        <CharacterBox name={character} />
-      </div>
-      )}
-
+      <Slider
+        dots={false}
+        infinite={true}
+        speed={500}
+        slidesToShow={3}
+        slidesToScroll={1}
+        className="charSelect__carousel"
+      >
+        {characterList.map((character) => (
+          <div>
+            <CharacterBox key={character} name={character} />
+          </div>
+        ))}
       </Slider>
 
       <div className="charSelect__characters">
-      {characterList.map( character => 
-        <CharacterBox name={character} />
-      )}
+        {characterList.map((character) => (
+          <CharacterBox name={character} />
+        ))}
       </div>
 
       <div className="charSelect__selectedCharDiv">
         <div className="charSelect__selectedChar">
-          <span className="charSelect__playerName">{roomMetadata?.players[0].name}</span>
-          <SelectedCharacterBox name={State.players['0'].char.name} playerID='0' />
+          <span className="charSelect__playerName">
+            {roomMetadata?.players[0].name}
+          </span>
+          <SelectedCharacterBox
+            name={State.players["0"].char.name}
+            playerID="0"
+          />
           <span>
-            {State.players['0'].char.name === "Random" ? 
-              "Random" : 
-              State.players['0'].char.desc}
+            {State.players["0"].char.name === "Random"
+              ? "Random"
+              : State.players["0"].char.desc}
           </span>
         </div>
         <div className="charSelect__selectedChar">
-          <span className="charSelect__playerName">{roomMetadata?.players[1].name}</span>
-          <SelectedCharacterBox name={State.players['1'].char.name} playerID='1' />
+          <span className="charSelect__playerName">
+            {roomMetadata?.players[1].name}
+          </span>
+          <SelectedCharacterBox
+            name={State.players["1"].char.name}
+            playerID="1"
+          />
           <span>
-            {State.players['1'].char.name === "Random" ? 
-              "Random" : 
-              State.players['1'].char.desc}
+            {State.players["1"].char.name === "Random"
+              ? "Random"
+              : State.players["1"].char.desc}
           </span>
         </div>
       </div>
 
-      {State.players[playerID].ready ?
-
-        <Button theme="red"
+      {State.players[playerID].ready ? (
+        <Button
+          theme="red"
           className="button"
-          onClick={() => {moves.CancelReady(playerID)}}
+          onClick={() => {
+            moves.CancelReady(playerID);
+          }}
         >
           Cancel
         </Button>
-
-        :
-
-        <Button theme="green"
+      ) : (
+        <Button
+          theme="green"
           className="button"
-          onClick={() => {moves.Ready(playerID)}}
+          onClick={() => {
+            moves.Ready(playerID);
+          }}
         >
           Ready
         </Button>
-      }
+      )}
     </div>
   );
-}
+};
