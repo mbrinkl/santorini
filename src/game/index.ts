@@ -1,8 +1,8 @@
-import { ActivePlayers } from 'boardgame.io/core';
+import { ActivePlayers } from "boardgame.io/core";
 import { Ctx } from "boardgame.io";
 import { GAME_ID } from "../config";
-import {Space, Board} from "./space";
-import {characterList, Worker, Character, Mortal} from "./characters";
+import { Space, Board } from "./space";
+import { characterList, Worker, Character, Mortal } from "./characters";
 import { Apollo } from "./characters/Apollo";
 import { Artemis } from "./characters/Artemis";
 import { Athena } from "./characters/Athena";
@@ -39,52 +39,101 @@ export interface GameState {
   winner: string;
 }
 
-function getCharacter(name: string) : any {
+function getCharacter(name: string): any {
   let char: any;
 
-  switch(name)
-  {
-    case "Mortal": char = Mortal; break;
-    case "Apollo": char = Apollo; break;
-    case "Artemis": char = Artemis; break;
-    case "Athena": char = Athena; break;
-    case "Atlas": char = Atlas; break;
-    case "Demeter": char = Demeter; break;
-    case "Hephaestus": char = Hephaestus; break;
-    case "Hermes": char = Hermes; break;
-    case "Minotaur": char = Minotaur; break;
-    case "Pan": char = Pan; break;
-    case "Prometheus": char = Prometheus; break;
-    case "Bia": char = Bia; break;
-    case "Triton": char = Triton; break;
-    case "Zeus": char = Zeus; break;
-    case "Graeae": char = Graeae; break;
-    case "Heracles": char = Heracles; break;
-    case "Odysseus": char = Odysseus; break;
-    case "Iris": char = Iris; break;
-    case "Pegasus": char = Pegasus; break;
-    default: char = Mortal; break;
+  switch (name) {
+    case "Mortal":
+      char = Mortal;
+      break;
+    case "Apollo":
+      char = Apollo;
+      break;
+    case "Artemis":
+      char = Artemis;
+      break;
+    case "Athena":
+      char = Athena;
+      break;
+    case "Atlas":
+      char = Atlas;
+      break;
+    case "Demeter":
+      char = Demeter;
+      break;
+    case "Hephaestus":
+      char = Hephaestus;
+      break;
+    case "Hermes":
+      char = Hermes;
+      break;
+    case "Minotaur":
+      char = Minotaur;
+      break;
+    case "Pan":
+      char = Pan;
+      break;
+    case "Prometheus":
+      char = Prometheus;
+      break;
+    case "Bia":
+      char = Bia;
+      break;
+    case "Triton":
+      char = Triton;
+      break;
+    case "Zeus":
+      char = Zeus;
+      break;
+    case "Graeae":
+      char = Graeae;
+      break;
+    case "Heracles":
+      char = Heracles;
+      break;
+    case "Odysseus":
+      char = Odysseus;
+      break;
+    case "Iris":
+      char = Iris;
+      break;
+    case "Pegasus":
+      char = Pegasus;
+      break;
+    default:
+      char = Mortal;
+      break;
   }
 
   return char;
 }
 
-
 function updateValids(G: GameState, ctx: Ctx, player: Player) {
-
   const currChar = player.char;
 
   const char: any = getCharacter(currChar.name);
 
   switch (G.stage) {
-    case 'select':
+    case "select":
       G.valids = char.validSelect(G, ctx, player, currChar);
       break;
-    case 'move':
-      G.valids = char.validMove(G, ctx, player, currChar, currChar.workers[currChar.selectedWorker].pos);
+    case "move":
+      G.valids = char.validMove(
+        G,
+        ctx,
+        player,
+        currChar,
+        currChar.workers[currChar.selectedWorker].pos
+      );
       break;
-    case 'build':
-      G.valids = char.validBuild(G, ctx, player, currChar, currChar.workers[currChar.selectedWorker].pos);
+    case "build":
+      G.valids = char.validBuild(
+        G,
+        ctx,
+        player,
+        currChar,
+        currChar.workers[currChar.selectedWorker].pos
+      );
       break;
     default:
       G.valids = [];
@@ -92,10 +141,10 @@ function updateValids(G: GameState, ctx: Ctx, player: Player) {
   }
 }
 
-function initCharacter(name: string) : Character {
+function initCharacter(name: string): Character {
   const char: any = getCharacter(name);
 
-  const character : Character = {
+  const character: Character = {
     name: name,
     desc: char.desc,
     buttonActive: char.buttonActive,
@@ -105,44 +154,42 @@ function initCharacter(name: string) : Character {
     numWorkers: char.numWorkers,
     numWorkersToPlace: char.numWorkers,
     selectedWorker: -1,
-    attrs: char.attrs
-  }
+    attrs: char.attrs,
+  };
 
   return character;
 }
-
 
 export const SantoriniGame = {
   name: GAME_ID,
 
   setup: () => {
     const players = {
-      '0': {
-        id: '0',
-        opponentId: '1',
+      "0": {
+        id: "0",
+        opponentId: "1",
         ready: false,
-        char: initCharacter("Random")
+        char: initCharacter("Random"),
       },
-      '1': {
-        id: '1',
-        opponentId: '0',
+      "1": {
+        id: "1",
+        opponentId: "0",
         ready: false,
-        char: initCharacter("Random")
-      }
+        char: initCharacter("Random"),
+      },
     };
 
-    const spaces : Space[] = [];
-    for (let i = 0; i < 25; i++)
-    {
+    const spaces: Space[] = [];
+    for (let i = 0; i < 25; i++) {
       spaces.push({
         pos: i,
         height: 0,
         inhabited: false,
         inhabitant: {
-          playerId: '',
+          playerId: "",
           workerNum: -1,
         },
-        is_domed: false
+        is_domed: false,
       });
     }
 
@@ -150,10 +197,10 @@ export const SantoriniGame = {
       players,
       spaces,
       canEndTurn: false,
-      stage: 'place',
+      stage: "place",
       ready: false,
       valids: [],
-      winner: ''
+      winner: "",
     };
 
     return initialState;
@@ -162,15 +209,15 @@ export const SantoriniGame = {
   phases: {
     selectCharacters: {
       start: true,
-      next: 'main',
+      next: "main",
       endIf: (G: GameState) => G.ready,
       turn: {
-        activePlayers: ActivePlayers.ALL
+        activePlayers: ActivePlayers.ALL,
       },
       moves: {
         SetChar,
         Ready,
-        CancelReady
+        CancelReady,
       },
     },
 
@@ -181,18 +228,19 @@ export const SantoriniGame = {
       turn: {
         activePlayers: undefined,
         order: {
-          first: (G: GameState, ctx: Ctx) => {  
-              let startingPlayer = 0;
-              if (G.players['1'].char.name === 'Bia') {
-                startingPlayer = 1;
-              }
-              return startingPlayer;
-            },
-          next: (G: GameState, ctx: Ctx) => (ctx.playOrderPos + 1) % ctx.numPlayers,
-        }
+          first: (G: GameState, ctx: Ctx) => {
+            let startingPlayer = 0;
+            if (G.players["1"].char.name === "Bia") {
+              startingPlayer = 1;
+            }
+            return startingPlayer;
+          },
+          next: (G: GameState, ctx: Ctx) =>
+            (ctx.playOrderPos + 1) % ctx.numPlayers,
+        },
       },
-      next: 'gameOver',
-      moves: { 
+      next: "gameOver",
+      moves: {
         SelectSpace,
         CharButtonPressed,
         EndTurn,
@@ -202,27 +250,27 @@ export const SantoriniGame = {
     // can potentially remove this phase when boardgame.io updates to allow rematches
     gameOver: {
       turn: {
-        activePlayers: ActivePlayers.ALL
+        activePlayers: ActivePlayers.ALL,
       },
-      moves: { 
-        Rematch
+      moves: {
+        Rematch,
       },
-    }
-  }
+    },
+  },
 };
 
 function SelectSpace(G: GameState, ctx: Ctx, pos: number) {
-  switch(G.stage) {
-    case 'place':
+  switch (G.stage) {
+    case "place":
       Place(G, ctx, pos);
       break;
-    case 'select':
+    case "select":
       Select(G, ctx, pos);
       break;
-    case 'move':
+    case "move":
       Move(G, ctx, pos);
       break;
-    case 'build':
+    case "build":
       Build(G, ctx, pos);
       break;
   }
@@ -242,7 +290,8 @@ function setRandomCharacters(G: GameState, ctx: Ctx) {
   for (let i = 0; i < ctx.numPlayers; i++) {
     const id = i.toString();
     if (G.players[id].char.name === "Random") {
-      const randomCharName = characterList[Math.floor(Math.random() * (characterList.length - 1))];
+      const randomCharName =
+        characterList[Math.floor(Math.random() * (characterList.length - 1))];
       G.players[id].char = initCharacter(randomCharName);
     }
   }
@@ -256,8 +305,7 @@ function SetChar(G: GameState, ctx: Ctx, id: string, name: string) {
 function Ready(G: GameState, ctx: Ctx, id: string) {
   G.players[id].ready = true;
 
-  if (G.players['0'].ready && G.players['1'].ready)
-    G.ready = true;
+  if (G.players["0"].ready && G.players["1"].ready) G.ready = true;
 }
 
 function CancelReady(G: GameState, ctx: Ctx, id: number) {
@@ -265,83 +313,78 @@ function CancelReady(G: GameState, ctx: Ctx, id: number) {
 }
 
 function Rematch(G: GameState, ctx: Ctx) {
-
   const players = {
-    '0': {
-      id: '0',
-      opponentId: '1',
+    "0": {
+      id: "0",
+      opponentId: "1",
       ready: false,
-      char: initCharacter("Random")
+      char: initCharacter("Random"),
     },
-    '1': {
-      id: '1',
-      opponentId: '0',
+    "1": {
+      id: "1",
+      opponentId: "0",
       ready: false,
-      char: initCharacter("Random")
-    }
+      char: initCharacter("Random"),
+    },
   };
 
-  const spaces : Space[] = [];
-  for (let i = 0; i < 25; i++)
-  {
+  const spaces: Space[] = [];
+  for (let i = 0; i < 25; i++) {
     spaces.push({
       pos: i,
       height: 0,
       inhabited: false,
       inhabitant: {
-        playerId: '',
+        playerId: "",
         workerNum: -1,
       },
-      is_domed: false
+      is_domed: false,
     });
   }
 
   G.players = players;
   G.spaces = spaces;
   G.canEndTurn = false;
-  G.stage = 'place';
+  G.stage = "place";
   G.ready = false;
   G.valids = [];
-  G.winner = '';
+  G.winner = "";
 
-  ctx.events!.setPhase!('selectCharacters');
+  ctx.events!.setPhase!("selectCharacters");
 }
 
 function Place(G: GameState, ctx: Ctx, pos: number) {
-
   const currentChar = G.players[ctx.currentPlayer].char;
 
   if (!G.spaces[pos].inhabited && currentChar.numWorkersToPlace > 0) {
-
-    const worker : Worker = {
+    const worker: Worker = {
       pos: pos,
-      height: G.spaces[pos].height
+      height: G.spaces[pos].height,
     };
 
     currentChar.workers.push(worker);
     Board.place(G, pos, ctx.currentPlayer, currentChar.workers.length - 1);
 
-    if (--currentChar.numWorkersToPlace === 0)
-    {
+    if (--currentChar.numWorkersToPlace === 0) {
       G.canEndTurn = true;
 
-      if (G.players['0'].char.numWorkersToPlace === 0 && G.players['1'].char.numWorkersToPlace === 0)
-      {
-        G.stage = 'end';
+      if (
+        G.players["0"].char.numWorkersToPlace === 0 &&
+        G.players["1"].char.numWorkersToPlace === 0
+      ) {
+        G.stage = "end";
       }
     }
   }
 }
 
 function Select(G: GameState, ctx: Ctx, pos: number) {
-  
   const currPlayer = G.players[ctx.currentPlayer];
   const currChar = currPlayer.char;
 
   const char: any = getCharacter(currChar.name);
 
-  if (G.valids.includes(pos))
-  {
+  if (G.valids.includes(pos)) {
     G.stage = char.select(G, ctx, currPlayer, currChar, pos);
     updateValids(G, ctx, currPlayer);
   }
@@ -360,30 +403,27 @@ function Move(G: GameState, ctx: Ctx, pos: number) {
     updateValids(G, ctx, currPlayer);
 
     const after_height = currChar.workers[currChar.selectedWorker].height;
-    CheckWinByMove(G, ctx, before_height, after_height)
+    CheckWinByMove(G, ctx, before_height, after_height);
   }
 }
 
 function Build(G: GameState, ctx: Ctx, pos: number) {
-
   if (G.valids.includes(pos)) {
     const currPlayer = G.players[ctx.currentPlayer];
     const currChar = currPlayer.char;
 
     const char: any = getCharacter(currChar.name);
-  
+
     G.stage = char.build(G, ctx, currPlayer, currChar, pos);
     updateValids(G, ctx, currPlayer);
-  
-    if (G.stage === 'end')
-    {
-        G.canEndTurn = true;
+
+    if (G.stage === "end") {
+      G.canEndTurn = true;
     }
   }
 }
 
 function EndTurn(G: GameState, ctx: Ctx) {
-
   // ctx.currentPlayer not updated after endturn immediately
   const currPlayer = G.players[ctx.currentPlayer];
   const nextPlayer = G.players[G.players[ctx.currentPlayer].opponentId];
@@ -398,13 +438,12 @@ function EndTurn(G: GameState, ctx: Ctx) {
   G.canEndTurn = false;
 
   // to avoid changing to select stage during the place stage at beginning of game
-  if (G.stage === 'end') {
-
-    G.stage = 'select';
+  if (G.stage === "end") {
+    G.stage = "select";
     updateValids(G, ctx, nextPlayer);
 
-    G.players['0'].char.selectedWorker = -1;
-    G.players['1'].char.selectedWorker = -1;
+    G.players["0"].char.selectedWorker = -1;
+    G.players["1"].char.selectedWorker = -1;
 
     CheckWinByTrap(G, ctx);
 
@@ -412,15 +451,13 @@ function EndTurn(G: GameState, ctx: Ctx) {
   }
 }
 
-function CheckWinByTrap(G: GameState, ctx:Ctx) {
-
+function CheckWinByTrap(G: GameState, ctx: Ctx) {
   const nextPlayer = G.players[G.players[ctx.currentPlayer].opponentId];
   const currChar = nextPlayer.char;
 
   const char: any = getCharacter(currChar.name);
 
   if (!char.hasValidMoves(G, ctx, nextPlayer, currChar)) {
-
     ctx.events!.endPhase!();
     G.winner = nextPlayer.opponentId;
 
@@ -430,15 +467,18 @@ function CheckWinByTrap(G: GameState, ctx:Ctx) {
   }
 }
 
-function CheckWinByMove(G: GameState, ctx:Ctx, heightBefore: number, heightAfter: number) {
-
+function CheckWinByMove(
+  G: GameState,
+  ctx: Ctx,
+  heightBefore: number,
+  heightAfter: number
+) {
   const currPlayer = G.players[ctx.currentPlayer];
-  const currChar = currPlayer.char
+  const currChar = currPlayer.char;
 
   const char: any = getCharacter(currChar.name);
 
   if (char.checkWinByMove(G, heightBefore, heightAfter)) {
-
     ctx.events!.endPhase!();
     G.winner = ctx.currentPlayer;
 

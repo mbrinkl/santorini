@@ -1,4 +1,4 @@
-import React, { lazy } from "react";
+import React from "react";
 import Slider from "react-slick";
 import { Button } from "../Button";
 import { useStoreState } from "../../store";
@@ -7,7 +7,6 @@ import { useBoardContext } from "../GameBoard/BoardContext";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import "./style.scss";
-import DemeterPng from "../../assets/images/*.png";
 
 export const CharacterBox: React.FC<{ name: string }> = ({ name }) => {
   const { moves } = useBoardContext();
