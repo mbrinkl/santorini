@@ -209,7 +209,10 @@ export const PlayerBoard: React.FC = () => {
           {isActive &&
             ctx.phase !== "gameOver" &&
             State.valids.map((pos) =>
-              State.stage === "select" ? (
+              State.stage === "place" ? (
+                // todo: place indicator
+                <></>
+              ) : State.stage === "select" ? (
                 <SelectIndicator
                   xPos={x_positions[pos]}
                   yPos={
