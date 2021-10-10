@@ -13,7 +13,7 @@ const server = Server({
   origins: [
     "http://santorini.herokuapp.com/",
     Origins.LOCALHOST_IN_DEVELOPMENT,
-    "http://192.168.0.133:3000",
+    "http://192.168.0.140:3000",
   ],
 });
 

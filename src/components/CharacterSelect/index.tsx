@@ -75,7 +75,7 @@ export const CharacterSelect = () => {
         infinite={true}
         speed={500}
         slidesToShow={3}
-        slidesToScroll={1}
+        swipeToSlide={true}
         className="charSelect__carousel"
       >
         {characterList.map((character) => (
