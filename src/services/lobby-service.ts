@@ -1,6 +1,6 @@
-import ky from "ky";
 import { SERVER_URL } from "../config/client";
 import { GAME_ID } from "../config";
+import { LobbyClient } from 'boardgame.io/client';
 
 export interface Player {
   id: number;
@@ -30,46 +30,50 @@ export interface UpdatePlayerParams {
 }
 
 export class LobbyService {
-  api: typeof ky;
+  lobbyClient: LobbyClient;
 
   constructor() {
-    this.api = ky.create({ prefixUrl: `${SERVER_URL}/games/${GAME_ID}` });
+    this.lobbyClient = new LobbyClient({server: SERVER_URL});
+  }
+
+  async getMatches() {
+    await this.lobbyClient.listMatches(GAME_ID);
   }
 
   async createRoom(numPlayers: number): Promise<string> {
-    const data = await this.api
-      .post("create", { json: { numPlayers } })
-      .json<{ matchID: string }>();
-
-    return data.matchID;
+    const { matchID } = await this.lobbyClient.createMatch(GAME_ID, {numPlayers: numPlayers});
+    return matchID;
   }
 
   async joinRoom({
     matchID,
     ...json
   }: JoinRoomParams): Promise<{ playerCredentials: string }> {
-    const { playerCredentials } = await this.api
-      .post(matchID + "/join", {
-        json: json
-      })
-      .json<{ playerCredentials: string }>();
+    const { playerCredentials } = await this.lobbyClient.joinMatch(
+      GAME_ID,
+      matchID,
+      {
+        playerID: String(json.playerID),
+        playerName: json.playerName,
+      }
+    );
 
-    return {
-      playerCredentials
-    };
+    return { playerCredentials };
   }
 
   async updatePlayer({
     matchID,
     ...json
   }: UpdatePlayerParams) : Promise<void> {
-    await this.api
-    .post(matchID + "/update", {
-      json: json
+
+    await this.lobbyClient.updatePlayer(GAME_ID, matchID, {
+      playerID: String(json.playerID),
+      credentials: json.credentials,
+      newName: json.newName,
     });
   }
 
   async getRoomMetadata(matchID: string): Promise<RoomMetadata> {
-    return await this.api.get(matchID).json<{ players: Player[] }>();
+    return await this.lobbyClient.getMatch(GAME_ID, matchID);
   }
 }

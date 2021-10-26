@@ -28,7 +28,6 @@
     "koa-mount": "^4.0.0",
     "koa-static": "^5.0.0",
     "koa2-connect-history-api-fallback": "^0.1.2",
-    "ky": "^0.28.5",
     "lodash": "^4.17.15",
     "node-sass": "^6.0.1",
     "normalize.css": "^8.0.1",
