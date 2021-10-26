@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useCallback } from "react";
+import React, { useState, useEffect, useRef } from "react";
 // import { Player } from "../../game";
 import { useBoardContext } from "./BoardContext";
 import classNames from "classnames";

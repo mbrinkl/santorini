@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useBoardContext } from "./BoardContext";
 import { Button } from "components/Button";
 
@@ -26,20 +26,10 @@ export const PlayerControls = () => {
     return () => clearInterval(intervalID.current);
   }, [counter, intervalID, State, moves, isActive]);
 
-  function undoAll(numMoves) {
-
-    console.log(`undoing all: ${numMoves}`)
-
+  function undoMove() {
     clearInterval(intervalID.current);
     setCounter(3);
-
-    while (numMoves > 0)
-    {
-
-      numMoves--;
-      console.log(`calling undo`);
-      undo();
-    }
+    undo();
   }
 
   function endTurn() {
@@ -86,7 +76,7 @@ export const PlayerControls = () => {
         size="small"
         className="PlayerControls__button"
         disabled={!ctx.numMoves || !isActive}
-        onClick={() => undoAll(ctx.numMoves)}
+        onClick={() => undoMove()}
       >
         Undo
       </Button>
