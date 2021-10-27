@@ -94,7 +94,10 @@ export class Odysseus extends Mortal {
     let valids : number[] = []
 
     if (char.attrs.specialActive) {
-      let adjacents : number[] = getAdjacentPositions(originalPos);
+      let adjacents : number[] = [];
+      char.workers.forEach( worker => {
+        adjacents = adjacents.concat(getAdjacentPositions(worker.pos));
+      });
       if (!char.attrs.movingOpponent) {
         G.players[player.opponentId].char.workers.forEach( worker => {
           if (adjacents.includes(worker.pos)) {
