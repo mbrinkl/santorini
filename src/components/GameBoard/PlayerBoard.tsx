@@ -105,9 +105,8 @@ export const PlayerBoard: React.FC = () => {
   return (
     <div
       className={classNames(
-        "PlayerBoard", //!!ctx.gameover ?
-        ctx.phase === "gameOver"
-          ? State.winner === playerID
+        "PlayerBoard", !!ctx.gameover ?
+          State.winner === playerID
             ? "PlayerBoard--winner"
             : "PlayerBoard--loser"
           : isActive
@@ -207,7 +206,7 @@ export const PlayerBoard: React.FC = () => {
           ))}
 
           {isActive &&
-            ctx.phase !== "gameOver" &&
+            !ctx.gameover &&
             State.valids.map((pos) =>
               State.stage === "place" ? (
                 // todo: place indicator

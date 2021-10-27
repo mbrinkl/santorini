@@ -5,6 +5,7 @@ import {
   JoinRoomParams,
   UpdatePlayerParams,
   ActiveRoomPlayer,
+  PlayAgainParams
 } from "../services/lobby-service";
 
 export interface StoreModel {
@@ -20,6 +21,7 @@ export interface StoreModel {
   setActiveRoomPlayer: Action<StoreModel, ActiveRoomPlayer>;
   joinRoom: Thunk<StoreModel, JoinRoomParams, StoreInjections>;
   updatePlayer: Thunk<StoreModel, UpdatePlayerParams, StoreInjections>;
+  playAgain: Thunk<StoreModel, PlayAgainParams, StoreInjections>;
   reset: Action<StoreModel, string>;
 }
 
@@ -74,6 +76,12 @@ export const store: StoreModel = {
 
   updatePlayer: thunk(async (actions, payload, { injections }) => {
     await injections.lobbyApi.updatePlayer(payload);
+  }),
+
+  playAgain: thunk(async (actions, payload, { injections }) => {
+    const { nextMatchID } = await injections.lobbyApi.playAgain(payload);
+    actions.setMatchID(nextMatchID);
+    console.log("next match id: ", nextMatchID);
   }),
 
   reset: action((state, payload) => initState),

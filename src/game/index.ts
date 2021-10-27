@@ -211,21 +211,10 @@ export const SantoriniGame = {
             (ctx.playOrderPos + 1) % ctx.numPlayers,
         },
       },
-      next: "gameOver",
       moves: {
         SelectSpace,
         CharButtonPressed,
         EndTurn,
-      },
-    },
-
-    // can potentially remove this phase when boardgame.io updates to allow rematches
-    gameOver: {
-      turn: {
-        activePlayers: ActivePlayers.ALL,
-      },
-      moves: {
-        Rematch,
       },
     },
   },
@@ -257,43 +246,3 @@ function CancelReady(G: GameState, ctx: Ctx, id: number) {
   G.players[id].ready = false;
 }
 
-function Rematch(G: GameState, ctx: Ctx) {
-  const players = {
-    "0": {
-      id: "0",
-      opponentId: "1",
-      ready: false,
-      char: initCharacter("Random"),
-    },
-    "1": {
-      id: "1",
-      opponentId: "0",
-      ready: false,
-      char: initCharacter("Random"),
-    },
-  };
-
-  const spaces: Space[] = [];
-  for (let i = 0; i < 25; i++) {
-    spaces.push({
-      pos: i,
-      height: 0,
-      inhabited: false,
-      inhabitant: {
-        playerId: "",
-        workerNum: -1,
-      },
-      is_domed: false,
-    });
-  }
-
-  G.players = players;
-  G.spaces = spaces;
-  G.canEndTurn = false;
-  G.stage = "place";
-  G.ready = false;
-  G.valids = [];
-  G.winner = "";
-
-  ctx.events!.setPhase!("selectCharacters");
-}

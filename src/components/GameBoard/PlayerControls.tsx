@@ -1,12 +1,27 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef} from "react";
+import { useParams } from "react-router";
 import { useBoardContext } from "./BoardContext";
 import { Button } from "components/Button";
+import { useStoreActions, useStoreState } from "../../store";
 
 export const PlayerControls = () => {
   const { playerID, State, isActive, moves, ctx, undo } = useBoardContext();
 
   const [counter, setCounter] = useState(3);
+  
   let intervalID: any = useRef(null); 
+
+  const { id } = useParams<{ id: string }>();
+  const playAgain = useStoreActions((s) => s.playAgain);
+  const activeRoomPlayer = useStoreState((s) => s.activeRoomPlayer);
+  const [redirect, setRedirect] = useState(false);
+  const matchID = useStoreState((s) => s.matchID);
+
+  useEffect(() => {
+    if (redirect && matchID && matchID !== id) {
+      window.open(`/rooms/${matchID}`, '_self');
+    }
+  }, [matchID, redirect, id]);
 
   useEffect(() => {
     intervalID.current = setInterval(() => {
@@ -38,14 +53,18 @@ export const PlayerControls = () => {
     moves.EndTurn();
   }
 
+  const rematch = () => {
+    playAgain({ matchID: id, playerID: activeRoomPlayer!.playerID, credential: activeRoomPlayer!.credential});
+    setRedirect(true);
+  }
+
   function exit() {
     window.open("/", "_self");
   }
 
   return (
-    //!!ctx.gameover ? 
-    ctx.phase === 'gameOver' ? 
-
+    !!ctx.gameover ? 
+    
       <div className="PlayerControls">
 
       <Button
@@ -61,7 +80,7 @@ export const PlayerControls = () => {
         theme="green"
         className="PlayerControls__button"
         size="small"
-        onClick={() => moves.Rematch()}
+        onClick={rematch}
       >
         Rematch
       </Button>

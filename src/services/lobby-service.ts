@@ -29,6 +29,12 @@ export interface UpdatePlayerParams {
   newName: string;
 }
 
+export interface PlayAgainParams {
+  matchID: string;
+  playerID: number;
+  credential: string;
+}
+
 export class LobbyService {
   lobbyClient: LobbyClient;
 
@@ -36,9 +42,10 @@ export class LobbyService {
     this.lobbyClient = new LobbyClient({server: SERVER_URL});
   }
 
-  async getMatches() {
-    await this.lobbyClient.listMatches(GAME_ID);
-  }
+  // TODO: to add public games
+  // async getMatches() {
+  //   await this.lobbyClient.listMatches(GAME_ID);
+  // }
 
   async createRoom(numPlayers: number): Promise<string> {
     const { matchID } = await this.lobbyClient.createMatch(GAME_ID, {numPlayers: numPlayers});
@@ -75,5 +82,14 @@ export class LobbyService {
 
   async getRoomMetadata(matchID: string): Promise<RoomMetadata> {
     return await this.lobbyClient.getMatch(GAME_ID, matchID);
+  }
+
+  async playAgain({matchID, ...json}: PlayAgainParams) {
+    const { nextMatchID } = await this.lobbyClient.playAgain(GAME_ID, matchID, {
+      playerID: String(json.playerID),
+      credentials: json.credential,
+    });
+
+    return { nextMatchID };
   }
 }

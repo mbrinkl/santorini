@@ -67,7 +67,7 @@ export const EndTurn = (G: GameState, ctx: Ctx) => {
   charCurr.onTurnEnd(G, ctx, currPlayer, currPlayer.char);
 
   // end the turn
-  ctx.events!.endTurn!(); //not null assertion
+  ctx.events!.endTurn!();
   G.canEndTurn = false;
 
   // to avoid changing to select stage during the place stage at beginning of game
@@ -96,12 +96,11 @@ function CheckWinByTrap(G: GameState, ctx: Ctx) {
   const char: any = getCharacter(currChar.name);
 
   if (!char.hasValidMoves(G, ctx, nextPlayer, currChar)) {
-    ctx.events!.endPhase!();
     G.winner = nextPlayer.opponentId;
 
-    // ctx.events!.endGame!({ // not null assertion
-    //   winner: nextPlayer.opponentId
-    // })
+    ctx.events!.endGame!({ // not null assertion
+      winner: nextPlayer.opponentId
+    })
   }
 }
 
@@ -117,12 +116,11 @@ function CheckWinByMove(
   const char: any = getCharacter(currChar.name);
 
   if (char.checkWinByMove(G, heightBefore, heightAfter)) {
-    ctx.events!.endPhase!();
     G.winner = ctx.currentPlayer;
 
-    // ctx.events!.endGame!({ // not null assertion
-    //   winner: ctx.currentPlayer
-    // })
+    ctx.events!.endGame!({ // not null assertion
+      winner: ctx.currentPlayer
+    })
   }
 }
 

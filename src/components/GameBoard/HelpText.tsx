@@ -1,4 +1,3 @@
-import React from "react";
 import { useBoardContext } from "./BoardContext";
 
 export const HelpText = () => {
@@ -11,8 +10,7 @@ export const HelpText = () => {
   return (
     <span className="PlayerBoard__hint">
       {
-      //!!ctx.gameover ?
-      ctx.phase === 'gameOver' ?
+      !!ctx.gameover ?
       (State.winner === playerID ? <span>You Win!</span> :
         <span>You Lose</span>) :
       isActive ? 

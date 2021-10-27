@@ -137,25 +137,14 @@ export const GameLobbySetup: React.FC<{ startGame(): void }> = ({
               </Button>
 
               {os === "iOS" || os === "Android" ? (
-                os === "iOS" ? (
                   <Button
                     theme="blue"
                     onClick={() => {
-                      window.open(`sms:&body=${window.location.href}`);
+                      window.open(os === 'iOS' ? `sms:&body=${window.location.href}` : `sms:?body=${window.location.href}`);
                     }}
                   >
                     Share
                   </Button>
-                ) : (
-                  <Button
-                    theme="blue"
-                    onClick={() => {
-                      window.open(`sms:?body=${window.location.href}`);
-                    }}
-                  >
-                    Share
-                  </Button>
-                )
               ) : (
                 <></>
               )}
