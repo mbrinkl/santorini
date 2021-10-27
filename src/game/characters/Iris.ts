@@ -1,4 +1,5 @@
-import { Mortal, Character } from '.'
+import { Character } from ".";
+import { Mortal } from "./Mortal";
 import { getAdjacentPositions, getNextPosition } from '../utility'
 import { GameState, Player } from '../index'
 import { Ctx } from 'boardgame.io';

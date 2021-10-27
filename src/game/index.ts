@@ -4,25 +4,8 @@ import { GAME_ID } from "../config";
 import { Space } from "./space";
 import { SelectSpace, EndTurn, CharButtonPressed } from "./moves";
 import { allSpaces } from "./utility";
-import { characterList, Character, Mortal } from "./characters";
-import { Apollo } from "./characters/Apollo";
-import { Artemis } from "./characters/Artemis";
-import { Athena } from "./characters/Athena";
-import { Atlas } from "./characters/Atlas";
-import { Demeter } from "./characters/Demeter";
-import { Hephaestus } from "./characters/Hephaestus";
-import { Hermes } from "./characters/Hermes";
-import { Minotaur } from "./characters/Minotaur";
-import { Pan } from "./characters/Pan";
-import { Prometheus } from "./characters/Prometheus";
-import { Bia } from "./characters/Bia";
-import { Triton } from "./characters/Triton";
-import { Zeus } from "./characters/Zeus";
-import { Graeae } from "./characters/Graeae";
-import { Heracles } from "./characters/Heracles";
-import { Odysseus } from "./characters/Odysseus";
-import { Iris } from "./characters/Iris";
-import { Pegasus } from "./characters/Pegasus";
+import { characterList, Character, getCharacter } from "./characters";
+import { SetChar, Ready, CancelReady } from "./moves/charSelectMoves";
 
 export interface Player {
   id: string;
@@ -40,76 +23,7 @@ export interface GameState {
   valids: number[];
 }
 
-export function getCharacter(name: string): any {
-  let char: any;
-
-  switch (name) {
-    case "Mortal":
-      char = Mortal;
-      break;
-    case "Apollo":
-      char = Apollo;
-      break;
-    case "Artemis":
-      char = Artemis;
-      break;
-    case "Athena":
-      char = Athena;
-      break;
-    case "Atlas":
-      char = Atlas;
-      break;
-    case "Demeter":
-      char = Demeter;
-      break;
-    case "Hephaestus":
-      char = Hephaestus;
-      break;
-    case "Hermes":
-      char = Hermes;
-      break;
-    case "Minotaur":
-      char = Minotaur;
-      break;
-    case "Pan":
-      char = Pan;
-      break;
-    case "Prometheus":
-      char = Prometheus;
-      break;
-    case "Bia":
-      char = Bia;
-      break;
-    case "Triton":
-      char = Triton;
-      break;
-    case "Zeus":
-      char = Zeus;
-      break;
-    case "Graeae":
-      char = Graeae;
-      break;
-    case "Heracles":
-      char = Heracles;
-      break;
-    case "Odysseus":
-      char = Odysseus;
-      break;
-    case "Iris":
-      char = Iris;
-      break;
-    case "Pegasus":
-      char = Pegasus;
-      break;
-    default:
-      char = Mortal;
-      break;
-  }
-
-  return char;
-}
-
-function initCharacter(name: string): Character {
+export function initCharacter(name: string): Character {
   const char: any = getCharacter(name);
 
   const character: Character = {
@@ -126,6 +40,17 @@ function initCharacter(name: string): Character {
   };
 
   return character;
+}
+
+function setRandomCharacters(G: GameState, ctx: Ctx) {
+  for (let i = 0; i < ctx.numPlayers; i++) {
+    const id = i.toString();
+    if (G.players[id].char.name === "Random") {
+      const randomCharName =
+        characterList[Math.floor(Math.random() * (characterList.length - 1))];
+      G.players[id].char = initCharacter(randomCharName);
+    }
+  }
 }
 
 export const SantoriniGame = {
@@ -217,30 +142,3 @@ export const SantoriniGame = {
     },
   },
 };
-
-function setRandomCharacters(G: GameState, ctx: Ctx) {
-  for (let i = 0; i < ctx.numPlayers; i++) {
-    const id = i.toString();
-    if (G.players[id].char.name === "Random") {
-      const randomCharName =
-        characterList[Math.floor(Math.random() * (characterList.length - 1))];
-      G.players[id].char = initCharacter(randomCharName);
-    }
-  }
-}
-
-function SetChar(G: GameState, ctx: Ctx, id: string, name: string) {
-  G.players[id].ready = false;
-  G.players[id].char = initCharacter(name);
-}
-
-function Ready(G: GameState, ctx: Ctx, id: string) {
-  G.players[id].ready = true;
-
-  if (G.players["0"].ready && G.players["1"].ready) G.ready = true;
-}
-
-function CancelReady(G: GameState, ctx: Ctx, id: number) {
-  G.players[id].ready = false;
-}
-

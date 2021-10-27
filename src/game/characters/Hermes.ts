@@ -1,7 +1,8 @@
 import { union } from "lodash"
 import { Ctx } from "boardgame.io";
 import { getAdjacentPositions } from '../utility'
-import { Mortal, Character } from '.'
+import { Character } from ".";
+import { Mortal } from "./Mortal";
 import { GameState, Player } from '../index'
 import { Board } from '../space'
 

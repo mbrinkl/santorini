@@ -8,11 +8,11 @@ import { SantoriniGame } from "../../game";
 import { useStoreActions, useStoreState } from "../../store";
 import { GameBoard } from "../GameBoard";
 import { ButtonBack } from "../ButtonBack";
-import "./style.scss";
 import { LobbyPage } from "components/LobbyPage";
 import { Button } from "components/Button";
 import Tippy from "@tippyjs/react";
 import "tippy.js/dist/tippy.css"; // optional
+import "./style.scss";
 
 const GameClient = Client({
   game: SantoriniGame,

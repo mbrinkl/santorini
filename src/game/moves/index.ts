@@ -1,8 +1,8 @@
 import { INVALID_MOVE } from "boardgame.io/core";
 import { Ctx } from "boardgame.io";
-import { GameState, Player, getCharacter } from "./index";
-import { Worker } from "./characters";
-import { Board } from "./space";
+import { GameState, Player } from "../index";
+import { Worker, getCharacter } from "../characters";
+import { Board } from "../space";
 
 function updateValids(G: GameState, ctx: Ctx, player: Player) {
   const currChar = player.char;
