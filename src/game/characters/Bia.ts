@@ -34,8 +34,9 @@ export class Bia extends Mortal {
 
               // check if no workers left and end game if none
               if (G.players[player.opponentId].char.workers.length === 0) {
-                ctx.events!.endPhase!();
-                G.winner = player.id;
+                ctx.events!.endGame!({
+                  winner: player.id
+                })
               }
               // otherwise, check to make sure values referring to the worker array are still correct
               else {

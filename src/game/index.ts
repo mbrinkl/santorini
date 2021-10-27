@@ -38,7 +38,6 @@ export interface GameState {
   spaces: Space[];
   players: { [key: string]: Player };
   valids: number[];
-  winner: string;
 }
 
 export function getCharacter(name: string): any {
@@ -169,7 +168,6 @@ export const SantoriniGame = {
       stage: "place",
       ready: false,
       valids: allSpaces(),
-      winner: "",
     };
 
     return initialState;

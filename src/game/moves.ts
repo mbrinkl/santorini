@@ -96,9 +96,7 @@ function CheckWinByTrap(G: GameState, ctx: Ctx) {
   const char: any = getCharacter(currChar.name);
 
   if (!char.hasValidMoves(G, ctx, nextPlayer, currChar)) {
-    G.winner = nextPlayer.opponentId;
-
-    ctx.events!.endGame!({ // not null assertion
+    ctx.events!.endGame!({
       winner: nextPlayer.opponentId
     })
   }
@@ -116,9 +114,7 @@ function CheckWinByMove(
   const char: any = getCharacter(currChar.name);
 
   if (char.checkWinByMove(G, heightBefore, heightAfter)) {
-    G.winner = ctx.currentPlayer;
-
-    ctx.events!.endGame!({ // not null assertion
+    ctx.events!.endGame!({
       winner: ctx.currentPlayer
     })
   }

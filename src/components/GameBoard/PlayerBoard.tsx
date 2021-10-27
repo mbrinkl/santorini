@@ -107,7 +107,7 @@ export const PlayerBoard: React.FC = () => {
     <div
       className={classNames(
         "PlayerBoard", !!ctx.gameover ?
-          State.winner === playerID
+          ctx.gameover.winner === playerID
             ? "PlayerBoard--winner"
             : "PlayerBoard--loser"
           : isActive
