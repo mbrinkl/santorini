@@ -18,7 +18,7 @@ const GameClient = Client({
   game: SantoriniGame,
   board: GameBoard,
   multiplayer: SocketIO({ server: SERVER_URL }),
-  debug: false, // TODO: debug false only on mobile
+  debug: !isProduction && getMobileOS() === "unknown",
 });
 
 export const GameLobby = () => {
