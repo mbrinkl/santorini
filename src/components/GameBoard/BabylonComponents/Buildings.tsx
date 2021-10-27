@@ -37,11 +37,14 @@ export const BuildingTop: React.FC<{ xPos: number, zPos: number }> = ({ xPos, zP
     );
 };
 
-export const Dome: React.FC<{ xPos: number, yPos: number, zPos: number }> = ({ xPos, yPos, zPos }) => {
+export const Dome: React.FC<{ xPos: number, zPos: number, height: number }> = ({ xPos, zPos, height }) => {
+
+    const yPosHeightMap = [0, 3, 5, 7, 7];
+    console.log('setting dome height: ', yPosHeightMap[height], height)
 
     return (
         <sphere name="dome" diameter={3} segments={16} slice={0.5}
-        position={new Vector3(xPos, yPos, zPos)}>
+        position={new Vector3(xPos, yPosHeightMap[height], zPos)}>
 
         <standardMaterial name="mat" diffuseColor={Color3.Blue()} />
 

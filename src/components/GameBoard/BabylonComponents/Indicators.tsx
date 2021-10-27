@@ -24,7 +24,7 @@ export const MoveIndicator: React.FC<{ xPos: number, yPos: number, zPos: number,
     const y = 0.1;
 
     return (
-        <ribbon name="buildIndicator"
+        <ribbon name="moveIndicator"
             position={new Vector3(xPos, yPos, zPos)} rotation={new Vector3(0, rot, 0)}
             pathArray={[[new Vector3(1, y, 0), new Vector3(0, y, 1), new Vector3(-1, y, 0), new Vector3(0, y, -1), new Vector3(1, y, 0)], 
             [new Vector3(2, y, 0), new Vector3(0, y, 2), new Vector3(-2, y, 0), new Vector3(0, y, -2), new Vector3(2, y, 0)]]}>
@@ -36,7 +36,7 @@ export const MoveIndicator: React.FC<{ xPos: number, yPos: number, zPos: number,
 export const BuildIndicator: React.FC<{ xPos: number, yPos: number, zPos: number }> = ({ xPos, yPos, zPos }) => {
 
     return (
-        <box name="moveIndicator" position={new Vector3(xPos, yPos - 1, zPos)} 
+        <box name="buildIndicator" position={new Vector3(xPos, yPos - 1, zPos)} 
             height={0.5} width={5} depth={5}>
             <standardMaterial name="mat" alpha={0.5} diffuseColor={Color3.Blue()}  />
         </box>
