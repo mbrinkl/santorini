@@ -42,18 +42,15 @@ export const SelectedCharacterBox: React.FC<{
   return (
     <div
       style={{
-        backgroundImage: State.players[playerID].ready
-          ? "url(" +
-            process.env.PUBLIC_URL +
-            `/CharacterImages/check.png` +
-            "), url(" +
-            process.env.PUBLIC_URL +
-            `/CharacterImages/${name}.png` +
-            ")"
-          : "url(" + process.env.PUBLIC_URL + `/CharacterImages/${name}.png`,
+        backgroundImage: `url('${
+          process.env.PUBLIC_URL + `/CharacterImages/${name}.png`
+        }')`,
       }}
       className="characterBox"
     >
+      {State.players[playerID].ready &&
+        <img className="characterBoxCheck" alt="ready"
+          src={process.env.PUBLIC_URL + "/CharacterImages/check.png"} />}
       <span>{name}</span>
     </div>
   );

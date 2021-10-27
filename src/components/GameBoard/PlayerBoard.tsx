@@ -50,18 +50,6 @@ export const PlayerBoard: React.FC = () => {
 
     moves.SelectSpace(position);
   }
-
-  const animate = (time: number) => {
-    if (previousTimeRef.current !== undefined) {
-      const velocity = 0.03;
-      setIndicatorPos(
-        (prevCount) => prevCount + velocity * direction.current
-      );
-      setIndicatorRot((prevCount) => (prevCount + velocity) % (2 * Math.PI));
-    }
-    previousTimeRef.current = time;
-    requestRef.current = requestAnimationFrame(animate);
-  };
   
   useEffect(() => {
     let xPos : number[] = [];
@@ -98,6 +86,18 @@ export const PlayerBoard: React.FC = () => {
     } else if (indicatorPos < 1) {
       direction.current = 1;
     }
+
+    const animate = (time: number) => {
+      if (previousTimeRef.current !== undefined) {
+        const velocity = 0.03;
+        setIndicatorPos(
+          (prevCount) => prevCount + velocity * direction.current
+        );
+        setIndicatorRot((prevCount) => (prevCount + velocity) % (2 * Math.PI));
+      }
+      previousTimeRef.current = time;
+      requestRef.current = requestAnimationFrame(animate);
+    };
 
     requestRef.current = requestAnimationFrame(animate);
     return () => cancelAnimationFrame(requestRef.current);
