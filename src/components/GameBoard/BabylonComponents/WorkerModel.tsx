@@ -1,18 +1,18 @@
-import {Vector3, Color3} from '@babylonjs/core';
 
-export const WorkerModel: React.FC<{ xPos: number, zPos: number, height: number, color: Color3 }> = ({ xPos, zPos, height, color }) => {
+import { Sphere } from "@react-three/drei";
+
+export const WorkerModel: React.FC<{ xPos: number, zPos: number, height: number, color: string }> = ({ xPos, zPos, height, color }) => {
 
   const yPosHeightMap = [1, 4, 6, 8];
 
   return (
-    <sphere
+    <Sphere
+      args={[1, 16]}
       name={`workerModel${xPos}${zPos}`}
-      diameter={2}
-      segments={16}
-      position={new Vector3(xPos, yPosHeightMap[height], zPos)}
+      position={[xPos, yPosHeightMap[height], zPos]}
     >
-      <standardMaterial name="mat" diffuseColor={color} />
-    </sphere>
+      <meshStandardMaterial name="mat" color={color} />
+    </Sphere>
 
   );
 };
