@@ -1,19 +1,14 @@
-import React, { useState, useEffect, useRef, useMemo } from "react";
+import React, { useState, useEffect } from "react";
 import { useBoardContext, BoardContext } from "./BoardContext";
 import classNames from "classnames";
-// import { Engine, Scene } from "react-babylonjs";
-// import { Vector3, Color3, Color4, AbstractMesh } from "@babylonjs/core";
 import { HelpText } from "./HelpText";
-import { Ground } from "./BabylonComponents/Ground";
-import { BuildingBase, BuildingMid, BuildingTop, Dome } from "./BabylonComponents/Buildings";
-import { SelectIndicator, MoveIndicator, BuildIndicator } from "./BabylonComponents/Indicators";
-import { WorkerModel } from "./BabylonComponents/WorkerModel";
-import { Canvas, useFrame, } from '@react-three/fiber'
-import { OrbitControls, Box, Sky, Plane, useContextBridge } from '@react-three/drei';
-import { WebGLCubeRenderTarget, RGBAFormat, Euler } from 'three';
-import { Scene } from "./Scene";
+import { Canvas } from '@react-three/fiber'
+import { useContextBridge } from '@react-three/drei';
+import { Scene } from "./Three/Scene";
 
 export const PlayerBoard: React.FC = () => {
+
+  const { isActive, ctx, playerID } = useBoardContext();
 
   const GROUND_SIZE = 5;
   const GROUND_PADDING = 0.5;
@@ -39,13 +34,26 @@ export const PlayerBoard: React.FC = () => {
   }, []);
 
   return (
+    <div
+    className={classNames(
+      "PlayerBoard", !!ctx.gameover ?
+        ctx.gameover.winner === playerID
+          ? "PlayerBoard--winner"
+          : "PlayerBoard--loser"
+        : isActive
+        ? "PlayerBoard--active"
+        : "PlayerBoard--waiting"
+    )}>
+      
+    <HelpText />
+
     <div id='canvas'>
-      <HelpText />
       <Canvas>
         <ContextBridge>
           <Scene xPositions={xPositions} zPositions={zPositions}/>
         </ContextBridge>
       </Canvas>
+    </div>
     </div>
   );
 };
