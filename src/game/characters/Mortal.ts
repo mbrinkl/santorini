@@ -161,7 +161,9 @@ export class Mortal {
     ctx: Ctx,
     player: Player,
     char: Character
-  ): void {}
+  ): string {
+    return ctx.activePlayers![ctx.currentPlayer];
+  }
 
   public static checkWinByMove(
     G: GameState,

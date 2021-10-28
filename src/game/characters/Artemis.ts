@@ -81,8 +81,8 @@ export class Artemis extends Mortal {
     ctx: Ctx,
     player: Player,
     char: Character
-  ) : void {
-    G.stage = 'build';
+  ) : string {
     char.buttonActive = false;
+    return 'build';
   }
 }

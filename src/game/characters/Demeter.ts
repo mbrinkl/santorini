@@ -24,14 +24,14 @@ export class Demeter extends Mortal {
     ctx: Ctx,
     player: Player,
     char: Character
-  ) : void {
+  ) : string {
     // reset stuff
     char.attrs.numBuilds = 0;
     char.buttonActive = false;
   
     // set game stage
-    G.stage = 'end';
     G.canEndTurn = true;
+    return 'end';
   }
 
 

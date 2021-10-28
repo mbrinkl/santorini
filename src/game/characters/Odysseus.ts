@@ -67,7 +67,7 @@ export class Odysseus extends Mortal {
     ctx: Ctx,
     player: Player,
     char: Character
-  ) : void {
+  ) : string {
     char.attrs.specialActive = !char.attrs.specialActive;
 
     if (char.attrs.specialUsed) {
@@ -81,6 +81,8 @@ export class Odysseus extends Mortal {
     else {
       char.buttonText = 'Move Opponent';
     }
+
+    return super.buttonPressed(G, ctx, player, char);
   }
 
     

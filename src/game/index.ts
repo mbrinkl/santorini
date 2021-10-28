@@ -2,7 +2,7 @@ import { ActivePlayers } from "boardgame.io/core";
 import { Ctx } from "boardgame.io";
 import { GAME_ID } from "../config";
 import { Space } from "./space";
-import { SelectSpace, EndTurn, CharButtonPressed } from "./moves";
+import { EndTurn, CharButtonPressed, Move, Select, Build, Place } from "./moves";
 import { allSpaces } from "./utility";
 import { characterList, Character, getCharacter } from "./characters";
 import { SetChar, Ready, CancelReady } from "./moves/charSelectMoves";
@@ -102,7 +102,7 @@ export const SantoriniGame = {
     // Select character screen
     selectCharacters: {
       start: true,
-      next: "main",
+      next: 'placePhase',
       endIf: (G: GameState) => G.ready,
       turn: {
         activePlayers: ActivePlayers.ALL,
@@ -114,14 +114,10 @@ export const SantoriniGame = {
       },
     },
 
-    // Playing the game
-    main: {
-      onBegin: (G: GameState, ctx: Ctx) => {
-        // If a player selected "Random" as their character, pick that random character now
-        setRandomCharacters(G, ctx);
-      },
+    placePhase: {
+      next: 'main',
       turn: {
-        activePlayers: undefined,
+        activePlayers: { currentPlayer: 'place' },
         order: {
           first: (G: GameState, ctx: Ctx) => {
             let startingPlayer = 0;
@@ -133,11 +129,38 @@ export const SantoriniGame = {
           next: (G: GameState, ctx: Ctx) =>
             (ctx.playOrderPos + 1) % ctx.numPlayers,
         },
+        stages: {
+          place: {moves: {Place, EndTurn}},
+          end: {moves: {EndTurn}}
+        },
       },
-      moves: {
-        SelectSpace,
-        CharButtonPressed,
-        EndTurn,
+    },
+
+    // Playing the game
+    main: {
+      onBegin: (G: GameState, ctx: Ctx) => {
+        // If a player selected "Random" as their character, pick that random character now
+        setRandomCharacters(G, ctx);
+      },
+      turn: {
+        activePlayers: { currentPlayer: 'select' },
+        order: {
+          first: (G: GameState, ctx: Ctx) => {
+            let startingPlayer = 0;
+            if (G.players["1"].char.name === "Bia") {
+              startingPlayer = 1;
+            }
+            return startingPlayer;
+          },
+          next: (G: GameState, ctx: Ctx) =>
+            (ctx.playOrderPos + 1) % ctx.numPlayers,
+        },
+        stages: {
+          select: { moves: { Select, CharButtonPressed } },
+          move: { moves: { Move, CharButtonPressed } },
+          build: { moves: { Build, CharButtonPressed } },
+          end: { moves: { EndTurn } },
+        },
       },
     },
   },

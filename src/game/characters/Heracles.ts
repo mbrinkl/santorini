@@ -28,7 +28,7 @@ export class Heracles extends Mortal {
     ctx: Ctx,
     player: Player,
     char: Character
-  ) : void {
+  ) : string {
     char.attrs.specialActive = !char.attrs.specialActive;
     
     if (char.attrs.specialUsed) {
@@ -38,8 +38,8 @@ export class Heracles extends Mortal {
       char.buttonText = 'Build Domes';
 
       //set game stage
-      G.stage = 'end'
       G.canEndTurn = true;
+      return 'end';
     }
     else if (char.attrs.specialActive) {
       char.buttonText = 'Cancel';
@@ -47,6 +47,8 @@ export class Heracles extends Mortal {
     else {
       char.buttonText = 'Build Domes';
     }
+
+    return super.buttonPressed(G, ctx, player, char);
   }
 
   public static move (

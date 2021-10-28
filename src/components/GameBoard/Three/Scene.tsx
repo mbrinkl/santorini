@@ -1,18 +1,16 @@
-import React, { useState, useEffect, useRef, useMemo, useCallback } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import { useBoardContext } from "../BoardContext";
-import classNames from "classnames";
-import { HelpText } from "../HelpText";
 import { Ground } from "./Ground";
 import { BuildingBase, BuildingMid, BuildingTop, Dome } from "./Buildings";
-import { SelectIndicator, MoveIndicator, BuildIndicator } from "./Indicators";
+//import { SelectIndicator, MoveIndicator, BuildIndicator } from "./Indicators";
 import { WorkerModel } from "./WorkerModel";
-import { Canvas, useFrame, } from '@react-three/fiber'
-import { OrbitControls, Box, Sky, Plane, CycleRaycast } from '@react-three/drei';
-import { WebGLCubeRenderTarget, RGBAFormat, Euler, Raycaster } from 'three';
+import { ThreeEvent, useFrame, } from '@react-three/fiber'
+import { OrbitControls } from '@react-three/drei';
+import { WebGLCubeRenderTarget, RGBAFormat } from 'three';
 
 export const Scene: React.FC<{ xPositions: number[], zPositions: number[] }> = ({ xPositions, zPositions }) => {
 
-  const { State, moves} = useBoardContext();
+  const { State, ctx, moves} = useBoardContext();
 
   const [ground, setGround] = useState<JSX.Element[]>([]);
   const [buildingsLevel1, setBuildingsLevel1] = useState<JSX.Element[]>([]);
@@ -38,27 +36,47 @@ export const Scene: React.FC<{ xPositions: number[], zPositions: number[] }> = (
     setBuildingsLevel1(b1);
     setBuildingsLevel2(b2);
     setBuildingsLevel3(b3);
-  }, []);
+  }, [xPositions, zPositions]);
 
-  const onMeshClicked = useCallback((e) => {
 
-    let position = -1;
+  const onMeshClicked = useCallback((e: ThreeEvent<PointerEvent>) => {
+
+    e.stopPropagation();
+
+    const phase = ctx.phase;
+    const stage = (ctx.activePlayers && ctx.activePlayers[ctx.currentPlayer]) || null;
+    let pos = -1;
 
     for (let i = 0; i < 25; i++) {
       if (
-        xPositions[i] === e.position.x &&
-        zPositions[i] === e.position.z
+        xPositions[i] === e.object.position.x &&
+        zPositions[i] === e.object.position.z
       ) {
-        position = i;
+        pos = i;
         break;
       }
     }
 
-    console.log(position, State.stage);
+    if (State.valids.includes(pos)) {
+      if (phase === 'placePhase') {
+        moves.Place(pos);
+      }
+      else {
+        switch (stage) {
+          case "select":
+            moves.Select(pos);
+            break;
+          case "move":
+            moves.Move(pos);
+            break;
+          case "build":
+            moves.Build(pos);
+            break;
+        }
+      }
+    }
 
-    moves.SelectSpace(position);
-
-  }, [State]);
+  }, [State, ctx, moves, xPositions, zPositions]);
 
   useFrame(({ gl, scene }) => {
     cubeCamera.current.update(gl, scene)
@@ -69,7 +87,7 @@ export const Scene: React.FC<{ xPositions: number[], zPositions: number[] }> = (
       <cubeCamera name="cubeCamera" ref={cubeCamera} position={[0, 0, 0]} args={[0.1, 100, renderTarget]} />
       <ambientLight />
 
-      <group onPointerDown={(e) => (e.stopPropagation(), onMeshClicked(e.object))}>
+      <group onPointerDown={onMeshClicked}>
 
       {ground}
       {State.players["0"].char.workers.map((worker) => (

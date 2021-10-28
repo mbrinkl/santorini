@@ -32,9 +32,10 @@ export class Atlas extends Mortal {
     ctx: Ctx,
     player: Player,
     char: Character
-  ) : void {
+  ) : string {
     char.attrs.specialActive = !char.attrs.specialActive;
     char.buttonText = char.attrs.specialActive ?  'Cancel' : 'Build Dome';
+    return super.buttonPressed(G, ctx, player, char);
   }
 
   public static build (
