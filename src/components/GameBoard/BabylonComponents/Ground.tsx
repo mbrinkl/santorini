@@ -1,17 +1,15 @@
 import React from "react";
-import {Vector3, Color3} from '@babylonjs/core';
+import { Plane } from '@react-three/drei';
+import {Euler} from 'three';
 
-export const Ground: React.FC<{ xPos: number, zPos: number }> = ({ xPos, zPos }) => {
+export const Ground: React.FC<{ xPos: number, zPos: number, callback }> = ({ xPos, zPos, callback }) => {
 
-    const GROUND_SIZE = 5;
+  const GROUND_SIZE = 5;
 
-    return (
-        <ground name={"ground_" + (xPos + zPos)}
-        width={GROUND_SIZE} height={GROUND_SIZE} subdivisions={2}
-        position={new Vector3(xPos, 0, zPos)}>
-        
-            <standardMaterial name="ground_mat" diffuseColor={Color3.Green()} specularColor={Color3.Black()} />
-
-        </ground>
-    );
+  return <Plane args={[GROUND_SIZE, GROUND_SIZE]} 
+    position={[xPos, 0, zPos]} 
+    onClick={() => callback(xPos, zPos)}
+    rotation={new Euler( 3 * Math.PI / 2, 0, 0, 'XYZ' )}>
+    <meshStandardMaterial color="green" />
+  </Plane>
 };
