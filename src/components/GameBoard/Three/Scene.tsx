@@ -2,15 +2,15 @@ import React, { useState, useEffect, useRef, useCallback } from "react";
 import { useBoardContext } from "../BoardContext";
 import { Ground } from "./Ground";
 import { BuildingBase, BuildingMid, BuildingTop, Dome } from "./Buildings";
-//import { SelectIndicator, MoveIndicator, BuildIndicator } from "./Indicators";
+import { PlaceIndicator, SelectIndicator, MoveIndicator, BuildIndicator } from "./Indicators";
 import { WorkerModel } from "./WorkerModel";
 import { ThreeEvent, useFrame, } from '@react-three/fiber'
-import { OrbitControls } from '@react-three/drei';
-import { WebGLCubeRenderTarget, RGBAFormat } from 'three';
+import { OrbitControls, Sky } from '@react-three/drei';
+import { WebGLCubeRenderTarget, RGBAFormat, Color } from 'three';
 
 export const Scene: React.FC<{ xPositions: number[], zPositions: number[] }> = ({ xPositions, zPositions }) => {
 
-  const { State, ctx, moves} = useBoardContext();
+  const { State, ctx, moves, isActive } = useBoardContext();
 
   const [ground, setGround] = useState<JSX.Element[]>([]);
   const [buildingsLevel1, setBuildingsLevel1] = useState<JSX.Element[]>([]);
@@ -84,8 +84,9 @@ export const Scene: React.FC<{ xPositions: number[], zPositions: number[] }> = (
 
   return (
     <>
-      <cubeCamera name="cubeCamera" ref={cubeCamera} position={[0, 0, 0]} args={[0.1, 100, renderTarget]} />
-      <ambientLight />
+      <cubeCamera name="cubeCamera" ref={cubeCamera} position={[0, 0, 0]} args={[20, 50, renderTarget]} />
+      <hemisphereLight args={['gray', 'black', 0.7]}  />
+      <directionalLight args={['white', 0.7]} position={[0, 10, 0]}/>
 
       <group onPointerDown={onMeshClicked}>
 
@@ -94,7 +95,7 @@ export const Scene: React.FC<{ xPositions: number[], zPositions: number[] }> = (
         <WorkerModel xPos={xPositions[worker.pos]}
           zPos={zPositions[worker.pos]}
           height={worker.height}
-          color={'red'}
+          color={'dodgerblue'}
         />
       ))}
 
@@ -121,9 +122,27 @@ export const Scene: React.FC<{ xPositions: number[], zPositions: number[] }> = (
         </>
       ))}
 
+      {isActive &&
+        !ctx.gameover &&
+        State.valids.map((pos) =>
+          (ctx.activePlayers && ctx.activePlayers[ctx.currentPlayer]) === "place" ? (
+            <PlaceIndicator xPos={xPositions[pos]} height={State.spaces[pos].height} zPos={zPositions[pos]} />
+          ) : (ctx.activePlayers && ctx.activePlayers[ctx.currentPlayer]) === "select" ? (
+            <SelectIndicator xPos={xPositions[pos]} height={State.spaces[pos].height} zPos={zPositions[pos]} />
+          ) : (ctx.activePlayers && ctx.activePlayers[ctx.currentPlayer]) === "move" ? (
+            <MoveIndicator xPos={xPositions[pos]} height={State.spaces[pos].height} zPos={zPositions[pos]} />
+          ) : (ctx.activePlayers && ctx.activePlayers[ctx.currentPlayer]) === "build" ? (
+            <BuildIndicator xPos={xPositions[pos]} height={State.spaces[pos].height} zPos={zPositions[pos]} />
+          ) : (
+            // todo: special move indicator
+            <></>
+          )
+        )
+      }
+
       </group>
 
-      <OrbitControls enablePan={false} minDistance={35} maxDistance={35} minPolarAngle={Math.PI / 8} maxPolarAngle={Math.PI / 3} />
+      <OrbitControls enablePan={false} minDistance={30} maxDistance={30} minPolarAngle={0} maxPolarAngle={Math.PI / 3} />
     </>
   );
 }

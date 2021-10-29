@@ -11,7 +11,7 @@ export const WorkerModel: React.FC<{ xPos: number, zPos: number, height: number,
       name={`workerModel${xPos}${zPos}`}
       position={[xPos, yPosHeightMap[height], zPos]}
     >
-      <meshStandardMaterial name="mat" color={color} />
+      <meshStandardMaterial name="mat" color={color} roughness={0.25}/>
     </Sphere>
 
   );

@@ -14,7 +14,7 @@ export const BuildingMid: React.FC<{ xPos: number, zPos: number }> = ({ xPos, zP
     return <Box name={`buildingMid${xPos}${zPos}`} 
         args={[4, 2, 4]} 
         position={[xPos, 4, zPos]} >
-        <meshStandardMaterial color='purple' />
+        <meshStandardMaterial color='white' />
     </Box>
 };
 
