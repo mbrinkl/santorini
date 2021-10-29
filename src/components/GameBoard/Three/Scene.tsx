@@ -5,8 +5,8 @@ import { BuildingBase, BuildingMid, BuildingTop, Dome } from "./Buildings";
 import { PlaceIndicator, SelectIndicator, MoveIndicator, BuildIndicator } from "./Indicators";
 import { WorkerModel } from "./WorkerModel";
 import { ThreeEvent, useFrame, } from '@react-three/fiber'
-import { OrbitControls, Sky } from '@react-three/drei';
-import { WebGLCubeRenderTarget, RGBAFormat, Color } from 'three';
+import { OrbitControls } from '@react-three/drei';
+import { WebGLCubeRenderTarget, RGBAFormat } from 'three';
 
 export const Scene: React.FC<{ xPositions: number[], zPositions: number[] }> = ({ xPositions, zPositions }) => {
 

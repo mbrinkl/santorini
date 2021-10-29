@@ -9,6 +9,7 @@ import { CharacterSelect } from "../CharacterSelect";
 import { PlayerInfo } from "./PlayerInfo";
 import { PlayerInfoMobile } from "./PlayerInfoMobile";
 import { getMobileOS } from "../Lobby";
+import { Chat } from "./Chat";
 import "./style.scss";
 
 export const GameBoard: React.FC<BoardProps<GameState>> = ({
@@ -20,6 +21,8 @@ export const GameBoard: React.FC<BoardProps<GameState>> = ({
   undo,
   matchData,
 }) => {
+
+  const isMobile = getMobileOS() !== 'unknown';
 
   return(
     <BoardContext.Provider
@@ -33,16 +36,22 @@ export const GameBoard: React.FC<BoardProps<GameState>> = ({
         playersInfo: matchData,
       }}
     >    
-    {ctx.phase === 'selectCharacters' ? 
-      <CharacterSelect />
-      :
-      <div className={classNames("GameBoard")}>
-        {getMobileOS() === 'unknown' ? <PlayerInfo /> : <PlayerInfoMobile/>}
-        <PlayerBoard />
-        <PlayerControls />
-      </div>
-    }
-
+      {ctx.phase === 'selectCharacters' ? 
+        <CharacterSelect />
+        :
+        <div className={classNames("GameBoard")}>
+          {!isMobile && <Chat />}
+          <div>
+            <PlayerBoard />
+            <PlayerControls />
+          </div>
+          {isMobile ? (
+            <PlayerInfoMobile/>
+            ) : (
+            <PlayerInfo /> 
+          )}
+        </div>
+      }
     </BoardContext.Provider>
   );
 }

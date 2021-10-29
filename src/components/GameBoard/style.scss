@@ -5,23 +5,9 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  flex-direction: column;
-}
-
-#canvas {
-  position: flex;
-  height: 65vh;
-  width: 50vw;
-  padding-left: 0;
-  padding-right: 0;
-  margin-left: auto;
-  margin-right: auto;
-  display: block;
-  outline: none;
-  -webkit-tap-highlight-color: rgba(255, 255, 255, 0); 
-  -moz-user-select: none;
-  -webkit-user-select: none;
-  -ms-user-select: none;
+  flex-direction: row;
+  margin-left: 10px;
+  margin-right: 10px;
 }
 
 .PlayerControls {
@@ -37,48 +23,41 @@
 }
 
 .PlayerInfo {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  z-index: -1;
+  flex-grow: 1;
+  height: 75vh;
+  width: 15vw;
+  font-size: 16px;
+  border-radius: em(10);
+  background-color: #f7f8fb;
+  position: relative;
+  box-shadow: 0 0 0 4px rgba($c-ocean-green, 0.5);
 
-  h2 {
+  h2, h4 {
     margin: 0;
+  }
+
+  p, h4, h2 {
+    text-align: center;
   }
 
   &__P1Name {
     position: absolute;
+    top: 25px;
+    left: 50%;
+    width: 100%;
+    transform: translate(-50% , 0);
+    -webkit-transform: translate(-50%, 0);
     color: dodgerblue;
-    top: 10px;
-    left: 10px;
   }
 
   &__P2Name {
     position: absolute;
+    bottom: 25px;
+    left: 50%;
+    width: 100%;
+    transform: translate(-50% , 0);
+    -webkit-transform: translate(-50%, 0);
     color: gray;
-    top: 10px;
-    right: 10px;
-    text-align: right;
-  }
-
-  &__P1Description {
-    color: dodgerblue;
-    font-size: 14px;
-    position: absolute;
-    bottom: 10px;
-    left: 12px;
-    width: 20vw;
-    text-align: left;
-  }
-
-  &__P2Description {
-    color: gray;
-    font-size: 14px;
-    position: absolute;
-    bottom: 10px;
-    right: 12px;
-    width: 20vw;
-    text-align: right;
   }
 }
 
@@ -165,6 +144,9 @@
 }
 
 .PlayerBoard {
+  flex-grow: 2;
+  margin-left: 25px;
+  margin-right: 25px;
   font-size: 16px;
   border-radius: em(10);
   background-color: #f7f8fb;
@@ -238,6 +220,33 @@
   }
 }
 
+#canvas {
+  position: flex;
+  height: 65vh;
+  width: 50vw;
+  padding-left: 0;
+  padding-right: 0;
+  margin-left: auto;
+  margin-right: auto;
+  display: block;
+  outline: none;
+  -webkit-tap-highlight-color: rgba(255, 255, 255, 0); 
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+}
+
+#chat {
+  flex-grow: 1;
+  height: 75vh;
+  width: 15vw;
+  font-size: 16px;
+  border-radius: em(10);
+  background-color: #f7f8fb;
+  box-shadow: 0px em(2) em(2) rgba(0, 0, 0, 0.25);
+  box-shadow: 0 0 0 4px rgba($c-blue, 0.5);
+}
+
 @media only screen and (max-width: 599px) {
   #canvas {
     height: 60vh;
@@ -249,6 +258,9 @@
   .PlayerBoard {
     width: 95%;
     margin-top: em(85);
+    flex-grow: 0;
+    margin-left: auto;
+    margin-right: auto;
     padding: 0;
   }
 }

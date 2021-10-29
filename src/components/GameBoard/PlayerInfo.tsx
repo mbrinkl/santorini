@@ -11,21 +11,13 @@ export const PlayerInfo = () => {
     <div className="PlayerInfo">
       <div className="PlayerInfo__P1Name">
         <h2>{roomMetadata?.players[0].name + (playerID === '0' ? ' (you)' : '')}</h2>
-        <span>{State.players[0].char.name}</span>
-      </div>
-      <div className="PlayerInfo__P1Description">
-        <span>
-          {State.players[0].char.desc}
-        </span>
+        <h4>{State.players[0].char.name}</h4>
+        <p>{State.players[0].char.desc}</p>
       </div>
       <div className="PlayerInfo__P2Name">
+        <p>{State.players[1].char.desc}</p>
+        <h4>{State.players[1].char.name}</h4>
         <h2>{roomMetadata?.players[1].name + (playerID === '1' ? ' (you)' : '')}</h2>
-        <span>{State.players[1].char.name}</span>
-      </div>
-      <div className="PlayerInfo__P2Description">
-        <span>
-          {State.players[1].char.desc}
-        </span>
       </div>
     </div>
   );

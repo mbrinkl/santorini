@@ -12,7 +12,7 @@ export const PlayerBoard: React.FC = () => {
 
   const GROUND_SIZE = 5;
   const GROUND_PADDING = 0.5;
-  
+
   const ContextBridge = useContextBridge(BoardContext);
 
   const [xPositions, setXPositions] = useState<number[]>([]);
@@ -20,8 +20,8 @@ export const PlayerBoard: React.FC = () => {
 
   useEffect(() => {
 
-    let xPos : number[] = [];
-    let zPos : number[] = [];
+    let xPos: number[] = [];
+    let zPos: number[] = [];
     for (var i = -2; i < 3; i++) {
       for (var j = -2; j < 3; j++) {
         xPos.push(GROUND_PADDING + GROUND_PADDING * i + GROUND_SIZE * i);
@@ -35,25 +35,25 @@ export const PlayerBoard: React.FC = () => {
 
   return (
     <div
-    className={classNames(
-      "PlayerBoard", !!ctx.gameover ?
+      className={classNames(
+        "PlayerBoard", !!ctx.gameover ?
         ctx.gameover.winner === playerID
           ? "PlayerBoard--winner"
           : "PlayerBoard--loser"
         : isActive
-        ? "PlayerBoard--active"
-        : "PlayerBoard--waiting"
-    )}>
-      
-    <HelpText />
+          ? "PlayerBoard--active"
+          : "PlayerBoard--waiting"
+      )}>
 
-    <div id='canvas'>
-      <Canvas>
-        <ContextBridge>
-          <Scene xPositions={xPositions} zPositions={zPositions}/>
-        </ContextBridge>
-      </Canvas>
-    </div>
+      <HelpText />
+
+      <div id='canvas'>
+        <Canvas>
+          <ContextBridge>
+            <Scene xPositions={xPositions} zPositions={zPositions} />
+          </ContextBridge>
+        </Canvas>
+      </div>
     </div>
   );
 };
