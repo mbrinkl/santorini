@@ -12,4 +12,4 @@ How to play: [youtube](https://www.youtube.com/watch?v=EZi-MZEylRQ), [rulebook](
 - Typescript
 - React
 - Node.js
-- [Babylon.js](https://babylonjs.com/)
+- [three.js](https://threejs.org/) / [react-three-fiber](https://github.com/pmndrs/react-three-fiber)
