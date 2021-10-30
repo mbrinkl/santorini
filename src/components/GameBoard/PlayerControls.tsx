@@ -3,8 +3,11 @@ import { useParams } from "react-router";
 import { useBoardContext } from "./BoardContext";
 import { Button } from "components/Button";
 import { useStoreActions, useStoreState } from "../../store";
+import undoLogo from'../../assets/png/undo.png';
+import messagesLogo from'../../assets/png/messages.png';
+import { isMobile } from "utility";
 
-export const PlayerControls = () => {
+export const PlayerControls: React.FC<{onOpenMessages? : () => void}> = ({onOpenMessages}) => {
   const { playerID, State, isActive, moves, ctx, undo } = useBoardContext();
 
   const [counter, setCounter] = useState(3);
@@ -62,6 +65,12 @@ export const PlayerControls = () => {
     window.open("/", "_self");
   }
 
+  function showMessages() {
+    if (onOpenMessages) {
+      onOpenMessages();
+    }
+  }
+
   return (
     !!ctx.gameover ? 
     
@@ -90,6 +99,17 @@ export const PlayerControls = () => {
 
     <div className="PlayerControls">
 
+      {isMobile() && 
+        <Button
+          theme="yellow"
+          size="small"
+          className="PlayerControls__button"
+          onClick={showMessages}
+        >
+          <img src={messagesLogo} style={{position:"absolute", width: 25, height: 25}} alt="fireSpot"/>
+        </Button>
+      }
+
       <Button
         theme="red"
         size="small"
@@ -97,7 +117,7 @@ export const PlayerControls = () => {
         disabled={!ctx.numMoves || !isActive}
         onClick={() => undoMove()}
       >
-        Undo
+        <img src={undoLogo} style={{position:"absolute", width: 25, height: 25}} alt="fireSpot"/>
       </Button>
 
       <Button

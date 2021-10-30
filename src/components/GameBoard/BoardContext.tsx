@@ -1,3 +1,4 @@
+import { ChatMessage } from "boardgame.io";
 import { useContext } from "react";
 import { createContext } from "react";
 import { GameState } from "../../game";
@@ -9,6 +10,8 @@ interface IBoardContext {
   isActive: boolean;
   ctx: any;
   undo(): void;
+  sendChatMessage(message: string): void;
+  chatMessages: ChatMessage[];
   playersInfo: { id: string; name: string }[];
 }
 

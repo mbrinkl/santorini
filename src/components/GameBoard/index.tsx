@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import classNames from "classnames";
 import { BoardProps } from "boardgame.io/react";
 import { GameState } from "../../game";
@@ -8,9 +8,9 @@ import { PlayerControls } from "./PlayerControls";
 import { CharacterSelect } from "../CharacterSelect";
 import { PlayerInfo } from "./PlayerInfo";
 import { PlayerInfoMobile } from "./PlayerInfoMobile";
-import { getMobileOS } from "../Lobby";
 import { Chat } from "./Chat";
 import "./style.scss";
+import { isMobile } from "utility";
 
 export const GameBoard: React.FC<BoardProps<GameState>> = ({
   G: State,
@@ -20,9 +20,11 @@ export const GameBoard: React.FC<BoardProps<GameState>> = ({
   playerID,
   undo,
   matchData,
+  sendChatMessage,
+  chatMessages
 }) => {
 
-  const isMobile = getMobileOS() !== 'unknown';
+  const [showChat, setShowChat] = useState(!isMobile());
 
   return(
     <BoardContext.Provider
@@ -33,6 +35,8 @@ export const GameBoard: React.FC<BoardProps<GameState>> = ({
         isActive,
         ctx,
         undo,
+        sendChatMessage,
+        chatMessages,
         playersInfo: matchData,
       }}
     >    
@@ -40,16 +44,22 @@ export const GameBoard: React.FC<BoardProps<GameState>> = ({
         <CharacterSelect />
         :
         <div className={classNames("GameBoard")}>
-          {!isMobile && <Chat />}
-          <div>
-            <PlayerBoard />
-            <PlayerControls />
-          </div>
-          {isMobile ? (
-            <PlayerInfoMobile/>
+          {isMobile() ? (
+            <>
+              <PlayerInfoMobile/>
+              <PlayerBoard />
+              <PlayerControls onOpenMessages={() => setShowChat(true)}/>
+            </>
             ) : (
-            <PlayerInfo /> 
+            <>
+              <PlayerInfo /> 
+              <div>
+                <PlayerBoard />
+                <PlayerControls />
+              </div>
+            </>
           )}
+          {showChat && <Chat onCloseMessages={() => setShowChat(false)} />}
         </div>
       }
     </BoardContext.Provider>
