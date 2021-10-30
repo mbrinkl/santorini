@@ -1,5 +1,15 @@
 @import "~styles/shared";
 
+.imgMsg {
+  position:"absolute";
+  width: 25px;
+  height: 25px;
+}
+
+.blackmsg {
+  filter: brightness(0%);
+}
+
 .GameBoard {
   height: 100%;
   display: flex;

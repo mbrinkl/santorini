@@ -6,19 +6,37 @@ import { useStoreActions, useStoreState } from "../../store";
 import undoLogo from'../../assets/png/undo.png';
 import messagesLogo from'../../assets/png/messages.png';
 import { isMobile } from "utility";
+import classNames from "classnames";
 
-export const PlayerControls: React.FC<{onOpenMessages? : () => void}> = ({onOpenMessages}) => {
-  const { playerID, State, isActive, moves, ctx, undo } = useBoardContext();
+export const PlayerControls: React.FC<{ messagesOpen? : boolean, onOpenMessages? : () => void}> = ({messagesOpen, onOpenMessages}) => {
+  const { playerID, State, isActive, moves, ctx, undo, chatMessages } = useBoardContext();
 
   const [counter, setCounter] = useState(3);
   
   let intervalID: any = useRef(null); 
+  let intervalMsgID: any = useRef(null); 
 
   const { id } = useParams<{ id: string }>();
   const playAgain = useStoreActions((s) => s.playAgain);
   const activeRoomPlayer = useStoreState((s) => s.activeRoomPlayer);
   const [redirect, setRedirect] = useState(false);
   const matchID = useStoreState((s) => s.matchID);
+
+  const [msgBlack, setMsgBlack] = useState(false);
+
+  useEffect(() => {
+    if (messagesOpen) {
+      clearInterval(intervalMsgID.current);
+      setMsgBlack(false);
+    }
+    else if (chatMessages.length > 0) {
+      intervalMsgID.current = setInterval(() => { 
+        setMsgBlack(prev => !prev);
+      }, 1000);
+    }
+
+    return () => clearInterval(intervalMsgID.current);
+  }, [chatMessages]);
 
   useEffect(() => {
     if (redirect && matchID && matchID !== id) {
@@ -66,37 +84,14 @@ export const PlayerControls: React.FC<{onOpenMessages? : () => void}> = ({onOpen
   }
 
   function showMessages() {
+    clearInterval(intervalMsgID.current);
+    setMsgBlack(false);
     if (onOpenMessages) {
       onOpenMessages();
     }
   }
 
-  return (
-    !!ctx.gameover ? 
-    
-      <div className="PlayerControls">
-
-      <Button
-        theme="red"
-        onClick={exit}
-        className="PlayerControls__button"
-        size="small"
-      >
-        Exit
-      </Button>
-
-      <Button
-        theme="green"
-        className="PlayerControls__button"
-        size="small"
-        onClick={rematch}
-      >
-        Rematch
-      </Button>
-    </div>
-    
-    :
-
+  return (    
     <div className="PlayerControls">
 
       {isMobile() && 
@@ -106,10 +101,32 @@ export const PlayerControls: React.FC<{onOpenMessages? : () => void}> = ({onOpen
           className="PlayerControls__button"
           onClick={showMessages}
         >
-          <img src={messagesLogo} style={{position:"absolute", width: 25, height: 25}} alt="fireSpot"/>
+          <img className={classNames('imgMsg', msgBlack ? 'blackmsg' : '')} src={messagesLogo} alt="msgLogo"/>
         </Button>
       }
 
+      {!!ctx.gameover ? (<>
+        <Button
+          theme="red"
+          onClick={exit}
+          className="PlayerControls__button"
+          size="small"
+        >
+          Exit
+        </Button>
+
+        <Button
+          theme="green"
+          className="PlayerControls__button"
+          size="small"
+          onClick={rematch}
+        >
+          Rematch
+      </Button>
+      </>
+    )
+    :
+    ( <>
       <Button
         theme="red"
         size="small"
@@ -117,7 +134,7 @@ export const PlayerControls: React.FC<{onOpenMessages? : () => void}> = ({onOpen
         disabled={!ctx.numMoves || !isActive}
         onClick={() => undoMove()}
       >
-        <img src={undoLogo} style={{position:"absolute", width: 25, height: 25}} alt="fireSpot"/>
+        <img src={undoLogo} style={{position:"absolute", width: 25, height: 25}} alt="undoLogo"/>
       </Button>
 
       <Button
@@ -139,7 +156,8 @@ export const PlayerControls: React.FC<{onOpenMessages? : () => void}> = ({onOpen
       >
         ({counter}) End Turn
       </Button>
-    </div>
-
+      </>
+    )}
+  </div>
   );
 };

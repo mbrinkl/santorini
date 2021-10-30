@@ -48,7 +48,7 @@ export const GameBoard: React.FC<BoardProps<GameState>> = ({
             <>
               <PlayerInfoMobile/>
               <PlayerBoard />
-              <PlayerControls onOpenMessages={() => setShowChat(true)}/>
+              <PlayerControls messagesOpen={showChat} onOpenMessages={() => setShowChat(true)}/>
             </>
             ) : (
             <>
