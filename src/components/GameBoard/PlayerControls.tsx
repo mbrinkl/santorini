@@ -36,7 +36,7 @@ export const PlayerControls: React.FC<{ messagesOpen? : boolean, onOpenMessages?
     }
 
     return () => clearInterval(intervalMsgID.current);
-  }, [chatMessages]);
+  }, [chatMessages, messagesOpen]);
 
   useEffect(() => {
     if (redirect && matchID && matchID !== id) {

@@ -1,31 +1,24 @@
-import React, { useRef, useState } from "react";
+import React, { useRef } from "react";
 import { Box, Cone, Cylinder, Ring } from "@react-three/drei";
 import { useFrame } from "@react-three/fiber";
-import { Euler } from "three";
 
 export const PlaceIndicator: React.FC<{ xPos: number, height: number, zPos: number }> = ({ xPos, height, zPos }) => {
 
   const yMap = [0, 3, 5, 7, 7];
   const mesh: any = useRef();
-  const [multiplier, setMultiplier] = useState(1);
 
-  useFrame(() => {
-    if (mesh.current.scale.x < 1) {
-      setMultiplier(1);
-    }
-    else if (mesh.current.scale.x > 1.5) {
-      setMultiplier(-1);
-    }
-
-    mesh.current.scale.x += (0.005 * multiplier);
-    mesh.current.scale.y += (0.005 * multiplier);
+  useFrame(({clock}) => {
+    const time = clock.getElapsedTime();
+    const scale = 1 + Math.abs((0.5 * Math.sin(time)));
+    mesh.current.scale.x = scale;
+    mesh.current.scale.y = scale;
   });
 
-  return <Ring name={`moveIndicator${xPos}${zPos}`}
+  return <Ring name={`placeIndicator${xPos}${zPos}`}
     ref={mesh}
     args={[0.75, 1, 32]}
     position={[xPos, yMap[height] + 0.1, zPos]}
-    rotation={new Euler(3 * Math.PI / 2, 0, 0, 'XYZ')}
+    rotation={[3 * Math.PI / 2, 0, 0]}
   >
     <meshStandardMaterial color='yellow' />
   </Ring>
@@ -36,25 +29,19 @@ export const SelectIndicator: React.FC<{ xPos: number, height: number, zPos: num
   const yMap = [4, 8, 10, 12, 12];
   const headMesh: any = useRef();
   const tailMesh: any = useRef();
-  const [multiplier, setMultiplier] = useState(1);
 
-  useFrame(() => {
-    if (headMesh.current.position.y < yMap[height]) {
-      setMultiplier(1);
-    }
-    else if (headMesh.current.position.y > yMap[height] + 0.5) {
-      setMultiplier(-1);
-    }
-
-    headMesh.current.position.y += (0.01 * multiplier);
-    tailMesh.current.position.y += (0.01 * multiplier);
+  useFrame(({clock}) => {
+    const time = clock.getElapsedTime();
+    const pos = yMap[height] + (0.5 * Math.sin(time));
+    headMesh.current.position.y = pos;
+    tailMesh.current.position.y = pos + 2;
   });
 
   return <>
     <Cone name={`selectIndicatorHead${xPos}${zPos}`}
       ref={headMesh}
       args={[1, 2]}
-      rotation={new Euler(Math.PI, 0, 0, 'XYZ')}
+      rotation={[Math.PI, 0, 0]}
       position={[xPos, yMap[height], zPos]} >
       <meshStandardMaterial color='yellow' />
     </Cone>
@@ -82,7 +69,7 @@ export const MoveIndicator: React.FC<{ xPos: number, height: number, zPos: numbe
     ref={mesh}
     args={[1, 2, 4]}
     position={[xPos, yMap[height] + 0.1, zPos]}
-    rotation={new Euler(3 * Math.PI / 2, 0, 0, 'XYZ')}
+    rotation={[3 * Math.PI / 2, 0, 0]}
   >
     <meshStandardMaterial color='blue' />
   </Ring>
@@ -92,17 +79,11 @@ export const BuildIndicator: React.FC<{ xPos: number, height: number, zPos: numb
 
   const yMap = [0, 3, 5, 7, 7];
   const mesh: any = useRef();
-  const [multiplier, setMultiplier] = useState(1);
 
-  useFrame(() => {
-    if (mesh.current.position.y < yMap[height]) {
-      setMultiplier(1);
-    }
-    else if (mesh.current.position.y > yMap[height] + 2) {
-      setMultiplier(-1);
-    }
-
-    mesh.current.position.y += (0.03 * multiplier);
+  useFrame(({clock}) => {
+    const time = clock.getElapsedTime();
+    const pos = yMap[height] + (Math.sin(time)) + 1;
+    mesh.current.position.y = pos;
   });
 
   return <Box name={`buildIndicator${xPos}${zPos}`}
