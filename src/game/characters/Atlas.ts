@@ -1,4 +1,5 @@
-import { Mortal, Character } from '.'
+import { Character } from ".";
+import { Mortal } from "./Mortal";
 import { GameState, Player } from '../index'
 import { Board } from '../space'
 import { Ctx } from 'boardgame.io';
@@ -31,9 +32,10 @@ export class Atlas extends Mortal {
     ctx: Ctx,
     player: Player,
     char: Character
-  ) : void {
+  ) : string {
     char.attrs.specialActive = !char.attrs.specialActive;
     char.buttonText = char.attrs.specialActive ?  'Cancel' : 'Build Dome';
+    return super.buttonPressed(G, ctx, player, char);
   }
 
   public static build (

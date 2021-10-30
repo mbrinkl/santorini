@@ -1,4 +1,4 @@
-import { Mortal } from '.'
+import { Mortal } from './Mortal';
 import { GameState } from '../index'
 
 export class Pan extends Mortal {

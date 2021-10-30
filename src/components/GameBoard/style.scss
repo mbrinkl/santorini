@@ -1,5 +1,15 @@
 @import "~styles/shared";
 
+.imgMsg {
+  position:"absolute";
+  width: 25px;
+  height: 25px;
+}
+
+.blackmsg {
+  filter: brightness(0%);
+}
+
 .GameBoard {
   height: 100%;
   display: flex;
@@ -10,8 +20,6 @@
 
 #canvas {
   position: flex;
-  height: 65vh;
-  width: 50vw;
   padding-left: 0;
   padding-right: 0;
   margin-left: auto;
@@ -27,58 +35,48 @@
 .PlayerControls {
   display: flex;
   flex-direction: row;
-  justify-content: space-evenly;
+  justify-content: center;
   margin-top: 12px;
 
   &__button {
-    margin-left: 10px;
-    margin-right: 10px;
+    margin-left: 5px;
+    margin-right: 5px;
   }
 }
 
 .PlayerInfo {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  z-index: -1;
+  flex-grow: 1;
+  height: 75vh;
+  width: 15vw;
+  font-size: 16px;
+  position: relative;
 
-  h2 {
+  h2, h4 {
     margin: 0;
+  }
+
+  p, h4, h2 {
+    text-align: center;
   }
 
   &__P1Name {
     position: absolute;
-    color: red;
-    top: 10px;
-    left: 10px;
+    top: 25px;
+    left: 50%;
+    width: 100%;
+    transform: translate(-50% , 0);
+    -webkit-transform: translate(-50%, 0);
+    color: dodgerblue;
   }
 
   &__P2Name {
     position: absolute;
+    bottom: 25px;
+    left: 50%;
+    width: 100%;
+    transform: translate(-50% , 0);
+    -webkit-transform: translate(-50%, 0);
     color: gray;
-    top: 10px;
-    right: 10px;
-    text-align: right;
-  }
-
-  &__P1Description {
-    color: red;
-    font-size: 14px;
-    position: absolute;
-    bottom: 10px;
-    left: 12px;
-    width: 20vw;
-    text-align: left;
-  }
-
-  &__P2Description {
-    color: gray;
-    font-size: 14px;
-    position: absolute;
-    bottom: 10px;
-    right: 12px;
-    width: 20vw;
-    text-align: right;
   }
 }
 
@@ -97,7 +95,7 @@
     left: 10px;
     top: 10px;
     color: white;
-    background-color: red;
+    background-color: dodgerblue;
     border-radius: 50%;
   }
 
@@ -113,7 +111,7 @@
 
   &__P1Name {
     position: absolute;
-    color: red;
+    color: dodgerblue;
     left: 40px;
     font-size: 14px;
   }
@@ -142,7 +140,7 @@
     right: 10px;
     left: 10px;
     text-align: center;
-    color: red;
+    color: dodgerblue;
   }
 
   &__mid {
@@ -238,17 +236,118 @@
   }
 }
 
+.chat {
+  .chatWarning {
+    color: red;
+  }
+
+  .sender-0 {
+    color: dodgerblue;
+  }
+  
+  .sender-1 {
+    color: gray;
+  }  
+}
+
 @media only screen and (max-width: 599px) {
   #canvas {
     height: 60vh;
     width: 100%;
-    outline: none;
-    -webkit-tap-highlight-color: rgba(255, 255, 255, 0); 
   }
 
   .PlayerBoard {
     width: 95%;
     margin-top: em(85);
     padding: 0;
+  }
+
+  .chat {
+    position: absolute;
+    z-index: 10;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: transparentize($c-black, 0.10);
+
+    .messages {
+      position: absolute;
+      top: 5%;
+      right: 10px;
+      left: 10px;
+      height: 80%;
+      overflow-y: auto;
+      word-wrap: break-word;
+      text-align: left;
+      color: white;
+    }
+
+    .chatControls {
+
+      position: absolute;
+      bottom: 5%;
+      right: 10px;
+      left: 10px;
+      text-align: center;
+      color: white;
+
+      // position: relative;
+      // bottom: 0;
+      // text-align: left;
+    
+      input {
+        margin: 0;
+        width: 50%;
+      }
+    
+      button {
+        margin: 5px;
+        width: 20%;
+      }
+    }
+  }
+}
+@media only screen and (min-width: 599px) {
+  .GameBoard {
+    flex-direction: row;
+    margin-left: 10px;
+    margin-right: 10px;
+  }
+  
+  #canvas {
+    height: 65vh;
+    width: 50vw;
+  }
+
+  .PlayerBoard {
+    margin-left: 25px;
+    margin-right: 25px;
+  }
+
+  .chat {
+    flex-grow: 1;
+    height: 75vh;
+    width: 15vw;
+    font-size: 12px;
+    
+    .messages {
+      height: 95%;
+      overflow-y: auto;
+      word-wrap: break-word;
+    }
+
+    .chatControls {
+      position: relative;
+      bottom: 0;
+    
+      input {
+        width: 60%;
+      }
+    
+      button {
+        width: 20%;
+      }
+    }
   }
 }

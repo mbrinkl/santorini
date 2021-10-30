@@ -7,12 +7,13 @@ declare module "boardgame.io/react" {
     DefaultPlayerID,
     DefaultPhaseID,
   } from "boardgame.io/core";
+  import { ChatMessage } from "boardgame.io";
 
   export interface BoardProps<
     GameStatePlayerView = DefaultGameStatePlayerView,
     Moves = DefaultMoves,
     PlayerID = DefaultPlayerID,
-    PhaseID = DefaultPhaseID
+    PhaseID = DefaultPhaseID,
   > {
     G: GameStatePlayerView;
     ctx: Omit<Context<PlayerID, PhaseID>, "playerID">;
@@ -27,6 +28,8 @@ declare module "boardgame.io/react" {
     events: any;
     undo(): void;
     redo(): void;
+    sendChatMessage(message): void;
+    chatMessages: ChatMessage[];
   }
 
   export interface ClientConfig<

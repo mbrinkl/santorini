@@ -8,17 +8,19 @@ import { SantoriniGame } from "../../game";
 import { useStoreActions, useStoreState } from "../../store";
 import { GameBoard } from "../GameBoard";
 import { ButtonBack } from "../ButtonBack";
-import "./style.scss";
 import { LobbyPage } from "components/LobbyPage";
 import { Button } from "components/Button";
 import Tippy from "@tippyjs/react";
+import { isMobile, getMobileOS } from "utility";
 import "tippy.js/dist/tippy.css"; // optional
+import "./style.scss";
+
 
 const GameClient = Client({
   game: SantoriniGame,
   board: GameBoard,
   multiplayer: SocketIO({ server: SERVER_URL }),
-  debug: false, // TODO: debug false only on mobile
+  debug: !isProduction && !isMobile(),
 });
 
 export const GameLobby = () => {
@@ -31,28 +33,6 @@ export const GameLobby = () => {
   );
 };
 
-//https://stackoverflow.com/questions/21741841/detecting-ios-android-operating-system
-export function getMobileOS() {
-  var userAgent =
-    navigator.userAgent || navigator.vendor || (window as any).opera;
-
-  // Windows Phone must come first because its UA also contains "Android"
-  if (/windows phone/i.test(userAgent)) {
-    return "Windows Phone";
-  }
-
-  if (/android/i.test(userAgent)) {
-    return "Android";
-  }
-
-  // iOS detection from: http://stackoverflow.com/a/9039885/177710
-  if (/iPad|iPhone|iPod/.test(userAgent)) {
-    // && !window.MSStream) {
-    return "iOS";
-  }
-
-  return "unknown";
-}
 
 export const GameLobbySetup: React.FC<{ startGame(): void }> = ({
   startGame,

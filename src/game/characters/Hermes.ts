@@ -1,7 +1,8 @@
 import { union } from "lodash"
 import { Ctx } from "boardgame.io";
 import { getAdjacentPositions } from '../utility'
-import { Mortal, Character } from '.'
+import { Character } from ".";
+import { Mortal } from "./Mortal";
 import { GameState, Player } from '../index'
 import { Board } from '../space'
 
@@ -148,7 +149,7 @@ export class Hermes extends Mortal {
     ctx: Ctx,
     player: Player,
     char: Character
-  ) : void {
+  ) : string {
 
     if (char.attrs.isMoving) {
       char.attrs.isMoving = false;
@@ -162,7 +163,9 @@ export class Hermes extends Mortal {
       if (char.selectedWorker === -1) {
         char.selectedWorker = 0;
       }
-      G.stage = 'build';
+      return 'build';
     }
+
+    return super.buttonPressed(G, ctx, player, char);
   }
 }

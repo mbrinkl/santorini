@@ -1,15 +1,24 @@
-import { INVALID_MOVE } from "boardgame.io/core";
 import { Ctx } from "boardgame.io";
-import { GameState, Player, getCharacter } from "./index";
-import { Worker } from "./characters";
-import { Board } from "./space";
+import { GameState, Player } from "../index";
+import { Worker, getCharacter } from "../characters";
+import { Board } from "../space";
 
-function updateValids(G: GameState, ctx: Ctx, player: Player) {
+function getStage(ctx: Ctx) : string {
+  return (ctx.activePlayers && ctx.activePlayers[ctx.currentPlayer]) || '';
+}
+
+function setStage(ctx: Ctx, value: string) : void {
+  ctx.events!.setStage(value);
+}
+
+function updateValids(G: GameState, ctx: Ctx, player: Player, stage: string) {
   const currChar = player.char;
-
   const char: any = getCharacter(currChar.name);
+  
+  // TODO: get stage from ctx if boardgame.io allows some way to get updated stage
+  // after a move
 
-  switch (G.stage) {
+  switch (stage) {
     case "place":
       let valids: number[] = [];
       for (var i = 0; i < 25; i++) {
@@ -52,8 +61,10 @@ export const CharButtonPressed = (G: GameState, ctx: Ctx) => {
 
   const char: any = getCharacter(currChar.name);
 
-  char.buttonPressed(G, ctx, currPlayer, currChar);
-  updateValids(G, ctx, currPlayer);
+  const stage = char.buttonPressed(G, ctx, currPlayer, currChar);
+  setStage(ctx, stage);
+
+  updateValids(G, ctx, currPlayer, stage);
 };
 
 export const EndTurn = (G: GameState, ctx: Ctx) => {
@@ -67,25 +78,30 @@ export const EndTurn = (G: GameState, ctx: Ctx) => {
   charCurr.onTurnEnd(G, ctx, currPlayer, currPlayer.char);
 
   // end the turn
-  ctx.events!.endTurn!();
+  ctx.events!.endTurn();
   G.canEndTurn = false;
 
   // to avoid changing to select stage during the place stage at beginning of game
-  if (G.stage === "end") {
-    G.stage = "select";
-    updateValids(G, ctx, nextPlayer);
+  if (getStage(ctx) === "end") {
 
-    G.players["0"].char.selectedWorker = -1;
-    G.players["1"].char.selectedWorker = -1;
+    if (ctx.phase === 'placePhase') {
+      ctx.events?.endPhase();
+    }
+    else {
+      G.players["0"].char.selectedWorker = -1;
+      G.players["1"].char.selectedWorker = -1;
+  
+      CheckWinByTrap(G, ctx);
+  
+      charNext.onTurnBegin(G, ctx, nextPlayer, nextPlayer.char);
+    }
 
-    CheckWinByTrap(G, ctx);
-
-    charNext.onTurnBegin(G, ctx, nextPlayer, nextPlayer.char);
+    updateValids(G, ctx, nextPlayer, 'select');
   }
 
-  // just update the valids if in the place stage
-  else if (G.stage === "place") {
-    updateValids(G, ctx, nextPlayer);
+  // // just update the valids if in the place stage
+  else if (getStage(ctx) === 'place') {
+    updateValids(G, ctx, nextPlayer, 'place');
   }
 };
 
@@ -120,30 +136,8 @@ function CheckWinByMove(
   }
 }
 
-export const SelectSpace = {
-  move: (G: GameState, ctx: Ctx, pos: number) => {
-    if (G.valids.includes(pos)) {
-      switch (G.stage) {
-        case "place":
-          Place(G, ctx, pos);
-          break;
-        case "select":
-          Select(G, ctx, pos);
-          break;
-        case "move":
-          Move(G, ctx, pos);
-          break;
-        case "build":
-          Build(G, ctx, pos);
-          break;
-      }
-    } else {
-      return INVALID_MOVE;
-    }
-  },
-};
+export function Place(G: GameState, ctx: Ctx, pos: number) {
 
-function Place(G: GameState, ctx: Ctx, pos: number) {
   const currentChar = G.players[ctx.currentPlayer].char;
 
   const worker: Worker = {
@@ -161,23 +155,25 @@ function Place(G: GameState, ctx: Ctx, pos: number) {
       G.players["0"].char.numWorkersToPlace === 0 &&
       G.players["1"].char.numWorkersToPlace === 0
     ) {
-      G.stage = "end";
+      setStage(ctx, 'end');
     }
   }
 
-  updateValids(G, ctx, G.players[ctx.currentPlayer]);
+  updateValids(G, ctx, G.players[ctx.currentPlayer], 'place');
 }
 
-function Select(G: GameState, ctx: Ctx, pos: number) {
+export function Select(G: GameState, ctx: Ctx, pos: number) {
   const currPlayer = G.players[ctx.currentPlayer];
   const currChar = currPlayer.char;
   const char: any = getCharacter(currChar.name);
 
-  G.stage = char.select(G, ctx, currPlayer, currChar, pos);
-  updateValids(G, ctx, currPlayer);
+  const stage = char.select(G, ctx, currPlayer, currChar, pos);
+  setStage(ctx, stage);
+
+  updateValids(G, ctx, currPlayer, stage);
 }
 
-function Move(G: GameState, ctx: Ctx, pos: number) {
+export function Move(G: GameState, ctx: Ctx, pos: number) {
   const currPlayer = G.players[ctx.currentPlayer];
   const currChar = currPlayer.char;
 
@@ -185,23 +181,27 @@ function Move(G: GameState, ctx: Ctx, pos: number) {
 
   const char: any = getCharacter(currChar.name);
 
-  G.stage = char.move(G, ctx, currPlayer, currChar, pos);
-  updateValids(G, ctx, currPlayer);
+  const stage = char.move(G, ctx, currPlayer, currChar, pos);
+  setStage(ctx, stage);
+
+  updateValids(G, ctx, currPlayer, stage);
 
   const after_height = currChar.workers[currChar.selectedWorker].height;
   CheckWinByMove(G, ctx, before_height, after_height);
 }
 
-function Build(G: GameState, ctx: Ctx, pos: number) {
+export function Build(G: GameState, ctx: Ctx, pos: number) {
   const currPlayer = G.players[ctx.currentPlayer];
   const currChar = currPlayer.char;
 
   const char: any = getCharacter(currChar.name);
 
-  G.stage = char.build(G, ctx, currPlayer, currChar, pos);
-  updateValids(G, ctx, currPlayer);
+  const stage = char.build(G, ctx, currPlayer, currChar, pos);
+  setStage(ctx, stage);
 
-  if (G.stage === "end") {
+  updateValids(G, ctx, currPlayer, stage);
+
+  if (stage === "end") {
     G.canEndTurn = true;
   }
 }

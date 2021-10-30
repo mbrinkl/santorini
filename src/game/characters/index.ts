@@ -1,7 +1,22 @@
-import { Ctx } from "boardgame.io";
-import { GameState, Player } from "../index";
-import { Board } from "../space";
-import { getAdjacentPositions } from "../utility";
+import { Mortal } from "./Mortal";
+import { Apollo } from "./Apollo";
+import { Artemis } from "./Artemis";
+import { Athena } from "./Athena";
+import { Atlas } from "./Atlas";
+import { Demeter } from "./Demeter";
+import { Hephaestus } from "./Hephaestus";
+import { Hermes } from "./Hermes";
+import { Minotaur } from "./Minotaur";
+import { Pan } from "./Pan";
+import { Prometheus } from "./Prometheus";
+import { Bia } from "./Bia";
+import { Triton } from "./Triton";
+import { Zeus } from "./Zeus";
+import { Graeae } from "./Graeae";
+import { Heracles } from "./Heracles";
+import { Odysseus } from "./Odysseus";
+import { Iris } from "./Iris";
+import { Pegasus } from "./Pegasus";
 
 export const characterList: string[] = [
   "Random",
@@ -103,170 +118,71 @@ export interface Character {
   attrs: any;
 }
 
-export class Mortal {
-  public static desc = "No ability";
-  public static buttonText = "No ability";
-  public static buttonActive = false;
-  public static numWorkers = 2;
-  public static moveUpHeight = 1;
-  public static attrs: any = undefined;
+export function getCharacter(name: string): any {
+  let char: any;
 
-  public static onTurnBegin(
-    G: GameState,
-    ctx: Ctx,
-    player: Player,
-    char: Character
-  ): void {}
-
-  public static onTurnEnd(
-    G: GameState,
-    ctx: Ctx,
-    player: Player,
-    char: Character
-  ): void {}
-
-  public static validSelect(
-    G: GameState,
-    ctx: Ctx,
-    player: Player,
-    char: Character
-  ): number[] {
-    let valids: number[] = [];
-
-    char.workers.forEach((worker) => {
-      if (this.validMove(G, ctx, player, char, worker.pos).length > 0) {
-        valids.push(worker.pos);
-      }
-    });
-
-    return valids;
+  switch (name) {
+    case "Mortal":
+      char = Mortal;
+      break;
+    case "Apollo":
+      char = Apollo;
+      break;
+    case "Artemis":
+      char = Artemis;
+      break;
+    case "Athena":
+      char = Athena;
+      break;
+    case "Atlas":
+      char = Atlas;
+      break;
+    case "Demeter":
+      char = Demeter;
+      break;
+    case "Hephaestus":
+      char = Hephaestus;
+      break;
+    case "Hermes":
+      char = Hermes;
+      break;
+    case "Minotaur":
+      char = Minotaur;
+      break;
+    case "Pan":
+      char = Pan;
+      break;
+    case "Prometheus":
+      char = Prometheus;
+      break;
+    case "Bia":
+      char = Bia;
+      break;
+    case "Triton":
+      char = Triton;
+      break;
+    case "Zeus":
+      char = Zeus;
+      break;
+    case "Graeae":
+      char = Graeae;
+      break;
+    case "Heracles":
+      char = Heracles;
+      break;
+    case "Odysseus":
+      char = Odysseus;
+      break;
+    case "Iris":
+      char = Iris;
+      break;
+    case "Pegasus":
+      char = Pegasus;
+      break;
+    default:
+      char = Mortal;
+      break;
   }
 
-  public static select(
-    G: GameState,
-    ctx: Ctx,
-    player: Player,
-    char: Character,
-    pos: number
-  ): string {
-    char.selectedWorker = G.spaces[pos].inhabitant.workerNum;
-    return "move";
-  }
-
-  public static validMove(
-    G: GameState,
-    ctx: Ctx,
-    player: Player,
-    char: Character,
-    originalPos: number
-  ): number[] {
-    let adjacents: number[] = getAdjacentPositions(originalPos);
-    let valids: number[] = [];
-
-    adjacents.forEach((pos) => {
-      if (
-        !G.spaces[pos].inhabited &&
-        !G.spaces[pos].is_domed &&
-        G.spaces[pos].height - G.spaces[originalPos].height <= char.moveUpHeight
-      ) {
-        valids.push(pos);
-      }
-    });
-
-    return valids;
-  }
-
-  public static hasValidMoves(
-    G: GameState,
-    ctx: Ctx,
-    player: Player,
-    char: Character
-  ): boolean {
-    let hasMove: boolean = false;
-    char.workers.forEach((worker) => {
-      if (this.validMove(G, ctx, player, char, worker.pos).length > 0) {
-        hasMove = true;
-      }
-    });
-
-    return hasMove;
-  }
-
-  public static move(
-    G: GameState,
-    ctx: Ctx,
-    player: Player,
-    char: Character,
-    pos: number
-  ): string {
-    // free the space that is being moved from
-    Board.free(G, char.workers[char.selectedWorker].pos);
-
-    // place the worker on the selected space
-    Board.place(G, pos, player.id, char.selectedWorker);
-
-    return "build";
-  }
-
-  public static validBuild(
-    G: GameState,
-    ctx: Ctx,
-    player: Player,
-    char: Character,
-    originalPos: number
-  ): number[] {
-    let adjacents: number[] = getAdjacentPositions(originalPos);
-    let valids: number[] = [];
-
-    adjacents.forEach((pos) => {
-      if (!G.spaces[pos].inhabited && !G.spaces[pos].is_domed) {
-        valids.push(pos);
-      }
-    });
-
-    return valids;
-  }
-
-  public static hasValidBuild(
-    G: GameState,
-    ctx: Ctx,
-    player: Player,
-    char: Character
-  ): boolean {
-    let hasBuild = false;
-
-    char.workers.forEach((worker) => {
-      if (this.validBuild(G, ctx, player, char, worker.pos).length > 0) {
-        hasBuild = true;
-      }
-    });
-
-    return hasBuild;
-  }
-
-  public static build(
-    G: GameState,
-    ctx: Ctx,
-    player: Player,
-    char: Character,
-    pos: number
-  ): string {
-    Board.build(G, pos);
-    return "end";
-  }
-
-  public static buttonPressed(
-    G: GameState,
-    ctx: Ctx,
-    player: Player,
-    char: Character
-  ): void {}
-
-  public static checkWinByMove(
-    G: GameState,
-    heightBefore: number,
-    heightAfter: number
-  ): boolean {
-    return heightBefore < 3 && heightAfter === 3;
-  }
+  return char;
 }

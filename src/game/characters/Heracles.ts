@@ -1,6 +1,7 @@
 import { union } from 'lodash';
 import { getAdjacentPositions } from '../utility';
-import { Mortal, Character } from '.';
+import { Character } from ".";
+import { Mortal } from "./Mortal";
 import { GameState, Player } from '../index';
 import { Board } from '../space';
 import { Ctx } from 'boardgame.io';
@@ -27,7 +28,7 @@ export class Heracles extends Mortal {
     ctx: Ctx,
     player: Player,
     char: Character
-  ) : void {
+  ) : string {
     char.attrs.specialActive = !char.attrs.specialActive;
     
     if (char.attrs.specialUsed) {
@@ -37,8 +38,8 @@ export class Heracles extends Mortal {
       char.buttonText = 'Build Domes';
 
       //set game stage
-      G.stage = 'end'
       G.canEndTurn = true;
+      return 'end';
     }
     else if (char.attrs.specialActive) {
       char.buttonText = 'Cancel';
@@ -46,6 +47,8 @@ export class Heracles extends Mortal {
     else {
       char.buttonText = 'Build Domes';
     }
+
+    return super.buttonPressed(G, ctx, player, char);
   }
 
   public static move (

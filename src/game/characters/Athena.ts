@@ -1,7 +1,8 @@
 import { Ctx } from "boardgame.io";
-import { Mortal, Character } from "."
-import { GameState, Player } from "../index"
-import { Board } from '../space'
+import { Character } from ".";
+import { Mortal } from "./Mortal";
+import { GameState, Player } from "../index";
+import { Board } from '../space';
 
 interface attrsType {
     setOpponentHeight: boolean,

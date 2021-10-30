@@ -1,6 +1,6 @@
-import { Mortal } from '.'
 import { Ctx } from 'boardgame.io';
-import { Character } from '.'
+import { Character } from ".";
+import { Mortal } from "./Mortal";
 import { GameState, Player } from '../index'
 
 export class Zeus extends Mortal {

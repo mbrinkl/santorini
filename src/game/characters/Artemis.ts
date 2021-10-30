@@ -1,8 +1,9 @@
 import { Ctx } from "boardgame.io";
-import { getAdjacentPositions } from '../utility'
-import { Mortal, Character } from '.'
-import { GameState, Player } from '../index'
-import { Board } from '../space'
+import { getAdjacentPositions } from '../utility';
+import { Character } from '.';
+import { Mortal } from "./Mortal";
+import { GameState, Player } from '../index';
+import { Board } from '../space';
 
 interface attrsType {
   numMoves: number,
@@ -80,8 +81,8 @@ export class Artemis extends Mortal {
     ctx: Ctx,
     player: Player,
     char: Character
-  ) : void {
-    G.stage = 'build';
+  ) : string {
     char.buttonActive = false;
+    return 'build';
   }
 }
