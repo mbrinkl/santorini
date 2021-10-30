@@ -115,6 +115,10 @@ export const SantoriniGame = {
     },
 
     placePhase: {
+      onBegin: (G: GameState, ctx: Ctx) => {
+        // If a player selected "Random" as their character, pick that random character now
+        setRandomCharacters(G, ctx);
+      },
       next: 'main',
       turn: {
         activePlayers: { currentPlayer: 'place' },
@@ -138,10 +142,6 @@ export const SantoriniGame = {
 
     // Playing the game
     main: {
-      onBegin: (G: GameState, ctx: Ctx) => {
-        // If a player selected "Random" as their character, pick that random character now
-        setRandomCharacters(G, ctx);
-      },
       turn: {
         activePlayers: { currentPlayer: 'select' },
         order: {
