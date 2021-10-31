@@ -38,7 +38,6 @@ export class Heracles extends Mortal {
       char.buttonText = 'Build Domes';
 
       //set game stage
-      G.canEndTurn = true;
       return 'end';
     }
     else if (char.attrs.specialActive) {

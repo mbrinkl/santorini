@@ -58,7 +58,7 @@ export const Scene: React.FC<{ xPositions: number[], zPositions: number[] }> = (
     }
 
     if (State.valids.includes(pos)) {
-      if (phase === 'placePhase') {
+      if (phase === 'placeWorkers') {
         moves.Place(pos);
       }
       else {

@@ -8,8 +8,6 @@ export function SetChar(G: GameState, ctx: Ctx, id: string, name: string) {
 
 export function Ready(G: GameState, ctx: Ctx, id: string) {
   G.players[id].ready = true;
-
-  if (G.players["0"].ready && G.players["1"].ready) G.ready = true;
 }
 
 export function CancelReady(G: GameState, ctx: Ctx, id: number) {

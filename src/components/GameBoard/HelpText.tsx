@@ -6,7 +6,7 @@ export const HelpText = () => {
 
   const currentPlayerName = playersInfo.find(
     (p) => String(p.id) === ctx.currentPlayer
-  )!.name;
+  )?.name;
 
   return (
     <span className="PlayerBoard__hint">
@@ -22,7 +22,7 @@ export const HelpText = () => {
         : <span>End Turn or Undo</span>
       : 
         <span className="PlayerBoard__hint-accent">
-          { currentPlayerName } is making a move...
+          Waiting for { currentPlayerName } ...
         </span>
       }
     </span>

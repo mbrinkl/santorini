@@ -46,7 +46,7 @@ export const PlayerControls: React.FC<{ messagesOpen? : boolean, onOpenMessages?
 
   useEffect(() => {
     intervalID.current = setInterval(() => {
-      if (State.canEndTurn && isActive) {
+      if (ctx.activePlayers[ctx.currentPlayer] === 'end' && isActive) {
 
         if (counter > 0)
           setCounter(counter - 1)
@@ -60,7 +60,7 @@ export const PlayerControls: React.FC<{ messagesOpen? : boolean, onOpenMessages?
     }, 1000);
 
     return () => clearInterval(intervalID.current);
-  }, [counter, intervalID, State, moves, isActive]);
+  }, [counter, intervalID, State, moves, isActive, ctx]);
 
   function undoMove() {
     clearInterval(intervalID.current);
@@ -142,7 +142,7 @@ export const PlayerControls: React.FC<{ messagesOpen? : boolean, onOpenMessages?
         size="small"
         className="PlayerControls__button"
         disabled={!State.players[playerID].char.buttonActive}
-        onClick={() => moves.CharButtonPressed()}
+        onClick={() => moves.CharacterAbility()}
       >
         {State.players[playerID].char.buttonText}
       </Button>
@@ -152,7 +152,7 @@ export const PlayerControls: React.FC<{ messagesOpen? : boolean, onOpenMessages?
         onClick={() => endTurn()}
         className="PlayerControls__button"
         size="small"
-        disabled={!(State.canEndTurn && isActive) || !isActive}
+        disabled={ctx.activePlayers[ctx.currentPlayer] !== 'end' || !isActive}
       >
         ({counter}) End Turn
       </Button>

@@ -2,7 +2,7 @@ import { ActivePlayers } from "boardgame.io/core";
 import { Ctx } from "boardgame.io";
 import { GAME_ID } from "../config";
 import { Space } from "./space";
-import { EndTurn, CharButtonPressed, Move, Select, Build, Place } from "./moves";
+import { EndTurn, CharacterAbility, Move, Select, Build, Place, updateValids, CheckWinByTrap } from "./moves";
 import { allSpaces } from "./utility";
 import { characterList, Character, getCharacter } from "./characters";
 import { SetChar, Ready, CancelReady } from "./moves/charSelectMoves";
@@ -15,9 +15,7 @@ export interface Player {
 }
 
 export interface GameState {
-  ready: boolean;
   stage: string;
-  canEndTurn: boolean;
   spaces: Space[];
   players: { [key: string]: Player };
   valids: number[];
@@ -53,9 +51,19 @@ function setRandomCharacters(G: GameState, ctx: Ctx) {
   }
 }
 
+function getFirstPlayer(G: GameState) : number {
+  let startingPlayer = 0;
+  if (G.players["1"].char.name === "Bia") {
+    startingPlayer = 1;
+  }
+  return startingPlayer;
+}
+
 export const SantoriniGame = {
   name: GAME_ID,
-
+  minPlayers: 2,
+  maxPlayers: 2,
+  
   setup: () => {
     const players = {
       "0": {
@@ -89,9 +97,7 @@ export const SantoriniGame = {
     const initialState: GameState = {
       players,
       spaces,
-      canEndTurn: false,
       stage: "place",
-      ready: false,
       valids: allSpaces(),
     };
 
@@ -99,11 +105,11 @@ export const SantoriniGame = {
   },
 
   phases: {
-    // Select character screen
     selectCharacters: {
       start: true,
-      next: 'placePhase',
-      endIf: (G: GameState) => G.ready,
+      next: 'placeWorkers',
+      endIf: (G: GameState) => 
+        G.players['0'].ready && G.players['1'].ready,
       turn: {
         activePlayers: ActivePlayers.ALL,
       },
@@ -112,55 +118,70 @@ export const SantoriniGame = {
         Ready,
         CancelReady,
       },
+      onEnd: (G: GameState, ctx: Ctx) => {
+        setRandomCharacters(G, ctx);
+      }
     },
 
-    placePhase: {
-      onBegin: (G: GameState, ctx: Ctx) => {
-        // If a player selected "Random" as their character, pick that random character now
-        setRandomCharacters(G, ctx);
-      },
+    placeWorkers: {
       next: 'main',
       turn: {
         activePlayers: { currentPlayer: 'place' },
         order: {
-          first: (G: GameState, ctx: Ctx) => {
-            let startingPlayer = 0;
-            if (G.players["1"].char.name === "Bia") {
-              startingPlayer = 1;
-            }
-            return startingPlayer;
-          },
+          first: (G: GameState, ctx: Ctx) => 
+            getFirstPlayer(G),
           next: (G: GameState, ctx: Ctx) =>
             (ctx.playOrderPos + 1) % ctx.numPlayers,
         },
         stages: {
-          place: {moves: {Place, EndTurn}},
-          end: {moves: {EndTurn}}
+          place: { moves: { Place } },
+          end: { moves: { EndTurn } },
         },
+        onEnd: (G: GameState, ctx: Ctx) => {
+          if (G.players["0"].char.numWorkersToPlace === 0 &&
+            G.players["1"].char.numWorkersToPlace === 0) {
+
+            ctx.events?.endPhase();
+          }
+          else {
+            const nextPlayer = G.players[G.players[ctx.currentPlayer].opponentId];
+            updateValids(G, ctx, nextPlayer, 'place');
+          }
+        }
       },
     },
 
-    // Playing the game
     main: {
       turn: {
         activePlayers: { currentPlayer: 'select' },
         order: {
-          first: (G: GameState, ctx: Ctx) => {
-            let startingPlayer = 0;
-            if (G.players["1"].char.name === "Bia") {
-              startingPlayer = 1;
-            }
-            return startingPlayer;
-          },
+          first: (G: GameState, ctx: Ctx) => 
+            getFirstPlayer(G),
           next: (G: GameState, ctx: Ctx) =>
             (ctx.playOrderPos + 1) % ctx.numPlayers,
         },
         stages: {
-          select: { moves: { Select, CharButtonPressed } },
-          move: { moves: { Move, CharButtonPressed } },
-          build: { moves: { Build, CharButtonPressed } },
+          select: { moves: { Select, CharacterAbility } },
+          move: { moves: { Move, CharacterAbility } },
+          build: { moves: { Build, CharacterAbility } },
           end: { moves: { EndTurn } },
         },
+        onBegin: (G: GameState, ctx: Ctx) => {
+          const currPlayer = G.players[ctx.currentPlayer];
+          const char: any = getCharacter(currPlayer.char.name); 
+          updateValids(G, ctx, currPlayer, 'select');         
+          char.onTurnBegin(G, ctx, currPlayer, currPlayer.char);
+        },
+        onEnd: (G: GameState, ctx: Ctx) => {
+          const currPlayer = G.players[ctx.currentPlayer];
+          const char: any = getCharacter(currPlayer.char.name);          
+          char.onTurnEnd(G, ctx, currPlayer, currPlayer.char);
+
+          G.players["0"].char.selectedWorker = -1;
+          G.players["1"].char.selectedWorker = -1;
+
+          CheckWinByTrap(G, ctx);
+        }
       },
     },
   },

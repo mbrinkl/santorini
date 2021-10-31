@@ -81,7 +81,6 @@ export const store: StoreModel = {
   playAgain: thunk(async (actions, payload, { injections }) => {
     const { nextMatchID } = await injections.lobbyApi.playAgain(payload);
     actions.setMatchID(nextMatchID);
-    console.log("next match id: ", nextMatchID);
   }),
 
   reset: action((state, payload) => initState),

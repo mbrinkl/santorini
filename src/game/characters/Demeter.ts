@@ -30,7 +30,6 @@ export class Demeter extends Mortal {
     char.buttonActive = false;
   
     // set game stage
-    G.canEndTurn = true;
     return 'end';
   }
 
