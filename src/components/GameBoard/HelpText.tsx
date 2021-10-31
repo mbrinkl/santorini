@@ -1,4 +1,3 @@
-import { match } from "assert";
 import { useBoardContext } from "./BoardContext";
 
 export const HelpText = () => {

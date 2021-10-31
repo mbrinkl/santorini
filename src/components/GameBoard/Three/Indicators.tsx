@@ -14,7 +14,7 @@ export const PlaceIndicator: React.FC<{ xPos: number, height: number, zPos: numb
     mesh.current.scale.y = scale;
   });
 
-  return <Ring name={`placeIndicator${xPos}${zPos}`}
+  return <Ring
     ref={mesh}
     args={[0.75, 1, 32]}
     position={[xPos, yMap[height] + 0.1, zPos]}
@@ -38,7 +38,7 @@ export const SelectIndicator: React.FC<{ xPos: number, height: number, zPos: num
   });
 
   return <>
-    <Cone name={`selectIndicatorHead${xPos}${zPos}`}
+    <Cone
       ref={headMesh}
       args={[1, 2]}
       rotation={[Math.PI, 0, 0]}
@@ -46,7 +46,7 @@ export const SelectIndicator: React.FC<{ xPos: number, height: number, zPos: num
       <meshStandardMaterial color='yellow' />
     </Cone>
 
-    <Cylinder name={`selectIndicatorTail${xPos}${zPos}`}
+    <Cylinder
       ref={tailMesh}
       args={[0.5, 0.5, 2]}
       position={[xPos, yMap[height] + 2, zPos]}
@@ -65,7 +65,7 @@ export const MoveIndicator: React.FC<{ xPos: number, height: number, zPos: numbe
     mesh.current.rotation.z -= (0.01);
   });
 
-  return <Ring name={`moveIndicator${xPos}${zPos}`}
+  return <Ring
     ref={mesh}
     args={[1, 2, 4]}
     position={[xPos, yMap[height] + 0.1, zPos]}
@@ -86,7 +86,7 @@ export const BuildIndicator: React.FC<{ xPos: number, height: number, zPos: numb
     mesh.current.position.y = pos;
   });
 
-  return <Box name={`buildIndicator${xPos}${zPos}`}
+  return <Box
     ref={mesh}
     args={[5, 0.5, 5]}
     position={[xPos, yMap[height] + 0.1, zPos]}

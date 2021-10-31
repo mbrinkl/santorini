@@ -26,10 +26,10 @@ export const Scene: React.FC<{ xPositions: number[], zPositions: number[] }> = (
     const b3: JSX.Element[] = [];
 
     for (var i = 0; i < 25; i++) {
-      g.push(<Ground xPos={xPositions[i]} zPos={zPositions[i]} />);
-      b1.push(<BuildingBase xPos={xPositions[i]} zPos={zPositions[i]} />);
-      b2.push(<BuildingMid xPos={xPositions[i]} zPos={zPositions[i]} />);
-      b3.push(<BuildingTop xPos={xPositions[i]} zPos={zPositions[i]} />);
+      g.push(<Ground key={`ground${i}`} xPos={xPositions[i]} zPos={zPositions[i]} />);
+      b1.push(<BuildingBase key={`buildingBase${i}`} xPos={xPositions[i]} zPos={zPositions[i]} />);
+      b2.push(<BuildingMid key={`buildingMid${i}`} xPos={xPositions[i]} zPos={zPositions[i]} />);
+      b3.push(<BuildingTop key={`buildingTop${i}`} xPos={xPositions[i]} zPos={zPositions[i]} />);
     }
 
     setGround(g);
@@ -84,65 +84,68 @@ export const Scene: React.FC<{ xPositions: number[], zPositions: number[] }> = (
 
   return (
     <>
-      <cubeCamera name="cubeCamera" ref={cubeCamera} position={[0, 0, 0]} args={[20, 50, renderTarget]} />
+      <cubeCamera ref={cubeCamera} position={[0, 0, 0]} args={[20, 50, renderTarget]} />
       <hemisphereLight args={['gray', 'black', 0.7]}  />
       <directionalLight args={['white', 0.7]} position={[0, 10, 0]}/>
 
       <group onPointerDown={onMeshClicked}>
 
-      {ground}
-      {State.players["0"].char.workers.map((worker) => (
-        <WorkerModel xPos={xPositions[worker.pos]}
-          zPos={zPositions[worker.pos]}
-          height={worker.height}
-          color={'dodgerblue'}
-        />
-      ))}
+        {ground}
+        
+        {State.players["0"].char.workers.map((worker, index) => (
+          <WorkerModel key={`workerModel0${index}`}
+            xPos={xPositions[worker.pos]}
+            zPos={zPositions[worker.pos]}
+            height={worker.height}
+            color={'dodgerblue'}
+          />
+        ))}
 
-      {State.players["1"].char.workers.map((worker) => (
-        <WorkerModel xPos={xPositions[worker.pos]}
-          zPos={zPositions[worker.pos]}
-          height={worker.height}
-          color={'grey'}
-        />
-      ))}
+        {State.players["1"].char.workers.map((worker, index) => (
+          <WorkerModel key={`workerModel1${index}`}
+            xPos={xPositions[worker.pos]}
+            zPos={zPositions[worker.pos]}
+            height={worker.height}
+            color={'grey'}
+          />
+        ))}
 
-      {State.spaces.map((space) => (
-        <>
-          {space.height >= 1 && buildingsLevel1[space.pos]}
-          {space.height >= 2 && buildingsLevel2[space.pos]}
-          {space.height >= 3 && buildingsLevel3[space.pos]}
-          {space.is_domed && (
-            <Dome
-              xPos={xPositions[space.pos]}
-              zPos={zPositions[space.pos]}
-              height={space.height}
-            />
-          )}
-        </>
-      ))}
+        {State.spaces.map((space) => (
+          <>
+            {space.height >= 1 && buildingsLevel1[space.pos]}
+            {space.height >= 2 && buildingsLevel2[space.pos]}
+            {space.height >= 3 && buildingsLevel3[space.pos]}
+            {space.is_domed && (
+              <Dome key={`dome${space.pos}`}
+                xPos={xPositions[space.pos]}
+                zPos={zPositions[space.pos]}
+                height={space.height}
+              />
+            )}
+          </>
+        ))}
 
-      {isActive &&
-        !ctx.gameover &&
-        State.valids.map((pos) =>
-          (ctx.activePlayers && ctx.activePlayers[ctx.currentPlayer]) === "place" ? (
-            <PlaceIndicator xPos={xPositions[pos]} height={State.spaces[pos].height} zPos={zPositions[pos]} />
-          ) : (ctx.activePlayers && ctx.activePlayers[ctx.currentPlayer]) === "select" ? (
-            <SelectIndicator xPos={xPositions[pos]} height={State.spaces[pos].height} zPos={zPositions[pos]} />
-          ) : (ctx.activePlayers && ctx.activePlayers[ctx.currentPlayer]) === "move" ? (
-            <MoveIndicator xPos={xPositions[pos]} height={State.spaces[pos].height} zPos={zPositions[pos]} />
-          ) : (ctx.activePlayers && ctx.activePlayers[ctx.currentPlayer]) === "build" ? (
-            <BuildIndicator xPos={xPositions[pos]} height={State.spaces[pos].height} zPos={zPositions[pos]} />
-          ) : (
-            // todo: special move indicator
-            <></>
+        {isActive &&
+          !ctx.gameover &&
+          State.valids.map((pos) =>
+            (ctx.activePlayers && ctx.activePlayers[ctx.currentPlayer]) === "place" ? (
+              <PlaceIndicator key={`placeIndicator${pos}`} xPos={xPositions[pos]} height={State.spaces[pos].height} zPos={zPositions[pos]} />
+            ) : (ctx.activePlayers && ctx.activePlayers[ctx.currentPlayer]) === "select" ? (
+              <SelectIndicator key={`selectIndicator${pos}`} xPos={xPositions[pos]} height={State.spaces[pos].height} zPos={zPositions[pos]} />
+            ) : (ctx.activePlayers && ctx.activePlayers[ctx.currentPlayer]) === "move" ? (
+              <MoveIndicator key={`moveIndicator${pos}`} xPos={xPositions[pos]} height={State.spaces[pos].height} zPos={zPositions[pos]} />
+            ) : (ctx.activePlayers && ctx.activePlayers[ctx.currentPlayer]) === "build" ? (
+              <BuildIndicator key={`bulidIndicator${pos}`} xPos={xPositions[pos]} height={State.spaces[pos].height} zPos={zPositions[pos]} />
+            ) : (
+              // todo: special move indicator
+              <></>
+            )
           )
-        )
-      }
+        }
 
       </group>
 
-      <OrbitControls enablePan={false} minDistance={30} maxDistance={30} minPolarAngle={0} maxPolarAngle={Math.PI / 3} />
+      <OrbitControls key="orbitControls" enablePan={false} minDistance={30} maxDistance={30} minPolarAngle={0} maxPolarAngle={Math.PI / 3} />
     </>
   );
 }

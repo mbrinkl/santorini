@@ -76,15 +76,15 @@ export const CharacterSelect = () => {
         className="charSelect__carousel"
       >
         {characterList.map((character) => (
-          <div>
-            <CharacterBox key={character} name={character} />
+          <div key={character}>
+            <CharacterBox name={character} />
           </div>
         ))}
       </Slider>
 
       <div className="charSelect__characters">
         {characterList.map((character) => (
-          <CharacterBox name={character} />
+          <CharacterBox key={character} name={character} />
         ))}
       </div>
 

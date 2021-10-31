@@ -8,7 +8,6 @@ export const WorkerModel: React.FC<{ xPos: number, zPos: number, height: number,
   return (
     <Sphere
       args={[1, 16]}
-      name={`workerModel${xPos}${zPos}`}
       position={[xPos, yPosHeightMap[height], zPos]}
     >
       <meshStandardMaterial name="mat" color={color} roughness={0.25}/>
