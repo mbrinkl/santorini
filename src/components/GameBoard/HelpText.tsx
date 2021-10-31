@@ -1,10 +1,11 @@
+import { match } from "assert";
 import { useBoardContext } from "./BoardContext";
 
 export const HelpText = () => {
-  const { State, isActive, ctx, playersInfo, playerID } = useBoardContext();
+  const { State, isActive, ctx, matchData, playerID } = useBoardContext();
   const stage = (ctx.activePlayers && ctx.activePlayers[ctx.currentPlayer]) || null;
 
-  const currentPlayerName = playersInfo.find(
+  const currentPlayerName = matchData?.find(
     (p) => String(p.id) === ctx.currentPlayer
   )?.name;
 

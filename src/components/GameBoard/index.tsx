@@ -29,7 +29,7 @@ export const GameBoard: React.FC<BoardProps<GameState>> = ({
   return(
     <BoardContext.Provider
       value={{
-        playerID,
+        playerID: playerID || '-1',
         moves,
         State,
         isActive,
@@ -37,7 +37,7 @@ export const GameBoard: React.FC<BoardProps<GameState>> = ({
         undo,
         sendChatMessage,
         chatMessages,
-        playersInfo: matchData,
+        matchData,
       }}
     >    
       {ctx.phase === 'selectCharacters' ? 
