@@ -15,7 +15,6 @@ export interface Player {
 }
 
 export interface GameState {
-  stage: string;
   spaces: Space[];
   players: { [key: string]: Player };
   valids: number[];
@@ -97,7 +96,6 @@ export const SantoriniGame = {
     const initialState: GameState = {
       players,
       spaces,
-      stage: "place",
       valids: allSpaces(),
     };
 
