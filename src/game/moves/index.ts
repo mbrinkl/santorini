@@ -1,14 +1,11 @@
 import { Ctx } from "boardgame.io";
 import { GameState, Player } from "../index";
-import { Worker, getCharacter } from "../characters";
+import { Worker, getCharacter, Character } from "../characters";
 import { Board } from "../space";
 
 export function updateValids(G: GameState, ctx: Ctx, player: Player, stage: string) {
   const currChar = player.char;
-  const char: any = getCharacter(currChar.name);
-  
-  // TODO: get stage from ctx if boardgame.io allows some way to get updated stage
-  // after a move
+  const char: Character = getCharacter(currChar.name);
 
   switch (stage) {
     case "place":
@@ -51,7 +48,7 @@ export const CharacterAbility = (G: GameState, ctx: Ctx) => {
   const currPlayer = G.players[ctx.currentPlayer];
   const currChar = currPlayer.char;
 
-  const char: any = getCharacter(currChar.name);
+  const char: Character = getCharacter(currChar.name);
 
   const stage = char.buttonPressed(G, ctx, currPlayer, currChar);
   ctx.events?.setStage(stage);
@@ -67,10 +64,10 @@ export function CheckWinByTrap(G: GameState, ctx: Ctx) {
   const nextPlayer = G.players[G.players[ctx.currentPlayer].opponentId];
   const currChar = nextPlayer.char;
 
-  const char: any = getCharacter(currChar.name);
+  const char: Character = getCharacter(currChar.name);
 
   if (!char.hasValidMoves(G, ctx, nextPlayer, currChar)) {
-    ctx.events!.endGame!({
+    ctx.events?.endGame!({
       winner: nextPlayer.opponentId
     })
   }
@@ -85,10 +82,10 @@ function CheckWinByMove(
   const currPlayer = G.players[ctx.currentPlayer];
   const currChar = currPlayer.char;
 
-  const char: any = getCharacter(currChar.name);
+  const char: Character = getCharacter(currChar.name);
 
   if (char.checkWinByMove(G, heightBefore, heightAfter)) {
-    ctx.events!.endGame!({
+    ctx.events?.endGame!({
       winner: ctx.currentPlayer
     })
   }
@@ -116,7 +113,7 @@ export function Place(G: GameState, ctx: Ctx, pos: number) {
 export function Select(G: GameState, ctx: Ctx, pos: number) {
   const currPlayer = G.players[ctx.currentPlayer];
   const currChar = currPlayer.char;
-  const char: any = getCharacter(currChar.name);
+  const char: Character = getCharacter(currChar.name);
 
   const stage = char.select(G, ctx, currPlayer, currChar, pos);
   ctx.events?.setStage(stage);
@@ -130,7 +127,7 @@ export function Move(G: GameState, ctx: Ctx, pos: number) {
 
   const before_height = currChar.workers[currChar.selectedWorker].height;
 
-  const char: any = getCharacter(currChar.name);
+  const char: Character = getCharacter(currChar.name);
 
   const stage = char.move(G, ctx, currPlayer, currChar, pos);
   ctx.events?.setStage(stage);
@@ -145,7 +142,7 @@ export function Build(G: GameState, ctx: Ctx, pos: number) {
   const currPlayer = G.players[ctx.currentPlayer];
   const currChar = currPlayer.char;
 
-  const char: any = getCharacter(currChar.name);
+  const char: Character = getCharacter(currChar.name);
 
   const stage = char.build(G, ctx, currPlayer, currChar, pos);
   ctx.events?.setStage(stage);

@@ -1,23 +1,25 @@
 import { Ctx } from "boardgame.io";
 import { getAdjacentPositions, getNextPosition } from '../utility'
-import { Character } from ".";
+import { Character, CharacterState } from ".";
 import { Mortal } from "./Mortal";
 import { GameState, Player } from '../index'
 import { Board } from '../space'
 
-export class Minotaur extends Mortal {
+export const Minotaur : Character = {
   
-  public static desc = `Your Move: Your Worker may move into an opponent Worker’s space, 
+  ...Mortal,
+  name: 'Minotaur',
+  desc: `Your Move: Your Worker may move into an opponent Worker’s space, 
     if their Worker can be forced one space straight backwards to an 
-    unoccupied space at any level.`;
+    unoccupied space at any level.`,
 
-  public static validMove(
+  validMove: (
     G: GameState,
     ctx: Ctx,
     player: Player,
-    char: Character,
+    char: CharacterState,
     originalPos: number
-  ) : number[] {
+  ) => {
 
     let adjacents : number[] = getAdjacentPositions(originalPos);
     let valids : number[] = []
@@ -32,7 +34,7 @@ export class Minotaur extends Mortal {
         else if (G.spaces[pos].inhabitant.playerId !== player.id) {
           let posToPush = getNextPosition(originalPos, pos);
           let opponent = G.players[player.opponentId];
-          if ( super.validMove(G, ctx, opponent, opponent.char, pos).includes(posToPush)) {
+          if (Mortal.validMove(G, ctx, opponent, opponent.char, pos).includes(posToPush)) {
             valids.push(pos);
           }
         }
@@ -40,15 +42,15 @@ export class Minotaur extends Mortal {
     })
   
     return valids;
-  }
+  },
 
-  public static move (
+  move: (
     G: GameState, 
     ctx: Ctx,
     player: Player,
-    char: Character, 
+    char: CharacterState, 
     pos: number
-  ) : string {
+  ) => {
 
     let posToPush = getNextPosition(char.workers[char.selectedWorker].pos, pos);
 
@@ -60,5 +62,5 @@ export class Minotaur extends Mortal {
     Board.place(G, pos, player.id, char.selectedWorker);
 
     return "build"
-  }
+  },
 }

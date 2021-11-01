@@ -1,12 +1,14 @@
 import { Mortal } from './Mortal';
 import { GameState } from '../index'
+import { Character } from '.';
 
-export class Pegasus extends Mortal {
-  
-  public static desc = `Your Move: Your Worker may move up more than one level, but cannot win the game by doing so.`;
-  public static moveUpHeight = 3;
+export const Pegasus: Character = {
+  ...Mortal,
+  name: 'Pegasus',
+  desc: `Your Move: Your Worker may move up more than one level, but cannot win the game by doing so.`,
+  moveUpHeight: 3,
 
-  public static checkWinByMove(G: GameState, heightBefore: number, heightAfter: number) : boolean {
+  checkWinByMove: (G: GameState, heightBefore: number, heightAfter: number) => {
     return (heightBefore === 2 && heightAfter === 3)
-  }
+  },
 }

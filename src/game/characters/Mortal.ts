@@ -1,66 +1,71 @@
 import { GameState, Player } from "../../game";
 import { Ctx } from "boardgame.io";
-import { Character } from ".";
+import { Character, CharacterState } from ".";
 import { getAdjacentPositions } from "../utility";
 import { Board } from '../space'
 
-export class Mortal {
-  public static desc = "No ability";
-  public static buttonText = "No ability";
-  public static buttonActive = false;
-  public static numWorkers = 2;
-  public static moveUpHeight = 1;
-  public static attrs: any = undefined;
+export const Mortal : Character = {
 
-  public static onTurnBegin(
+  name: "Mortal",
+  workers: [],
+  desc: "No ability",
+  buttonText: "No ability",
+  buttonActive: false,
+  numWorkers: 2,
+  numWorkersToPlace: 2,
+  selectedWorker: -1,
+  moveUpHeight: 1,
+  attrs: undefined,
+
+  onTurnBegin : (
     G: GameState,
     ctx: Ctx,
     player: Player,
-    char: Character
-  ): void {}
+    char: CharacterState
+  ) => {},
 
-  public static onTurnEnd(
+  onTurnEnd : (
     G: GameState,
     ctx: Ctx,
     player: Player,
-    char: Character
-  ): void {}
+    char: CharacterState
+  ) => {},
 
-  public static validSelect(
+  validSelect : (
     G: GameState,
     ctx: Ctx,
     player: Player,
-    char: Character
-  ): number[] {
+    char: CharacterState
+  ) => {
     let valids: number[] = [];
 
     char.workers.forEach((worker) => {
-      if (this.validMove(G, ctx, player, char, worker.pos).length > 0) {
+      if (Mortal.validMove(G, ctx, player, char, worker.pos).length > 0) {
         valids.push(worker.pos);
       }
     });
 
     return valids;
-  }
+  },
 
-  public static select(
+  select : (
     G: GameState,
     ctx: Ctx,
     player: Player,
-    char: Character,
+    char: CharacterState,
     pos: number
-  ): string {
+  ) => {
     char.selectedWorker = G.spaces[pos].inhabitant.workerNum;
     return "move";
-  }
+  },
 
-  public static validMove(
+  validMove : (
     G: GameState,
     ctx: Ctx,
     player: Player,
-    char: Character,
+    char: CharacterState,
     originalPos: number
-  ): number[] {
+  ) => {
     let adjacents: number[] = getAdjacentPositions(originalPos);
     let valids: number[] = [];
 
@@ -75,31 +80,31 @@ export class Mortal {
     });
 
     return valids;
-  }
+  },
 
-  public static hasValidMoves(
+  hasValidMoves : (
     G: GameState,
     ctx: Ctx,
     player: Player,
-    char: Character
-  ): boolean {
+    char: CharacterState
+  ) => {
     let hasMove: boolean = false;
     char.workers.forEach((worker) => {
-      if (this.validMove(G, ctx, player, char, worker.pos).length > 0) {
+      if (Mortal.validMove(G, ctx, player, char, worker.pos).length > 0) {
         hasMove = true;
       }
     });
 
     return hasMove;
-  }
+  },
 
-  public static move(
+  move : (
     G: GameState,
     ctx: Ctx,
     player: Player,
-    char: Character,
+    char: CharacterState,
     pos: number
-  ): string {
+  ) => {
     // free the space that is being moved from
     Board.free(G, char.workers[char.selectedWorker].pos);
 
@@ -107,15 +112,15 @@ export class Mortal {
     Board.place(G, pos, player.id, char.selectedWorker);
 
     return "build";
-  }
+  },
 
-  public static validBuild(
+  validBuild : (
     G: GameState,
     ctx: Ctx,
     player: Player,
-    char: Character,
+    char: CharacterState,
     originalPos: number
-  ): number[] {
+  ) => {
     let adjacents: number[] = getAdjacentPositions(originalPos);
     let valids: number[] = [];
 
@@ -126,50 +131,50 @@ export class Mortal {
     });
 
     return valids;
-  }
+  },
 
-  public static hasValidBuild(
+  hasValidBuild : (
     G: GameState,
     ctx: Ctx,
     player: Player,
-    char: Character
-  ): boolean {
+    char: CharacterState
+  ) => {
     let hasBuild = false;
 
     char.workers.forEach((worker) => {
-      if (this.validBuild(G, ctx, player, char, worker.pos).length > 0) {
+      if (Mortal.validBuild(G, ctx, player, char, worker.pos).length > 0) {
         hasBuild = true;
       }
     });
 
     return hasBuild;
-  }
+  },
 
-  public static build(
+  build : (
     G: GameState,
     ctx: Ctx,
     player: Player,
-    char: Character,
+    char: CharacterState,
     pos: number
-  ): string {
+  ) => {
     Board.build(G, pos);
     return "end";
-  }
+  },
 
-  public static buttonPressed(
+  buttonPressed : (
     G: GameState,
     ctx: Ctx,
     player: Player,
-    char: Character
-  ): string {
+    char: CharacterState
+  ) => {
     return ctx.activePlayers![ctx.currentPlayer];
-  }
+  },
 
-  public static checkWinByMove(
+  checkWinByMove : (
     G: GameState,
     heightBefore: number,
     heightAfter: number
-  ): boolean {
+  ) => {
     return heightBefore < 3 && heightAfter === 3;
-  }
-}
+  },
+};

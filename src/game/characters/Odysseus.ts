@@ -1,73 +1,74 @@
 import { getAdjacentPositions } from '../utility';
-import { Character } from ".";
+import { Character, CharacterState } from ".";
 import { Mortal } from "./Mortal";
 import { GameState, Player } from '../index'
 import { Board } from '../space'
 import { Ctx } from 'boardgame.io';
 
-interface attrsType {
-  specialActive: boolean,
-  specialUsed: boolean,
-  movingOpponent: boolean,
-  workerToMovePos: number
+// interface attrsType {
+//   specialActive: boolean,
+//   specialUsed: boolean,
+//   movingOpponent: boolean,
+//   workerToMovePos: number
+// }
+
+const checkForValidSpecial = (
+  G: GameState, 
+  ctx: Ctx,
+  player: Player, 
+  char: CharacterState
+) => {
+  char.attrs.specialActive = true;
+  let returnValue = false;
+
+  if (char.selectedWorker !== -1) {
+    const worker = char.workers[char.selectedWorker];
+    if (Mortal.validMove(G, ctx, player, char, worker.pos).length > 0) {
+      returnValue = true;
+    }
+  }
+  else {
+    char.workers.forEach(worker => {
+      if (Mortal.validMove(G, ctx, player, char, worker.pos).length > 0) {
+        returnValue = true;
+      }
+    })
+  }
+
+  char.attrs.specialActive = false
+  return returnValue;
 }
 
-export class Odysseus extends Mortal {
-
-  public static desc = `Start of Your Turn: Once, force to unoccupied corner spaces any 
-    number of opponent Workers that neighbor your Workers.`;
-  public static buttonText = 'Move Opponent';
-  public static attrs: attrsType = {
+export const Odysseus: Character = {
+  ...Mortal,
+  name: 'Odysseus',
+  desc: `Start of Your Turn: Once, force to unoccupied corner spaces any 
+    number of opponent Workers that neighbor your Workers.`,
+  buttonText: 'Move Opponent',
+  attrs: {
     specialActive: false,
     specialUsed: false,
     movingOpponent: false,
     workerToMovePos: -1
-  };
+  },
 
-  public static onTurnBegin(
+  onTurnBegin: (
     G: GameState, 
     ctx: Ctx,
     player: Player, 
-    char: Character
-  ) : void {
+    char: CharacterState
+  ) => {
     if (!char.attrs.specialUsed) {
-      char.buttonActive = this.checkForValidSpecial(G, ctx, player, char);
+      char.buttonActive = checkForValidSpecial(G, ctx, player, char);
     }
-  }
+  },
 
-  private static checkForValidSpecial(
-    G: GameState, 
-    ctx: Ctx,
-    player: Player, 
-    char: Character
-  ) : boolean {
-    char.attrs.specialActive = true;
-    let returnValue = false;
-
-    if (char.selectedWorker !== -1) {
-      const worker = char.workers[char.selectedWorker];
-      if (this.validMove(G, ctx, player, char, worker.pos).length > 0) {
-        returnValue = true;
-      }
-    }
-    else {
-      char.workers.forEach(worker => {
-        if (this.validMove(G, ctx, player, char, worker.pos).length > 0) {
-          returnValue = true;
-        }
-      })
-    }
-
-    char.attrs.specialActive = false
-    return returnValue;
-  }
-
-  public static buttonPressed(
+  buttonPressed: (
     G: GameState,
     ctx: Ctx,
     player: Player,
-    char: Character
-  ) : string {
+    char: CharacterState
+  ) => {
     char.attrs.specialActive = !char.attrs.specialActive;
 
     if (char.attrs.specialUsed) {
@@ -82,15 +83,15 @@ export class Odysseus extends Mortal {
       char.buttonText = 'Move Opponent';
     }
 
-    return super.buttonPressed(G, ctx, player, char);
-  }
+    return Mortal.buttonPressed(G, ctx, player, char);
+  },
 
     
-  public static validMove(
+  validMove(
     G: GameState, 
     ctx: Ctx,
     player: Player, 
-    char: Character,
+    char: CharacterState,
     originalPos: number
   ) : number[] {
 
@@ -119,17 +120,17 @@ export class Odysseus extends Mortal {
       return valids;
     }
     else {
-      return super.validMove(G, ctx, player, char, originalPos);
+      return Mortal.validMove(G, ctx, player, char, originalPos);
     }
-  }
+  },
 
-  public static move (
+  move: (
     G: GameState, 
     ctx: Ctx,
     player: Player, 
-    char: Character, 
+    char: CharacterState, 
     pos: number
-  ) : string {
+  ) => {
 
     if (char.attrs.specialActive) {
       char.attrs.specialUsed = true;
@@ -146,7 +147,7 @@ export class Odysseus extends Mortal {
         Board.free(G, char.attrs.workerToMovePos);
         Board.place(G, pos, player.opponentId, oppWorkerNum);
 
-        if (!this.checkForValidSpecial(G, ctx, player, char)) {
+        if (!checkForValidSpecial(G, ctx, player, char)) {
           char.attrs.specialActive = false;
           char.buttonText = 'Move Opponent';
           char.buttonActive = false;
@@ -161,7 +162,7 @@ export class Odysseus extends Mortal {
     else {
       char.buttonActive = false;
       char.attrs.specialActive = false;
-      return super.move(G, ctx, player, char, pos);
+      return Mortal.move(G, ctx, player, char, pos);
     }
-  }
+  },
 }

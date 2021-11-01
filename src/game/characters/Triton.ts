@@ -1,22 +1,23 @@
-import { Character } from ".";
+import { Character, CharacterState } from ".";
 import { Mortal } from "./Mortal";
 import { Ctx } from 'boardgame.io';
 import { Board } from '../space'
 import { posIsPerimeter } from '../utility';
 import { GameState, Player } from '../index'
 
-export class Triton extends Mortal {
-  
-  public static desc = `Your Move: Each time your Worker moves into a perimeter space, it may immediately move again.`;
-  public static buttonText = 'End Move';
+export const Triton: Character = {
+  ...Mortal,
+  name: 'Triton',
+  desc: `Your Move: Each time your Worker moves into a perimeter space, it may immediately move again.`,
+  buttonText: 'End Move',
 
-  public static move (
-    G: GameState, 
+  move: (
+    G: GameState,
     ctx: Ctx,
     player: Player,
-    char: Character, 
+    char: CharacterState,
     pos: number
-  ) : string {
+  ) => {
 
     let returnStage = 'build';
 
@@ -35,15 +36,15 @@ export class Triton extends Mortal {
     Board.place(G, pos, player.id, char.selectedWorker);
 
     return returnStage;
-  }
+  },
 
-  public static buttonPressed(
-    G: GameState, 
+  buttonPressed: (
+    G: GameState,
     ctx: Ctx,
     player: Player,
-    char: Character
-  ) : string {
+    char: CharacterState
+  ) => {
     char.buttonActive = false;
     return 'build';
-  }
+  },
 }

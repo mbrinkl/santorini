@@ -17,6 +17,8 @@ import { Heracles } from "./Heracles";
 import { Odysseus } from "./Odysseus";
 import { Iris } from "./Iris";
 import { Pegasus } from "./Pegasus";
+import { GameState, Player } from "../../game";
+import { Ctx } from "boardgame.io";
 
 export const characterList: string[] = [
   "Random",
@@ -105,7 +107,7 @@ export interface Worker {
   height: number;
 }
 
-export interface Character {
+export interface CharacterState {
   name: string;
   desc: string;
   workers: Worker[];
@@ -118,70 +120,45 @@ export interface Character {
   attrs: any;
 }
 
-export function getCharacter(name: string): any {
+export interface Character extends CharacterState {
+  onTurnBegin: (G: GameState, ctx: Ctx, player: Player, char: CharacterState) => void,
+  onTurnEnd: (G: GameState, ctx: Ctx, player: Player, char: CharacterState) => void,
+  validSelect: (G: GameState, ctx: Ctx, player: Player, char: CharacterState) => number[],
+  select: (G: GameState, ctx: Ctx, player: Player, char: CharacterState, pos: number) => string,
+  validMove: (G: GameState, ctx: Ctx, player: Player, char: CharacterState, originalPos: number) => number[],
+  hasValidMoves: (G: GameState, ctx: Ctx, player: Player, char: CharacterState) => boolean,
+  move: (G: GameState, ctx: Ctx, player: Player, char: CharacterState, pos: number) => string,
+  validBuild: (G: GameState, ctx: Ctx, player: Player, char: CharacterState, originalPos: number) => number[],
+  hasValidBuild: (G: GameState, ctx: Ctx, player: Player, char: CharacterState) => boolean,
+  build: (G: GameState, ctx: Ctx, player: Player, char: CharacterState, pos: number) => string,
+  buttonPressed: (G: GameState, ctx: Ctx, player: Player, char: CharacterState) => string,
+  checkWinByMove: (G: GameState, heightBefore: number, heightAfter: number) => boolean,
+};
+
+export function getCharacter(name: string): Character {
   let char: any;
 
   switch (name) {
-    case "Mortal":
-      char = Mortal;
-      break;
-    case "Apollo":
-      char = Apollo;
-      break;
-    case "Artemis":
-      char = Artemis;
-      break;
-    case "Athena":
-      char = Athena;
-      break;
-    case "Atlas":
-      char = Atlas;
-      break;
-    case "Demeter":
-      char = Demeter;
-      break;
-    case "Hephaestus":
-      char = Hephaestus;
-      break;
-    case "Hermes":
-      char = Hermes;
-      break;
-    case "Minotaur":
-      char = Minotaur;
-      break;
-    case "Pan":
-      char = Pan;
-      break;
-    case "Prometheus":
-      char = Prometheus;
-      break;
-    case "Bia":
-      char = Bia;
-      break;
-    case "Triton":
-      char = Triton;
-      break;
-    case "Zeus":
-      char = Zeus;
-      break;
-    case "Graeae":
-      char = Graeae;
-      break;
-    case "Heracles":
-      char = Heracles;
-      break;
-    case "Odysseus":
-      char = Odysseus;
-      break;
-    case "Iris":
-      char = Iris;
-      break;
-    case "Pegasus":
-      char = Pegasus;
-      break;
-    default:
-      char = Mortal;
-      break;
+    case "Mortal": char = Mortal; break;
+    case "Apollo": char = Apollo; break;
+    case "Artemis": char = Artemis; break;
+    case "Athena": char = Athena; break;
+    case "Atlas": char = Atlas; break;
+    case "Demeter": char = Demeter; break;
+    case "Hephaestus": char = Hephaestus; break;
+    case "Hermes": char = Hermes; break;
+    case "Minotaur": char = Minotaur; break;
+    case "Pan": char = Pan; break;
+    case "Prometheus": char = Prometheus; break;
+    case "Bia": char = Bia; break;
+    case "Triton": char = Triton; break;
+    case "Zeus": char = Zeus; break;
+    case "Graeae": char = Graeae; break;
+    case "Heracles": char = Heracles; break;
+    case "Odysseus": char = Odysseus; break;
+    case "Iris": char = Iris; break;
+    case "Pegasus": char = Pegasus; break;
+    default: char = Mortal; break;
   }
 
   return char;

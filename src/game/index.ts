@@ -4,39 +4,42 @@ import { GAME_ID } from "../config";
 import { Space } from "./space";
 import { EndTurn, CharacterAbility, Move, Select, Build, Place, updateValids, CheckWinByTrap } from "./moves";
 import { allSpaces } from "./utility";
-import { characterList, Character, getCharacter } from "./characters";
+import { characterList, getCharacter, CharacterState, Character } from "./characters";
 import { SetChar, Ready, CancelReady } from "./moves/charSelectMoves";
+
+type playerIDs = '0' | '1';
 
 export interface Player {
   id: string;
   opponentId: string;
   ready: boolean;
-  char: Character;
+  char: CharacterState;
 }
 
 export interface GameState {
   spaces: Space[];
-  players: { [key: string]: Player };
+  players: Record<playerIDs, Player>
   valids: number[];
 }
 
-export function initCharacter(name: string): Character {
-  const char: any = getCharacter(name);
+export function initCharacter(characterName: string): CharacterState {
+  const character: Character = getCharacter(characterName);
 
-  const character: Character = {
+  const { name, desc, buttonActive, buttonText, moveUpHeight, workers, 
+    numWorkers, numWorkersToPlace, selectedWorker, attrs } = character;
+
+  return {
     name: name,
-    desc: char.desc,
-    buttonActive: char.buttonActive,
-    buttonText: char.buttonText,
-    moveUpHeight: char.moveUpHeight,
-    workers: [],
-    numWorkers: char.numWorkers,
-    numWorkersToPlace: char.numWorkers,
-    selectedWorker: -1,
-    attrs: char.attrs,
+    desc: desc,
+    buttonActive: buttonActive,
+    buttonText: buttonText,
+    moveUpHeight: moveUpHeight,
+    workers: workers,
+    numWorkers: numWorkers,
+    numWorkersToPlace: numWorkersToPlace,
+    selectedWorker: selectedWorker,
+    attrs: attrs,
   };
-
-  return character;
 }
 
 function setRandomCharacters(G: GameState, ctx: Ctx) {

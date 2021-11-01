@@ -1,51 +1,52 @@
-import { Character } from ".";
+import { Character, CharacterState } from ".";
 import { Mortal } from "./Mortal";
 import { getAdjacentPositions } from '../utility'
 import { GameState, Player } from '../index'
 import { Board } from '../space'
 import { Ctx } from 'boardgame.io';
 
-interface attrsType {
-  numBuilds: number,
-  firstBuildPos: number,
-}
+// interface attrsType {
+//   numBuilds: number,
+//   firstBuildPos: number,
+// }
 
-export class Hephaestus extends Mortal {
-
-  public static desc = `Your Build: Your Worker may build one additional block (not dome) on top of your first block.`;
-  public static buttonText = 'Skip 2nd Build';
-  public static attrs: attrsType = {
+export const Hephaestus: Character = {
+  ...Mortal,
+  name: 'Hephaestus',
+  desc: `Your Build: Your Worker may build one additional block (not dome) on top of your first block.`,
+  buttonText: 'Skip 2nd Build',
+  attrs: {
     numBuilds: 0,
     firstBuildPos: -1,
-  };
+  },
 
-  public static buttonPressed(
-    G: GameState, 
+  buttonPressed: (
+    G: GameState,
     ctx: Ctx,
     player: Player,
-    char: Character
-  ) : string {
+    char: CharacterState
+  ) => {
     // reset stuff
     char.attrs.numBuilds = 0;
     char.buttonActive = false;
-  
+
     // set game stage
     return 'end';
-  }
+  },
 
 
-  public static validBuild(
-    G: GameState, 
+  validBuild: (
+    G: GameState,
     ctx: Ctx,
-    player: Player, 
-    char: Character,
+    player: Player,
+    char: CharacterState,
     originalPos: number
-  ) : number[] {
-    let adjacents : number[] = getAdjacentPositions(originalPos);
-    let valids : number[] = []
-  
+  ) => {
+    let adjacents: number[] = getAdjacentPositions(originalPos);
+    let valids: number[] = []
+
     if (char.attrs.numBuilds === 0) {
-      adjacents.forEach( pos => {
+      adjacents.forEach(pos => {
         if (!G.spaces[pos].inhabited && !G.spaces[pos].is_domed) {
           valids.push(pos);
         }
@@ -54,22 +55,22 @@ export class Hephaestus extends Mortal {
     else {
       valids.push(char.attrs.firstBuildPos);
     }
-  
-    return valids;
-  }
 
-  public static build (
+    return valids;
+  },
+
+  build: (
     G: GameState,
     ctx: Ctx,
-    player: Player, 
-    char: Character,
+    player: Player,
+    char: CharacterState,
     pos: number
-  ) : string { 
+  ) => {
 
     char.attrs.numBuilds++;
 
     if (char.attrs.numBuilds === 1) {
-      
+
       Board.build(G, pos);
 
       if (G.spaces[pos].height > 2) {

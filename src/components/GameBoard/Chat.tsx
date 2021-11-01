@@ -61,7 +61,7 @@ export const Chat: React.FC<{onCloseMessages? : () => void | null}> = ({onCloseM
           onChange={(e) => setMessage(e.target.value)}
           value={message}
           placeholder='Enter your message...' />
-        <button className="sendBtn" onClick={send}><img className="sendImg" src={sendIcon} /></button>
+        <button className="sendBtn" onClick={send}><img className="sendImg" src={sendIcon} alt="send" /></button>
         {isMobile() && <button className="closeBtn" onClick={close}>Close</button>}
       </form>
     </div>

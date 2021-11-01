@@ -1,45 +1,46 @@
 import { union } from "lodash"
 import { Ctx } from "boardgame.io";
 import { getAdjacentPositions } from '../utility'
-import { Character } from ".";
+import { Character, CharacterState } from ".";
 import { Mortal } from "./Mortal";
 import { GameState, Player } from '../index'
 import { Board } from '../space'
 
-interface attrsType {
-  movedUpOrDown: boolean,
-  isMoving: boolean,
-  canMoveUp: boolean
-}
+// interface attrsType {
+//   movedUpOrDown: boolean,
+//   isMoving: boolean,
+//   canMoveUp: boolean
+// }
 
-export class Hermes extends Mortal {
-  
-  public static desc = `Your Turn: If your Workers do not move up or down, they may 
-    each move any number of times (even zero), and then either builds`;
-  public static buttonText = 'End Move'
+export const Hermes: Character = {
+  ...Mortal,
+  name: 'Hermes',
+  desc: `Your Turn: If your Workers do not move up or down, they may 
+    each move any number of times (even zero), and then either builds`,
+  buttonText: 'End Move',
 
-  public static attrs: attrsType = {
+  attrs: {
     movedUpOrDown: false,
     isMoving: false,
     canMoveUp: true
-  };
+  },
 
-  public static onTurnBegin(
+  onTurnBegin: (
     G: GameState, 
     ctx: Ctx,
     player: Player, 
-    char: Character
-  ) : void {
+    char: CharacterState
+  ) => {
     char.buttonActive = true;
-  }
+  },
 
-  public static validMove(
+  validMove: (
     G: GameState,
     ctx: Ctx,
     player: Player,
-    char: Character,
+    char: CharacterState,
     originalPos: number
-  ) : number[] {
+  ) => {
 
     let adjacents : number[] = getAdjacentPositions(originalPos);
     let valids : number[] = []
@@ -64,15 +65,15 @@ export class Hermes extends Mortal {
     }
   
     return valids;
-  }
+  },
 
-  public static move (
+  move: (
     G: GameState, 
     ctx: Ctx,
     player: Player,
-    char: Character, 
+    char: CharacterState, 
     pos: number
-  ) : string {
+  ) => {
 
     let returnStage = 'build';
 
@@ -94,15 +95,15 @@ export class Hermes extends Mortal {
     Board.place(G, pos, player.id, char.selectedWorker);
 
     return returnStage;
-  }
+  },
 
-  public static validBuild(
+  validBuild: (
     G: GameState, 
     ctx: Ctx,
     player: Player, 
-    char: Character,
+    char: CharacterState,
     originalPos: number
-  ) : number[] {
+  ) => {
     let valids : number[] = []
     let adjacents : number[] = [];
     
@@ -126,15 +127,15 @@ export class Hermes extends Mortal {
     })
 
     return valids;
-  }
+  },
 
-  public static build (
+  build: (
     G: GameState,
     ctx: Ctx,
     player: Player, 
-    char: Character,
+    char: CharacterState,
     pos: number
-  ) : string {
+  ) => {
 
     char.attrs.isMoving = false;
     char.attrs.canMoveUp = true;
@@ -142,14 +143,14 @@ export class Hermes extends Mortal {
 
     Board.build(G, pos);
     return 'end'
-  }
+  },
 
-  public static buttonPressed(
+  buttonPressed: (
     G: GameState, 
     ctx: Ctx,
     player: Player,
-    char: Character
-  ) : string {
+    char: CharacterState
+  ) => {
 
     if (char.attrs.isMoving) {
       char.attrs.isMoving = false;
@@ -166,6 +167,6 @@ export class Hermes extends Mortal {
       return 'build';
     }
 
-    return super.buttonPressed(G, ctx, player, char);
-  }
+    return Mortal.buttonPressed(G, ctx, player, char);
+  },
 }
