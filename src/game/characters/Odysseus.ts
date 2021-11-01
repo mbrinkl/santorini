@@ -23,13 +23,13 @@ const checkForValidSpecial = (
 
   if (char.selectedWorker !== -1) {
     const worker = char.workers[char.selectedWorker];
-    if (Mortal.validMove(G, ctx, player, char, worker.pos).length > 0) {
+    if (Odysseus.validMove(G, ctx, player, char, worker.pos).length > 0) {
       returnValue = true;
     }
   }
   else {
     char.workers.forEach(worker => {
-      if (Mortal.validMove(G, ctx, player, char, worker.pos).length > 0) {
+      if (Odysseus.validMove(G, ctx, player, char, worker.pos).length > 0) {
         returnValue = true;
       }
     })
@@ -148,12 +148,16 @@ export const Odysseus: Character = {
         Board.place(G, pos, player.opponentId, oppWorkerNum);
 
         if (!checkForValidSpecial(G, ctx, player, char)) {
+
+          console.log('NO VALID SPEC')
+
           char.attrs.specialActive = false;
           char.buttonText = 'Move Opponent';
           char.buttonActive = false;
         }
         else {
           char.attrs.specialActive = true;
+          console.log('VALID SPECIAL STILL BOYS')
         }
 
         return 'move';
