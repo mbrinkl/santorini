@@ -9,7 +9,7 @@ import { isMobile } from "utility";
 import classNames from "classnames";
 
 export const PlayerControls: React.FC<{ messagesOpen? : boolean, onOpenMessages? : () => void}> = ({messagesOpen, onOpenMessages}) => {
-  const { playerID, State, isActive, moves, ctx, undo, chatMessages } = useBoardContext();
+  const { playerID, State, isActive, moves, ctx, undo, chatMessages, sendChatMessage } = useBoardContext();
 
   const { id } = useParams<{ id: string }>();
   const activeRoomPlayer = useStoreState((s) => s.activeRoomPlayer);
@@ -72,6 +72,7 @@ export const PlayerControls: React.FC<{ messagesOpen? : boolean, onOpenMessages?
   }
 
   const rematch = () => {
+    sendChatMessage('wants to rematch...');
     playAgain({ matchID: id, playerID: activeRoomPlayer!.playerID, credential: activeRoomPlayer!.credential});
     setRedirect(true);
   }
