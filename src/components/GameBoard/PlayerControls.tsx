@@ -11,32 +11,29 @@ import classNames from "classnames";
 export const PlayerControls: React.FC<{ messagesOpen? : boolean, onOpenMessages? : () => void}> = ({messagesOpen, onOpenMessages}) => {
   const { playerID, State, isActive, moves, ctx, undo, chatMessages } = useBoardContext();
 
+  const { id } = useParams<{ id: string }>();
+  const activeRoomPlayer = useStoreState((s) => s.activeRoomPlayer);
+  const matchID = useStoreState((s) => s.matchID);
+  const playAgain = useStoreActions((s) => s.playAgain);
+  const [redirect, setRedirect] = useState(false);
+  const [msgBlack, setMsgBlack] = useState(false);
   const [counter, setCounter] = useState(3);
-  
   let intervalID: any = useRef(null); 
   let intervalMsgID: any = useRef(null); 
 
-  const { id } = useParams<{ id: string }>();
-  const playAgain = useStoreActions((s) => s.playAgain);
-  const activeRoomPlayer = useStoreState((s) => s.activeRoomPlayer);
-  const [redirect, setRedirect] = useState(false);
-  const matchID = useStoreState((s) => s.matchID);
-
-  const [msgBlack, setMsgBlack] = useState(false);
+  useEffect(() => {
+    clearInterval(intervalMsgID.current);
+    setMsgBlack(false);
+  }, [messagesOpen]);
 
   useEffect(() => {
-    if (messagesOpen) {
-      clearInterval(intervalMsgID.current);
-      setMsgBlack(false);
-    }
-    else if (chatMessages.length > 0) {
+    if (chatMessages.length > 0) {
       intervalMsgID.current = setInterval(() => { 
         setMsgBlack(prev => !prev);
       }, 1000);
     }
-
     return () => clearInterval(intervalMsgID.current);
-  }, [chatMessages, messagesOpen]);
+  }, [chatMessages]);
 
   useEffect(() => {
     if (redirect && matchID && matchID !== id) {

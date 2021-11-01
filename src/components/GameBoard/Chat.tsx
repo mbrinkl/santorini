@@ -2,6 +2,7 @@ import { useStoreState } from "store";
 import { useBoardContext } from "./BoardContext";
 import { useEffect, useRef, useState } from "react";
 import { isMobile } from "utility";
+import sendIcon from "../../assets/png/send.png";
 
 export const ChatMessage: React.FC<{ sender: string, message: string }> = ({ sender, message }) => {
   
@@ -19,6 +20,7 @@ export const Chat: React.FC<{onCloseMessages? : () => void | null}> = ({onCloseM
   const {chatMessages, sendChatMessage} = useBoardContext();
   const [message, setMessage] = useState('');
   const messagesEndRef : any = useRef(null);
+  const inputRef : any = useRef(null);
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -26,6 +28,11 @@ export const Chat: React.FC<{onCloseMessages? : () => void | null}> = ({onCloseM
 
   const send = (e) => {
     e.preventDefault();
+
+    if (isMobile()) {
+      inputRef.current.blur();
+    }
+
     if (message !== '') {
       sendChatMessage(message);
       setMessage('');
@@ -41,7 +48,8 @@ export const Chat: React.FC<{onCloseMessages? : () => void | null}> = ({onCloseM
   return (
     <div className='chat'>
       <div className='messages'>
-        <p className='chatWarning'>CHAT MESSAGES ARE NOT SAVED</p>
+        <p className='chatWarning'>Chat messages are not stored on the server and will only be received 
+          by connected players.</p>
         {chatMessages.map((message) => (
           <ChatMessage key={message.id} sender={message.sender} message={message.payload}/>
           ))}
@@ -49,12 +57,12 @@ export const Chat: React.FC<{onCloseMessages? : () => void | null}> = ({onCloseM
       </div>
 
       <form className='chatControls' onSubmit={send}>
-        <input
+        <input ref={inputRef}
           onChange={(e) => setMessage(e.target.value)}
           value={message}
           placeholder='Enter your message...' />
-        <button onClick={send}>send</button>
-        {isMobile() && <button onClick={close}>close</button>}
+        <button className="sendBtn" onClick={send}><img className="sendImg" src={sendIcon} /></button>
+        {isMobile() && <button className="closeBtn" onClick={close}>Close</button>}
       </form>
     </div>
   );
