@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useBoardContext } from "./BoardContext";
 import { useStoreState } from "../../store";
 import "./style.scss";
+import { ConnectedIndicator } from "./ConnectedIndicator";
 
 export const PlayerInfoMobile = () => {
   const { playerID, State } = useBoardContext();
@@ -40,6 +41,7 @@ export const PlayerInfoMobile = () => {
       <div className="PlayerInfoMobile__P1Name" onClick={toggleOverlay}>
         <h2>{roomMetadata?.players[0].name + (playerID === '0' ? ' (you)' : '')}</h2>
         <span>{State.players[0].char.name}</span>
+        <ConnectedIndicator playerID={0} />
       </div>
       <div className="PlayerInfoMobile__P2QuestionMark" onClick={toggleOverlay}>
         <span>&nbsp;?&nbsp;</span>
@@ -47,6 +49,7 @@ export const PlayerInfoMobile = () => {
       <div className="PlayerInfoMobile__P2Name" onClick={toggleOverlay}>
         <h2>{roomMetadata?.players[1].name + (playerID === '1' ? ' (you)' : '')}</h2>
         <span>{State.players[1].char.name}</span>
+        <ConnectedIndicator playerID={1} />
       </div>
     </div>
   );
