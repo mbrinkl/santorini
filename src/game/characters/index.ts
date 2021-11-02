@@ -19,6 +19,7 @@ import { Iris } from "./Iris";
 import { Pegasus } from "./Pegasus";
 import { GameState, Player } from "../../game";
 import { Ctx } from "boardgame.io";
+import { Eros } from "./Eros";
 
 export const characterList: string[] = [
   "Random",
@@ -45,7 +46,7 @@ export const characterList: string[] = [
   // "Chronus",
   // "Circe",
   // "Dionysus",
-  // "Eros",
+  "Eros",
   // "Hera",
   // "Hestia",
   // "Hypnus",
@@ -123,6 +124,7 @@ export interface CharacterState {
 export interface Character extends CharacterState {
   onTurnBegin: (G: GameState, ctx: Ctx, player: Player, char: CharacterState) => void,
   onTurnEnd: (G: GameState, ctx: Ctx, player: Player, char: CharacterState) => void,
+  validPlace: (G: GameState, ctx: Ctx, player: Player, char: CharacterState) => number[],
   validSelect: (G: GameState, ctx: Ctx, player: Player, char: CharacterState) => number[],
   select: (G: GameState, ctx: Ctx, player: Player, char: CharacterState, pos: number) => string,
   validMove: (G: GameState, ctx: Ctx, player: Player, char: CharacterState, originalPos: number) => number[],
@@ -158,6 +160,7 @@ export function getCharacter(name: string): Character {
     case "Odysseus": char = Odysseus; break;
     case "Iris": char = Iris; break;
     case "Pegasus": char = Pegasus; break;
+    case "Eros": char = Eros; break;
     default: char = Mortal; break;
   }
 

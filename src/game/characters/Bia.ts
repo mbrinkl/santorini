@@ -36,7 +36,7 @@ export const Bia: Character = {
 
               // check if no workers left and end game if none
               if (G.players[player.opponentId].char.workers.length === 0) {
-                ctx.events!.endGame!({
+                ctx.events?.endGame({
                   winner: player.id
                 })
               }

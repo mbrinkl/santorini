@@ -27,18 +27,6 @@ export function getNextPosition(fromPos: number, toPos: number): number {
   return nextPos;
 }
 
-export function allSpaces(): number[] {
-  return [
-    0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
-    21, 22, 23, 24,
-  ];
-}
-
-export function posIsPerimeter(pos: number): boolean {
-  const perimeters = [0, 1, 2, 3, 4, 5, 9, 10, 14, 15, 19, 20, 21, 22, 23, 24];
-  return perimeters.includes(pos);
-}
-
 export function getAdjacentPositions(pos: number): number[] {
   let valid_range: number[] = [];
   const [x, y]: number[] = posToCoord(pos);
@@ -59,3 +47,30 @@ export function getAdjacentPositions(pos: number): number[] {
   return valid_range;
 }
 
+export function getPerimeterPositions(): number[] {
+  return [0, 1, 2, 3, 4, 5, 9, 10, 14, 15, 19, 20, 21, 22, 23, 24];
+}
+
+export function posIsPerimeter(pos: number): boolean {
+  return getPerimeterPositions().includes(pos);
+}
+
+export function getOppositePerimterPositions(pos: number): number[] {
+  let oppositePerimeter : number[] = []
+
+  // pos can be in two perimeter cases if it is a corner, so update the list twice
+  if ([0, 1, 2, 3, 4].includes(pos)) {
+    oppositePerimeter = oppositePerimeter.concat([20, 21, 22, 23, 24]);
+  }
+  if ([0, 5, 10, 15, 20].includes(pos)) {
+    oppositePerimeter = oppositePerimeter.concat([4, 9, 14, 19, 24]);
+  }
+  if ([20, 21, 22, 23, 24].includes(pos)) {
+    oppositePerimeter = oppositePerimeter.concat([0, 1, 2, 3, 4]);
+  }
+  if ([4, 9, 14, 19, 24].includes(pos)) {
+    oppositePerimeter = oppositePerimeter.concat([0, 5, 10, 15, 20]);
+  }
+
+  return oppositePerimeter;
+}

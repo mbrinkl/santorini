@@ -31,6 +31,21 @@ export const Mortal : Character = {
     char: CharacterState
   ) => {},
 
+  validPlace : (
+    G: GameState, 
+    ctx: Ctx, 
+    player: Player, 
+    char: CharacterState
+  ) => {
+    let valids: number[] = [];
+    for (const space of G.spaces) {
+      if (space.inhabited && char.numWorkersToPlace > 0) {
+        valids.push(space.pos);
+      }
+    }
+    return valids;
+  },
+
   validSelect : (
     G: GameState,
     ctx: Ctx,

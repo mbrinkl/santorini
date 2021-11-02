@@ -3,7 +3,6 @@ import { Ctx } from "boardgame.io";
 import { GAME_ID } from "../config";
 import { Space } from "./space";
 import { EndTurn, CharacterAbility, Move, Select, Build, Place, updateValids, CheckWinByTrap } from "./moves";
-import { allSpaces } from "./utility";
 import { characterList, getCharacter, CharacterState, Character } from "./characters";
 import { SetChar, Ready, CancelReady } from "./moves/charSelectMoves";
 
@@ -99,7 +98,7 @@ export const SantoriniGame = {
     const initialState: GameState = {
       players,
       spaces,
-      valids: allSpaces(),
+      valids: [],
     };
 
     return initialState;
@@ -138,15 +137,15 @@ export const SantoriniGame = {
           place: { moves: { Place } },
           end: { moves: { EndTurn } },
         },
+        onBegin: (G: GameState, ctx: Ctx) => {
+          const currPlayer = G.players[ctx.currentPlayer];
+          updateValids(G, ctx, currPlayer, 'place');
+        },
         onEnd: (G: GameState, ctx: Ctx) => {
           if (G.players["0"].char.numWorkersToPlace === 0 &&
             G.players["1"].char.numWorkersToPlace === 0) {
 
             ctx.events?.endPhase();
-          }
-          else {
-            const nextPlayer = G.players[G.players[ctx.currentPlayer].opponentId];
-            updateValids(G, ctx, nextPlayer, 'place');
           }
         }
       },

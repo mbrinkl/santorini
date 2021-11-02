@@ -9,13 +9,7 @@ export function updateValids(G: GameState, ctx: Ctx, player: Player, stage: stri
 
   switch (stage) {
     case "place":
-      let valids: number[] = [];
-      for (var i = 0; i < 25; i++) {
-        if (!G.spaces[i].inhabited && currChar.numWorkersToPlace > 0) {
-          valids.push(i);
-        }
-      }
-      G.valids = valids;
+      G.valids = char.validPlace(G, ctx, player, currChar);
       break;
     case "select":
       G.valids = char.validSelect(G, ctx, player, currChar);
@@ -103,11 +97,11 @@ export function Place(G: GameState, ctx: Ctx, pos: number) {
   currentChar.workers.push(worker);
   Board.place(G, pos, ctx.currentPlayer, currentChar.workers.length - 1);
 
-  updateValids(G, ctx, G.players[ctx.currentPlayer], 'place');
-
   if (--currentChar.numWorkersToPlace === 0) {
     ctx.events?.setStage('end');
   }
+
+  updateValids(G, ctx, G.players[ctx.currentPlayer], 'place');
 }
 
 export function Select(G: GameState, ctx: Ctx, pos: number) {
