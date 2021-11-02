@@ -1,6 +1,6 @@
 import { createStore, createTypedHooks } from "easy-peasy";
 import { setInitState, store, StoreModel } from "./store";
-import { LobbyService } from "../services/lobby-service";
+import { LobbyService } from "../api/lobbyService";
 
 export interface StoreInjections {
   lobbyApi: LobbyService;

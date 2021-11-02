@@ -6,7 +6,7 @@ import {
   UpdatePlayerParams,
   ActiveRoomPlayer,
   PlayAgainParams
-} from "../services/lobby-service";
+} from "../api/lobbyService";
 
 export interface StoreModel {
   nickname: string | null;
