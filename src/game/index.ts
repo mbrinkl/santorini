@@ -125,6 +125,18 @@ export const SantoriniGame = {
 
     placeWorkers: {
       next: 'main',
+      onBegin: (G: GameState, ctx: Ctx) => {
+        const p1 = G.players['0'];
+        const p2 = G.players['1'];
+        const p1charData = p1.char;
+        const p2charData = p2.char;
+
+        const p1Char: Character = getCharacter(p1charData.name);
+        const p2Char: Character = getCharacter(p2charData.name);
+      
+        p1Char.initialize(G, ctx, p1, p1charData);
+        p2Char.initialize(G, ctx, p1, p2charData);
+      },
       turn: {
         activePlayers: { currentPlayer: 'place' },
         order: {

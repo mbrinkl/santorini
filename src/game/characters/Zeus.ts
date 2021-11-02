@@ -8,7 +8,7 @@ export const Zeus: Character = {
   name: 'Zeus',
   desc: `Your Build: Your Worker may build a block under itself.`,
 
-  checkWinByMove: (G: GameState, heightBefore: number, heightAfter: number) => {
+  checkWinByMove: (G: GameState, char: CharacterState, heightBefore: number, heightAfter: number) => {
     return (heightBefore < 3 && heightAfter === 3) ||
       (heightBefore - heightAfter > 1)
   },

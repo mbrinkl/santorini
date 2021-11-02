@@ -17,6 +17,13 @@ export const Mortal : Character = {
   moveUpHeight: 1,
   attrs: undefined,
 
+  initialize : (
+    G: GameState,
+    ctx: Ctx,
+    player: Player,
+    char: CharacterState
+  ) => {},
+
   onTurnBegin : (
     G: GameState,
     ctx: Ctx,
@@ -187,6 +194,7 @@ export const Mortal : Character = {
 
   checkWinByMove : (
     G: GameState,
+    char: CharacterState,
     heightBefore: number,
     heightAfter: number
   ) => {

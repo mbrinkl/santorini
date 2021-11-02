@@ -20,6 +20,7 @@ import { Pegasus } from "./Pegasus";
 import { GameState, Player } from "../../game";
 import { Ctx } from "boardgame.io";
 import { Eros } from "./Eros";
+import { Chaos } from "./Chaos";
 
 export const characterList: string[] = [
   "Random",
@@ -41,7 +42,7 @@ export const characterList: string[] = [
   // "Aphrodite",
   // "Ares",
   "Bia",
-  // "Chaos",
+  "Chaos",
   // "Charon",
   // "Chronus",
   // "Circe",
@@ -122,6 +123,7 @@ export interface CharacterState {
 }
 
 export interface Character extends CharacterState {
+  initialize: (G: GameState, ctx: Ctx, player: Player, char: CharacterState) => void,
   onTurnBegin: (G: GameState, ctx: Ctx, player: Player, char: CharacterState) => void,
   onTurnEnd: (G: GameState, ctx: Ctx, player: Player, char: CharacterState) => void,
   validPlace: (G: GameState, ctx: Ctx, player: Player, char: CharacterState) => number[],
@@ -134,7 +136,7 @@ export interface Character extends CharacterState {
   hasValidBuild: (G: GameState, ctx: Ctx, player: Player, char: CharacterState) => boolean,
   build: (G: GameState, ctx: Ctx, player: Player, char: CharacterState, pos: number) => string,
   buttonPressed: (G: GameState, ctx: Ctx, player: Player, char: CharacterState) => string,
-  checkWinByMove: (G: GameState, heightBefore: number, heightAfter: number) => boolean,
+  checkWinByMove: (G: GameState, char: CharacterState, heightBefore: number, heightAfter: number) => boolean,
 };
 
 export function getCharacter(name: string): Character {
@@ -161,6 +163,7 @@ export function getCharacter(name: string): Character {
     case "Iris": char = Iris; break;
     case "Pegasus": char = Pegasus; break;
     case "Eros": char = Eros; break;
+    case "Chaos": char = Chaos; break;
     default: char = Mortal; break;
   }
 
