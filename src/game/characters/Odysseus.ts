@@ -5,12 +5,19 @@ import { GameState, Player } from '../../types/GameTypes';
 import { Board } from '../space'
 import { Ctx } from 'boardgame.io';
 
-// interface attrsType {
-//   specialActive: boolean,
-//   specialUsed: boolean,
-//   movingOpponent: boolean,
-//   workerToMovePos: number
-// }
+interface OdysseusAttrs {
+  specialActive: boolean,
+  specialUsed: boolean,
+  movingOpponent: boolean,
+  workerToMovePos: number
+}
+
+const initialAttrs: OdysseusAttrs = {
+  specialActive: false,
+  specialUsed: false,
+  movingOpponent: false,
+  workerToMovePos: -1
+}
 
 const checkForValidSpecial = (
   G: GameState, 
@@ -45,12 +52,7 @@ export const Odysseus: Character = {
   desc: `Start of Your Turn: Once, force to unoccupied corner spaces any 
     number of opponent Workers that neighbor your Workers.`,
   buttonText: 'Move Opponent',
-  attrs: {
-    specialActive: false,
-    specialUsed: false,
-    movingOpponent: false,
-    workerToMovePos: -1
-  },
+  attrs: initialAttrs,
 
   onTurnBegin: (
     G: GameState, 
@@ -58,7 +60,9 @@ export const Odysseus: Character = {
     player: Player, 
     char: CharacterState
   ) => {
-    if (!char.attrs.specialUsed) {
+    const attrs: OdysseusAttrs = char.attrs as OdysseusAttrs;
+
+    if (!attrs.specialUsed) {
       char.buttonActive = checkForValidSpecial(G, ctx, player, char);
     }
   },
@@ -69,14 +73,16 @@ export const Odysseus: Character = {
     player: Player,
     char: CharacterState
   ) => {
-    char.attrs.specialActive = !char.attrs.specialActive;
+    const attrs: OdysseusAttrs = char.attrs as OdysseusAttrs;
 
-    if (char.attrs.specialUsed) {
+    attrs.specialActive = !attrs.specialActive;
+
+    if (attrs.specialUsed) {
       char.buttonActive = false;
-      char.attrs.specialActive = false;
+      attrs.specialActive = false;
       char.buttonText = 'Move Opponent'
     }
-    else if (char.attrs.specialActive) {
+    else if (attrs.specialActive) {
       char.buttonText = 'Cancel';
     }
     else {
@@ -94,15 +100,16 @@ export const Odysseus: Character = {
     char: CharacterState,
     originalPos: number
   ) : number[] {
+    const attrs: OdysseusAttrs = char.attrs as OdysseusAttrs;
 
     let valids : number[] = []
 
-    if (char.attrs.specialActive) {
+    if (attrs.specialActive) {
       let adjacents : number[] = [];
       char.workers.forEach( worker => {
         adjacents = adjacents.concat(getAdjacentPositions(worker.pos));
       });
-      if (!char.attrs.movingOpponent) {
+      if (!attrs.movingOpponent) {
         G.players[player.opponentId].char.workers.forEach( worker => {
           if (adjacents.includes(worker.pos)) {
             valids.push(worker.pos);
@@ -131,29 +138,30 @@ export const Odysseus: Character = {
     char: CharacterState, 
     pos: number
   ) => {
+    const attrs: OdysseusAttrs = char.attrs as OdysseusAttrs;
 
-    if (char.attrs.specialActive) {
-      char.attrs.specialUsed = true;
+    if (attrs.specialActive) {
+      attrs.specialUsed = true;
       char.buttonText = 'End Ability';
 
-      if (!char.attrs.movingOpponent) {
-        char.attrs.movingOpponent = true;
-        char.attrs.workerToMovePos = pos;
+      if (!attrs.movingOpponent) {
+        attrs.movingOpponent = true;
+        attrs.workerToMovePos = pos;
         return 'move';
       }
       else {
-        char.attrs.movingOpponent = false;
-        const oppWorkerNum = G.spaces[char.attrs.workerToMovePos].inhabitant.workerNum;
-        Board.free(G, char.attrs.workerToMovePos);
+        attrs.movingOpponent = false;
+        const oppWorkerNum = G.spaces[attrs.workerToMovePos].inhabitant.workerNum;
+        Board.free(G, attrs.workerToMovePos);
         Board.place(G, pos, player.opponentId, oppWorkerNum);
 
         if (!checkForValidSpecial(G, ctx, player, char)) {
-          char.attrs.specialActive = false;
+          attrs.specialActive = false;
           char.buttonText = 'Move Opponent';
           char.buttonActive = false;
         }
         else {
-          char.attrs.specialActive = true;
+          attrs.specialActive = true;
         }
 
         return 'move';
@@ -161,7 +169,7 @@ export const Odysseus: Character = {
     }
     else {
       char.buttonActive = false;
-      char.attrs.specialActive = false;
+      attrs.specialActive = false;
       return Mortal.move(G, ctx, player, char, pos);
     }
   },

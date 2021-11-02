@@ -6,11 +6,17 @@ import { Mortal } from "./Mortal";
 import { GameState, Player } from '../../types/GameTypes';
 import { Board } from '../space'
 
-// interface attrsType {
-//   movedUpOrDown: boolean,
-//   isMoving: boolean,
-//   canMoveUp: boolean
-// }
+interface HermesAttrs {
+  movedUpOrDown: boolean,
+  isMoving: boolean,
+  canMoveUp: boolean
+}
+
+const initialAttrs: HermesAttrs = {
+  movedUpOrDown: false,
+  isMoving: false,
+  canMoveUp: true
+}
 
 export const Hermes: Character = {
   ...Mortal,
@@ -19,11 +25,7 @@ export const Hermes: Character = {
     each move any number of times (even zero), and then either builds`,
   buttonText: 'End Move',
 
-  attrs: {
-    movedUpOrDown: false,
-    isMoving: false,
-    canMoveUp: true
-  },
+  attrs: initialAttrs,
 
   onTurnBegin: (
     G: GameState, 
@@ -41,11 +43,12 @@ export const Hermes: Character = {
     char: CharacterState,
     originalPos: number
   ) => {
+    const attrs: HermesAttrs = char.attrs as HermesAttrs;
 
     let adjacents : number[] = getAdjacentPositions(originalPos);
     let valids : number[] = []
         
-    if (char.attrs.canMoveUp) {
+    if (attrs.canMoveUp) {
       adjacents.forEach( pos => {
         if (!G.spaces[pos].inhabited && !G.spaces[pos].is_domed &&
           G.spaces[pos].height - G.spaces[originalPos].height <= char.moveUpHeight
@@ -74,17 +77,18 @@ export const Hermes: Character = {
     char: CharacterState, 
     pos: number
   ) => {
+    const attrs: HermesAttrs = char.attrs as HermesAttrs;
 
     let returnStage = 'build';
 
     if (G.spaces[pos].height === char.workers[char.selectedWorker].height) {
-      char.attrs.canMoveUp = false;
-      char.attrs.isMoving = true;
+      attrs.canMoveUp = false;
+      attrs.isMoving = true;
       char.buttonText = 'Switch Workers';
       returnStage = 'move';
     }
     else {
-      char.attrs.movedUpOrDown = true;
+      attrs.movedUpOrDown = true;
       char.buttonActive = false;
     }
 
@@ -104,11 +108,13 @@ export const Hermes: Character = {
     char: CharacterState,
     originalPos: number
   ) => {
+    const attrs: HermesAttrs = char.attrs as HermesAttrs;
+
     let valids : number[] = []
     let adjacents : number[] = [];
     
     // normal build
-    if (char.attrs.movedUpOrDown) {
+    if (attrs.movedUpOrDown) {
       adjacents = getAdjacentPositions(originalPos);
     }
 
@@ -136,10 +142,11 @@ export const Hermes: Character = {
     char: CharacterState,
     pos: number
   ) => {
+    const attrs: HermesAttrs = char.attrs as HermesAttrs;
 
-    char.attrs.isMoving = false;
-    char.attrs.canMoveUp = true;
-    char.attrs.movedUpOrDown = false;
+    attrs.isMoving = false;
+    attrs.canMoveUp = true;
+    attrs.movedUpOrDown = false;
 
     Board.build(G, pos);
     return 'end'
@@ -151,9 +158,10 @@ export const Hermes: Character = {
     player: Player,
     char: CharacterState
   ) => {
+    const attrs: HermesAttrs = char.attrs as HermesAttrs;
 
-    if (char.attrs.isMoving) {
-      char.attrs.isMoving = false;
+    if (attrs.isMoving) {
+      attrs.isMoving = false;
       char.buttonText = 'End Move';
       // change the selected worker
       if (char.workers.length > 1)

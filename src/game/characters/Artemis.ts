@@ -5,10 +5,15 @@ import { Mortal } from "./Mortal";
 import { GameState, Player } from '../../types/GameTypes';
 import { Board } from '../space';
 
-// interface attrsType {
-//   numMoves: number,
-//   prevTile: number,
-// }
+interface ArtemisAttrs {
+  numMoves: number,
+  prevTile: number,
+}
+
+const initialAttrs: ArtemisAttrs = {
+  numMoves: 0,
+  prevTile: -1,
+}
 
 export const Artemis: Character = {
   ...Mortal,
@@ -16,10 +21,7 @@ export const Artemis: Character = {
   desc: `Your Move: Your worker may move one additional time, but not back to
       its initial space.`,
   buttonText: 'End Move',
-  attrs: {
-    numMoves: 0,
-    prevTile: -1,
-  },
+  attrs: initialAttrs,
 
   validMove: (
     G: GameState,
@@ -28,18 +30,19 @@ export const Artemis: Character = {
     char: CharacterState,
     originalPos: number
   ) => {
+    const attrs: ArtemisAttrs = char.attrs as ArtemisAttrs;
 
     let adjacents: number[] = getAdjacentPositions(originalPos);
     let valids: number[] = [];
 
-    if (char.selectedWorker !== -1 && char.attrs.numMoves === 0)
-      char.attrs.prevTile = char.workers[char.selectedWorker].pos;
+    if (char.selectedWorker !== -1 && attrs.numMoves === 0)
+      attrs.prevTile = char.workers[char.selectedWorker].pos;
 
     adjacents.forEach(pos => {
       if (!G.spaces[pos].inhabited && !G.spaces[pos].is_domed &&
         G.spaces[pos].height - G.spaces[originalPos].height <= char.moveUpHeight
       ) {
-        if (char.attrs.prevTile !== pos)
+        if (attrs.prevTile !== pos)
           valids.push(pos);
       }
     });
@@ -54,8 +57,9 @@ export const Artemis: Character = {
     char: CharacterState,
     pos: number
   ) => {
+    const attrs: ArtemisAttrs = char.attrs as ArtemisAttrs;
 
-    char.attrs.numMoves++;
+    attrs.numMoves++;
 
     // free the space that is being moved from
     Board.free(G, char.workers[char.selectedWorker].pos);
@@ -63,9 +67,9 @@ export const Artemis: Character = {
     // place the worker on the selected space
     Board.place(G, pos, player.id, char.selectedWorker);
 
-    if (char.attrs.numMoves === 2) {
-      char.attrs.numMoves = 0;
-      char.attrs.prevTile = -1;
+    if (attrs.numMoves === 2) {
+      attrs.numMoves = 0;
+      attrs.prevTile = -1;
       char.buttonActive = false;
       return 'build';
     }

@@ -4,18 +4,20 @@ import { GameState, Player } from '../../types/GameTypes';
 import { Board } from '../space'
 import { Ctx } from 'boardgame.io';
 
-// interface attrsType {
-//   specialActive: boolean
-// }
+interface AtlasAttrs {
+  specialActive: boolean
+}
+
+const initialAttrs: AtlasAttrs = {
+  specialActive: false
+}
 
 export const Atlas: Character = {
   ...Mortal,
   name: 'Atlas',
   desc: `Your Build: Your worker may build a dome at any level.`,
   buttonText: 'Build Dome',
-  attrs: {
-    specialActive: false
-  },
+  attrs: initialAttrs,
 
   move: (
     G: GameState,
@@ -34,8 +36,9 @@ export const Atlas: Character = {
     player: Player,
     char: CharacterState
   ) => {
-    char.attrs.specialActive = !char.attrs.specialActive;
-    char.buttonText = char.attrs.specialActive ? 'Cancel' : 'Build Dome';
+    const attrs: AtlasAttrs = char.attrs as AtlasAttrs;
+    attrs.specialActive = !attrs.specialActive;
+    char.buttonText = attrs.specialActive ? 'Cancel' : 'Build Dome';
     return Mortal.buttonPressed(G, ctx, player, char);
   },
 
@@ -46,13 +49,14 @@ export const Atlas: Character = {
     char: CharacterState,
     pos: number
   ): string {
-
-    if (char.attrs.specialActive)
+    const attrs: AtlasAttrs = char.attrs as AtlasAttrs;
+    
+    if (attrs.specialActive)
       G.spaces[pos].is_domed = true;
     else
       Board.build(G, pos);
 
-    char.attrs.specialActive = false;
+    attrs.specialActive = false;
     char.buttonActive = false;
     char.buttonText = 'Build Dome'
     return 'end'

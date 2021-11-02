@@ -5,20 +5,22 @@ import { GameState, Player } from '../../types/GameTypes';
 import { Board } from '../space'
 import { Ctx } from 'boardgame.io';
 
-// interface attrsType {
-//   numBuilds: number,
-//   firstBuildPos: number,
-// }
+interface HephaestusAttrs {
+  numBuilds: number,
+  firstBuildPos: number,
+}
+
+const initialAttrs: HephaestusAttrs = {
+  numBuilds: 0,
+  firstBuildPos: -1
+}
 
 export const Hephaestus: Character = {
   ...Mortal,
   name: 'Hephaestus',
   desc: `Your Build: Your Worker may build one additional block (not dome) on top of your first block.`,
   buttonText: 'Skip 2nd Build',
-  attrs: {
-    numBuilds: 0,
-    firstBuildPos: -1,
-  },
+  attrs: initialAttrs,
 
   buttonPressed: (
     G: GameState,
@@ -26,8 +28,10 @@ export const Hephaestus: Character = {
     player: Player,
     char: CharacterState
   ) => {
+    const attrs: HephaestusAttrs = char.attrs as HephaestusAttrs;
+
     // reset stuff
-    char.attrs.numBuilds = 0;
+    attrs.numBuilds = 0;
     char.buttonActive = false;
 
     // set game stage
@@ -42,10 +46,12 @@ export const Hephaestus: Character = {
     char: CharacterState,
     originalPos: number
   ) => {
+    const attrs: HephaestusAttrs = char.attrs as HephaestusAttrs;
+
     let adjacents: number[] = getAdjacentPositions(originalPos);
     let valids: number[] = []
 
-    if (char.attrs.numBuilds === 0) {
+    if (attrs.numBuilds === 0) {
       adjacents.forEach(pos => {
         if (!G.spaces[pos].inhabited && !G.spaces[pos].is_domed) {
           valids.push(pos);
@@ -53,7 +59,7 @@ export const Hephaestus: Character = {
       })
     }
     else {
-      valids.push(char.attrs.firstBuildPos);
+      valids.push(attrs.firstBuildPos);
     }
 
     return valids;
@@ -66,25 +72,26 @@ export const Hephaestus: Character = {
     char: CharacterState,
     pos: number
   ) => {
+    const attrs: HephaestusAttrs = char.attrs as HephaestusAttrs;
 
-    char.attrs.numBuilds++;
+    attrs.numBuilds++;
 
-    if (char.attrs.numBuilds === 1) {
+    if (attrs.numBuilds === 1) {
 
       Board.build(G, pos);
 
       if (G.spaces[pos].height > 2) {
-        char.attrs.numBuilds = 0;
+        attrs.numBuilds = 0;
         return 'end';
       }
       else {
-        char.attrs.firstBuildPos = pos;
+        attrs.firstBuildPos = pos;
         char.buttonActive = true;
         return 'build';
       }
     }
     else {
-      char.attrs.numBuilds = 0;
+      attrs.numBuilds = 0;
       char.buttonActive = false;
       Board.build(G, pos);
       return 'end'
