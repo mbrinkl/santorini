@@ -46,7 +46,7 @@ export const Mortal : Character = {
   ) => {
     let valids: number[] = [];
     for (const space of G.spaces) {
-      if (space.inhabited && char.numWorkersToPlace > 0) {
+      if (!space.inhabited && char.numWorkersToPlace > 0) {
         valids.push(space.pos);
       }
     }

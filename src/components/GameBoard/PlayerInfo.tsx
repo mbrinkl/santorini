@@ -5,7 +5,7 @@ import "./style.scss";
 import { ConnectedIndicator } from "./ConnectedIndicator";
 
 export const PlayerInfo = () => {
-  const { playerID, State} = useBoardContext();
+  const { playerID, State } = useBoardContext();
   const roomMetadata = useStoreState((s) => s.roomMetadata);
   
   return (

@@ -148,16 +148,12 @@ export const Odysseus: Character = {
         Board.place(G, pos, player.opponentId, oppWorkerNum);
 
         if (!checkForValidSpecial(G, ctx, player, char)) {
-
-          console.log('NO VALID SPEC')
-
           char.attrs.specialActive = false;
           char.buttonText = 'Move Opponent';
           char.buttonActive = false;
         }
         else {
           char.attrs.specialActive = true;
-          console.log('VALID SPECIAL STILL BOYS')
         }
 
         return 'move';

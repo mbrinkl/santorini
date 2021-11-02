@@ -3,16 +3,11 @@ import { GameState, Player } from '../../types/GameTypes';
 import { Character, CharacterState, getCharacter } from '.';
 import { Ctx } from 'boardgame.io';
 
-export const Chaos: Character = {
-  ...Mortal,
+function changeEmulatingCharacter(ctx: Ctx, char: CharacterState, numDomes: number): void {
 
-  name: 'Chaos',
-  desc: `Any Time: You have the power of one of the ten Simple Gods (listed below). After any turn in
-    which at least one dome is built, a new random Simple God Power will be chosen. If you run out of 
-    God Powers, shuffle them to create a new deck and draw the top one.`,
-  attrs: {
-    numDomes: 0,
-    possibleCharacters: ["Apollo",
+  if (char.attrs.nextCharacterList.length === 0) {
+    char.attrs.nextCharacterList = ctx.random?.Shuffle([
+      "Apollo",
       "Artemis",
       "Athena",
       "Atlas",
@@ -21,7 +16,34 @@ export const Chaos: Character = {
       "Hermes",
       "Minotaur",
       "Pan",
-      "Prometheus"],
+      "Prometheus"
+    ]);
+  }
+  
+  const newCharacterName: string = char.attrs.nextCharacterList.shift();
+  const newCharacter: Character = getCharacter(newCharacterName);
+
+  char.desc = `${newCharacterName} - ${newCharacter.desc} ${Chaos.desc}`;
+  char.buttonActive = newCharacter.buttonActive;
+  char.buttonText = newCharacter.buttonText;
+  char.moveUpHeight = newCharacter.moveUpHeight;
+
+  char.attrs = {
+    numDomes: numDomes,
+    nextCharacterList: char.attrs.nextCharacterList,
+    currentCharacter: newCharacterName,
+   ...newCharacter.attrs
+  };
+}
+
+export const Chaos: Character = {
+  ...Mortal,
+
+  name: 'Chaos',
+  desc: `(Changes between Simple God Powers after any turn in which at least one dome is built)`,
+  attrs: {
+    numDomes: 0,
+    nextCharacterList: [],
     currentCharacter: '', 
   },
 
@@ -31,49 +53,19 @@ export const Chaos: Character = {
     player: Player,
     char: CharacterState
   ) => {
-    ctx.random?.Shuffle(char.attrs.possibleCharacters);
-    char.attrs.currentCharacter = char.attrs.possibleCharacters.shift();
+    changeEmulatingCharacter(ctx, char, 0);
   },
 
-  // also on turn end probably
   onTurnBegin : (
     G: GameState,
     ctx: Ctx,
     player: Player,
     char: CharacterState
   ) => {
-    const numDomes = G.spaces.filter((space) => space.is_domed === true).length;
+    const numDomes: number = G.spaces.filter((space) => space.is_domed === true).length;
 
     if (char.attrs.numDomes < numDomes) {
-      const newCharacterName: string = char.attrs.possibleCharacters.shift();
-      const newCharacter: Character = getCharacter(newCharacterName);
-      let characterList: string[] = char.attrs.possibleCharacters;
-
-      char.desc = Chaos.desc + `\n${newCharacter.name} - ${newCharacter.desc}`;
-      char.buttonActive = newCharacter.buttonActive;
-      char.buttonText = newCharacter.buttonText;
-      char.moveUpHeight = newCharacter.moveUpHeight;
-
-
-      if (char.attrs.possibleCharacters.length === 0) {
-        characterList = ["Apollo",
-          "Artemis",
-          "Athena",
-          "Atlas",
-          "Demeter",
-          "Hephaestus",
-          "Hermes",
-          "Minotaur",
-          "Pan",
-          "Prometheus"];
-      }
-
-      char.attrs = {
-        numDomes: numDomes,
-        possibleCharacters: characterList,
-        currentCharacter: newCharacterName,
-       ...newCharacter.attrs
-      };
+      changeEmulatingCharacter(ctx, char, numDomes);
     }
 
     const character = getCharacter(char.attrs.currentCharacter);
@@ -92,35 +84,7 @@ export const Chaos: Character = {
     const numDomes = G.spaces.filter((space) => space.is_domed === true).length;
 
     if (char.attrs.numDomes < numDomes) {
-      const newCharacterName: string = char.attrs.possibleCharacters.shift();
-      const newCharacter: Character = getCharacter(newCharacterName);
-      let characterList: string[] = char.attrs.possibleCharacters;
-
-      char.desc = Chaos.desc + `\n${newCharacter.name} - ${newCharacter.desc}`;
-      char.buttonActive = newCharacter.buttonActive;
-      char.buttonText = newCharacter.buttonText;
-      char.moveUpHeight = newCharacter.moveUpHeight;
-
-
-      if (char.attrs.possibleCharacters.length === 0) {
-        characterList = ["Apollo",
-          "Artemis",
-          "Athena",
-          "Atlas",
-          "Demeter",
-          "Hephaestus",
-          "Hermes",
-          "Minotaur",
-          "Pan",
-          "Prometheus"];
-      }
-
-      char.attrs = {
-        numDomes: numDomes,
-        possibleCharacters: characterList,
-        currentCharacter: newCharacterName,
-       ...newCharacter.attrs
-      };
+      changeEmulatingCharacter(ctx, char, numDomes);
     }
   },
 
