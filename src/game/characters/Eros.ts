@@ -1,7 +1,7 @@
 import { getAdjacentPositions, getOppositePerimterPositions, posIsPerimeter } from "../../game/utility";
 import { Character, CharacterState, Worker } from ".";
 import { Mortal } from "./Mortal";
-import { GameState, Player } from "game";
+import { GameState, Player } from '../../types/GameTypes';
 import { Ctx } from "boardgame.io";
 
 

@@ -1,5 +1,5 @@
 import { Mortal } from './Mortal';
-import { GameState } from '../index'
+import { GameState } from '../../types/GameTypes';
 import { Character, CharacterState } from '.';
 
 export const Pan: Character = {

@@ -1,5 +1,5 @@
 import { Ctx } from "boardgame.io";
-import { GameState, Player } from "../index";
+import { GameState, Player } from "../../types/GameTypes";
 import { Worker, getCharacter, Character } from "../characters";
 import { Board } from "../space";
 

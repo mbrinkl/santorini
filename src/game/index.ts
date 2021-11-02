@@ -1,25 +1,10 @@
 import { ActivePlayers } from "boardgame.io/core";
 import { Ctx } from "boardgame.io";
 import { GAME_ID } from "../config";
-import { Space } from "./space";
 import { EndTurn, CharacterAbility, Move, Select, Build, Place, updateValids, CheckWinByTrap } from "./moves";
 import { characterList, getCharacter, CharacterState, Character } from "./characters";
 import { SetChar, Ready, CancelReady } from "./moves/charSelectMoves";
-
-type playerIDs = '0' | '1';
-
-export interface Player {
-  id: string;
-  opponentId: string;
-  ready: boolean;
-  char: CharacterState;
-}
-
-export interface GameState {
-  spaces: Space[];
-  players: Record<playerIDs, Player>
-  valids: number[];
-}
+import { GameState, Space } from "../types/GameTypes";
 
 export function initCharacter(characterName: string): CharacterState {
   const character: Character = getCharacter(characterName);

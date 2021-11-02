@@ -2,7 +2,7 @@ import { Ctx } from "boardgame.io";
 import { getAdjacentPositions, getNextPosition } from '../utility'
 import { Character, CharacterState } from ".";
 import { Mortal } from "./Mortal";
-import { GameState, Player } from '../index'
+import { GameState, Player } from '../../types/GameTypes';
 import { Board } from '../space'
 
 export const Minotaur : Character = {

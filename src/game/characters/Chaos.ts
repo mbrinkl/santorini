@@ -1,10 +1,7 @@
 import { Mortal } from './Mortal';
-import { GameState, Player } from '../index'
+import { GameState, Player } from '../../types/GameTypes';
 import { Character, CharacterState, getCharacter } from '.';
 import { Ctx } from 'boardgame.io';
-import { Artemis } from './Artemis';
-
-const possibleCharacters: 'Apollo' | 'Artemis' = 'Apollo';
 
 export const Chaos: Character = {
   ...Mortal,

@@ -1,35 +1,6 @@
-import { Action, action, thunk, Thunk } from "easy-peasy";
-import { StoreInjections } from ".";
-import {
-  RoomMetadata,
-  JoinRoomParams,
-  UpdatePlayerParams,
-  ActiveRoomPlayer,
-  PlayAgainParams
-} from "../api/lobbyService";
-
-export interface StoreModel {
-  nickname: string | null;
-  setNickname: Action<StoreModel, string>;
-  matchID: string | null;
-  setMatchID: Action<StoreModel, string>;
-  createGameRoom: Thunk<StoreModel, number, StoreInjections>;
-  roomMetadata: RoomMetadata | null;
-  setRoomMetadata: Action<StoreModel, RoomMetadata>;
-  loadRoomMetadata: Thunk<StoreModel, string, StoreInjections>;
-  activeRoomPlayer: ActiveRoomPlayer | null;
-  setActiveRoomPlayer: Action<StoreModel, ActiveRoomPlayer>;
-  joinRoom: Thunk<StoreModel, JoinRoomParams, StoreInjections>;
-  updatePlayer: Thunk<StoreModel, UpdatePlayerParams, StoreInjections>;
-  playAgain: Thunk<StoreModel, PlayAgainParams, StoreInjections>;
-  reset: Action<StoreModel, string>;
-}
-
-// nickname is used between games to simplify room user creation
-export const NICKNAME_STORAGE_KEY = "santorini_nickname";
-
-// 'player' refers to users player in the game room
-export const PLAYER_STORAGE_KEY = "santorini_player";
+import { action, thunk } from "easy-peasy";
+import { StoreModel } from "../types/StoreTypes";
+import { NICKNAME_STORAGE_KEY, PLAYER_STORAGE_KEY } from "../config/client";
 
 export let initState: any = {};
 export const setInitState = (state?: StoreModel) => {

@@ -3,7 +3,7 @@ import { Mortal } from "./Mortal";
 import { Ctx } from 'boardgame.io';
 import { Board } from '../space'
 import { posIsPerimeter } from '../utility';
-import { GameState, Player } from '../index'
+import { GameState, Player } from '../../types/GameTypes';
 
 export const Triton: Character = {
   ...Mortal,

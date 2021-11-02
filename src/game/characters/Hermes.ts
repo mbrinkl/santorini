@@ -3,7 +3,7 @@ import { Ctx } from "boardgame.io";
 import { getAdjacentPositions } from '../utility'
 import { Character, CharacterState } from ".";
 import { Mortal } from "./Mortal";
-import { GameState, Player } from '../index'
+import { GameState, Player } from '../../types/GameTypes';
 import { Board } from '../space'
 
 // interface attrsType {

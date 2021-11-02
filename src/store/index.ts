@@ -1,10 +1,7 @@
 import { createStore, createTypedHooks } from "easy-peasy";
-import { setInitState, store, StoreModel } from "./store";
+import { setInitState, store } from "./store";
 import { LobbyService } from "../api/lobbyService";
-
-export interface StoreInjections {
-  lobbyApi: LobbyService;
-}
+import { StoreModel } from "../types/StoreTypes";
 
 const typedHooks = createTypedHooks<StoreModel>();
 

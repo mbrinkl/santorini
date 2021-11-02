@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import classNames from "classnames";
 import { BoardProps } from "boardgame.io/react";
-import { GameState } from "../../game";
+import { GameState } from "../../types/GameTypes";
 import { BoardContext } from "./BoardContext";
 import { PlayerBoard } from "./PlayerBoard";
 import { PlayerControls } from "./PlayerControls";

@@ -1,7 +1,7 @@
 import { Ctx } from 'boardgame.io';
 import { Character, CharacterState } from ".";
 import { Mortal } from "./Mortal";
-import { GameState, Player } from '../index'
+import { GameState, Player } from '../../types/GameTypes';
 
 export const Zeus: Character = {
   ...Mortal,

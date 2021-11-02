@@ -17,7 +17,7 @@ import { Heracles } from "./Heracles";
 import { Odysseus } from "./Odysseus";
 import { Iris } from "./Iris";
 import { Pegasus } from "./Pegasus";
-import { GameState, Player } from "../../game";
+import { GameState, Player } from '../../types/GameTypes';
 import { Ctx } from "boardgame.io";
 import { Eros } from "./Eros";
 import { Chaos } from "./Chaos";

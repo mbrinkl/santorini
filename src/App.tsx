@@ -9,11 +9,8 @@ import {
 import { GameLobby } from "./components/Lobby";
 import { SetupNickname } from "./components/SetupNickname";
 import { initializeStore, useStoreState } from "./store";
-import {
-  NICKNAME_STORAGE_KEY,
-  PLAYER_STORAGE_KEY,
-  StoreModel,
-} from "./store/store";
+import { NICKNAME_STORAGE_KEY, PLAYER_STORAGE_KEY } from "./config/client";
+import { StoreModel } from "./types/StoreTypes";
 import { Welcome } from "components/Welcome";
 
 const savedNickname = localStorage.getItem(NICKNAME_STORAGE_KEY);

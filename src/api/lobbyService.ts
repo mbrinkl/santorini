@@ -1,39 +1,12 @@
 import { SERVER_URL } from "../config/client";
 import { GAME_ID } from "../config";
 import { LobbyClient } from 'boardgame.io/client';
-
-export interface Player {
-  id: number;
-  name?: string;
-}
-
-export interface RoomMetadata {
-  players: Player[];
-}
-
-export interface ActiveRoomPlayer {
-  playerID: number;
-  credential: string;
-}
-
-export interface JoinRoomParams {
-  matchID: string;
-  playerID: number;
-  playerName: string;
-}
-
-export interface UpdatePlayerParams {
-  matchID: string;
-  playerID: number;
-  credentials: string;
-  newName: string;
-}
-
-export interface PlayAgainParams {
-  matchID: string;
-  playerID: number;
-  credential: string;
-}
+import { 
+  JoinRoomParams, 
+  UpdatePlayerParams, 
+  RoomMetadata,
+  PlayAgainParams 
+} from "../types/ApiTypes";
 
 export class LobbyService {
   lobbyClient: LobbyClient;
@@ -54,29 +27,27 @@ export class LobbyService {
 
   async joinRoom({
     matchID,
-    ...json
+    playerID,
+    playerName
   }: JoinRoomParams): Promise<{ playerCredentials: string }> {
     const { playerCredentials } = await this.lobbyClient.joinMatch(
       GAME_ID,
       matchID,
       {
-        playerID: String(json.playerID),
-        playerName: json.playerName,
+        playerID: String(playerID),
+        playerName: playerName,
       }
     );
 
     return { playerCredentials };
   }
 
-  async updatePlayer({
-    matchID,
-    ...json
-  }: UpdatePlayerParams) : Promise<void> {
+  async updatePlayer({matchID, playerID, credentials, newName}: UpdatePlayerParams) : Promise<void> {
 
     await this.lobbyClient.updatePlayer(GAME_ID, matchID, {
-      playerID: String(json.playerID),
-      credentials: json.credentials,
-      newName: json.newName,
+      playerID: String(playerID),
+      credentials: credentials,
+      newName: newName,
     });
   }
 
@@ -84,10 +55,10 @@ export class LobbyService {
     return await this.lobbyClient.getMatch(GAME_ID, matchID);
   }
 
-  async playAgain({matchID, ...json}: PlayAgainParams) {
+  async playAgain({matchID, playerID, credential}: PlayAgainParams) {
     const { nextMatchID } = await this.lobbyClient.playAgain(GAME_ID, matchID, {
-      playerID: String(json.playerID),
-      credentials: json.credential,
+      playerID: String(playerID),
+      credentials: credential,
     });
 
     return { nextMatchID };

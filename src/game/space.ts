@@ -1,15 +1,4 @@
-import { GameState } from "./index";
-
-export interface Space {
-  pos: number;
-  height: number;
-  inhabited: boolean;
-  inhabitant: {
-    playerId: string;
-    workerNum: number;
-  };
-  is_domed: boolean;
-}
+import { GameState } from "../types/GameTypes";
 
 export const Board = {
   place: (

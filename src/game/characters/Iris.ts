@@ -1,7 +1,7 @@
 import { Character, CharacterState } from ".";
 import { Mortal } from "./Mortal";
 import { getAdjacentPositions, getNextPosition } from '../utility'
-import { GameState, Player } from '../index'
+import { GameState, Player } from '../../types/GameTypes';
 import { Ctx } from 'boardgame.io';
 
 export const Iris: Character = {

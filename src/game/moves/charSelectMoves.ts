@@ -1,5 +1,6 @@
-import { GameState, initCharacter } from "../index";
+import { initCharacter } from "../index";
 import { Ctx } from "boardgame.io";
+import { GameState } from "../../types/GameTypes";
 
 export function SetChar(G: GameState, ctx: Ctx, id: string, name: string) {
   G.players[id].ready = false;
