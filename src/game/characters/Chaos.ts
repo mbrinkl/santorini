@@ -5,8 +5,8 @@ import { getCharacter } from '.';
 import { Ctx } from 'boardgame.io';
 import { AthenaAttrs } from './Athena';
 
-type PossibleCharacters = "Apollo" | "Artemis" | "Athena" | "Atlas" | "Demeter" |"Hephaestus" |
-"Hermes" | "Minotaur" | "Pan" | "Prometheus";
+type PossibleCharacters = "Apollo" | "Artemis" | "Athena" | "Atlas" | "Demeter" | "Hephaestus" |
+  "Hermes" | "Minotaur" | "Pan" | "Prometheus";
 
 interface ChaosAttrs {
   numDomes: number,
@@ -85,12 +85,13 @@ export const Chaos: Character = {
     player: Player,
     char: CharacterState
   ) => {
-    const attrs: ChaosAttrs = char.attrs as ChaosAttrs;
+    let attrs: ChaosAttrs = char.attrs as ChaosAttrs;
 
     const numDomes: number = G.spaces.filter((space) => space.is_domed === true).length;
 
     if (attrs.numDomes < numDomes) {
       changeEmulatingCharacter(G, ctx, player, char, numDomes);
+      attrs = char.attrs as ChaosAttrs;
     }
 
     const character = getCharacter(attrs.currentCharacter);
@@ -106,7 +107,7 @@ export const Chaos: Character = {
     const attrs: ChaosAttrs = char.attrs as ChaosAttrs;
 
     const character = getCharacter(attrs.currentCharacter);
-    character.onTurnBegin(G, ctx, player, char);
+    character.onTurnEnd(G, ctx, player, char);
 
     const numDomes = G.spaces.filter((space) => space.is_domed === true).length;
 
