@@ -29,11 +29,10 @@ export function initCharacter(characterName: string): CharacterState {
 
 function setRandomCharacters(G: GameState, ctx: Ctx) {
   for (let i = 0; i < ctx.numPlayers; i++) {
-    const id = i.toString();
-    if (G.players[id].char.name === "Random") {
-      const randomCharName =
-        characterList[Math.floor(Math.random() * (characterList.length - 1))];
-      G.players[id].char = initCharacter(randomCharName);
+    const listOnlyCharacters = characterList.slice(1);
+    if (G.players[i].char.name === "Random") {
+      const randomCharName = listOnlyCharacters[Math.floor(Math.random() * (listOnlyCharacters.length))];
+      G.players[i].char = initCharacter(randomCharName);
     }
   }
 }
@@ -77,7 +76,7 @@ export const SantoriniGame = {
           playerId: "",
           workerNum: -1,
         },
-        is_domed: false,
+        isDomed: false,
       });
     }
 

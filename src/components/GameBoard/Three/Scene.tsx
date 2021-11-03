@@ -115,7 +115,7 @@ export const Scene: React.FC<{ xPositions: number[], zPositions: number[] }> = (
             {space.height >= 1 && buildingsLevel1[space.pos]}
             {space.height >= 2 && buildingsLevel2[space.pos]}
             {space.height >= 3 && buildingsLevel3[space.pos]}
-            {space.is_domed && (
+            {space.isDomed && (
               <Dome key={`dome${space.pos}`}
                 xPos={xPositions[space.pos]}
                 zPos={zPositions[space.pos]}
