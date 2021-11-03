@@ -1,6 +1,6 @@
 import { Ctx } from "boardgame.io";
 import { getAdjacentPositions, getNextPosition } from '../utility'
-import { Character, CharacterState } from ".";
+import { Character, CharacterState } from '../../types/CharacterTypes';
 import { Mortal } from "./Mortal";
 import { GameState, Player } from '../../types/GameTypes';
 import { Board } from '../space'
@@ -8,7 +8,6 @@ import { Board } from '../space'
 export const Minotaur : Character = {
   
   ...Mortal,
-  name: 'Minotaur',
   desc: `Your Move: Your Worker may move into an opponent Worker’s space, 
     if their Worker can be forced one space straight backwards to an 
     unoccupied space at any level.`,

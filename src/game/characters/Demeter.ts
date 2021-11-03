@@ -1,4 +1,4 @@
-import { CharacterState, Character } from ".";
+import { Character, CharacterState } from '../../types/CharacterTypes';
 import { Mortal } from "./Mortal";
 import { getAdjacentPositions } from '../utility'
 import { GameState, Player } from '../../types/GameTypes';
@@ -17,7 +17,6 @@ const initialAttrs: DemeterAttrs = {
 
 export const Demeter: Character = {
   ...Mortal,
-  name: 'Demeter',
   desc: `Your Build: Your worker may build one additional time, but not on the same space.`,
   buttonText: 'Skip 2nd Build',
   attrs: initialAttrs,

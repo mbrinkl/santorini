@@ -1,6 +1,6 @@
 import { union } from 'lodash';
 import { getAdjacentPositions } from '../utility';
-import { Character, CharacterState } from ".";
+import { Character, CharacterState } from '../../types/CharacterTypes';
 import { Mortal } from "./Mortal";
 import { GameState, Player } from '../../types/GameTypes';
 import { Board } from '../space';
@@ -20,7 +20,6 @@ const initialAttrs: HeraclesAttrs = {
 
 export const Heracles: Character = {
   ...Mortal,
-  name: 'Heracles',
   desc: `End of Your Turn: Once, both your Workers build any number 
     of domes (even zero) at any level.`,
   buttonText: `Build Domes`,

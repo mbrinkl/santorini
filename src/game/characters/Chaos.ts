@@ -1,6 +1,7 @@
 import { Mortal } from './Mortal';
 import { GameState, Player } from '../../types/GameTypes';
-import { Character, CharacterState, getCharacter } from '.';
+import { Character, CharacterState } from '../../types/CharacterTypes';
+import { getCharacter } from '.';
 import { Ctx } from 'boardgame.io';
 import { AthenaAttrs } from './Athena';
 
@@ -66,7 +67,6 @@ function changeEmulatingCharacter(G: GameState, ctx: Ctx, player: Player, char: 
 export const Chaos: Character = {
   ...Mortal,
 
-  name: 'Chaos',
   desc: `(Changes between Simple God Powers after any turn in which at least one dome is built)`,
   attrs: initialAttrs,
 

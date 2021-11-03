@@ -1,13 +1,12 @@
-import { Character, CharacterState } from '.'
 import { Mortal } from './Mortal'
 import { getAdjacentPositions } from '../utility'
+import { Character, CharacterState } from '../../types/CharacterTypes';
 import { GameState, Player } from '../../types/GameTypes';
 import { Board } from '../space'
 import { Ctx } from 'boardgame.io';
 
 export const Apollo: Character = {
   ...Mortal,
-  name: 'Apollo',
   desc: `Your Move : Your worker may move into an opponent worker's space by 
       forcing their worker to the space you just vacated.`,
 

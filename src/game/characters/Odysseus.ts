@@ -1,5 +1,5 @@
 import { getAdjacentPositions } from '../utility';
-import { Character, CharacterState } from ".";
+import { Character, CharacterState } from '../../types/CharacterTypes';
 import { Mortal } from "./Mortal";
 import { GameState, Player } from '../../types/GameTypes';
 import { Board } from '../space'
@@ -48,7 +48,6 @@ const checkForValidSpecial = (
 
 export const Odysseus: Character = {
   ...Mortal,
-  name: 'Odysseus',
   desc: `Start of Your Turn: Once, force to unoccupied corner spaces any 
     number of opponent Workers that neighbor your Workers.`,
   buttonText: 'Move Opponent',

@@ -1,4 +1,4 @@
-import { Character, CharacterState } from ".";
+import { Character, CharacterState } from '../../types/CharacterTypes';
 import { Mortal } from "./Mortal";
 import { getAdjacentPositions, getNextPosition } from '../utility'
 import { GameState, Player } from '../../types/GameTypes';
@@ -6,7 +6,6 @@ import { Ctx } from 'boardgame.io';
 
 export const Iris: Character = {
   ...Mortal,
-  name: 'Iris',
   desc: `Your Move: If there is a Worker neighboring your Worker and the space directly on the 
       other side of it is unoccupied, your worker may move to that space regardless of its level.`,
 

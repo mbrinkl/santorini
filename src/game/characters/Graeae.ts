@@ -1,5 +1,5 @@
 import { union } from 'lodash'
-import { Character, CharacterState } from ".";
+import { Character, CharacterState } from '../../types/CharacterTypes';
 import { Mortal } from "./Mortal";
 import { GameState, Player } from '../../types/GameTypes';
 import { Ctx } from 'boardgame.io';
@@ -7,7 +7,6 @@ import { getAdjacentPositions } from '../utility';
 
 export const Graeae: Character = {
   ...Mortal,
-  name: 'Graeae',
   desc: `Setup: When placing your Workers, place 3 of your color.\n
     Your Build: Build with a Worker that did not Move.\n
     Banned VS: Nemesis`,

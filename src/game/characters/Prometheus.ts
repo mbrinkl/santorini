@@ -1,6 +1,6 @@
 import { Ctx } from "boardgame.io";
 import { getAdjacentPositions } from '../utility'
-import { Character, CharacterState } from ".";
+import { Character, CharacterState } from '../../types/CharacterTypes';
 import { Mortal } from "./Mortal";
 import { GameState, Player } from '../../types/GameTypes';
 import { Board } from '../space'
@@ -19,7 +19,6 @@ const initialAttrs: PrometheusAttrs = {
 
 export const Prometheus: Character = {
   ...Mortal,
-  name: 'Prometheus',
   desc: `Your Turn: If your Worker does not move up, it may build both before and after moving.`,
   buttonText: 'Bulid Before Move',
   attrs: initialAttrs,

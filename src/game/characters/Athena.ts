@@ -1,5 +1,5 @@
 import { Ctx } from "boardgame.io";
-import { Character, CharacterState } from ".";
+import { Character, CharacterState } from '../../types/CharacterTypes';
 import { Mortal } from "./Mortal";
 import { GameState, Player } from '../../types/GameTypes';
 import { Board } from '../space';
@@ -16,7 +16,6 @@ const initialAttrs: AthenaAttrs = {
 
 export const Athena: Character = {
   ...Mortal,
-  name: 'Athena',
   desc: `Opponent's Turn: If one of your workers moved up on your last turn, 
         opponent workers cannot move up this turn.`,
 

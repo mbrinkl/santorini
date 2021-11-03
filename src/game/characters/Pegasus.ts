@@ -1,10 +1,9 @@
 import { Mortal } from './Mortal';
 import { GameState } from '../../types/GameTypes';
-import { Character, CharacterState } from '.';
+import { Character, CharacterState } from '../../types/CharacterTypes';
 
 export const Pegasus: Character = {
   ...Mortal,
-  name: 'Pegasus',
   desc: `Your Move: Your Worker may move up more than one level, but cannot win the game by doing so.`,
   moveUpHeight: 3,
 

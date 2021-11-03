@@ -1,12 +1,11 @@
 import { GameState, Player } from '../../types/GameTypes';
 import { Ctx } from "boardgame.io";
-import { Character, CharacterState } from ".";
+import { Character, CharacterState } from "../../types/CharacterTypes";
 import { getAdjacentPositions } from "../utility";
 import { Board } from '../space'
 
 export const Mortal : Character = {
 
-  name: "Mortal",
   workers: [],
   desc: "No ability",
   buttonText: "No ability",

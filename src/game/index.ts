@@ -2,18 +2,19 @@ import { ActivePlayers } from "boardgame.io/core";
 import { Ctx } from "boardgame.io";
 import { GAME_ID } from "../config";
 import { EndTurn, CharacterAbility, Move, Select, Build, Place, updateValids, CheckWinByTrap } from "./moves";
-import { characterList, getCharacter, CharacterState, Character } from "./characters";
+import { characterList, getCharacter } from "./characters";
 import { SetChar, Ready, CancelReady } from "./moves/charSelectMoves";
 import { GameState, Space } from "../types/GameTypes";
+import { Character, CharacterState } from "../types/CharacterTypes";
 
 export function initCharacter(characterName: string): CharacterState {
   const character: Character = getCharacter(characterName);
 
-  const { name, desc, buttonActive, buttonText, moveUpHeight, workers, 
+  const { desc, buttonActive, buttonText, moveUpHeight, workers, 
     numWorkers, numWorkersToPlace, selectedWorker, attrs } = character;
 
   return {
-    name: name,
+    name: characterName,
     desc: desc,
     buttonActive: buttonActive,
     buttonText: buttonText,

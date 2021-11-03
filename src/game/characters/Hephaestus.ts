@@ -1,4 +1,4 @@
-import { Character, CharacterState } from ".";
+import { Character, CharacterState } from '../../types/CharacterTypes';
 import { Mortal } from "./Mortal";
 import { getAdjacentPositions } from '../utility'
 import { GameState, Player } from '../../types/GameTypes';
@@ -17,7 +17,6 @@ const initialAttrs: HephaestusAttrs = {
 
 export const Hephaestus: Character = {
   ...Mortal,
-  name: 'Hephaestus',
   desc: `Your Build: Your Worker may build one additional block (not dome) on top of your first block.`,
   buttonText: 'Skip 2nd Build',
   attrs: initialAttrs,

@@ -1,4 +1,4 @@
-import { CharacterState, Character } from ".";
+import { Character, CharacterState } from '../../types/CharacterTypes';
 import { Mortal } from "./Mortal";
 import { GameState, Player } from '../../types/GameTypes';
 import { Board } from '../space'
@@ -14,7 +14,6 @@ const initialAttrs: AtlasAttrs = {
 
 export const Atlas: Character = {
   ...Mortal,
-  name: 'Atlas',
   desc: `Your Build: Your worker may build a dome at any level.`,
   buttonText: 'Build Dome',
   attrs: initialAttrs,

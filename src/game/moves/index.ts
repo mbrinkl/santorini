@@ -1,6 +1,7 @@
 import { Ctx } from "boardgame.io";
 import { GameState, Player } from "../../types/GameTypes";
-import { Worker, getCharacter, Character } from "../characters";
+import { getCharacter } from "../characters";
+import { Character, Worker } from '../../types/CharacterTypes';
 import { Board } from "../space";
 
 export function updateValids(G: GameState, ctx: Ctx, player: Player, stage: string) {

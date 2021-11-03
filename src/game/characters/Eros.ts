@@ -1,5 +1,5 @@
 import { getAdjacentPositions, getOppositePerimterPositions, posIsPerimeter } from "../../game/utility";
-import { Character, CharacterState, Worker } from ".";
+import { Character, CharacterState, Worker } from '../../types/CharacterTypes';
 import { Mortal } from "./Mortal";
 import { GameState, Player } from '../../types/GameTypes';
 import { Ctx } from "boardgame.io";
@@ -7,7 +7,6 @@ import { Ctx } from "boardgame.io";
 
 export const Eros: Character = {
   ...Mortal,
-  name: 'Eros',
   desc: `Setup: Place your Workers anywhere along opposite edges of the board.
     Win Condition: You also win if one of your Workers moves to a space neighboring your
     other Worker and both are on the first level (or the same level in a 3-player game).`,

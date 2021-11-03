@@ -1,4 +1,4 @@
-import { Character, CharacterState } from ".";
+import { Character, CharacterState } from '../../types/CharacterTypes';
 import { Mortal } from "./Mortal";
 import { Ctx } from 'boardgame.io';
 import { Board } from '../space'
@@ -7,7 +7,6 @@ import { GameState, Player } from '../../types/GameTypes';
 
 export const Triton: Character = {
   ...Mortal,
-  name: 'Triton',
   desc: `Your Move: Each time your Worker moves into a perimeter space, it may immediately move again.`,
   buttonText: 'End Move',
 

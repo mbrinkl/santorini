@@ -1,7 +1,7 @@
 import { union } from "lodash"
 import { Ctx } from "boardgame.io";
 import { getAdjacentPositions } from '../utility'
-import { Character, CharacterState } from ".";
+import { Character, CharacterState } from '../../types/CharacterTypes';
 import { Mortal } from "./Mortal";
 import { GameState, Player } from '../../types/GameTypes';
 import { Board } from '../space'
@@ -20,7 +20,6 @@ const initialAttrs: HermesAttrs = {
 
 export const Hermes: Character = {
   ...Mortal,
-  name: 'Hermes',
   desc: `Your Turn: If your Workers do not move up or down, they may 
     each move any number of times (even zero), and then either builds`,
   buttonText: 'End Move',

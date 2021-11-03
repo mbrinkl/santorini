@@ -19,7 +19,7 @@ export interface CharacterState {
   attrs: any;
 }
 
-export interface Character extends CharacterState {
+export interface Character extends Omit<CharacterState, "name"> {
   initialize: (G: GameState, ctx: Ctx, player: Player, char: CharacterState) => void,
   onTurnBegin: (G: GameState, ctx: Ctx, player: Player, char: CharacterState) => void,
   onTurnEnd: (G: GameState, ctx: Ctx, player: Player, char: CharacterState) => void,

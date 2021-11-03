@@ -1,11 +1,10 @@
 import { Ctx } from 'boardgame.io';
-import { Character, CharacterState } from ".";
+import { Character, CharacterState } from '../../types/CharacterTypes';
 import { Mortal } from "./Mortal";
 import { GameState, Player } from '../../types/GameTypes';
 
 export const Zeus: Character = {
   ...Mortal,
-  name: 'Zeus',
   desc: `Your Build: Your Worker may build a block under itself.`,
 
   checkWinByMove: (G: GameState, char: CharacterState, heightBefore: number, heightAfter: number) => {

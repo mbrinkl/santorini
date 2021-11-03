@@ -1,6 +1,6 @@
 import { Ctx } from "boardgame.io";
 import { getAdjacentPositions } from '../utility';
-import { Character, CharacterState } from '.';
+import { Character, CharacterState } from '../../types/CharacterTypes';
 import { Mortal } from "./Mortal";
 import { GameState, Player } from '../../types/GameTypes';
 import { Board } from '../space';
@@ -17,7 +17,6 @@ const initialAttrs: ArtemisAttrs = {
 
 export const Artemis: Character = {
   ...Mortal,
-  name: 'Artemis',
   desc: `Your Move: Your worker may move one additional time, but not back to
       its initial space.`,
   buttonText: 'End Move',
