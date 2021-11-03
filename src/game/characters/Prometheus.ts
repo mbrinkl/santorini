@@ -67,7 +67,7 @@ export const Prometheus: Character = {
 
     adjacents.forEach(pos => {
       if (!G.spaces[pos].inhabited &&
-        !G.spaces[pos].is_domed &&
+        !G.spaces[pos].isDomed &&
         G.spaces[pos].height - G.spaces[originalPos].height <= height
       ) {
         valids.push(pos);

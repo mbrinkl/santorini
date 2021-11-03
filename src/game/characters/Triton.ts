@@ -3,7 +3,7 @@ import { Mortal } from "./Mortal";
 import { Ctx } from 'boardgame.io';
 import { Board } from '../space'
 import { posIsPerimeter } from '../utility';
-import { GameState, Player } from '../../types/GameTypes';
+import { GameStage, GameState, Player } from '../../types/GameTypes';
 
 export const Triton: Character = {
   ...Mortal,
@@ -18,7 +18,7 @@ export const Triton: Character = {
     pos: number
   ) => {
 
-    let returnStage = 'build';
+    let returnStage: GameStage = 'build';
 
     if (posIsPerimeter(pos)) {
       char.buttonActive = true;

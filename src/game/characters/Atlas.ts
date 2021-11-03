@@ -41,17 +41,17 @@ export const Atlas: Character = {
     return Mortal.buttonPressed(G, ctx, player, char);
   },
 
-  build(
+  build: (
     G: GameState,
     ctx: Ctx,
     player: Player,
     char: CharacterState,
     pos: number
-  ): string {
+  ) => {
     const attrs: AtlasAttrs = char.attrs as AtlasAttrs;
     
     if (attrs.specialActive)
-      G.spaces[pos].is_domed = true;
+      G.spaces[pos].isDomed = true;
     else
       Board.build(G, pos);
 

@@ -18,15 +18,12 @@ export const Apollo: Character = {
     originalPos: number
   ) => {
 
-    let adjacents: number[] = getAdjacentPositions(originalPos);
-    let valids: number[] = []
+    const valids: number[] = []
 
-    originalPos = +originalPos;
-
-    adjacents.forEach(pos => {
+    getAdjacentPositions(originalPos).forEach(pos => {
 
       // if the space is in valid range and height and not domed
-      if (!G.spaces[pos].is_domed && G.spaces[pos].height - G.spaces[originalPos].height <= char.moveUpHeight) {
+      if (!G.spaces[pos].isDomed && G.spaces[pos].height - G.spaces[originalPos].height <= char.moveUpHeight) {
         // if the space is not inhabited
         if (!G.spaces[pos].inhabited)
           // add the space to the valid list
@@ -50,14 +47,15 @@ export const Apollo: Character = {
     pos: number
   ) => {
 
-    let originalPos = char.workers[char.selectedWorker].pos;
+    const originalPos = char.workers[char.selectedWorker].pos;
 
     // if switching spaces with another worker
     if (G.spaces[pos].inhabited) {
       Board.place(G, originalPos, player.opponentId, G.spaces[pos].inhabitant.workerNum);
     }
-    else
+    else {
       Board.free(G, originalPos);
+    }
 
     Board.place(G, pos, player.id, char.selectedWorker);
 

@@ -22,7 +22,7 @@ export const Iris: Character = {
     adjacents.forEach(pos => {
 
       // if the space is in valid range and height and not domed
-      if (!G.spaces[pos].is_domed && G.spaces[pos].height - G.spaces[originalPos].height <= char.moveUpHeight) {
+      if (!G.spaces[pos].isDomed && G.spaces[pos].height - G.spaces[originalPos].height <= char.moveUpHeight) {
         // if the space is not inhabited
         if (!G.spaces[pos].inhabited)
           // add the space to the valid list
@@ -34,7 +34,7 @@ export const Iris: Character = {
           const nextPos: number = getNextPosition(originalPos, pos);
 
           if (nextPos !== -1) {
-            if (!G.spaces[nextPos].inhabited && !G.spaces[nextPos].is_domed)
+            if (!G.spaces[nextPos].inhabited && !G.spaces[nextPos].isDomed)
               // add the space to the valid list
               valids.push(nextPos);
           }

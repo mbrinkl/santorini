@@ -30,18 +30,18 @@ export const Artemis: Character = {
     originalPos: number
   ) => {
     const attrs: ArtemisAttrs = char.attrs as ArtemisAttrs;
-
-    let adjacents: number[] = getAdjacentPositions(originalPos);
-    let valids: number[] = [];
+    const valids: number[] = [];
 
     if (char.selectedWorker !== -1 && attrs.numMoves === 0)
       attrs.prevTile = char.workers[char.selectedWorker].pos;
 
-    adjacents.forEach(pos => {
-      if (!G.spaces[pos].inhabited && !G.spaces[pos].is_domed &&
-        G.spaces[pos].height - G.spaces[originalPos].height <= char.moveUpHeight
+      getAdjacentPositions(originalPos).forEach(pos => {
+      if (
+        !G.spaces[pos].inhabited && 
+        !G.spaces[pos].isDomed &&
+        G.spaces[pos].height - G.spaces[originalPos].height <= char.moveUpHeight &&
+        attrs.prevTile !== pos
       ) {
-        if (attrs.prevTile !== pos)
           valids.push(pos);
       }
     });

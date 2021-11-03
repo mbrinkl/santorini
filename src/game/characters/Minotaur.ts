@@ -25,7 +25,7 @@ export const Minotaur : Character = {
   
     adjacents.forEach( pos => {
 
-      if (!G.spaces[pos].is_domed && G.spaces[pos].height - G.spaces[originalPos].height <= char.moveUpHeight) {
+      if (!G.spaces[pos].isDomed && G.spaces[pos].height - G.spaces[originalPos].height <= char.moveUpHeight) {
         
         if (!G.spaces[pos].inhabited) {
           valids.push(pos);

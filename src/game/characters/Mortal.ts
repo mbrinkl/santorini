@@ -1,4 +1,4 @@
-import { GameState, Player } from '../../types/GameTypes';
+import { GameStage, GameState, Player } from '../../types/GameTypes';
 import { Ctx } from "boardgame.io";
 import { Character, CharacterState } from "../../types/CharacterTypes";
 import { getAdjacentPositions } from "../utility";
@@ -87,13 +87,12 @@ export const Mortal : Character = {
     char: CharacterState,
     originalPos: number
   ) => {
-    let adjacents: number[] = getAdjacentPositions(originalPos);
     let valids: number[] = [];
 
-    adjacents.forEach((pos) => {
+    getAdjacentPositions(originalPos).forEach((pos) => {
       if (
         !G.spaces[pos].inhabited &&
-        !G.spaces[pos].is_domed &&
+        !G.spaces[pos].isDomed &&
         G.spaces[pos].height - G.spaces[originalPos].height <= char.moveUpHeight
       ) {
         valids.push(pos);
@@ -146,7 +145,7 @@ export const Mortal : Character = {
     let valids: number[] = [];
 
     adjacents.forEach((pos) => {
-      if (!G.spaces[pos].inhabited && !G.spaces[pos].is_domed) {
+      if (!G.spaces[pos].inhabited && !G.spaces[pos].isDomed) {
         valids.push(pos);
       }
     });
@@ -188,7 +187,7 @@ export const Mortal : Character = {
     player: Player,
     char: CharacterState
   ) => {
-    return ctx.activePlayers![ctx.currentPlayer];
+    return ctx.activePlayers![ctx.currentPlayer] as GameStage;
   },
 
   checkWinByMove : (

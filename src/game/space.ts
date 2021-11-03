@@ -23,6 +23,6 @@ export const Board = {
 
   build: (G: GameState, pos: number) => {
     if (G.spaces[pos].height < 4) G.spaces[pos].height++;
-    if (G.spaces[pos].height === 4) G.spaces[pos].is_domed = true;
+    if (G.spaces[pos].height === 4) G.spaces[pos].isDomed = true;
   }
 }

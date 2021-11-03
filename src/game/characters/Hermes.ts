@@ -3,7 +3,7 @@ import { Ctx } from "boardgame.io";
 import { getAdjacentPositions } from '../utility'
 import { Character, CharacterState } from '../../types/CharacterTypes';
 import { Mortal } from "./Mortal";
-import { GameState, Player } from '../../types/GameTypes';
+import { GameStage, GameState, Player } from '../../types/GameTypes';
 import { Board } from '../space'
 
 interface HermesAttrs {
@@ -49,7 +49,7 @@ export const Hermes: Character = {
         
     if (attrs.canMoveUp) {
       adjacents.forEach( pos => {
-        if (!G.spaces[pos].inhabited && !G.spaces[pos].is_domed &&
+        if (!G.spaces[pos].inhabited && !G.spaces[pos].isDomed &&
           G.spaces[pos].height - G.spaces[originalPos].height <= char.moveUpHeight
         ) {
           valids.push(pos);
@@ -58,7 +58,7 @@ export const Hermes: Character = {
     }
     else {
       adjacents.forEach( pos => {
-        if (!G.spaces[pos].inhabited && !G.spaces[pos].is_domed &&
+        if (!G.spaces[pos].inhabited && !G.spaces[pos].isDomed &&
           G.spaces[pos].height === G.spaces[originalPos].height
         ) {
           valids.push(pos);
@@ -78,7 +78,7 @@ export const Hermes: Character = {
   ) => {
     const attrs: HermesAttrs = char.attrs as HermesAttrs;
 
-    let returnStage = 'build';
+    let returnStage: GameStage = 'build';
 
     if (G.spaces[pos].height === char.workers[char.selectedWorker].height) {
       attrs.canMoveUp = false;
@@ -126,7 +126,7 @@ export const Hermes: Character = {
     }
   
     adjacents.forEach( pos => {
-      if (!G.spaces[pos].inhabited && !G.spaces[pos].is_domed) {
+      if (!G.spaces[pos].inhabited && !G.spaces[pos].isDomed) {
         valids.push(pos);
       }
     })

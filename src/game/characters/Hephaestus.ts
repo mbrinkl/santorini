@@ -52,7 +52,7 @@ export const Hephaestus: Character = {
 
     if (attrs.numBuilds === 0) {
       adjacents.forEach(pos => {
-        if (!G.spaces[pos].inhabited && !G.spaces[pos].is_domed) {
+        if (!G.spaces[pos].inhabited && !G.spaces[pos].isDomed) {
           valids.push(pos);
         }
       })

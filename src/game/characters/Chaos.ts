@@ -87,7 +87,7 @@ export const Chaos: Character = {
   ) => {
     let attrs: ChaosAttrs = char.attrs as ChaosAttrs;
 
-    const numDomes: number = G.spaces.filter((space) => space.is_domed === true).length;
+    const numDomes: number = G.spaces.filter((space) => space.isDomed === true).length;
 
     if (attrs.numDomes < numDomes) {
       changeEmulatingCharacter(G, ctx, player, char, numDomes);
@@ -109,7 +109,7 @@ export const Chaos: Character = {
     const character = getCharacter(attrs.currentCharacter);
     character.onTurnEnd(G, ctx, player, char);
 
-    const numDomes = G.spaces.filter((space) => space.is_domed === true).length;
+    const numDomes = G.spaces.filter((space) => space.isDomed === true).length;
 
     if (attrs.numDomes < numDomes) {
       changeEmulatingCharacter(G, ctx, player, char, numDomes);

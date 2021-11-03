@@ -1,6 +1,7 @@
 import { CharacterState } from "./CharacterTypes"
 
-type playerIDs = '0' | '1';
+type PlayerIDs = '0' | '1';
+export type GameStage = 'place' | 'select' | 'move' | 'build' | 'end';
 
 export interface Player {
   id: string;
@@ -11,7 +12,7 @@ export interface Player {
 
 export interface GameState {
   spaces: Space[];
-  players: Record<playerIDs, Player>
+  players: Record<PlayerIDs, Player>
   valids: number[];
 }
 
@@ -23,5 +24,5 @@ export interface Space {
     playerId: string;
     workerNum: number;
   };
-  is_domed: boolean;
+  isDomed: boolean;
 }

@@ -92,7 +92,7 @@ export const Heracles: Character = {
       }
 
       adjacents.forEach(pos => {
-        if (!G.spaces[pos].inhabited && !G.spaces[pos].is_domed) {
+        if (!G.spaces[pos].inhabited && !G.spaces[pos].isDomed) {
           valids.push(pos);
         }
       })
@@ -114,7 +114,7 @@ export const Heracles: Character = {
       attrs.specialUsed = true;
       char.buttonText = 'End Build';
       attrs.numBuilds++;
-      G.spaces[pos].is_domed = true;
+      G.spaces[pos].isDomed = true;
 
       if (Mortal.hasValidBuild(G, ctx, player, char)) {
         return 'build';

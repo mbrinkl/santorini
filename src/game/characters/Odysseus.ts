@@ -117,7 +117,7 @@ export const Odysseus: Character = {
       }
       else {
         [0, 4, 20, 24].forEach( pos => { // corner positions
-          if (!G.spaces[pos].is_domed && !G.spaces[pos].inhabited) {
+          if (!G.spaces[pos].isDomed && !G.spaces[pos].inhabited) {
             valids.push(pos);
           }
         })

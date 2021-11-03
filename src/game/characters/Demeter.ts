@@ -52,14 +52,14 @@ export const Demeter: Character = {
 
     if (attrs.numBuilds === 0) {
       adjacents.forEach(pos => {
-        if (!G.spaces[pos].inhabited && !G.spaces[pos].is_domed) {
+        if (!G.spaces[pos].inhabited && !G.spaces[pos].isDomed) {
           valids.push(pos);
         }
       })
     }
     else {
       adjacents.forEach(pos => {
-        if (!G.spaces[pos].inhabited && !G.spaces[pos].is_domed && pos !== attrs.firstBuildPos) {
+        if (!G.spaces[pos].inhabited && !G.spaces[pos].isDomed && pos !== attrs.firstBuildPos) {
           valids.push(pos);
         }
       })
