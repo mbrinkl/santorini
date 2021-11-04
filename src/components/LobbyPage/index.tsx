@@ -1,8 +1,8 @@
 import React, { HTMLAttributes } from "react";
 import style from "./style.module.scss";
 import classNames from "classnames";
-import { Logo } from "components/Logo";
-import { ReactComponent as GithubSvg } from "assets/svg/github.svg";
+import { Logo } from "../Logo";
+import { ReactComponent as GithubSvg } from "../../assets/svg/github.svg";
 
 export const LobbyPage: React.FC<HTMLAttributes<HTMLDivElement>> = ({
   className,

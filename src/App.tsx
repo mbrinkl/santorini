@@ -11,7 +11,7 @@ import { SetupNickname } from "./components/SetupNickname";
 import { initializeStore, useStoreState } from "./store";
 import { NICKNAME_STORAGE_KEY, PLAYER_STORAGE_KEY } from "./config/client";
 import { StoreModel } from "./types/StoreTypes";
-import { Welcome } from "components/Welcome";
+import { Welcome } from "./components/Welcome";
 
 const savedNickname = localStorage.getItem(NICKNAME_STORAGE_KEY);
 const savedPlayer = localStorage.getItem(PLAYER_STORAGE_KEY);

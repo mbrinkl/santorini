@@ -27,6 +27,8 @@ export const CharacterBox: React.FC<{ name: string }> = ({ name }) => {
       }}
       className="characterBoxSelectable"
       onClick={select}
+      role="button"
+      tabIndex={characterList.indexOf(name)}
     >
       <span>{name}</span>
     </div>

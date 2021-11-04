@@ -16,8 +16,8 @@ export const Iris: Character = {
     char: CharacterState,
     originalPos: number
   ) => {
-    let adjacents: number[] = getAdjacentPositions(originalPos);
-    let valids: number[] = [];
+    const adjacents: number[] = getAdjacentPositions(originalPos);
+    const valids: number[] = [];
 
     adjacents.forEach(pos => {
 

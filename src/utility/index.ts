@@ -1,6 +1,6 @@
 //https://stackoverflow.com/questions/21741841/detecting-ios-android-operating-system
 export function getMobileOS() {
-  var userAgent =
+  const userAgent =
     navigator.userAgent || navigator.vendor || (window as any).opera;
 
   // Windows Phone must come first because its UA also contains "Android"

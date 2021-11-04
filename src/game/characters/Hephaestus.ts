@@ -47,8 +47,8 @@ export const Hephaestus: Character = {
   ) => {
     const attrs: HephaestusAttrs = char.attrs as HephaestusAttrs;
 
-    let adjacents: number[] = getAdjacentPositions(originalPos);
-    let valids: number[] = []
+    const adjacents: number[] = getAdjacentPositions(originalPos);
+    const valids: number[] = []
 
     if (attrs.numBuilds === 0) {
       adjacents.forEach(pos => {

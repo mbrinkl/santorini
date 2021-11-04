@@ -20,7 +20,7 @@ export const Zeus: Character = {
     originalPos: number
   ) => {
 
-    let valids: number[] = Mortal.validBuild(G, ctx, player, char, originalPos);
+    const valids: number[] = Mortal.validBuild(G, ctx, player, char, originalPos);
 
     if (char.workers[char.selectedWorker].height < 3)
       valids.push(char.workers[char.selectedWorker].pos);

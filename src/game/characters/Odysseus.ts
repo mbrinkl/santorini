@@ -98,13 +98,13 @@ export const Odysseus: Character = {
     player: Player, 
     char: CharacterState,
     originalPos: number
-  ) : number[] {
+  ): number[] {
     const attrs: OdysseusAttrs = char.attrs as OdysseusAttrs;
 
-    let valids : number[] = []
+    const valids: number[] = []
 
     if (attrs.specialActive) {
-      let adjacents : number[] = [];
+      let adjacents: number[] = [];
       char.workers.forEach( worker => {
         adjacents = adjacents.concat(getAdjacentPositions(worker.pos));
       });

@@ -43,8 +43,8 @@ export const Hermes: Character = {
   ) => {
     const attrs: HermesAttrs = char.attrs as HermesAttrs;
 
-    let adjacents : number[] = getAdjacentPositions(originalPos);
-    let valids : number[] = []
+    const adjacents: number[] = getAdjacentPositions(originalPos);
+    const valids: number[] = []
         
     if (attrs.canMoveUp) {
       adjacents.forEach( pos => {
@@ -108,8 +108,8 @@ export const Hermes: Character = {
   ) => {
     const attrs: HermesAttrs = char.attrs as HermesAttrs;
 
-    let valids : number[] = []
-    let adjacents : number[] = [];
+    const valids: number[] = []
+    let adjacents: number[] = [];
     
     // normal build
     if (attrs.movedUpOrDown) {

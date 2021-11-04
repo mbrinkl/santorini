@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from "react";
-import { LobbyPage } from "components/LobbyPage";
-import { Logo } from "components/Logo";
-import { Button, ButtonProps } from "components/Button";
+import { LobbyPage } from "../LobbyPage";
+import { Logo } from "../Logo";
+import { Button, ButtonProps } from "../Button";
 import style from "./style.module.scss";
 import { ButtonChangeNickname } from "../ButtonChangeNickname";
 import { useStoreActions, useStoreState } from "../../store";

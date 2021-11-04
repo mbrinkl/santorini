@@ -1,5 +1,5 @@
 import React from "react";
-import { ReactComponent as LogoSvg } from "assets/svg/logo.svg";
+import { ReactComponent as LogoSvg } from "../../assets/svg/logo.svg";
 import "./style.scss";
 import classNames from "classnames";
 

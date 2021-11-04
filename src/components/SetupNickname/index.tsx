@@ -3,9 +3,9 @@ import "./style.scss";
 import { useStoreState, useStoreActions } from "../../store";
 import { useState } from "react";
 import { ButtonBack } from "../ButtonBack";
-import { Button } from "components/Button";
-import { LobbyPage } from "components/LobbyPage";
-import { Input } from "components/Input";
+import { Button } from "../Button";
+import { LobbyPage } from "../LobbyPage";
+import { Input } from "../Input";
 
 export const SetupNickname: React.FC<{ onSubmit?: () => void }> = ({
   onSubmit,
@@ -55,7 +55,6 @@ export const SetupNickname: React.FC<{ onSubmit?: () => void }> = ({
           className="SetupNickname__input"
           onChange={(e) => setNickname(e.target.value)}
           value={nickname}
-          autoFocus={true}
           maxLength={8}
         />
 

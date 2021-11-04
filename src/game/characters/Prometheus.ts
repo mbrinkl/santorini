@@ -57,13 +57,13 @@ export const Prometheus: Character = {
   ) => {
     const attrs: PrometheusAttrs = char.attrs as PrometheusAttrs;
 
-    let height = (attrs.specialUsed ? 0 : char.moveUpHeight)
+    const height = (attrs.specialUsed ? 0 : char.moveUpHeight)
     if (attrs.specialUsed) {
       originalPos = attrs.originalPos;
     }
 
-    let adjacents: number[] = getAdjacentPositions(originalPos);
-    let valids: number[] = []
+    const adjacents: number[] = getAdjacentPositions(originalPos);
+    const valids: number[] = []
 
     adjacents.forEach(pos => {
       if (!G.spaces[pos].inhabited &&

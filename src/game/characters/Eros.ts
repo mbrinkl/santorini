@@ -18,7 +18,7 @@ export const Eros: Character = {
     char: CharacterState,
   ) => {
 
-    let valids: number[] = [];
+    const valids: number[] = [];
     for (const space of G.spaces) {
       if (!space.inhabited && char.numWorkersToPlace > 0 && posIsPerimeter(space.pos)) {
         if (char.numWorkersToPlace === 2) {

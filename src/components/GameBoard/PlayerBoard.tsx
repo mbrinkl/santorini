@@ -20,10 +20,10 @@ export const PlayerBoard: React.FC = () => {
 
   useEffect(() => {
 
-    let xPos: number[] = [];
-    let zPos: number[] = [];
-    for (var i = -2; i < 3; i++) {
-      for (var j = -2; j < 3; j++) {
+    const xPos: number[] = [];
+    const zPos: number[] = [];
+    for (let i = -2; i < 3; i++) {
+      for (let j = -2; j < 3; j++) {
         xPos.push(GROUND_PADDING + GROUND_PADDING * i + GROUND_SIZE * i);
         zPos.push(GROUND_PADDING + GROUND_PADDING * j + GROUND_SIZE * j);
       }
@@ -36,7 +36,7 @@ export const PlayerBoard: React.FC = () => {
   return (
     <div
       className={classNames(
-        "PlayerBoard", !!ctx.gameover ?
+        "PlayerBoard", ctx.gameover ?
         ctx.gameover.winner === playerID
           ? "PlayerBoard--winner"
           : "PlayerBoard--loser"

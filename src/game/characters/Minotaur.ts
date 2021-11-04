@@ -5,7 +5,7 @@ import { Mortal } from "./Mortal";
 import { GameState, Player } from '../../types/GameTypes';
 import { Board } from '../space'
 
-export const Minotaur : Character = {
+export const Minotaur: Character = {
   
   ...Mortal,
   desc: `Your Move: Your Worker may move into an opponent Worker’s space, 
@@ -20,8 +20,8 @@ export const Minotaur : Character = {
     originalPos: number
   ) => {
 
-    let adjacents : number[] = getAdjacentPositions(originalPos);
-    let valids : number[] = []
+    const adjacents: number[] = getAdjacentPositions(originalPos);
+    const valids: number[] = []
   
     adjacents.forEach( pos => {
 
@@ -31,8 +31,8 @@ export const Minotaur : Character = {
           valids.push(pos);
         } 
         else if (G.spaces[pos].inhabitant.playerId !== player.id) {
-          let posToPush = getNextPosition(originalPos, pos);
-          let opponent = G.players[player.opponentId];
+          const posToPush = getNextPosition(originalPos, pos);
+          const opponent = G.players[player.opponentId];
           if (Mortal.validMove(G, ctx, opponent, opponent.char, pos).includes(posToPush)) {
             valids.push(pos);
           }
@@ -51,7 +51,7 @@ export const Minotaur : Character = {
     pos: number
   ) => {
 
-    let posToPush = getNextPosition(char.workers[char.selectedWorker].pos, pos);
+    const posToPush = getNextPosition(char.workers[char.selectedWorker].pos, pos);
 
     if (G.spaces[pos].inhabited) {
       Board.place(G, posToPush, G.spaces[pos].inhabitant.playerId, G.spaces[pos].inhabitant.workerNum);

@@ -8,10 +8,10 @@ import { SantoriniGame } from "../../game";
 import { useStoreActions, useStoreState } from "../../store";
 import { GameBoard } from "../GameBoard";
 import { ButtonBack } from "../ButtonBack";
-import { LobbyPage } from "components/LobbyPage";
-import { Button } from "components/Button";
+import { LobbyPage } from "../LobbyPage";
+import { Button } from "../Button";
 import Tippy from "@tippyjs/react";
-import { isMobile, getMobileOS } from "utility";
+import { isMobile, getMobileOS } from "../../utility";
 import "tippy.js/dist/tippy.css"; // optional
 import "./style.scss";
 
@@ -48,7 +48,7 @@ export const GameLobbySetup: React.FC<{ startGame(): void }> = ({
 
   const supportsCopying = !!document.queryCommandSupported("copy");
   function copyToClipboard(value: string) {
-    var textField = document.createElement("textarea");
+    const textField = document.createElement("textarea");
     textField.innerText = value;
     textField.style.opacity = "0";
     document.body.appendChild(textField);

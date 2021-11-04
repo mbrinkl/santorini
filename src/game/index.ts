@@ -37,7 +37,7 @@ function setRandomCharacters(G: GameState, ctx: Ctx) {
   }
 }
 
-function getFirstPlayer(G: GameState) : number {
+function getFirstPlayer(G: GameState): number {
   let startingPlayer = 0;
   if (G.players["1"].char.name === "Bia") {
     startingPlayer = 1;

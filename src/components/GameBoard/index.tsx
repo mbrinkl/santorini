@@ -9,8 +9,8 @@ import { CharacterSelect } from "../CharacterSelect";
 import { PlayerInfo } from "./PlayerInfo";
 import { PlayerInfoMobile } from "./PlayerInfoMobile";
 import { Chat } from "./Chat";
+import { isMobile } from "../../utility";
 import "./style.scss";
-import { isMobile } from "utility";
 
 export const GameBoard: React.FC<BoardProps<GameState>> = ({
   G: State,

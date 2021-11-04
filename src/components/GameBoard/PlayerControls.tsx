@@ -1,11 +1,11 @@
 import { useState, useEffect, useRef} from "react";
 import { useParams } from "react-router";
 import { useBoardContext } from "./BoardContext";
-import { Button } from "components/Button";
+import { Button } from "../Button";
 import { useStoreActions, useStoreState } from "../../store";
 import undoLogo from'../../assets/png/undo.png';
 import messagesLogo from'../../assets/png/messages.png';
-import { isMobile } from "utility";
+import { isMobile } from "../../utility";
 import classNames from "classnames";
 
 export const PlayerControls: React.FC<{ messagesOpen? : boolean, onOpenMessages? : () => void}> = ({messagesOpen, onOpenMessages}) => {
@@ -18,8 +18,8 @@ export const PlayerControls: React.FC<{ messagesOpen? : boolean, onOpenMessages?
   const [redirect, setRedirect] = useState(false);
   const [msgBlack, setMsgBlack] = useState(false);
   const [counter, setCounter] = useState(3);
-  let intervalID: any = useRef(null); 
-  let intervalMsgID: any = useRef(null); 
+  const intervalID: any = useRef(null); 
+  const intervalMsgID: any = useRef(null); 
 
   useEffect(() => {
     clearInterval(intervalMsgID.current);
@@ -103,7 +103,7 @@ export const PlayerControls: React.FC<{ messagesOpen? : boolean, onOpenMessages?
         </Button>
       }
 
-      {!!ctx.gameover ? (<>
+      {ctx.gameover ? (<>
         <Button
           theme="red"
           onClick={exit}

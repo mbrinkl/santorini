@@ -1,4 +1,5 @@
 import { useBoardContext } from "./BoardContext";
+import React from "react";
 
 export const ConnectedIndicator: React.FC<{ playerID: number}> = ({ playerID }) => {
   

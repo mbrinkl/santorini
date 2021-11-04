@@ -14,7 +14,7 @@ export const PlayerInfoMobile = () => {
   }
 
   if (showOverlay) return (
-    <div className="MobileOverlay" onClick={toggleOverlay}>
+    <div className="MobileOverlay" onClick={toggleOverlay} role="none">
       <div className="MobileOverlay__p1">
         <span>
           <h3>{roomMetadata?.players[0].name + (playerID === '0' ? ' (you) - ' : ' - ') + State.players[0].char.name}</h3>
@@ -35,18 +35,18 @@ export const PlayerInfoMobile = () => {
 
   return (
     <div className="PlayerInfoMobile">
-      <div className="PlayerInfoMobile__P1QuestionMark" onClick={toggleOverlay}>
+      <div className="PlayerInfoMobile__P1QuestionMark" onClick={toggleOverlay} role="button" tabIndex={0}>
         <span>&nbsp;?&nbsp;</span>
       </div>
-      <div className="PlayerInfoMobile__P1Name" onClick={toggleOverlay}>
+      <div className="PlayerInfoMobile__P1Name" onClick={toggleOverlay} role="button" tabIndex={0}>
         <h2>{roomMetadata?.players[0].name + (playerID === '0' ? ' (you)' : '')}</h2>
         <span>{State.players[0].char.name}</span>
         <ConnectedIndicator playerID={0} />
       </div>
-      <div className="PlayerInfoMobile__P2QuestionMark" onClick={toggleOverlay}>
+      <div className="PlayerInfoMobile__P2QuestionMark" onClick={toggleOverlay} role="button" tabIndex={0}>
         <span>&nbsp;?&nbsp;</span>
       </div>
-      <div className="PlayerInfoMobile__P2Name" onClick={toggleOverlay}>
+      <div className="PlayerInfoMobile__P2Name" onClick={toggleOverlay} role="button" tabIndex={0}>
         <h2>{roomMetadata?.players[1].name + (playerID === '1' ? ' (you)' : '')}</h2>
         <span>{State.players[1].char.name}</span>
         <ConnectedIndicator playerID={1} />

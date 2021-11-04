@@ -42,7 +42,7 @@ export class LobbyService {
     return { playerCredentials };
   }
 
-  async updatePlayer({matchID, playerID, credentials, newName}: UpdatePlayerParams) : Promise<void> {
+  async updatePlayer({matchID, playerID, credentials, newName}: UpdatePlayerParams): Promise<void> {
 
     await this.lobbyClient.updatePlayer(GAME_ID, matchID, {
       playerID: String(playerID),

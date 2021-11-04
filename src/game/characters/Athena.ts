@@ -41,7 +41,7 @@ export const Athena: Character = {
     G.players[player.opponentId].char.moveUpHeight = attrs.opponentMoveUpHeight
 
     // note the height before moving
-    let heightBefore = char.workers[char.selectedWorker].height
+    const heightBefore = char.workers[char.selectedWorker].height
 
     // move to the selected space
     Board.free(G, char.workers[char.selectedWorker].pos);

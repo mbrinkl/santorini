@@ -25,7 +25,7 @@ export const Scene: React.FC<{ xPositions: number[], zPositions: number[] }> = (
     const b2: JSX.Element[] = [];
     const b3: JSX.Element[] = [];
 
-    for (var i = 0; i < 25; i++) {
+    for (let i = 0; i < 25; i++) {
       g.push(<Ground key={`ground${i}`} xPos={xPositions[i]} zPos={zPositions[i]} />);
       b1.push(<BuildingBase key={`buildingBase${i}`} xPos={xPositions[i]} zPos={zPositions[i]} />);
       b2.push(<BuildingMid key={`buildingMid${i}`} xPos={xPositions[i]} zPos={zPositions[i]} />);

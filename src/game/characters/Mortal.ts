@@ -4,7 +4,7 @@ import { Character, CharacterState } from "../../types/CharacterTypes";
 import { getAdjacentPositions } from "../utility";
 import { Board } from '../space'
 
-export const Mortal : Character = {
+export const Mortal: Character = {
 
   workers: [],
   desc: "No ability",
@@ -43,7 +43,7 @@ export const Mortal : Character = {
     player: Player, 
     char: CharacterState
   ) => {
-    let valids: number[] = [];
+    const valids: number[] = [];
     for (const space of G.spaces) {
       if (!space.inhabited && char.numWorkersToPlace > 0) {
         valids.push(space.pos);
@@ -58,7 +58,7 @@ export const Mortal : Character = {
     player: Player,
     char: CharacterState
   ) => {
-    let valids: number[] = [];
+    const valids: number[] = [];
 
     char.workers.forEach((worker) => {
       if (Mortal.validMove(G, ctx, player, char, worker.pos).length > 0) {
@@ -87,7 +87,7 @@ export const Mortal : Character = {
     char: CharacterState,
     originalPos: number
   ) => {
-    let valids: number[] = [];
+    const valids: number[] = [];
 
     getAdjacentPositions(originalPos).forEach((pos) => {
       if (
@@ -108,7 +108,7 @@ export const Mortal : Character = {
     player: Player,
     char: CharacterState
   ) => {
-    let hasMove: boolean = false;
+    let hasMove = false;
     char.workers.forEach((worker) => {
       if (Mortal.validMove(G, ctx, player, char, worker.pos).length > 0) {
         hasMove = true;
@@ -141,8 +141,8 @@ export const Mortal : Character = {
     char: CharacterState,
     originalPos: number
   ) => {
-    let adjacents: number[] = getAdjacentPositions(originalPos);
-    let valids: number[] = [];
+    const adjacents: number[] = getAdjacentPositions(originalPos);
+    const valids: number[] = [];
 
     adjacents.forEach((pos) => {
       if (!G.spaces[pos].inhabited && !G.spaces[pos].isDomed) {

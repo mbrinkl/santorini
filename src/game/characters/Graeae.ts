@@ -19,7 +19,7 @@ export const Graeae: Character = {
     originalPos: number
   ) => {
     let adjacents: number[] = [];
-    let valids: number[] = []
+    const valids: number[] = []
 
     for (let i = 0; i < char.numWorkers; i++) {
       if (i !== char.selectedWorker)

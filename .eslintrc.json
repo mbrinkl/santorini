@@ -8,7 +8,6 @@
   "parser": "@typescript-eslint/parser",
   "plugins": [
     "@typescript-eslint",
-    "flowtype",
     "import",
     "jsx-a11y",
     "react",
@@ -19,8 +18,16 @@
     "plugin:@typescript-eslint/recommended",
     "plugin:jsx-a11y/recommended",
     "plugin:import/recommended",
-    "plugin:flowtype/recommended",
+    "plugin:import/typescript",
     "plugin:react/recommended",
     "plugin:react-hooks/recommended"
-  ]
+  ],
+  "rules": {
+    "@typescript-eslint/no-empty-function": "off",
+    "@typescript-eslint/no-explicit-any": "off",
+    "react/prop-types": "off",
+    "react/react-in-jsx-scope": "off",
+    "react/display-name": "off",
+    "jsx-a11y/click-events-have-key-events": "off"
+  }
 }

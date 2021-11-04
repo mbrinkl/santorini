@@ -82,7 +82,7 @@ export const Heracles: Character = {
       return Mortal.validBuild(G, ctx, player, char, originalPos);
     }
     else {
-      let valids: number[] = [];
+      const valids: number[] = [];
       let adjacents: number[] = [];
 
       for (let i = 0; i < char.numWorkers; i++) {

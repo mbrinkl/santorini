@@ -47,8 +47,8 @@ export const Demeter: Character = {
   ) => {
     const attrs: DemeterAttrs = char.attrs as DemeterAttrs;
 
-    let adjacents: number[] = getAdjacentPositions(originalPos);
-    let valids: number[] = []
+    const adjacents: number[] = getAdjacentPositions(originalPos);
+    const valids: number[] = []
 
     if (attrs.numBuilds === 0) {
       adjacents.forEach(pos => {

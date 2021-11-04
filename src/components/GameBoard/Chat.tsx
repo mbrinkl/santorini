@@ -1,7 +1,7 @@
-import { useStoreState } from "store";
+import { useStoreState } from "../../store";
 import { useBoardContext } from "./BoardContext";
-import { useEffect, useRef, useState } from "react";
-import { isMobile } from "utility";
+import React, { useEffect, useRef, useState } from "react";
+import { isMobile } from "../../utility";
 import sendIcon from "../../assets/png/send.png";
 
 export const ChatMessage: React.FC<{ sender: string, message: string }> = ({ sender, message }) => {
@@ -19,8 +19,8 @@ export const Chat: React.FC<{onCloseMessages? : () => void | null}> = ({onCloseM
 
   const {chatMessages, sendChatMessage} = useBoardContext();
   const [message, setMessage] = useState('');
-  const messagesEndRef : any = useRef(null);
-  const inputRef : any = useRef(null);
+  const messagesEndRef: any = useRef(null);
+  const inputRef: any = useRef(null);
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });

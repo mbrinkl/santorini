@@ -34,4 +34,4 @@ export interface Character extends Omit<CharacterState, "name"> {
   build: (G: GameState, ctx: Ctx, player: Player, char: CharacterState, pos: number) => GameStage,
   buttonPressed: (G: GameState, ctx: Ctx, player: Player, char: CharacterState) => GameStage,
   checkWinByMove: (G: GameState, char: CharacterState, heightBefore: number, heightAfter: number) => boolean,
-};
+}
