@@ -15,7 +15,11 @@ How to play: [youtube](https://www.youtube.com/watch?v=EZi-MZEylRQ), [rulebook](
 - [three.js](https://threejs.org/) / [react-three-fiber](https://github.com/pmndrs/react-three-fiber)
 
 ### Running locally
-- git clone https://github.com/mbrinkl/santorini.git
-- cd santorini
-- npm install
-- npm start
+
+git clone https://github.com/mbrinkl/santorini.git
+
+cd santorini
+
+npm install
+
+npm start

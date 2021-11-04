@@ -1,6 +1,6 @@
 {
     "extends": "./tsconfig.json",
-    "exclude": ["src/app"],
+    "include": ["src/server"],
     "compilerOptions": {
       "module": "commonjs",
     }
