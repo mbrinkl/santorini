@@ -1,4 +1,3 @@
-import { union } from 'lodash';
 import { getAdjacentPositions } from '../utility';
 import { Character, CharacterState } from '../../types/CharacterTypes';
 import { Mortal } from "./Mortal";
@@ -88,7 +87,7 @@ export const Heracles: Character = {
 
       for (let i = 0; i < char.numWorkers; i++) {
         // add on the adjacent positions of each worker
-        adjacents = union(adjacents, getAdjacentPositions(char.workers[i].pos));
+        adjacents = adjacents.concat(getAdjacentPositions(char.workers[i].pos));
       }
 
       adjacents.forEach(pos => {

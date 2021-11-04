@@ -1,4 +1,3 @@
-import { union } from 'lodash'
 import { Character, CharacterState } from '../../types/CharacterTypes';
 import { Mortal } from "./Mortal";
 import { GameState, Player } from '../../types/GameTypes';
@@ -25,7 +24,7 @@ export const Graeae: Character = {
     for (let i = 0; i < char.numWorkers; i++) {
       if (i !== char.selectedWorker)
         // add on the adjacent positions of each worker
-        adjacents = union(adjacents, getAdjacentPositions(char.workers[i].pos));
+        adjacents = adjacents.concat(getAdjacentPositions(char.workers[i].pos));
     }
 
     adjacents.forEach(pos => {

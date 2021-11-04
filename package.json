@@ -13,7 +13,6 @@
     "@tippyjs/react": "^4.2.5",
     "@types/classnames": "^2.2.10",
     "@types/jest": "^27.0.2",
-    "@types/lodash": "^4.14.149",
     "@types/node": "^16.10.2",
     "@types/react": "^17.0.25",
     "@types/react-dom": "^17.0.9",
@@ -23,25 +22,20 @@
     "classnames": "^2.2.6",
     "concurrently": "^6.2.2",
     "easy-peasy": "^5.0.3",
-    "koa-mount": "^4.0.0",
     "koa-static": "^5.0.0",
     "koa2-connect-history-api-fallback": "^0.1.2",
-    "lodash": "^4.17.15",
-    "node-sass": "^6.0.1",
     "normalize.css": "^8.0.1",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
-    "react-reconciler": "^0.26.2",
     "react-router-dom": "^5.1.2",
     "react-scripts": "^4.0.3",
     "react-slick": "^0.28.1",
-    "resolve": "^1.17.0",
+    "sass": "^1.43.4",
     "slick-carousel": "^1.8.1",
     "three": "^0.133.1",
     "ts-node": "^10.2.1",
     "ts-node-dev": "^1.1.8",
-    "typescript": "^4.4.3",
-    "uuid": "^8.3.2"
+    "typescript": "^4.4.3"
   },
   "scripts": {
     "start": "concurrently npm:server npm:client",
@@ -50,7 +44,9 @@
     "test": "react-scripts test",
     "client": "react-scripts start",
     "server": "ts-node-dev --no-notify -P ./tsconfig.server.json ./src/server/index.ts",
-    "server:prod": "ts-node -T -P ./tsconfig.server.json ./src/server/index.ts"
+    "server:prod": "ts-node -T -P ./tsconfig.server.json ./src/server/index.ts",
+    "lint": "eslint . --ext .ts,.tsx",
+    "lint:fix": "eslint . --ext .ts,.tsx --fix"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -66,5 +62,15 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^5.3.0",
+    "@typescript-eslint/parser": "^5.3.0",
+    "eslint-config-react-app": "^6.0.0",
+    "eslint-plugin-flowtype": "^8.0.3",
+    "eslint-plugin-import": "^2.25.2",
+    "eslint-plugin-jsx-a11y": "^6.4.1",
+    "eslint-plugin-react": "^7.26.1",
+    "eslint-plugin-react-hooks": "^4.2.0"
   }
 }

@@ -1,4 +1,3 @@
-import { union } from "lodash"
 import { Ctx } from "boardgame.io";
 import { getAdjacentPositions } from '../utility'
 import { Character, CharacterState } from '../../types/CharacterTypes';
@@ -121,7 +120,7 @@ export const Hermes: Character = {
     else {
       for (let i = 0; i < char.numWorkers; i++) {
         // add on the adjacent positions of each worker
-        adjacents = union(adjacents, getAdjacentPositions(char.workers[i].pos));
+        adjacents = adjacents.concat(getAdjacentPositions(char.workers[i].pos));
       }
     }
   

@@ -1,4 +1,3 @@
-import { remove } from 'lodash'
 import { Character, CharacterState } from '../../types/CharacterTypes';
 import { Mortal } from './Mortal';
 import { GameState, Player } from '../../types/GameTypes';
@@ -30,7 +29,10 @@ export const Bia: Character = {
             if (worker.pos === posToKill) {
               // free the space
               Board.free(G, posToKill);
-              remove(G.players[player.opponentId].char.workers, worker);
+              const index = G.players[player.opponentId].char.workers.indexOf(worker);
+              if (index > -1) {
+                G.players[player.opponentId].char.workers.splice(index, 1);
+              }
               G.players[player.opponentId].char.numWorkers--;
 
               // check if no workers left and end game if none
