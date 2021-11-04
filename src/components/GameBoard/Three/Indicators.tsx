@@ -1,8 +1,9 @@
 import React, { useRef } from "react";
 import { Box, Cone, Cylinder, Ring } from "@react-three/drei";
 import { useFrame } from "@react-three/fiber";
+import { BoardPosition } from "../../../types/BoardTypes";
 
-export const PlaceIndicator: React.FC<{ xPos: number, height: number, zPos: number }> = ({ xPos, height, zPos }) => {
+export const PlaceIndicator: React.FC<{ boardPos: BoardPosition, height: number }> = ({ boardPos, height }) => {
 
   const yMap = [0, 3, 5, 7, 7];
   const mesh: any = useRef();
@@ -14,17 +15,17 @@ export const PlaceIndicator: React.FC<{ xPos: number, height: number, zPos: numb
     mesh.current.scale.y = scale;
   });
 
-  return <Ring
+  return <Ring userData={{pos: boardPos.pos}}
     ref={mesh}
     args={[0.75, 1, 32]}
-    position={[xPos, yMap[height] + 0.1, zPos]}
+    position={[boardPos.x, yMap[height] + 0.1, boardPos.z]}
     rotation={[3 * Math.PI / 2, 0, 0]}
   >
     <meshStandardMaterial color='yellow' />
   </Ring>
 };
 
-export const SelectIndicator: React.FC<{ xPos: number, height: number, zPos: number }> = ({ xPos, height, zPos }) => {
+export const SelectIndicator: React.FC<{ boardPos: BoardPosition, height: number }> = ({ boardPos, height }) => {
 
   const yMap = [4, 8, 10, 12, 12];
   const headMesh: any = useRef();
@@ -38,25 +39,25 @@ export const SelectIndicator: React.FC<{ xPos: number, height: number, zPos: num
   });
 
   return <>
-    <Cone
+    <Cone userData={{pos: boardPos.pos}}
       ref={headMesh}
       args={[1, 2]}
       rotation={[Math.PI, 0, 0]}
-      position={[xPos, yMap[height], zPos]} >
+      position={[boardPos.x, yMap[height], boardPos.z]} >
       <meshStandardMaterial color='yellow' />
     </Cone>
 
-    <Cylinder
+    <Cylinder userData={{pos: boardPos.pos}}
       ref={tailMesh}
       args={[0.5, 0.5, 2]}
-      position={[xPos, yMap[height] + 2, zPos]}
+      position={[boardPos.x, yMap[height] + 2, boardPos.z]}
     >
       <meshStandardMaterial color='yellow' />
     </Cylinder>
   </>
 };
 
-export const MoveIndicator: React.FC<{ xPos: number, height: number, zPos: number }> = ({ xPos, height, zPos }) => {
+export const MoveIndicator: React.FC<{ boardPos: BoardPosition, height: number }> = ({ boardPos, height }) => {
 
   const yMap = [0, 3, 5, 7, 7];
   const mesh: any = useRef();
@@ -65,17 +66,17 @@ export const MoveIndicator: React.FC<{ xPos: number, height: number, zPos: numbe
     mesh.current.rotation.z -= (0.01);
   });
 
-  return <Ring
+  return <Ring userData={{pos: boardPos.pos}}
     ref={mesh}
     args={[1, 2, 4]}
-    position={[xPos, yMap[height] + 0.1, zPos]}
+    position={[boardPos.x, yMap[height] + 0.1, boardPos.z]}
     rotation={[3 * Math.PI / 2, 0, 0]}
   >
     <meshStandardMaterial color='blue' />
   </Ring>
 };
 
-export const BuildIndicator: React.FC<{ xPos: number, height: number, zPos: number }> = ({ xPos, height, zPos }) => {
+export const BuildIndicator: React.FC<{ boardPos: BoardPosition, height: number }> = ({ boardPos, height }) => {
 
   const yMap = [0, 3, 5, 7, 7];
   const mesh: any = useRef();
@@ -86,10 +87,10 @@ export const BuildIndicator: React.FC<{ xPos: number, height: number, zPos: numb
     mesh.current.position.y = pos;
   });
 
-  return <Box
+  return <Box userData={{pos: boardPos.pos}}
     ref={mesh}
     args={[5, 0.5, 5]}
-    position={[xPos, yMap[height] + 0.1, zPos]}
+    position={[boardPos.x, yMap[height] + 0.1, boardPos.z]}
   >
     <meshStandardMaterial color='blue' opacity={0.65} transparent={true} />
   </Box>

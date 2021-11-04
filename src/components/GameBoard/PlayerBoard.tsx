@@ -5,31 +5,29 @@ import { HelpText } from "./HelpText";
 import { Canvas } from '@react-three/fiber'
 import { useContextBridge } from '@react-three/drei';
 import { Scene } from "./Three/Scene";
+import { BoardPosition } from "../../types/BoardTypes";
+import { GROUND_PADDING, GROUND_SIZE } from "../../config/board";
 
 export const PlayerBoard: React.FC = () => {
 
   const { isActive, ctx, playerID } = useBoardContext();
-
-  const GROUND_SIZE = 5;
-  const GROUND_PADDING = 0.5;
-
   const ContextBridge = useContextBridge(BoardContext);
-
-  const [xPositions, setXPositions] = useState<number[]>([]);
-  const [zPositions, setZPositions] = useState<number[]>([]);
+  const [boardPositions, setBoardPositions] = useState<BoardPosition[]>([]);
 
   useEffect(() => {
 
-    const xPos: number[] = [];
-    const zPos: number[] = [];
+    const positions: BoardPosition[] = [];
+
     for (let i = -2; i < 3; i++) {
       for (let j = -2; j < 3; j++) {
-        xPos.push(GROUND_PADDING + GROUND_PADDING * i + GROUND_SIZE * i);
-        zPos.push(GROUND_PADDING + GROUND_PADDING * j + GROUND_SIZE * j);
+        positions.push({
+          pos: positions.length,
+          x: (GROUND_PADDING + GROUND_PADDING * i + GROUND_SIZE * i),
+          z: (GROUND_PADDING + GROUND_PADDING * j + GROUND_SIZE * j)
+        });   
       }
     }
-    setXPositions(xPos);
-    setZPositions(zPos);
+    setBoardPositions(positions);
 
   }, []);
 
@@ -50,7 +48,7 @@ export const PlayerBoard: React.FC = () => {
       <div id='canvas'>
         <Canvas>
           <ContextBridge>
-            <Scene xPositions={xPositions} zPositions={zPositions} />
+            <Scene boardPositions={boardPositions} />
           </ContextBridge>
         </Canvas>
       </div>

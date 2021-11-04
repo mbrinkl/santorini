@@ -7,8 +7,9 @@ import { WorkerModel } from "./WorkerModel";
 import { ThreeEvent, useFrame, } from '@react-three/fiber'
 import { OrbitControls } from '@react-three/drei';
 import { WebGLCubeRenderTarget, RGBAFormat } from 'three';
+import { BoardPosition } from "../../../types/BoardTypes";
 
-export const Scene: React.FC<{ xPositions: number[], zPositions: number[] }> = ({ xPositions, zPositions }) => {
+export const Scene: React.FC<{ boardPositions: BoardPosition[] }> = ({ boardPositions }) => {
 
   const { State, ctx, moves, isActive } = useBoardContext();
 
@@ -25,18 +26,18 @@ export const Scene: React.FC<{ xPositions: number[], zPositions: number[] }> = (
     const b2: JSX.Element[] = [];
     const b3: JSX.Element[] = [];
 
-    for (let i = 0; i < 25; i++) {
-      g.push(<Ground key={`ground${i}`} xPos={xPositions[i]} zPos={zPositions[i]} />);
-      b1.push(<BuildingBase key={`buildingBase${i}`} xPos={xPositions[i]} zPos={zPositions[i]} />);
-      b2.push(<BuildingMid key={`buildingMid${i}`} xPos={xPositions[i]} zPos={zPositions[i]} />);
-      b3.push(<BuildingTop key={`buildingTop${i}`} xPos={xPositions[i]} zPos={zPositions[i]} />);
+    for (const boardPos of boardPositions) {
+      g.push(<Ground key={`ground${boardPos.pos}`} boardPos={boardPos} />);
+      b1.push(<BuildingBase key={`buildingBase${boardPos.pos}`} boardPos={boardPos} />);
+      b2.push(<BuildingMid key={`buildingMid${boardPos.pos}`} boardPos={boardPos} />);
+      b3.push(<BuildingTop key={`buildingTop${boardPos.pos}`} boardPos={boardPos} />);
     }
 
     setGround(g);
     setBuildingsLevel1(b1);
     setBuildingsLevel2(b2);
     setBuildingsLevel3(b3);
-  }, [xPositions, zPositions]);
+  }, [boardPositions]);
 
 
   const onMeshClicked = useCallback((e: ThreeEvent<PointerEvent>) => {
@@ -45,17 +46,7 @@ export const Scene: React.FC<{ xPositions: number[], zPositions: number[] }> = (
 
     const phase = ctx.phase;
     const stage = (ctx.activePlayers && ctx.activePlayers[ctx.currentPlayer]) || null;
-    let pos = -1;
-
-    for (let i = 0; i < 25; i++) {
-      if (
-        xPositions[i] === e.object.position.x &&
-        zPositions[i] === e.object.position.z
-      ) {
-        pos = i;
-        break;
-      }
-    }
+    const pos = e.object.userData.pos;
 
     if (State.valids.includes(pos)) {
       if (phase === 'placeWorkers') {
@@ -76,7 +67,7 @@ export const Scene: React.FC<{ xPositions: number[], zPositions: number[] }> = (
       }
     }
 
-  }, [State, ctx, moves, xPositions, zPositions]);
+  }, [State, ctx, moves]);
 
   useFrame(({ gl, scene }) => {
     cubeCamera.current.update(gl, scene)
@@ -94,8 +85,7 @@ export const Scene: React.FC<{ xPositions: number[], zPositions: number[] }> = (
         
         {State.players["0"].char.workers.map((worker, index) => (
           <WorkerModel key={`workerModel0${index}`}
-            xPos={xPositions[worker.pos]}
-            zPos={zPositions[worker.pos]}
+            boardPos={boardPositions[worker.pos]}
             height={worker.height}
             color={'dodgerblue'}
           />
@@ -103,8 +93,7 @@ export const Scene: React.FC<{ xPositions: number[], zPositions: number[] }> = (
 
         {State.players["1"].char.workers.map((worker, index) => (
           <WorkerModel key={`workerModel1${index}`}
-            xPos={xPositions[worker.pos]}
-            zPos={zPositions[worker.pos]}
+            boardPos={boardPositions[worker.pos]}
             height={worker.height}
             color={'grey'}
           />
@@ -117,8 +106,7 @@ export const Scene: React.FC<{ xPositions: number[], zPositions: number[] }> = (
             {space.height >= 3 && buildingsLevel3[space.pos]}
             {space.isDomed && (
               <Dome key={`dome${space.pos}`}
-                xPos={xPositions[space.pos]}
-                zPos={zPositions[space.pos]}
+                boardPos={boardPositions[space.pos]}
                 height={space.height}
               />
             )}
@@ -129,13 +117,13 @@ export const Scene: React.FC<{ xPositions: number[], zPositions: number[] }> = (
           !ctx.gameover &&
           State.valids.map((pos) =>
             (ctx.activePlayers && ctx.activePlayers[ctx.currentPlayer]) === "place" ? (
-              <PlaceIndicator key={`placeIndicator${pos}`} xPos={xPositions[pos]} height={State.spaces[pos].height} zPos={zPositions[pos]} />
+              <PlaceIndicator key={`placeIndicator${pos}`} boardPos={boardPositions[pos]} height={State.spaces[pos].height} />
             ) : (ctx.activePlayers && ctx.activePlayers[ctx.currentPlayer]) === "select" ? (
-              <SelectIndicator key={`selectIndicator${pos}`} xPos={xPositions[pos]} height={State.spaces[pos].height} zPos={zPositions[pos]} />
+              <SelectIndicator key={`selectIndicator${pos}`} boardPos={boardPositions[pos]} height={State.spaces[pos].height} />
             ) : (ctx.activePlayers && ctx.activePlayers[ctx.currentPlayer]) === "move" ? (
-              <MoveIndicator key={`moveIndicator${pos}`} xPos={xPositions[pos]} height={State.spaces[pos].height} zPos={zPositions[pos]} />
+              <MoveIndicator key={`moveIndicator${pos}`} boardPos={boardPositions[pos]} height={State.spaces[pos].height} />
             ) : (ctx.activePlayers && ctx.activePlayers[ctx.currentPlayer]) === "build" ? (
-              <BuildIndicator key={`bulidIndicator${pos}`} xPos={xPositions[pos]} height={State.spaces[pos].height} zPos={zPositions[pos]} />
+              <BuildIndicator key={`bulidIndicator${pos}`} boardPos={boardPositions[pos]} height={State.spaces[pos].height} />
             ) : (
               // todo: special move indicator
               <></>
