@@ -187,7 +187,7 @@ export const Mortal: Character = {
     player: Player,
     char: CharacterState
   ) => {
-    return ctx.activePlayers![ctx.currentPlayer] as GameStage;
+    return (ctx.activePlayers && ctx.activePlayers[ctx.currentPlayer]) as GameStage;
   },
 
   checkWinByMove : (

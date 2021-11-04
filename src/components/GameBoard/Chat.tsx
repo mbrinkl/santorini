@@ -39,7 +39,7 @@ export const Chat: React.FC<{onCloseMessages? : () => void | null}> = ({onCloseM
     }
   }
 
-  const close = (e) => {
+  const close = () => {
     if (onCloseMessages) {
       onCloseMessages();
     }

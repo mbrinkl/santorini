@@ -73,7 +73,7 @@ export const PlayerControls: React.FC<{ messagesOpen? : boolean, onOpenMessages?
 
   const rematch = () => {
     sendChatMessage('wants to rematch...');
-    playAgain({ matchID: id, playerID: activeRoomPlayer!.playerID, credential: activeRoomPlayer!.credential});
+    playAgain({ matchID: id, playerID: Number(activeRoomPlayer?.playerID), credential: activeRoomPlayer?.credential || ''});
     setRedirect(true);
   }
 

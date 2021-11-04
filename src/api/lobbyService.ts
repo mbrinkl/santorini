@@ -55,7 +55,7 @@ export class LobbyService {
     return await this.lobbyClient.getMatch(GAME_ID, matchID);
   }
 
-  async playAgain({matchID, playerID, credential}: PlayAgainParams) {
+  async playAgain({matchID, playerID, credential}: PlayAgainParams): Promise<{nextMatchID: string}> {
     const { nextMatchID } = await this.lobbyClient.playAgain(GAME_ID, matchID, {
       playerID: String(playerID),
       credentials: credential,

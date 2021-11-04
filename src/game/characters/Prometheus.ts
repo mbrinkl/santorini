@@ -126,7 +126,7 @@ export const Prometheus: Character = {
 
     attrs.specialActive = !attrs.specialActive;
 
-    const stage = ctx.activePlayers![ctx.currentPlayer];
+    const stage = ctx.activePlayers && ctx.activePlayers[ctx.currentPlayer];
 
     if (attrs.specialActive) {
       char.buttonText = 'Cancel';
