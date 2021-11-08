@@ -1,4 +1,4 @@
-![Header](https://github.com/mbrinkl/santorini/blob/master/public/header.png)
+![Header](https://github.com/mbrinkl/santorini/blob/main/public/header.png)
 
 ### What is Santorini
 
@@ -16,10 +16,7 @@ How to play: [youtube](https://www.youtube.com/watch?v=EZi-MZEylRQ), [rulebook](
 
 ### Running locally
 
-git clone https://github.com/mbrinkl/santorini.git
-
-cd santorini
-
-npm install
-
-npm start
+1. git clone https://github.com/mbrinkl/santorini.git
+2. cd santorini
+3. npm install
+4. npm start
