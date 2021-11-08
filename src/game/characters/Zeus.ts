@@ -7,11 +7,6 @@ export const Zeus: Character = {
   ...Mortal,
   desc: `Your Build: Your Worker may build a block under itself.`,
 
-  checkWinByMove: (G: GameState, char: CharacterState, heightBefore: number, heightAfter: number) => {
-    return (heightBefore < 3 && heightAfter === 3) ||
-      (heightBefore - heightAfter > 1)
-  },
-
   validBuild: (
     G: GameState, 
     ctx: Ctx,
