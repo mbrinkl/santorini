@@ -103,6 +103,12 @@ export const characterList: string[] = [
   "Pegasus",
 ];
 
+// Returns the character list sorted alphabetically, with 'random' 
+// and 'mortal' at the start
+export function getSortedCharacters(): string[] {
+  return ['Random', 'Mortal'].concat(characterList.slice(2).sort());
+}
+
 export function getCharacter(name: string): Character {
   let char: any;
 

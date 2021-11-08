@@ -2,7 +2,7 @@ import React from "react";
 import Slider from "react-slick";
 import { Button } from "../Button";
 import { useStoreState } from "../../store";
-import { characterList } from "../../game/characters";
+import { getSortedCharacters } from "../../game/characters";
 import { useBoardContext } from "../GameBoard/BoardContext";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
@@ -27,8 +27,9 @@ export const CharacterBox: React.FC<{ name: string }> = ({ name }) => {
       }}
       className="characterBoxSelectable"
       onClick={select}
+      onKeyDown={e => e.key === 'Enter' && select()}
       role="button"
-      tabIndex={characterList.indexOf(name)}
+      tabIndex={0}
     >
       <span>{name}</span>
     </div>
@@ -77,7 +78,7 @@ export const CharacterSelect = () => {
         swipeToSlide={true}
         className="charSelect__carousel"
       >
-        {characterList.map((character) => (
+        {getSortedCharacters().map((character) => (
           <div key={character}>
             <CharacterBox name={character} />
           </div>
@@ -85,7 +86,7 @@ export const CharacterSelect = () => {
       </Slider>
 
       <div className="charSelect__characters">
-        {characterList.map((character) => (
+        {getSortedCharacters().map((character) => (
           <CharacterBox key={character} name={character} />
         ))}
       </div>
