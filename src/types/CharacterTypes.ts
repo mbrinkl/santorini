@@ -6,7 +6,7 @@ export interface Worker {
   height: number;
 }
 
-export interface CharacterState {
+export interface CharacterState<AttrsType = any> {
   name: string;
   desc: string;
   workers: Worker[];
@@ -16,10 +16,10 @@ export interface CharacterState {
   moveUpHeight: number;
   buttonText: string;
   buttonActive: boolean;
-  attrs: any;
+  attrs: AttrsType;
 }
 
-export interface Character extends Omit<CharacterState, 'name'> {
+export interface CharacterFunctions {
   initialize: (G: GameState, ctx: Ctx, player: Player, char: CharacterState) => void,
   onTurnBegin: (G: GameState, ctx: Ctx, player: Player, char: CharacterState) => void,
   onTurnEnd: (G: GameState, ctx: Ctx, player: Player, char: CharacterState) => void,
@@ -52,3 +52,5 @@ export interface Character extends Omit<CharacterState, 'name'> {
     heightAfter: number
   ) => boolean,
 }
+
+export type Character<AttrsType = any> = Omit<CharacterState<AttrsType>, 'name'> & CharacterFunctions;

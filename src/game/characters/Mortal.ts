@@ -14,7 +14,7 @@ export const Mortal: Character = {
   numWorkersToPlace: 2,
   selectedWorker: -1,
   moveUpHeight: 1,
-  attrs: undefined,
+  attrs: null,
 
   initialize: (
     G: GameState,

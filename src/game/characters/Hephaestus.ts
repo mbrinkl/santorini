@@ -10,27 +10,23 @@ interface HephaestusAttrs {
   firstBuildPos: number,
 }
 
-const initialAttrs: HephaestusAttrs = {
-  numBuilds: 0,
-  firstBuildPos: -1,
-};
-
-export const Hephaestus: Character = {
+export const Hephaestus: Character<HephaestusAttrs> = {
   ...Mortal,
   desc: 'Your Build: Your Worker may build one additional block (not dome) on top of your first block.',
   buttonText: 'Skip 2nd Build',
-  attrs: initialAttrs,
+  attrs: {
+    numBuilds: 0,
+    firstBuildPos: -1,
+  },
 
   buttonPressed: (
     G: GameState,
     ctx: Ctx,
     player: Player,
-    char: CharacterState,
+    char: CharacterState<HephaestusAttrs>,
   ) => {
-    const attrs: HephaestusAttrs = char.attrs as HephaestusAttrs;
-
     // reset stuff
-    attrs.numBuilds = 0;
+    char.attrs.numBuilds = 0;
     char.buttonActive = false;
 
     // set game stage
@@ -41,22 +37,20 @@ export const Hephaestus: Character = {
     G: GameState,
     ctx: Ctx,
     player: Player,
-    char: CharacterState,
+    char: CharacterState<HephaestusAttrs>,
     originalPos: number,
   ) => {
-    const attrs: HephaestusAttrs = char.attrs as HephaestusAttrs;
-
     const adjacents: number[] = getAdjacentPositions(originalPos);
     const valids: number[] = [];
 
-    if (attrs.numBuilds === 0) {
+    if (char.attrs.numBuilds === 0) {
       adjacents.forEach((pos) => {
         if (!G.spaces[pos].inhabited && !G.spaces[pos].isDomed) {
           valids.push(pos);
         }
       });
     } else {
-      valids.push(attrs.firstBuildPos);
+      valids.push(char.attrs.firstBuildPos);
     }
 
     return valids;
@@ -66,27 +60,25 @@ export const Hephaestus: Character = {
     G: GameState,
     ctx: Ctx,
     player: Player,
-    char: CharacterState,
+    char: CharacterState<HephaestusAttrs>,
     pos: number,
   ) => {
-    const attrs: HephaestusAttrs = char.attrs as HephaestusAttrs;
+    char.attrs.numBuilds += 1;
 
-    attrs.numBuilds += 1;
-
-    if (attrs.numBuilds === 1) {
+    if (char.attrs.numBuilds === 1) {
       Board.build(G, pos);
 
       if (G.spaces[pos].height > 2) {
-        attrs.numBuilds = 0;
+        char.attrs.numBuilds = 0;
         return 'end';
       }
 
-      attrs.firstBuildPos = pos;
+      char.attrs.firstBuildPos = pos;
       char.buttonActive = true;
       return 'build';
     }
 
-    attrs.numBuilds = 0;
+    char.attrs.numBuilds = 0;
     char.buttonActive = false;
     Board.build(G, pos);
     return 'end';

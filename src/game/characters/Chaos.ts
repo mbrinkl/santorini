@@ -11,14 +11,8 @@ type PossibleCharacters = 'Apollo' | 'Artemis' | 'Athena' | 'Atlas' | 'Demeter' 
 interface ChaosAttrs {
   numDomes: number,
   nextCharacterList: PossibleCharacters[],
-  currentCharacter: PossibleCharacters
+  currentCharacter: PossibleCharacters,
 }
-
-const initialAttrs: ChaosAttrs = {
-  numDomes: 0,
-  nextCharacterList: [],
-  currentCharacter: 'Apollo',
-};
 
 function changeEmulatingCharacter(
   G: GameState,
@@ -30,7 +24,7 @@ function changeEmulatingCharacter(
   const attrs: ChaosAttrs = char.attrs as ChaosAttrs;
 
   if (attrs.currentCharacter === 'Athena') {
-    const athenaAttrs: AthenaAttrs = char.attrs as AthenaAttrs;
+    const athenaAttrs = char.attrs as AthenaAttrs;
     G.players[player.opponentId].char.moveUpHeight = athenaAttrs.opponentMoveUpHeight;
   }
 
@@ -50,7 +44,7 @@ function changeEmulatingCharacter(
   }
 
   const newCharacterName: PossibleCharacters = attrs.nextCharacterList.shift() || 'Apollo'; // fallback;
-  const newCharacter: Character = getCharacter(newCharacterName);
+  const newCharacter: Character<any> = getCharacter(newCharacterName);
 
   char.desc = `${newCharacterName} - ${newCharacter.desc} ${Chaos.desc}`;
   char.buttonActive = newCharacter.buttonActive;
@@ -69,11 +63,15 @@ function changeEmulatingCharacter(
   };
 }
 
-export const Chaos: Character = {
+export const Chaos: Character<ChaosAttrs> = {
   ...Mortal,
 
   desc: '(Changes between Simple God Powers after any turn in which at least one dome is built)',
-  attrs: initialAttrs,
+  attrs: {
+    numDomes: 0,
+    nextCharacterList: [],
+    currentCharacter: 'Apollo',
+  },
 
   initialize: (
     G: GameState,
@@ -90,16 +88,14 @@ export const Chaos: Character = {
     player: Player,
     char: CharacterState,
   ) => {
-    let attrs: ChaosAttrs = char.attrs as ChaosAttrs;
-
     const numDomes: number = G.spaces.filter((space) => space.isDomed === true).length;
 
-    if (attrs.numDomes < numDomes) {
+    if (char.attrs.numDomes < numDomes) {
       changeEmulatingCharacter(G, ctx, player, char, numDomes);
-      attrs = char.attrs as ChaosAttrs;
+      char.attrs = char.attrs as ChaosAttrs;
     }
 
-    const character = getCharacter(attrs.currentCharacter);
+    const character = getCharacter(char.attrs.currentCharacter);
     character.onTurnBegin(G, ctx, player, char);
   },
 
@@ -109,50 +105,48 @@ export const Chaos: Character = {
     player: Player,
     char: CharacterState,
   ) => {
-    const attrs: ChaosAttrs = char.attrs as ChaosAttrs;
-
-    const character = getCharacter(attrs.currentCharacter);
+    const character = getCharacter(char.attrs.currentCharacter);
     character.onTurnEnd(G, ctx, player, char);
 
     const numDomes = G.spaces.filter((space) => space.isDomed === true).length;
 
-    if (attrs.numDomes < numDomes) {
+    if (char.attrs.numDomes < numDomes) {
       changeEmulatingCharacter(G, ctx, player, char, numDomes);
     }
   },
 
-  validSelect: (G, ctx, player, char) => (
-    getCharacter((char.attrs as ChaosAttrs).currentCharacter).validSelect(G, ctx, player, char)
+  validSelect: (G, ctx, player, char: CharacterState<ChaosAttrs>) => (
+    getCharacter(char.attrs.currentCharacter).validSelect(G, ctx, player, char)
   ),
-  select: (G, ctx, player, char, pos) => (
-    getCharacter((char.attrs as ChaosAttrs).currentCharacter).select(G, ctx, player, char, pos)
+  select: (G, ctx, player, char: CharacterState<ChaosAttrs>, pos) => (
+    getCharacter(char.attrs.currentCharacter).select(G, ctx, player, char, pos)
   ),
-  validMove: (G, ctx, player, char, originalPos) => (
-    getCharacter((char.attrs as ChaosAttrs).currentCharacter)
+  validMove: (G, ctx, player, char: CharacterState<ChaosAttrs>, originalPos) => (
+    getCharacter(char.attrs.currentCharacter)
       .validMove(G, ctx, player, char, originalPos)
   ),
-  hasValidMoves: (G, ctx, player, char) => (
-    getCharacter((char.attrs as ChaosAttrs).currentCharacter)
+  hasValidMoves: (G, ctx, player, char: CharacterState<ChaosAttrs>) => (
+    getCharacter(char.attrs.currentCharacter)
       .hasValidMoves(G, ctx, player, char)
   ),
-  move: (G, ctx, player, char, pos) => (
-    getCharacter((char.attrs as ChaosAttrs).currentCharacter).move(G, ctx, player, char, pos)
+  move: (G, ctx, player, char: CharacterState<ChaosAttrs>, pos) => (
+    getCharacter(char.attrs.currentCharacter).move(G, ctx, player, char, pos)
   ),
-  validBuild: (G, ctx, player, char, originalPos) => (
-    getCharacter((char.attrs as ChaosAttrs).currentCharacter)
+  validBuild: (G, ctx, player, char: CharacterState<ChaosAttrs>, originalPos) => (
+    getCharacter(char.attrs.currentCharacter)
       .validBuild(G, ctx, player, char, originalPos)
   ),
-  hasValidBuild: (G, ctx, player, char) => (
-    getCharacter((char.attrs as ChaosAttrs).currentCharacter).hasValidBuild(G, ctx, player, char)
+  hasValidBuild: (G, ctx, player, char: CharacterState<ChaosAttrs>) => (
+    getCharacter(char.attrs.currentCharacter).hasValidBuild(G, ctx, player, char)
   ),
-  build: (G, ctx, player, char, pos) => (
-    getCharacter((char.attrs as ChaosAttrs).currentCharacter).build(G, ctx, player, char, pos)
+  build: (G, ctx, player, char: CharacterState<ChaosAttrs>, pos) => (
+    getCharacter(char.attrs.currentCharacter).build(G, ctx, player, char, pos)
   ),
-  buttonPressed: (G, ctx, player: Player, char: CharacterState) => (
-    getCharacter((char.attrs as ChaosAttrs).currentCharacter).buttonPressed(G, ctx, player, char)
+  buttonPressed: (G, ctx, player, char: CharacterState<ChaosAttrs>) => (
+    getCharacter(char.attrs.currentCharacter).buttonPressed(G, ctx, player, char)
   ),
-  checkWinByMove: (G, char, heightBefore, heightAfter) => (
-    getCharacter((char.attrs as ChaosAttrs).currentCharacter)
+  checkWinByMove: (G, char: CharacterState<ChaosAttrs>, heightBefore, heightAfter) => (
+    getCharacter(char.attrs.currentCharacter)
       .checkWinByMove(G, char, heightBefore, heightAfter)
   ),
 };

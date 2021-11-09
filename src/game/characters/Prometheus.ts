@@ -11,23 +11,21 @@ interface PrometheusAttrs {
   originalPos: number
 }
 
-const initialAttrs: PrometheusAttrs = {
-  specialActive: false,
-  specialUsed: false,
-  originalPos: -1,
-};
-
-export const Prometheus: Character = {
+export const Prometheus: Character<PrometheusAttrs> = {
   ...Mortal,
   desc: 'Your Turn: If your Worker does not move up, it may build both before and after moving.',
   buttonText: 'Bulid Before Move',
-  attrs: initialAttrs,
+  attrs: {
+    specialActive: false,
+    specialUsed: false,
+    originalPos: -1,
+  },
 
   onTurnBegin: (
     G: GameState,
     ctx: Ctx,
     player: Player,
-    char: CharacterState,
+    char: CharacterState<PrometheusAttrs>,
   ) => {
     char.buttonActive = true;
   },
@@ -36,13 +34,11 @@ export const Prometheus: Character = {
     G: GameState,
     ctx: Ctx,
     player: Player,
-    char: CharacterState,
+    char: CharacterState<PrometheusAttrs>,
     pos: number,
   ) => {
-    const attrs: PrometheusAttrs = char.attrs as PrometheusAttrs;
-
     char.selectedWorker = G.spaces[pos].inhabitant.workerNum;
-    if (attrs.specialActive) return 'build';
+    if (char.attrs.specialActive) return 'build';
     return 'move';
   },
 
@@ -50,14 +46,12 @@ export const Prometheus: Character = {
     G: GameState,
     ctx: Ctx,
     player: Player,
-    char: CharacterState,
+    char: CharacterState<PrometheusAttrs>,
     originalPos: number,
   ) => {
-    const attrs: PrometheusAttrs = char.attrs as PrometheusAttrs;
-
-    const height = (attrs.specialUsed ? 0 : char.moveUpHeight);
-    if (attrs.specialUsed) {
-      originalPos = attrs.originalPos;
+    const height = (char.attrs.specialUsed ? 0 : char.moveUpHeight);
+    if (char.attrs.specialUsed) {
+      originalPos = char.attrs.originalPos;
     }
 
     const adjacents: number[] = getAdjacentPositions(originalPos);
@@ -90,26 +84,24 @@ export const Prometheus: Character = {
     G: GameState,
     ctx: Ctx,
     player: Player,
-    char: CharacterState,
+    char: CharacterState<PrometheusAttrs>,
     pos: number,
   ) => {
-    const attrs: PrometheusAttrs = char.attrs as PrometheusAttrs;
-
     Board.build(G, pos);
 
-    if (attrs.specialActive) {
-      attrs.specialUsed = true;
-      attrs.originalPos = char.workers[char.selectedWorker].pos;
+    if (char.attrs.specialActive) {
+      char.attrs.specialUsed = true;
+      char.attrs.originalPos = char.workers[char.selectedWorker].pos;
 
       char.buttonActive = false;
-      attrs.specialActive = false;
+      char.attrs.specialActive = false;
       char.buttonText = 'Build Before Move';
 
       return 'move';
     }
 
-    attrs.specialUsed = false;
-    attrs.originalPos = -1;
+    char.attrs.specialUsed = false;
+    char.attrs.originalPos = -1;
     return 'end';
   },
 
@@ -117,15 +109,13 @@ export const Prometheus: Character = {
     G: GameState,
     ctx: Ctx,
     player: Player,
-    char: CharacterState,
+    char: CharacterState<PrometheusAttrs>,
   ) => {
-    const attrs: PrometheusAttrs = char.attrs as PrometheusAttrs;
-
-    attrs.specialActive = !attrs.specialActive;
+    char.attrs.specialActive = !char.attrs.specialActive;
 
     const stage = ctx.activePlayers && ctx.activePlayers[ctx.currentPlayer];
 
-    if (attrs.specialActive) {
+    if (char.attrs.specialActive) {
       char.buttonText = 'Cancel';
       if (stage === 'move') return 'build';
     } else {

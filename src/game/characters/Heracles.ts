@@ -11,39 +11,35 @@ interface HeraclesAttrs {
   numBuilds: number
 }
 
-const initialAttrs: HeraclesAttrs = {
-  specialActive: false,
-  specialUsed: false,
-  numBuilds: 0,
-};
-
-export const Heracles: Character = {
+export const Heracles: Character<HeraclesAttrs> = {
   ...Mortal,
   desc: `End of Your Turn: Once, both your Workers build any number 
     of domes (even zero) at any level.`,
   buttonText: 'Build Domes',
-  attrs: initialAttrs,
+  attrs: {
+    specialActive: false,
+    specialUsed: false,
+    numBuilds: 0,
+  },
 
   buttonPressed: (
     G: GameState,
     ctx: Ctx,
     player: Player,
-    char: CharacterState,
+    char: CharacterState<HeraclesAttrs>,
   ) => {
-    const attrs: HeraclesAttrs = char.attrs as HeraclesAttrs;
+    char.attrs.specialActive = !char.attrs.specialActive;
 
-    attrs.specialActive = !attrs.specialActive;
-
-    if (attrs.specialUsed) {
+    if (char.attrs.specialUsed) {
       // reset stuff
       char.buttonActive = false;
-      attrs.specialActive = false;
+      char.attrs.specialActive = false;
       char.buttonText = 'Build Domes';
 
       // set game stage
       return 'end';
     }
-    if (attrs.specialActive) {
+    if (char.attrs.specialActive) {
       char.buttonText = 'Cancel';
     } else {
       char.buttonText = 'Build Domes';
@@ -56,13 +52,11 @@ export const Heracles: Character = {
     G: GameState,
     ctx: Ctx,
     player: Player,
-    char: CharacterState,
+    char: CharacterState<HeraclesAttrs>,
     pos: number,
   ) => {
-    const attrs: HeraclesAttrs = char.attrs as HeraclesAttrs;
-
-    if (!attrs.specialUsed) {
-      attrs.numBuilds = 0;
+    if (!char.attrs.specialUsed) {
+      char.attrs.numBuilds = 0;
       char.buttonActive = true;
     }
     return Mortal.move(G, ctx, player, char, pos);
@@ -72,12 +66,10 @@ export const Heracles: Character = {
     G: GameState,
     ctx: Ctx,
     player: Player,
-    char: CharacterState,
+    char: CharacterState<HeraclesAttrs>,
     originalPos: number,
   ) => {
-    const attrs: HeraclesAttrs = char.attrs as HeraclesAttrs;
-
-    if (!attrs.specialActive) {
+    if (!char.attrs.specialActive) {
       return Mortal.validBuild(G, ctx, player, char, originalPos);
     }
 
@@ -102,15 +94,13 @@ export const Heracles: Character = {
     G: GameState,
     ctx: Ctx,
     player: Player,
-    char: CharacterState,
+    char: CharacterState<HeraclesAttrs>,
     pos: number,
   ) => {
-    const attrs: HeraclesAttrs = char.attrs as HeraclesAttrs;
-
-    if (attrs.specialActive) {
-      attrs.specialUsed = true;
+    if (char.attrs.specialActive) {
+      char.attrs.specialUsed = true;
       char.buttonText = 'End Build';
-      attrs.numBuilds += 1;
+      char.attrs.numBuilds += 1;
       G.spaces[pos].isDomed = true;
 
       if (Mortal.hasValidBuild(G, ctx, player, char)) {
@@ -121,7 +111,7 @@ export const Heracles: Character = {
     }
 
     char.buttonActive = false;
-    attrs.specialActive = false;
+    char.attrs.specialActive = false;
     char.buttonText = 'Build Domes';
     return 'end';
   },

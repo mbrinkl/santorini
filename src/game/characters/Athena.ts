@@ -9,36 +9,32 @@ export interface AthenaAttrs {
   opponentMoveUpHeight: number,
 }
 
-const initialAttrs: AthenaAttrs = {
-  setOpponentHeight: false,
-  opponentMoveUpHeight: -1,
-};
-
-export const Athena: Character = {
+export const Athena: Character<AthenaAttrs> = {
   ...Mortal,
   desc: `Opponent's Turn: If one of your workers moved up on your last turn, 
         opponent workers cannot move up this turn.`,
 
-  attrs: initialAttrs,
+  attrs: {
+    setOpponentHeight: false,
+    opponentMoveUpHeight: -1,
+  },
 
   move: (
     G: GameState,
     ctx: Ctx,
     player: Player,
-    char: CharacterState,
+    char: CharacterState<AthenaAttrs>,
     pos: number,
   ) => {
-    const attrs: AthenaAttrs = char.attrs as AthenaAttrs;
-
     // if the opponent move up height has not been set yet
-    if (!attrs.setOpponentHeight) {
+    if (!char.attrs.setOpponentHeight) {
       // set it now
-      attrs.opponentMoveUpHeight = G.players[player.opponentId].char.moveUpHeight;
+      char.attrs.opponentMoveUpHeight = G.players[player.opponentId].char.moveUpHeight;
     }
-    attrs.setOpponentHeight = true;
+    char.attrs.setOpponentHeight = true;
 
     // reset the move up height for the opponent at the beginning of the turn
-    G.players[player.opponentId].char.moveUpHeight = attrs.opponentMoveUpHeight;
+    G.players[player.opponentId].char.moveUpHeight = char.attrs.opponentMoveUpHeight;
 
     // note the height before moving
     const heightBefore = char.workers[char.selectedWorker].height;

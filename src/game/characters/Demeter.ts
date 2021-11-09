@@ -10,27 +10,23 @@ interface DemeterAttrs {
   firstBuildPos: number,
 }
 
-const initialAttrs: DemeterAttrs = {
-  numBuilds: 0,
-  firstBuildPos: 0,
-};
-
-export const Demeter: Character = {
+export const Demeter: Character<DemeterAttrs> = {
   ...Mortal,
   desc: 'Your Build: Your worker may build one additional time, but not on the same space.',
   buttonText: 'Skip 2nd Build',
-  attrs: initialAttrs,
+  attrs: {
+    numBuilds: 0,
+    firstBuildPos: 0,
+  },
 
   buttonPressed: (
     G: GameState,
     ctx: Ctx,
     player: Player,
-    char: CharacterState,
+    char: CharacterState<DemeterAttrs>,
   ) => {
-    const attrs: DemeterAttrs = char.attrs as DemeterAttrs;
-
     // reset stuff
-    attrs.numBuilds = 0;
+    char.attrs.numBuilds = 0;
     char.buttonActive = false;
 
     // set game stage
@@ -41,15 +37,13 @@ export const Demeter: Character = {
     G: GameState,
     ctx: Ctx,
     player: Player,
-    char: CharacterState,
+    char: CharacterState<DemeterAttrs>,
     originalPos: number,
   ) => {
-    const attrs: DemeterAttrs = char.attrs as DemeterAttrs;
-
     const adjacents: number[] = getAdjacentPositions(originalPos);
     const valids: number[] = [];
 
-    if (attrs.numBuilds === 0) {
+    if (char.attrs.numBuilds === 0) {
       adjacents.forEach((pos) => {
         if (!G.spaces[pos].inhabited && !G.spaces[pos].isDomed) {
           valids.push(pos);
@@ -57,7 +51,11 @@ export const Demeter: Character = {
       });
     } else {
       adjacents.forEach((pos) => {
-        if (!G.spaces[pos].inhabited && !G.spaces[pos].isDomed && pos !== attrs.firstBuildPos) {
+        if (
+          !G.spaces[pos].inhabited
+          && !G.spaces[pos].isDomed
+          && pos !== char.attrs.firstBuildPos
+        ) {
           valids.push(pos);
         }
       });
@@ -70,21 +68,19 @@ export const Demeter: Character = {
     G: GameState,
     ctx: Ctx,
     player: Player,
-    char: CharacterState,
+    char: CharacterState<DemeterAttrs>,
     pos: number,
   ) => {
-    const attrs: DemeterAttrs = char.attrs as DemeterAttrs;
+    char.attrs.numBuilds += 1;
 
-    attrs.numBuilds += 1;
-
-    if (attrs.numBuilds === 1) {
-      attrs.firstBuildPos = pos;
+    if (char.attrs.numBuilds === 1) {
+      char.attrs.firstBuildPos = pos;
       Board.build(G, pos);
       char.buttonActive = true;
       return 'build';
     }
 
-    attrs.numBuilds = 0;
+    char.attrs.numBuilds = 0;
     char.buttonActive = false;
     Board.build(G, pos);
     return 'end';
