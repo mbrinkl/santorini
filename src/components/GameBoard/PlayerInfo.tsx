@@ -1,13 +1,12 @@
-import React from "react";
-import { useBoardContext } from "./BoardContext";
-import { useStoreState } from "../../store";
-import "./style.scss";
-import { ConnectedIndicator } from "./ConnectedIndicator";
+import { useBoardContext } from './BoardContext';
+import { useStoreState } from '../../store';
+import './style.scss';
+import { ConnectedIndicator } from './ConnectedIndicator';
 
 export const PlayerInfo = () => {
   const { playerID, State } = useBoardContext();
   const roomMetadata = useStoreState((s) => s.roomMetadata);
-  
+
   return (
     <div className="PlayerInfo">
       <div className="PlayerInfo__P1Name">

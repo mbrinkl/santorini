@@ -1,17 +1,17 @@
-import { StoreProvider } from "easy-peasy";
-import React from "react";
+import { StoreProvider } from 'easy-peasy';
+import React from 'react';
 import {
   BrowserRouter as Router,
   Route,
   Switch,
   useHistory,
-} from "react-router-dom";
-import { GameLobby } from "./components/Lobby";
-import { SetupNickname } from "./components/SetupNickname";
-import { initializeStore, useStoreState } from "./store";
-import { NICKNAME_STORAGE_KEY, PLAYER_STORAGE_KEY } from "./config/client";
-import { StoreModel } from "./types/StoreTypes";
-import { Welcome } from "./components/Welcome";
+} from 'react-router-dom';
+import { GameLobby } from './components/Lobby';
+import { SetupNickname } from './components/SetupNickname';
+import { initializeStore, useStoreState } from './store';
+import { NICKNAME_STORAGE_KEY, PLAYER_STORAGE_KEY } from './config/client';
+import { StoreModel } from './types/StoreTypes';
+import { Welcome } from './components/Welcome';
 
 const savedNickname = localStorage.getItem(NICKNAME_STORAGE_KEY);
 const savedPlayer = localStorage.getItem(PLAYER_STORAGE_KEY);
@@ -37,21 +37,19 @@ const App: React.FC = () => {
         </Route>
 
         <Route path="/nickname">
-          <SetupNickname onSubmit={() => history.push("/")} />
+          <SetupNickname onSubmit={() => history.push('/')} />
         </Route>
       </Switch>
     </div>
   );
 };
 
-const AppRoot: React.FC = () => {
-  return (
-    <StoreProvider store={store}>
-      <Router>
-        <App />
-      </Router>
-    </StoreProvider>
-  );
-};
+const AppRoot: React.FC = () => (
+  <StoreProvider store={store}>
+    <Router>
+      <App />
+    </Router>
+  </StoreProvider>
+);
 
 export default AppRoot;

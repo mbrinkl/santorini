@@ -1,4 +1,4 @@
-import { CharacterState } from "./CharacterTypes"
+import { CharacterState } from './CharacterTypes';
 
 type PlayerIDs = '0' | '1';
 export type GameStage = 'place' | 'select' | 'move' | 'build' | 'end';

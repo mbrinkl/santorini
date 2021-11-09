@@ -1,13 +1,13 @@
-import { Character, CharacterState } from '../../types/CharacterTypes';
-import { Mortal } from "./Mortal";
 import { Ctx } from 'boardgame.io';
-import { Board } from '../space'
+import { Character, CharacterState } from '../../types/CharacterTypes';
+import { Mortal } from './Mortal';
+import { Board } from '../space';
 import { posIsPerimeter } from '../utility';
 import { GameStage, GameState, Player } from '../../types/GameTypes';
 
 export const Triton: Character = {
   ...Mortal,
-  desc: `Your Move: Each time your Worker moves into a perimeter space, it may immediately move again.`,
+  desc: 'Your Move: Each time your Worker moves into a perimeter space, it may immediately move again.',
   buttonText: 'End Move',
 
   move: (
@@ -15,16 +15,14 @@ export const Triton: Character = {
     ctx: Ctx,
     player: Player,
     char: CharacterState,
-    pos: number
+    pos: number,
   ) => {
-
     let returnStage: GameStage = 'build';
 
     if (posIsPerimeter(pos)) {
       char.buttonActive = true;
       returnStage = 'move';
-    }
-    else {
+    } else {
       char.buttonActive = false;
     }
 
@@ -41,9 +39,9 @@ export const Triton: Character = {
     G: GameState,
     ctx: Ctx,
     player: Player,
-    char: CharacterState
+    char: CharacterState,
   ) => {
     char.buttonActive = false;
     return 'build';
   },
-}
+};

@@ -1,12 +1,12 @@
-import React from "react";
-import Slider from "react-slick";
-import { Button } from "../Button";
-import { useStoreState } from "../../store";
-import { getSortedCharacters } from "../../game/characters";
-import { useBoardContext } from "../GameBoard/BoardContext";
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
-import "./style.scss";
+import React from 'react';
+import Slider from 'react-slick';
+import { Button } from '../Button';
+import { useStoreState } from '../../store';
+import { getSortedCharacters } from '../../game/characters';
+import { useBoardContext } from '../GameBoard/BoardContext';
+import 'slick-carousel/slick/slick.css';
+import 'slick-carousel/slick/slick-theme.css';
+import './style.scss';
 
 export const CharacterBox: React.FC<{ name: string }> = ({ name }) => {
   const { moves } = useBoardContext();
@@ -22,12 +22,12 @@ export const CharacterBox: React.FC<{ name: string }> = ({ name }) => {
     <div
       style={{
         backgroundImage: `url('${
-          process.env.PUBLIC_URL + `/CharacterImages/${name}.png`
+          `${process.env.PUBLIC_URL}/CharacterImages/${name}.png`
         }')`,
       }}
       className="characterBoxSelectable"
       onClick={select}
-      onKeyDown={e => e.key === 'Enter' && select()}
+      onKeyDown={(e) => e.key === 'Enter' && select()}
       role="button"
       tabIndex={0}
     >
@@ -46,14 +46,19 @@ export const SelectedCharacterBox: React.FC<{
     <div
       style={{
         backgroundImage: `url('${
-          process.env.PUBLIC_URL + `/CharacterImages/${name}.png`
+          `${process.env.PUBLIC_URL}/CharacterImages/${name}.png`
         }')`,
       }}
       className="characterBox"
     >
-      {State.players[playerID].ready &&
-        <img className="characterBoxCheck" alt="ready"
-          src={process.env.PUBLIC_URL + "/CharacterImages/check.png"} />}
+      {State.players[playerID].ready
+        && (
+        <img
+          className="characterBoxCheck"
+          alt="ready"
+          src={`${process.env.PUBLIC_URL}/CharacterImages/check.png`}
+        />
+        )}
       <span>{name}</span>
     </div>
   );
@@ -72,10 +77,10 @@ export const CharacterSelect = () => {
 
       <Slider
         dots={false}
-        infinite={true}
+        infinite
         speed={500}
         slidesToShow={3}
-        swipeToSlide={true}
+        swipeToSlide
         className="charSelect__carousel"
       >
         {getSortedCharacters().map((character) => (
@@ -97,13 +102,13 @@ export const CharacterSelect = () => {
             {roomMetadata?.players[0].name}
           </span>
           <SelectedCharacterBox
-            name={State.players["0"].char.name}
+            name={State.players['0'].char.name}
             playerID="0"
           />
           <span>
-            {State.players["0"].char.name === "Random"
-              ? "Random"
-              : State.players["0"].char.desc}
+            {State.players['0'].char.name === 'Random'
+              ? 'Random'
+              : State.players['0'].char.desc}
           </span>
         </div>
         <div className="charSelect__selectedChar">
@@ -111,13 +116,13 @@ export const CharacterSelect = () => {
             {roomMetadata?.players[1].name}
           </span>
           <SelectedCharacterBox
-            name={State.players["1"].char.name}
+            name={State.players['1'].char.name}
             playerID="1"
           />
           <span>
-            {State.players["1"].char.name === "Random"
-              ? "Random"
-              : State.players["1"].char.desc}
+            {State.players['1'].char.name === 'Random'
+              ? 'Random'
+              : State.players['1'].char.desc}
           </span>
         </div>
       </div>

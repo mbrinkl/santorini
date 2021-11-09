@@ -1,20 +1,19 @@
-import { SocketIO } from "boardgame.io/multiplayer";
-import { Client } from "boardgame.io/react";
-import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
-import { isProduction } from "../../config";
-import { SERVER_URL } from "../../config/client";
-import { SantoriniGame } from "../../game";
-import { useStoreActions, useStoreState } from "../../store";
-import { GameBoard } from "../GameBoard";
-import { ButtonBack } from "../ButtonBack";
-import { LobbyPage } from "../LobbyPage";
-import { Button } from "../Button";
-import Tippy from "@tippyjs/react";
-import { isMobile, getMobileOS } from "../../utility";
-import "tippy.js/dist/tippy.css"; // optional
-import "./style.scss";
-
+import { SocketIO } from 'boardgame.io/multiplayer';
+import { Client } from 'boardgame.io/react';
+import React, { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
+import Tippy from '@tippyjs/react';
+import { isProduction } from '../../config';
+import { SERVER_URL } from '../../config/client';
+import { SantoriniGame } from '../../game';
+import { useStoreActions, useStoreState } from '../../store';
+import { GameBoard } from '../GameBoard';
+import { ButtonBack } from '../ButtonBack';
+import { LobbyPage } from '../LobbyPage';
+import { Button } from '../Button';
+import { isMobile, getMobileOS } from '../../utility';
+import 'tippy.js/dist/tippy.css'; // optional
+import './style.scss';
 
 const GameClient = Client({
   game: SantoriniGame,
@@ -33,7 +32,6 @@ export const GameLobby = () => {
   );
 };
 
-
 export const GameLobbySetup: React.FC<{ startGame(): void }> = ({
   startGame,
 }) => {
@@ -46,19 +44,18 @@ export const GameLobbySetup: React.FC<{ startGame(): void }> = ({
   const [tooltipVisible, setTooltipVisible] = useState(false);
   const os = getMobileOS();
 
-  const supportsCopying = !!document.queryCommandSupported("copy");
+  const supportsCopying = !!document.queryCommandSupported('copy');
   function copyToClipboard(value: string) {
-    const textField = document.createElement("textarea");
+    const textField = document.createElement('textarea');
     textField.innerText = value;
-    textField.style.opacity = "0";
+    textField.style.opacity = '0';
     document.body.appendChild(textField);
     textField.select();
-    document.execCommand("copy");
+    document.execCommand('copy');
     textField.remove();
   }
 
-  const gameRoomFull =
-    roomMetadata?.players.filter((p) => !p.name).length === 0;
+  const gameRoomFull = roomMetadata?.players.filter((p) => !p.name).length === 0;
 
   useEffect(() => {
     const intervalID = setInterval(() => {
@@ -78,9 +75,9 @@ export const GameLobbySetup: React.FC<{ startGame(): void }> = ({
   useEffect(() => {
     // find first empty seat ID
     const emptySeatID = roomMetadata?.players.find((p) => !p.name)?.id;
-    const alreadyJoined = roomMetadata?.players.find((p) => {
-      return p.id === activeRoomPlayer?.playerID && p.name === nickname;
-    });
+    const alreadyJoined = roomMetadata?.players.find((p) => (
+      p.id === activeRoomPlayer?.playerID && p.name === nickname
+    ));
 
     if (!alreadyJoined && emptySeatID !== undefined && nickname && id) {
       joinRoom({ playerID: emptySeatID, playerName: nickname, matchID: id });
@@ -116,15 +113,15 @@ export const GameLobbySetup: React.FC<{ startGame(): void }> = ({
                 Copy
               </Button>
 
-              {os === "iOS" || os === "Android" ? (
-                  <Button
-                    theme="blue"
-                    onClick={() => {
-                      window.open(os === 'iOS' ? `sms:&body=${window.location.href}` : `sms:?body=${window.location.href}`);
-                    }}
-                  >
-                    Share
-                  </Button>
+              {os === 'iOS' || os === 'Android' ? (
+                <Button
+                  theme="blue"
+                  onClick={() => {
+                    window.open(os === 'iOS' ? `sms:&body=${window.location.href}` : `sms:?body=${window.location.href}`);
+                  }}
+                >
+                  Share
+                </Button>
               ) : (
                 <></>
               )}
@@ -135,23 +132,23 @@ export const GameLobbySetup: React.FC<{ startGame(): void }> = ({
 
       <div className="Lobby__players">
         {roomMetadata ? (
-          roomMetadata.players?.map((player) => {
-            return player.name ? (
-              <div
-                key={player.id}
-                className="Lobby__player Lobby__player--active"
-              >
-                {player.name} {player.name === nickname && "(You)"}
-              </div>
-            ) : (
-              <div
-                key={player.id}
-                className="Lobby__player Lobby__player--inactive"
-              >
-                Waiting for player...
-              </div>
-            );
-          })
+          roomMetadata.players?.map((player) => (player.name ? (
+            <div
+              key={player.id}
+              className="Lobby__player Lobby__player--active"
+            >
+              {player.name}
+              {' '}
+              {player.name === nickname && '(You)'}
+            </div>
+          ) : (
+            <div
+              key={player.id}
+              className="Lobby__player Lobby__player--inactive"
+            >
+              Waiting for player...
+            </div>
+          )))
         ) : (
           <p>Loading...</p>
         )}

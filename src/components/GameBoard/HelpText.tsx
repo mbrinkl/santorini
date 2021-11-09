@@ -1,30 +1,42 @@
-import { useBoardContext } from "./BoardContext";
+import { useBoardContext } from './BoardContext';
 
 export const HelpText = () => {
-  const { State, isActive, ctx, matchData, playerID } = useBoardContext();
-  const stage = (ctx.activePlayers && ctx.activePlayers[ctx.currentPlayer]) || null;
+  const {
+    State, isActive, ctx, matchData, playerID,
+  } = useBoardContext();
 
-  const currentPlayerName = matchData?.find(
-    (p) => String(p.id) === ctx.currentPlayer
+  const stage: string | null = (ctx.activePlayers && ctx.activePlayers[ctx.currentPlayer]) || null;
+  const currentPlayerName: string | undefined = matchData?.find(
+    (p) => String(p.id) === ctx.currentPlayer,
   )?.name;
+
+  let hint = '';
+
+  if (!ctx.gameover && isActive) {
+    if (stage === 'place') {
+      hint = `Place ${State.players[playerID].char.numWorkers} workers`;
+    } else if (stage === 'select') {
+      hint = 'Select a worker';
+    } else if (stage === 'move') {
+      hint = 'Move';
+    } else if (stage === 'build') {
+      hint = 'Build';
+    } else if (stage === 'end') {
+      hint = 'End Turn or Undo';
+    }
+  } else if (!isActive) {
+    hint = `Waiting for ${currentPlayerName}`;
+  } else {
+    hint = ctx.gameover.winner === playerID ? 'You Win!' : 'You Lose';
+  }
+
+  //   <span className="PlayerBoard__hint-accent">
+  //   Waiting for{ currentPlayerName }...
+  // </span>
 
   return (
     <span className="PlayerBoard__hint">
-      {
-      ctx.gameover ?
-      (ctx.gameover.winner === playerID ? <span>You Win!</span> :
-        <span>You Lose</span>) :
-      isActive ? 
-        stage === 'place' ? <span>Place {State.players[playerID].char.numWorkers} workers</span>
-        : stage === 'select' ? <span>Select a worker</span>
-        : stage === 'move' ? <span>Move</span>
-        : stage === 'build' ? <span>Build</span>
-        : <span>End Turn or Undo</span>
-      : 
-        <span className="PlayerBoard__hint-accent">
-          Waiting for { currentPlayerName } ...
-        </span>
-      }
+      {hint}
     </span>
   );
 };

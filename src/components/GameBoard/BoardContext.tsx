@@ -1,5 +1,5 @@
-import { ChatMessage, Ctx, FilteredMetadata } from "boardgame.io";
-import { useContext , createContext } from "react";
+import { ChatMessage, Ctx, FilteredMetadata } from 'boardgame.io';
+import { useContext, createContext } from 'react';
 
 import { GameState } from '../../types/GameTypes';
 
@@ -17,6 +17,4 @@ interface IBoardContext {
 
 export const BoardContext = createContext({} as IBoardContext);
 
-export const useBoardContext = () => {
-  return useContext(BoardContext);
-};
+export const useBoardContext = () => useContext(BoardContext);

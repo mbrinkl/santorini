@@ -1,19 +1,17 @@
-import { Action, Thunk } from "easy-peasy";
-import { 
-  JoinRoomParams, 
-  UpdatePlayerParams, 
+import { Action, Thunk } from 'easy-peasy';
+import {
+  JoinRoomParams,
+  UpdatePlayerParams,
   RoomMetadata,
   PlayAgainParams,
-  ActiveRoomPlayer
-} from "../types/ApiTypes";
-import { LobbyService } from "../api/lobbyService";
+  ActiveRoomPlayer,
+} from './ApiTypes';
+import { LobbyService } from '../api/lobbyService';
 
-// @flow
 export interface StoreInjections {
   lobbyApi: LobbyService;
 }
 
-// @flow
 export interface StoreModel {
   nickname: string | null;
   setNickname: Action<StoreModel, string>;

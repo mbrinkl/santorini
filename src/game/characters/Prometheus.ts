@@ -1,9 +1,9 @@
-import { Ctx } from "boardgame.io";
-import { getAdjacentPositions } from '../utility'
+import { Ctx } from 'boardgame.io';
+import { getAdjacentPositions } from '../utility';
 import { Character, CharacterState } from '../../types/CharacterTypes';
-import { Mortal } from "./Mortal";
+import { Mortal } from './Mortal';
 import { GameState, Player } from '../../types/GameTypes';
-import { Board } from '../space'
+import { Board } from '../space';
 
 interface PrometheusAttrs {
   specialActive: boolean,
@@ -14,12 +14,12 @@ interface PrometheusAttrs {
 const initialAttrs: PrometheusAttrs = {
   specialActive: false,
   specialUsed: false,
-  originalPos: -1
-}
+  originalPos: -1,
+};
 
 export const Prometheus: Character = {
   ...Mortal,
-  desc: `Your Turn: If your Worker does not move up, it may build both before and after moving.`,
+  desc: 'Your Turn: If your Worker does not move up, it may build both before and after moving.',
   buttonText: 'Bulid Before Move',
   attrs: initialAttrs,
 
@@ -27,7 +27,7 @@ export const Prometheus: Character = {
     G: GameState,
     ctx: Ctx,
     player: Player,
-    char: CharacterState
+    char: CharacterState,
   ) => {
     char.buttonActive = true;
   },
@@ -37,15 +37,13 @@ export const Prometheus: Character = {
     ctx: Ctx,
     player: Player,
     char: CharacterState,
-    pos: number
+    pos: number,
   ) => {
     const attrs: PrometheusAttrs = char.attrs as PrometheusAttrs;
 
     char.selectedWorker = G.spaces[pos].inhabitant.workerNum;
-    if (attrs.specialActive)
-      return 'build';
-    else
-      return 'move';
+    if (attrs.specialActive) return 'build';
+    return 'move';
   },
 
   validMove: (
@@ -53,26 +51,26 @@ export const Prometheus: Character = {
     ctx: Ctx,
     player: Player,
     char: CharacterState,
-    originalPos: number
+    originalPos: number,
   ) => {
     const attrs: PrometheusAttrs = char.attrs as PrometheusAttrs;
 
-    const height = (attrs.specialUsed ? 0 : char.moveUpHeight)
+    const height = (attrs.specialUsed ? 0 : char.moveUpHeight);
     if (attrs.specialUsed) {
       originalPos = attrs.originalPos;
     }
 
     const adjacents: number[] = getAdjacentPositions(originalPos);
-    const valids: number[] = []
+    const valids: number[] = [];
 
-    adjacents.forEach(pos => {
-      if (!G.spaces[pos].inhabited &&
-        !G.spaces[pos].isDomed &&
-        G.spaces[pos].height - G.spaces[originalPos].height <= height
+    adjacents.forEach((pos) => {
+      if (!G.spaces[pos].inhabited
+        && !G.spaces[pos].isDomed
+        && G.spaces[pos].height - G.spaces[originalPos].height <= height
       ) {
         valids.push(pos);
       }
-    })
+    });
 
     return valids;
   },
@@ -82,7 +80,7 @@ export const Prometheus: Character = {
     ctx: Ctx,
     player: Player,
     char: CharacterState,
-    pos: number
+    pos: number,
   ) => {
     char.buttonActive = false;
     return Mortal.move(G, ctx, player, char, pos);
@@ -93,7 +91,7 @@ export const Prometheus: Character = {
     ctx: Ctx,
     player: Player,
     char: CharacterState,
-    pos: number
+    pos: number,
   ) => {
     const attrs: PrometheusAttrs = char.attrs as PrometheusAttrs;
 
@@ -109,18 +107,17 @@ export const Prometheus: Character = {
 
       return 'move';
     }
-    else {
-      attrs.specialUsed = false;
-      attrs.originalPos = -1;
-      return 'end';
-    }
+
+    attrs.specialUsed = false;
+    attrs.originalPos = -1;
+    return 'end';
   },
 
   buttonPressed: (
     G: GameState,
     ctx: Ctx,
     player: Player,
-    char: CharacterState
+    char: CharacterState,
   ) => {
     const attrs: PrometheusAttrs = char.attrs as PrometheusAttrs;
 
@@ -130,15 +127,12 @@ export const Prometheus: Character = {
 
     if (attrs.specialActive) {
       char.buttonText = 'Cancel';
-      if (stage === 'move')
-        return 'build';
-    }
-    else {
+      if (stage === 'move') return 'build';
+    } else {
       char.buttonText = 'Build Before Move';
-      if (stage === 'build')
-        return 'move';
+      if (stage === 'build') return 'move';
     }
 
     return Mortal.buttonPressed(G, ctx, player, char);
   },
-}
+};

@@ -1,9 +1,8 @@
-import { getAdjacentPositions, getOppositePerimterPositions, posIsPerimeter } from "../../game/utility";
+import { Ctx } from 'boardgame.io';
+import { getAdjacentPositions, getOppositePerimterPositions, posIsPerimeter } from '../utility';
 import { Character, CharacterState, Worker } from '../../types/CharacterTypes';
-import { Mortal } from "./Mortal";
+import { Mortal } from './Mortal';
 import { GameState, Player } from '../../types/GameTypes';
-import { Ctx } from "boardgame.io";
-
 
 export const Eros: Character = {
   ...Mortal,
@@ -17,18 +16,16 @@ export const Eros: Character = {
     player: Player,
     char: CharacterState,
   ) => {
-
     const valids: number[] = [];
-    for (const space of G.spaces) {
+    G.spaces.forEach((space) => {
       if (!space.inhabited && char.numWorkersToPlace > 0 && posIsPerimeter(space.pos)) {
         if (char.numWorkersToPlace === 2) {
           valids.push(space.pos);
-        }
-        else if (getOppositePerimterPositions(char.workers[0].pos).includes(space.pos)) {
+        } else if (getOppositePerimterPositions(char.workers[0].pos).includes(space.pos)) {
           valids.push(space.pos);
         }
       }
-    }
+    });
     return valids;
   },
 
@@ -37,29 +34,27 @@ export const Eros: Character = {
     ctx: Ctx,
     player: Player,
     char: CharacterState,
-    pos: number
+    pos: number,
   ) => {
     const stage = Mortal.move(G, ctx, player, char, pos);
 
     let worker: Worker | null = null;
 
     if (char.workers.length === 2) {
-      if (char.workers[0] !== char.workers[char.selectedWorker]) {
-        worker = char.workers[0];
-      }
-      else {
-        worker = char.workers[1];
-      }
+      worker = char.workers[(char.selectedWorker + 1) % 2];
     }
 
     if (worker !== null) {
-      if (getAdjacentPositions(pos).includes(worker.pos) && G.spaces[pos].height === 1 && worker.height === 1) {
+      if (
+        getAdjacentPositions(pos).includes(worker.pos)
+        && G.spaces[pos].height === 1 && worker.height === 1
+      ) {
         ctx.events?.endGame({
-          winner: player.id
-        })
+          winner: player.id,
+        });
       }
     }
 
     return stage;
   },
-}
+};

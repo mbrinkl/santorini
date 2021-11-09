@@ -5,6 +5,14 @@
       "version": "detect"
     }
   },
+  "overrides": [
+    {
+      "files": ["*.ts", "*.tsx"],
+      "parserOptions": {
+        "project": ["./tsconfig.json"]
+      }
+    }
+  ],
   "parser": "@typescript-eslint/parser",
   "plugins": [
     "@typescript-eslint",
@@ -14,6 +22,8 @@
     "react-hooks"
   ],
   "extends": [
+    "airbnb",
+    "airbnb-typescript",
     "eslint:recommended",
     "plugin:@typescript-eslint/recommended",
     "plugin:jsx-a11y/recommended",
@@ -23,6 +33,15 @@
     "plugin:react-hooks/recommended"
   ],
   "rules": {
+    "linebreak-style": ["error", "windows"],
+    "no-plusplus": ["error", { "allowForLoopAfterthoughts": true }],
+    "no-param-reassign": "off",
+    "no-nested-ternary": "off",
+    "import/no-cycle": "off",
+    "import/no-mutable-exports": "off",
+    "import/prefer-default-export": "off",
+    "import/no-extraneous-dependencies": "off",
+    "@typescript-eslint/no-use-before-define": "off",
     "@typescript-eslint/no-empty-function": "off",
     "@typescript-eslint/no-unused-vars": "off",
     "@typescript-eslint/no-explicit-any": "off",
@@ -30,6 +49,9 @@
     "react/prop-types": "off",
     "react/react-in-jsx-scope": "off",
     "react/display-name": "off",
+    "react/jsx-props-no-spreading": "off",
+    "react/require-default-props": "off",
+    "react/jsx-no-bind": "off",
     "jsx-a11y/click-events-have-key-events": "off"
   }
 }

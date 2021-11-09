@@ -1,7 +1,7 @@
-import { Character, CharacterState } from '../../types/CharacterTypes';
-import { Mortal } from "./Mortal";
-import { GameState, Player } from '../../types/GameTypes';
 import { Ctx } from 'boardgame.io';
+import { Character, CharacterState } from '../../types/CharacterTypes';
+import { Mortal } from './Mortal';
+import { GameState, Player } from '../../types/GameTypes';
 import { getAdjacentPositions } from '../utility';
 
 export const Graeae: Character = {
@@ -16,23 +16,24 @@ export const Graeae: Character = {
     ctx: Ctx,
     player: Player,
     char: CharacterState,
-    originalPos: number
+    originalPos: number,
   ) => {
     let adjacents: number[] = [];
-    const valids: number[] = []
+    const valids: number[] = [];
 
     for (let i = 0; i < char.numWorkers; i++) {
-      if (i !== char.selectedWorker)
+      if (i !== char.selectedWorker) {
         // add on the adjacent positions of each worker
         adjacents = adjacents.concat(getAdjacentPositions(char.workers[i].pos));
+      }
     }
 
-    adjacents.forEach(pos => {
+    adjacents.forEach((pos) => {
       if (!G.spaces[pos].inhabited && !G.spaces[pos].isDomed) {
         valids.push(pos);
       }
-    })
+    });
 
     return valids;
-  }
-}
+  },
+};

@@ -1,15 +1,20 @@
-import { useState, useEffect, useRef} from "react";
-import { useParams } from "react-router";
-import { useBoardContext } from "./BoardContext";
-import { Button } from "../Button";
-import { useStoreActions, useStoreState } from "../../store";
-import undoLogo from'../../assets/png/undo.png';
-import messagesLogo from'../../assets/png/messages.png';
-import { isMobile } from "../../utility";
-import classNames from "classnames";
+import { useState, useEffect, useRef } from 'react';
+import { useParams } from 'react-router';
+import classNames from 'classnames';
+import { useBoardContext } from './BoardContext';
+import { Button } from '../Button';
+import { useStoreActions, useStoreState } from '../../store';
+import undoLogo from '../../assets/png/undo.png';
+import messagesLogo from '../../assets/png/messages.png';
+import { isMobile } from '../../utility';
 
-export const PlayerControls: React.FC<{ messagesOpen? : boolean, onOpenMessages? : () => void}> = ({messagesOpen, onOpenMessages}) => {
-  const { playerID, State, isActive, moves, ctx, undo, chatMessages, sendChatMessage } = useBoardContext();
+export const PlayerControls: React.FC<{
+  messagesOpen? : boolean,
+  onOpenMessages? : () => void
+}> = ({ messagesOpen, onOpenMessages }) => {
+  const {
+    playerID, State, isActive, moves, ctx, undo, chatMessages, sendChatMessage,
+  } = useBoardContext();
 
   const { id } = useParams<{ id: string }>();
   const activeRoomPlayer = useStoreState((s) => s.activeRoomPlayer);
@@ -18,8 +23,8 @@ export const PlayerControls: React.FC<{ messagesOpen? : boolean, onOpenMessages?
   const [redirect, setRedirect] = useState(false);
   const [msgBlack, setMsgBlack] = useState(false);
   const [counter, setCounter] = useState(3);
-  const intervalID: any = useRef(null); 
-  const intervalMsgID: any = useRef(null); 
+  const intervalID: any = useRef(null);
+  const intervalMsgID: any = useRef(null);
 
   useEffect(() => {
     clearInterval(intervalMsgID.current);
@@ -28,8 +33,8 @@ export const PlayerControls: React.FC<{ messagesOpen? : boolean, onOpenMessages?
 
   useEffect(() => {
     if (chatMessages.length > 0) {
-      intervalMsgID.current = setInterval(() => { 
-        setMsgBlack(prev => !prev);
+      intervalMsgID.current = setInterval(() => {
+        setMsgBlack((prev) => !prev);
       }, 1000);
     }
     return () => clearInterval(intervalMsgID.current);
@@ -44,11 +49,8 @@ export const PlayerControls: React.FC<{ messagesOpen? : boolean, onOpenMessages?
   useEffect(() => {
     intervalID.current = setInterval(() => {
       if ((ctx.activePlayers && ctx.activePlayers[ctx.currentPlayer] === 'end') && isActive) {
-
-        if (counter > 0)
-          setCounter(counter - 1)
-        else
-        {
+        if (counter > 0) setCounter(counter - 1);
+        else {
           clearInterval(intervalID.current);
           setCounter(3);
           moves.EndTurn();
@@ -73,12 +75,12 @@ export const PlayerControls: React.FC<{ messagesOpen? : boolean, onOpenMessages?
 
   const rematch = () => {
     sendChatMessage('wants to rematch...');
-    playAgain({ matchID: id, playerID: Number(activeRoomPlayer?.playerID), credential: activeRoomPlayer?.credential || ''});
+    playAgain({ matchID: id, playerID: Number(activeRoomPlayer?.playerID), credential: activeRoomPlayer?.credential || '' });
     setRedirect(true);
-  }
+  };
 
   function exit() {
-    window.open("/", "_self");
+    window.open('/', '_self');
   }
 
   function showMessages() {
@@ -89,73 +91,77 @@ export const PlayerControls: React.FC<{ messagesOpen? : boolean, onOpenMessages?
     }
   }
 
-  return (    
+  return (
     <div className="PlayerControls">
 
-      {isMobile() && 
+      {isMobile()
+        && (
         <Button
           theme="yellow"
           size="small"
           className="PlayerControls__button"
           onClick={showMessages}
         >
-          <img className={classNames('imgMsg', msgBlack ? 'blackmsg' : '')} src={messagesLogo} alt="msgLogo"/>
+          <img className={classNames('imgMsg', msgBlack ? 'blackmsg' : '')} src={messagesLogo} alt="msgLogo" />
         </Button>
-      }
+        )}
 
-      {ctx.gameover ? (<>
-        <Button
-          theme="red"
-          onClick={exit}
-          className="PlayerControls__button"
-          size="small"
-        >
-          Exit
-        </Button>
+      {ctx.gameover ? (
+        <>
+          <Button
+            theme="red"
+            onClick={exit}
+            className="PlayerControls__button"
+            size="small"
+          >
+            Exit
+          </Button>
 
-        <Button
-          theme="green"
-          className="PlayerControls__button"
-          size="small"
-          onClick={rematch}
-        >
-          Rematch
-      </Button>
-      </>
-    )
-    :
-    ( <>
-      <Button
-        theme="red"
-        size="small"
-        className="PlayerControls__button"
-        disabled={!ctx.numMoves || !isActive}
-        onClick={() => undoMove()}
-      >
-        <img src={undoLogo} style={{position:"absolute", width: 25, height: 25}} alt="undoLogo"/>
-      </Button>
+          <Button
+            theme="green"
+            className="PlayerControls__button"
+            size="small"
+            onClick={rematch}
+          >
+            Rematch
+          </Button>
+        </>
+      )
+        : (
+          <>
+            <Button
+              theme="red"
+              size="small"
+              className="PlayerControls__button"
+              disabled={!ctx.numMoves || !isActive}
+              onClick={() => undoMove()}
+            >
+              <img src={undoLogo} style={{ position: 'absolute', width: 25, height: 25 }} alt="undoLogo" />
+            </Button>
 
-      <Button
-        theme="blue"
-        size="small"
-        className="PlayerControls__button"
-        disabled={!State.players[playerID].char.buttonActive}
-        onClick={() => moves.CharacterAbility()}
-      >
-        {State.players[playerID].char.buttonText}
-      </Button>
+            <Button
+              theme="blue"
+              size="small"
+              className="PlayerControls__button"
+              disabled={!State.players[playerID].char.buttonActive}
+              onClick={() => moves.CharacterAbility()}
+            >
+              {State.players[playerID].char.buttonText}
+            </Button>
 
-      <Button
-        theme="green"
-        onClick={() => endTurn()}
-        className="PlayerControls__button"
-        size="small"
-        disabled={(ctx.activePlayers && ctx.activePlayers[ctx.currentPlayer] !== 'end')  || !isActive}
-      >
-        ({counter}) End Turn
-      </Button>
-      </>
-    )}
-  </div>
+            <Button
+              theme="green"
+              onClick={() => endTurn()}
+              className="PlayerControls__button"
+              size="small"
+              disabled={(ctx.activePlayers && ctx.activePlayers[ctx.currentPlayer] !== 'end') || !isActive}
+            >
+              (
+              {counter}
+              ) End Turn
+            </Button>
+          </>
+        )}
+    </div>
   );
 };

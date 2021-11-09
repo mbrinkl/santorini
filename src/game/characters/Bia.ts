@@ -1,8 +1,8 @@
+import { Ctx } from 'boardgame.io';
 import { Character, CharacterState } from '../../types/CharacterTypes';
 import { Mortal } from './Mortal';
 import { GameState, Player } from '../../types/GameTypes';
-import { Board } from '../space'
-import { Ctx } from 'boardgame.io';
+import { Board } from '../space';
 import { getNextPosition } from '../utility';
 
 export const Bia: Character = {
@@ -15,17 +15,15 @@ export const Bia: Character = {
     ctx: Ctx,
     player: Player,
     char: CharacterState,
-    pos: number
+    pos: number,
   ) => {
-
     const posToKill = getNextPosition(char.workers[char.selectedWorker].pos, pos);
 
     if (posToKill !== -1) {
       if (G.spaces[posToKill].inhabited) {
         if (G.spaces[posToKill].inhabitant.playerId === player.opponentId) {
-
           // find the opponent worker to remove from their worker array
-          G.players[player.opponentId].char.workers.forEach(worker => {
+          G.players[player.opponentId].char.workers.forEach((worker) => {
             if (worker.pos === posToKill) {
               // free the space
               Board.free(G, posToKill);
@@ -33,19 +31,19 @@ export const Bia: Character = {
               if (index > -1) {
                 G.players[player.opponentId].char.workers.splice(index, 1);
               }
-              G.players[player.opponentId].char.numWorkers--;
+              G.players[player.opponentId].char.numWorkers -= 1;
 
               // check if no workers left and end game if none
               if (G.players[player.opponentId].char.workers.length === 0) {
                 ctx.events?.endGame({
-                  winner: player.id
-                })
-              }
-              // otherwise, check to make sure values referring to the worker array are still correct
-              else {
-                let index = 0;
-                G.players[player.opponentId].char.workers.forEach(worker => {
-                  G.spaces[worker.pos].inhabitant.workerNum = index++;
+                  winner: player.id,
+                });
+              } else {
+                // otherwise, make sure values referring to the worker array are still correct
+                let workerNum = 0;
+                G.players[player.opponentId].char.workers.forEach((w) => {
+                  G.spaces[w.pos].inhabitant.workerNum = workerNum;
+                  workerNum += 1;
                 });
               }
             }
@@ -56,4 +54,4 @@ export const Bia: Character = {
 
     return Mortal.move(G, ctx, player, char, pos);
   },
-}
+};

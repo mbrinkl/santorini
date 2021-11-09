@@ -1,46 +1,45 @@
-import React, { ButtonHTMLAttributes } from "react";
-import classNames from "classnames";
-import style from "./style.module.scss";
-import { Link, LinkProps } from "react-router-dom";
+import React, { ButtonHTMLAttributes } from 'react';
+import classNames from 'classnames';
+import { Link, LinkProps } from 'react-router-dom';
+import style from './style.module.scss';
 
 export interface ButtonProps {
-  theme?: "red" | "yellow" | "blue" | "green";
-  size?: "small" | "medium";
+  theme?: 'red' | 'yellow' | 'blue' | 'green';
+  size?: 'small' | 'medium';
 }
 
 export const Button = React.forwardRef<
-  HTMLButtonElement,
-  ButtonProps & ButtonHTMLAttributes<HTMLButtonElement>
->(({ className, theme = "blue", size = "medium", ...props }, ref) => {
-  return (
-    <button
-      ref={ref}
-      className={classNames(
-        style.button,
-        style[`button--${theme}`],
-        style[`button--size-${size}`],
-        className
-      )}
-      {...props}
-    />
-  );
-});
+HTMLButtonElement,
+ButtonProps & ButtonHTMLAttributes<HTMLButtonElement>
+>(({
+  className, theme = 'blue', size = 'medium', ...props
+}, ref) => (
+  <button
+    ref={ref}
+    type="button"
+    className={classNames(
+      style.button,
+      style[`button--${theme}`],
+      style[`button--size-${size}`],
+      className,
+    )}
+    {...props}
+  />
+));
 
 export const ButtonLink: React.FC<ButtonProps & LinkProps> = ({
   className,
-  theme = "blue",
-  size = "medium",
+  theme = 'blue',
+  size = 'medium',
   ...props
-}) => {
-  return (
-    <Link
-      className={classNames(
-        style.button,
-        style[`button--${theme}`],
-        style[`button--size-${size}`],
-        className
-      )}
-      {...props}
-    />
-  );
-};
+}) => (
+  <Link
+    className={classNames(
+      style.button,
+      style[`button--${theme}`],
+      style[`button--size-${size}`],
+      className,
+    )}
+    {...props}
+  />
+);

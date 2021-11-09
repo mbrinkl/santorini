@@ -1,28 +1,30 @@
-import * as React from "react";
-import "./style.scss";
-import { useStoreState, useStoreActions } from "../../store";
-import { useState } from "react";
-import { ButtonBack } from "../ButtonBack";
-import { Button } from "../Button";
-import { LobbyPage } from "../LobbyPage";
-import { Input } from "../Input";
+import * as React from 'react';
+import './style.scss';
+import { useState } from 'react';
+import { useStoreState, useStoreActions } from '../../store';
+import { ButtonBack } from '../ButtonBack';
+import { Button } from '../Button';
+import { LobbyPage } from '../LobbyPage';
+import { Input } from '../Input';
 
 export const SetupNickname: React.FC<{ onSubmit?: () => void }> = ({
   onSubmit,
 }) => {
   const initialNickname = useStoreState((s) => s.nickname);
   const persistNickname = useStoreActions((s) => s.setNickname);
-  const [nickname, setNickname] = useState(initialNickname || "");
+  const [nickname, setNickname] = useState(initialNickname || '');
   const matchID = useStoreState((s) => s.matchID);
   const roomMetadata = useStoreState((s) => s.roomMetadata);
   const activeRoomPlayer = useStoreState((s) => s.activeRoomPlayer);
   const loadRoomMetadata = useStoreActions((s) => s.loadRoomMetadata);
-  const updatePlayer = useStoreActions((s) => s.updatePlayer)
+  const updatePlayer = useStoreActions((s) => s.updatePlayer);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     persistNickname(nickname);
-    onSubmit && onSubmit();
+    if (onSubmit) {
+      onSubmit();
+    }
 
     // update player name if they are in a game
     asyncUpdatePlayer();
@@ -30,11 +32,11 @@ export const SetupNickname: React.FC<{ onSubmit?: () => void }> = ({
 
   async function asyncUpdatePlayer() {
     if (matchID && roomMetadata && activeRoomPlayer) {
-      await updatePlayer({ 
-        matchID: matchID, 
+      await updatePlayer({
+        matchID,
         playerID: activeRoomPlayer.playerID,
         credentials: activeRoomPlayer.credential,
-        newName: nickname 
+        newName: nickname,
       });
 
       await loadRoomMetadata(matchID);
@@ -58,9 +60,10 @@ export const SetupNickname: React.FC<{ onSubmit?: () => void }> = ({
           maxLength={8}
         />
 
-        <Button 
+        <Button
           theme="blue"
-          type="submit">
+          type="submit"
+        >
           Save
         </Button>
       </form>

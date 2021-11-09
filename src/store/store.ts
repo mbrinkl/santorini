@@ -1,6 +1,6 @@
-import { action, thunk } from "easy-peasy";
-import { StoreModel } from "../types/StoreTypes";
-import { NICKNAME_STORAGE_KEY, PLAYER_STORAGE_KEY } from "../config/client";
+import { action, thunk } from 'easy-peasy';
+import { StoreModel } from '../types/StoreTypes';
+import { NICKNAME_STORAGE_KEY, PLAYER_STORAGE_KEY } from '../config/client';
 
 export let initState: any = {};
 export const setInitState = (state?: StoreModel) => {

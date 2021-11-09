@@ -1,9 +1,16 @@
-import { Ctx } from "boardgame.io";
+import { Ctx } from 'boardgame.io';
 import { getAdjacentPositions } from '../utility';
 import { Character, CharacterState } from '../../types/CharacterTypes';
-import { Mortal } from "./Mortal";
+import { Mortal } from './Mortal';
 import { GameState, Player } from '../../types/GameTypes';
 import { Board } from '../space';
+
+// interface Arty extends Omit<Character, 'attrs'> {
+//   attrs: {
+//     numMoves: number,
+//     prevTile: number
+//   }
+// }
 
 interface ArtemisAttrs {
   numMoves: number,
@@ -13,7 +20,7 @@ interface ArtemisAttrs {
 const initialAttrs: ArtemisAttrs = {
   numMoves: 0,
   prevTile: -1,
-}
+};
 
 export const Artemis: Character = {
   ...Mortal,
@@ -27,22 +34,23 @@ export const Artemis: Character = {
     ctx: Ctx,
     player: Player,
     char: CharacterState,
-    originalPos: number
+    originalPos: number,
   ) => {
     const attrs: ArtemisAttrs = char.attrs as ArtemisAttrs;
     const valids: number[] = [];
 
-    if (char.selectedWorker !== -1 && attrs.numMoves === 0)
+    if (char.selectedWorker !== -1 && attrs.numMoves === 0) {
       attrs.prevTile = char.workers[char.selectedWorker].pos;
+    }
 
-      getAdjacentPositions(originalPos).forEach(pos => {
+    getAdjacentPositions(originalPos).forEach((pos) => {
       if (
-        !G.spaces[pos].inhabited && 
-        !G.spaces[pos].isDomed &&
-        G.spaces[pos].height - G.spaces[originalPos].height <= char.moveUpHeight &&
-        attrs.prevTile !== pos
+        !G.spaces[pos].inhabited
+        && !G.spaces[pos].isDomed
+        && G.spaces[pos].height - G.spaces[originalPos].height <= char.moveUpHeight
+        && attrs.prevTile !== pos
       ) {
-          valids.push(pos);
+        valids.push(pos);
       }
     });
 
@@ -54,11 +62,11 @@ export const Artemis: Character = {
     ctx: Ctx,
     player: Player,
     char: CharacterState,
-    pos: number
+    pos: number,
   ) => {
     const attrs: ArtemisAttrs = char.attrs as ArtemisAttrs;
 
-    attrs.numMoves++;
+    attrs.numMoves += 1;
 
     // free the space that is being moved from
     Board.free(G, char.workers[char.selectedWorker].pos);
@@ -72,19 +80,18 @@ export const Artemis: Character = {
       char.buttonActive = false;
       return 'build';
     }
-    else {
-      char.buttonActive = true;
-      return 'move'
-    }
+
+    char.buttonActive = true;
+    return 'move';
   },
 
   buttonPressed: (
     G: GameState,
     ctx: Ctx,
     player: Player,
-    char: CharacterState
+    char: CharacterState,
   ) => {
     char.buttonActive = false;
     return 'build';
   },
-}
+};

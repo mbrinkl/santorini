@@ -28,23 +28,23 @@ export function getNextPosition(fromPos: number, toPos: number): number {
 }
 
 export function getAdjacentPositions(pos: number): number[] {
-  const valid_range: number[] = [];
+  const adjacents: number[] = [];
   const [x, y]: number[] = posToCoord(pos);
 
   if (x !== 0) {
-    valid_range.push(coordToPos(x - 1, y));
-    if (y !== 0) valid_range.push(coordToPos(x - 1, y - 1));
-    if (y !== 4) valid_range.push(coordToPos(x - 1, y + 1));
+    adjacents.push(coordToPos(x - 1, y));
+    if (y !== 0) adjacents.push(coordToPos(x - 1, y - 1));
+    if (y !== 4) adjacents.push(coordToPos(x - 1, y + 1));
   }
   if (x !== 4) {
-    valid_range.push(coordToPos(x + 1, y));
-    if (y !== 0) valid_range.push(coordToPos(x + 1, y - 1));
-    if (y !== 4) valid_range.push(coordToPos(x + 1, y + 1));
+    adjacents.push(coordToPos(x + 1, y));
+    if (y !== 0) adjacents.push(coordToPos(x + 1, y - 1));
+    if (y !== 4) adjacents.push(coordToPos(x + 1, y + 1));
   }
-  if (y !== 0) valid_range.push(coordToPos(x, y - 1));
-  if (y !== 4) valid_range.push(coordToPos(x, y + 1));
+  if (y !== 0) adjacents.push(coordToPos(x, y - 1));
+  if (y !== 4) adjacents.push(coordToPos(x, y + 1));
 
-  return valid_range;
+  return adjacents;
 }
 
 export function getPerimeterPositions(): number[] {
@@ -56,7 +56,7 @@ export function posIsPerimeter(pos: number): boolean {
 }
 
 export function getOppositePerimterPositions(pos: number): number[] {
-  let oppositePerimeter: number[] = []
+  let oppositePerimeter: number[] = [];
 
   // pos can be in two perimeter cases if it is a corner, so update the list twice
   if ([0, 1, 2, 3, 4].includes(pos)) {

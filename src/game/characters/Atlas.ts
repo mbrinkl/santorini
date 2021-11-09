@@ -1,20 +1,20 @@
-import { Character, CharacterState } from '../../types/CharacterTypes';
-import { Mortal } from "./Mortal";
-import { GameState, Player } from '../../types/GameTypes';
-import { Board } from '../space'
 import { Ctx } from 'boardgame.io';
+import { Character, CharacterState } from '../../types/CharacterTypes';
+import { Mortal } from './Mortal';
+import { GameState, Player } from '../../types/GameTypes';
+import { Board } from '../space';
 
 interface AtlasAttrs {
   specialActive: boolean
 }
 
 const initialAttrs: AtlasAttrs = {
-  specialActive: false
-}
+  specialActive: false,
+};
 
 export const Atlas: Character = {
   ...Mortal,
-  desc: `Your Build: Your worker may build a dome at any level.`,
+  desc: 'Your Build: Your worker may build a dome at any level.',
   buttonText: 'Build Dome',
   attrs: initialAttrs,
 
@@ -23,7 +23,7 @@ export const Atlas: Character = {
     ctx: Ctx,
     player: Player,
     char: CharacterState,
-    pos: number
+    pos: number,
   ) => {
     char.buttonActive = true;
     return Mortal.move(G, ctx, player, char, pos);
@@ -33,7 +33,7 @@ export const Atlas: Character = {
     G: GameState,
     ctx: Ctx,
     player: Player,
-    char: CharacterState
+    char: CharacterState,
   ) => {
     const attrs: AtlasAttrs = char.attrs as AtlasAttrs;
     attrs.specialActive = !attrs.specialActive;
@@ -46,18 +46,16 @@ export const Atlas: Character = {
     ctx: Ctx,
     player: Player,
     char: CharacterState,
-    pos: number
+    pos: number,
   ) => {
     const attrs: AtlasAttrs = char.attrs as AtlasAttrs;
-    
-    if (attrs.specialActive)
-      G.spaces[pos].isDomed = true;
-    else
-      Board.build(G, pos);
+
+    if (attrs.specialActive) G.spaces[pos].isDomed = true;
+    else Board.build(G, pos);
 
     attrs.specialActive = false;
     char.buttonActive = false;
-    char.buttonText = 'Build Dome'
-    return 'end'
+    char.buttonText = 'Build Dome';
+    return 'end';
   },
-}
+};

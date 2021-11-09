@@ -1,52 +1,52 @@
-import { Mortal } from "./Mortal";
-import { Apollo } from "./Apollo";
-import { Artemis } from "./Artemis";
-import { Athena } from "./Athena";
-import { Atlas } from "./Atlas";
-import { Demeter } from "./Demeter";
-import { Hephaestus } from "./Hephaestus";
-import { Hermes } from "./Hermes";
-import { Minotaur } from "./Minotaur";
-import { Pan } from "./Pan";
-import { Prometheus } from "./Prometheus";
-import { Bia } from "./Bia";
-import { Triton } from "./Triton";
-import { Zeus } from "./Zeus";
-import { Graeae } from "./Graeae";
-import { Heracles } from "./Heracles";
-import { Odysseus } from "./Odysseus";
-import { Iris } from "./Iris";
-import { Pegasus } from "./Pegasus";
-import { Eros } from "./Eros";
-import { Chaos } from "./Chaos";
-import { Character } from "../../types/CharacterTypes";
+import { Mortal } from './Mortal';
+import { Apollo } from './Apollo';
+import { Artemis } from './Artemis';
+import { Athena } from './Athena';
+import { Atlas } from './Atlas';
+import { Demeter } from './Demeter';
+import { Hephaestus } from './Hephaestus';
+import { Hermes } from './Hermes';
+import { Minotaur } from './Minotaur';
+import { Pan } from './Pan';
+import { Prometheus } from './Prometheus';
+import { Bia } from './Bia';
+import { Triton } from './Triton';
+import { Zeus } from './Zeus';
+import { Graeae } from './Graeae';
+import { Heracles } from './Heracles';
+import { Odysseus } from './Odysseus';
+import { Iris } from './Iris';
+import { Pegasus } from './Pegasus';
+import { Eros } from './Eros';
+import { Chaos } from './Chaos';
+import { Character } from '../../types/CharacterTypes';
 
 export const characterList: string[] = [
-  "Random",
-  "Mortal",
+  'Random',
+  'Mortal',
 
   // Simple Gods
-  "Apollo",
-  "Artemis",
-  "Athena",
-  "Atlas",
-  "Demeter",
-  "Hephaestus",
-  "Hermes",
-  "Minotaur",
-  "Pan",
-  "Prometheus",
+  'Apollo',
+  'Artemis',
+  'Athena',
+  'Atlas',
+  'Demeter',
+  'Hephaestus',
+  'Hermes',
+  'Minotaur',
+  'Pan',
+  'Prometheus',
 
   // Advanced Gods
   // "Aphrodite",
   // "Ares",
-  "Bia",
-  "Chaos",
+  'Bia',
+  'Chaos',
   // "Charon",
   // "Chronus",
   // "Circe",
   // "Dionysus",
-  "Eros",
+  'Eros',
   // "Hera",
   // "Hestia",
   // "Hypnus",
@@ -56,8 +56,8 @@ export const characterList: string[] = [
   // "Persephone",
   // "Poseidon",
   // "Selene",
-  "Triton",
-  "Zeus",
+  'Triton',
+  'Zeus',
 
   // Golden Fleece Gods
   // "Aeuolus",
@@ -65,7 +65,7 @@ export const characterList: string[] = [
   // "Clio",
   // "Europa & Talus",
   // "Gaea",
-  "Graeae",
+  'Graeae',
   // "Hades",
   // "Harpies",
   // "Hecate",
@@ -81,10 +81,10 @@ export const characterList: string[] = [
   // "Adonis",
   // "Atlanta",
   // "Bellerophon",
-  "Heracles",
+  'Heracles',
   // "Jason",
   // "Medea",
-  "Odysseus",
+  'Odysseus',
   // "Polyphemus",
   // "Theseus",
 
@@ -98,12 +98,12 @@ export const characterList: string[] = [
   // "Asteria",
   // "Hippolyta",
   // "Hydra",
-  "Iris",
+  'Iris',
   // "Nyx",
-  "Pegasus",
+  'Pegasus',
 ];
 
-// Returns the character list sorted alphabetically, with 'random' 
+// Returns the character list sorted alphabetically, with 'random'
 // and 'mortal' at the start
 export function getSortedCharacters(): string[] {
   return ['Random', 'Mortal'].concat(characterList.slice(2).sort());
@@ -113,27 +113,27 @@ export function getCharacter(name: string): Character {
   let char: any;
 
   switch (name) {
-    case "Mortal": char = Mortal; break;
-    case "Apollo": char = Apollo; break;
-    case "Artemis": char = Artemis; break;
-    case "Athena": char = Athena; break;
-    case "Atlas": char = Atlas; break;
-    case "Demeter": char = Demeter; break;
-    case "Hephaestus": char = Hephaestus; break;
-    case "Hermes": char = Hermes; break;
-    case "Minotaur": char = Minotaur; break;
-    case "Pan": char = Pan; break;
-    case "Prometheus": char = Prometheus; break;
-    case "Bia": char = Bia; break;
-    case "Triton": char = Triton; break;
-    case "Zeus": char = Zeus; break;
-    case "Graeae": char = Graeae; break;
-    case "Heracles": char = Heracles; break;
-    case "Odysseus": char = Odysseus; break;
-    case "Iris": char = Iris; break;
-    case "Pegasus": char = Pegasus; break;
-    case "Eros": char = Eros; break;
-    case "Chaos": char = Chaos; break;
+    case 'Mortal': char = Mortal; break;
+    case 'Apollo': char = Apollo; break;
+    case 'Artemis': char = Artemis; break;
+    case 'Athena': char = Athena; break;
+    case 'Atlas': char = Atlas; break;
+    case 'Demeter': char = Demeter; break;
+    case 'Hephaestus': char = Hephaestus; break;
+    case 'Hermes': char = Hermes; break;
+    case 'Minotaur': char = Minotaur; break;
+    case 'Pan': char = Pan; break;
+    case 'Prometheus': char = Prometheus; break;
+    case 'Bia': char = Bia; break;
+    case 'Triton': char = Triton; break;
+    case 'Zeus': char = Zeus; break;
+    case 'Graeae': char = Graeae; break;
+    case 'Heracles': char = Heracles; break;
+    case 'Odysseus': char = Odysseus; break;
+    case 'Iris': char = Iris; break;
+    case 'Pegasus': char = Pegasus; break;
+    case 'Eros': char = Eros; break;
+    case 'Chaos': char = Chaos; break;
     default: char = Mortal; break;
   }
 

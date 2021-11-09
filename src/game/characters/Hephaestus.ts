@@ -1,9 +1,9 @@
-import { Character, CharacterState } from '../../types/CharacterTypes';
-import { Mortal } from "./Mortal";
-import { getAdjacentPositions } from '../utility'
-import { GameState, Player } from '../../types/GameTypes';
-import { Board } from '../space'
 import { Ctx } from 'boardgame.io';
+import { Character, CharacterState } from '../../types/CharacterTypes';
+import { Mortal } from './Mortal';
+import { getAdjacentPositions } from '../utility';
+import { GameState, Player } from '../../types/GameTypes';
+import { Board } from '../space';
 
 interface HephaestusAttrs {
   numBuilds: number,
@@ -12,12 +12,12 @@ interface HephaestusAttrs {
 
 const initialAttrs: HephaestusAttrs = {
   numBuilds: 0,
-  firstBuildPos: -1
-}
+  firstBuildPos: -1,
+};
 
 export const Hephaestus: Character = {
   ...Mortal,
-  desc: `Your Build: Your Worker may build one additional block (not dome) on top of your first block.`,
+  desc: 'Your Build: Your Worker may build one additional block (not dome) on top of your first block.',
   buttonText: 'Skip 2nd Build',
   attrs: initialAttrs,
 
@@ -25,7 +25,7 @@ export const Hephaestus: Character = {
     G: GameState,
     ctx: Ctx,
     player: Player,
-    char: CharacterState
+    char: CharacterState,
   ) => {
     const attrs: HephaestusAttrs = char.attrs as HephaestusAttrs;
 
@@ -37,27 +37,25 @@ export const Hephaestus: Character = {
     return 'end';
   },
 
-
   validBuild: (
     G: GameState,
     ctx: Ctx,
     player: Player,
     char: CharacterState,
-    originalPos: number
+    originalPos: number,
   ) => {
     const attrs: HephaestusAttrs = char.attrs as HephaestusAttrs;
 
     const adjacents: number[] = getAdjacentPositions(originalPos);
-    const valids: number[] = []
+    const valids: number[] = [];
 
     if (attrs.numBuilds === 0) {
-      adjacents.forEach(pos => {
+      adjacents.forEach((pos) => {
         if (!G.spaces[pos].inhabited && !G.spaces[pos].isDomed) {
           valids.push(pos);
         }
-      })
-    }
-    else {
+      });
+    } else {
       valids.push(attrs.firstBuildPos);
     }
 
@@ -69,31 +67,28 @@ export const Hephaestus: Character = {
     ctx: Ctx,
     player: Player,
     char: CharacterState,
-    pos: number
+    pos: number,
   ) => {
     const attrs: HephaestusAttrs = char.attrs as HephaestusAttrs;
 
-    attrs.numBuilds++;
+    attrs.numBuilds += 1;
 
     if (attrs.numBuilds === 1) {
-
       Board.build(G, pos);
 
       if (G.spaces[pos].height > 2) {
         attrs.numBuilds = 0;
         return 'end';
       }
-      else {
-        attrs.firstBuildPos = pos;
-        char.buttonActive = true;
-        return 'build';
-      }
+
+      attrs.firstBuildPos = pos;
+      char.buttonActive = true;
+      return 'build';
     }
-    else {
-      attrs.numBuilds = 0;
-      char.buttonActive = false;
-      Board.build(G, pos);
-      return 'end'
-    }
-  }
-}
+
+    attrs.numBuilds = 0;
+    char.buttonActive = false;
+    Board.build(G, pos);
+    return 'end';
+  },
+};

@@ -20,7 +20,9 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
-    "baseUrl": "src"
+    "baseUrl": "src",
+    "removeComments": true,
+    "noUnusedLocals": true,
   },
   "include": [
     "src"

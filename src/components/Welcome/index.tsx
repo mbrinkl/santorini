@@ -1,11 +1,11 @@
-import React, {useState, useEffect} from "react";
-import { LobbyPage } from "../LobbyPage";
-import { Logo } from "../Logo";
-import { Button, ButtonProps } from "../Button";
-import style from "./style.module.scss";
-import { ButtonChangeNickname } from "../ButtonChangeNickname";
-import { useStoreActions, useStoreState } from "../../store";
-import { useHistory } from "react-router-dom";
+import React, { useState, useEffect } from 'react';
+import { useHistory } from 'react-router-dom';
+import { LobbyPage } from '../LobbyPage';
+import { Logo } from '../Logo';
+import { Button, ButtonProps } from '../Button';
+import style from './style.module.scss';
+import { ButtonChangeNickname } from '../ButtonChangeNickname';
+import { useStoreActions, useStoreState } from '../../store';
 
 interface Props {
   playerCount: number;
@@ -16,20 +16,17 @@ const CreateGameButton: React.FC<ButtonProps & Props> = ({
   playerCount,
   onClick,
   ...props
-}) => {
-  return (
-    <Button
-      className={style.buttons}
-      onClick={() => onClick(playerCount)}
-      {...props}
-    >
-      Play!
-    </Button>
-  );
-};
+}) => (
+  <Button
+    className={style.buttons}
+    onClick={() => onClick(playerCount)}
+    {...props}
+  >
+    Play!
+  </Button>
+);
 
 export const Welcome = () => {
-
   const [redirect, setRedirect] = useState(false);
   const createGameRoom = useStoreActions((s) => s.createGameRoom);
   const matchID = useStoreState((s) => s.matchID);
@@ -44,7 +41,7 @@ export const Welcome = () => {
   }
 
   function onHowToPlay() {
-    window.open("http://files.roxley.com/Santorini-Rulebook-Web-2016.08.14.pdf", "_blank");
+    window.open('http://files.roxley.com/Santorini-Rulebook-Web-2016.08.14.pdf', '_blank');
   }
 
   useEffect(() => {
@@ -62,14 +59,16 @@ export const Welcome = () => {
       <Logo className={style.logo} size="large" />
 
       <div className={style.buttonsDiv}>
-        <Button theme="yellow" 
+        <Button
+          theme="yellow"
           className={style.buttons}
           onClick={onHowToPlay}
-          >
-            Rules
+        >
+          Rules
         </Button>
 
-        <CreateGameButton theme="green" 
+        <CreateGameButton
+          theme="green"
           playerCount={2}
           onClick={OnCreate}
         >
