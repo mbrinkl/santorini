@@ -16,6 +16,8 @@ How to play: [youtube](https://www.youtube.com/watch?v=EZi-MZEylRQ), [rulebook](
 
 ### Running locally
 
+Using Node.js version 16.13.0, npm version 8.1.0
+
 1. git clone https://github.com/mbrinkl/santorini.git
 2. cd santorini
 3. npm install
