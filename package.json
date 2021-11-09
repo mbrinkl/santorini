@@ -3,6 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "license": "MIT",
+  "engines": {
+    "node": "16.13.0"
+  },
   "dependencies": {
     "@react-three/drei": "7.17.1",
     "@react-three/fiber": "^7.0.17",
