@@ -36,8 +36,11 @@ function setRandomCharacters(G: GameState, ctx: Ctx) {
   const listOnlyCharacters = characterList.slice(1);
   Object.values(G.players).forEach((player) => {
     if (player.char.name === 'Random') {
+      const nonDuplicateCharacterList = listOnlyCharacters.filter((name) => (
+        name !== (G.players[player.opponentId].char.name)
+      ));
       const randomCharName = (
-        listOnlyCharacters[Math.floor(Math.random() * (listOnlyCharacters.length))]
+        nonDuplicateCharacterList[Math.floor(Math.random() * (nonDuplicateCharacterList.length))]
       );
       player.char = initCharacter(randomCharName);
     }

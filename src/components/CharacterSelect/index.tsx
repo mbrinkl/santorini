@@ -1,5 +1,6 @@
 import React from 'react';
 import Slider from 'react-slick';
+import classNames from 'classnames';
 import { Button } from '../Button';
 import { useStoreState } from '../../store';
 import { getSortedCharacters } from '../../game/characters';
@@ -7,15 +8,27 @@ import { useBoardContext } from '../GameBoard/BoardContext';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import './style.scss';
+import { Player } from '../../types/GameTypes';
 
 export const CharacterBox: React.FC<{ name: string }> = ({ name }) => {
-  const { moves } = useBoardContext();
+  const { State, moves } = useBoardContext();
 
   const activeRoomPlayer = useStoreState((s) => s.activeRoomPlayer);
   const playerID = String(activeRoomPlayer?.playerID);
 
-  function select() {
-    moves.SetChar(playerID, name);
+  const player: Player = State.players[playerID];
+  const opponentCharacterName = State.players[player.opponentId].char.name;
+
+  // Return true if opponent has taken this character
+  // false if Random, Mortal, or not taken
+  function isCharacterTaken(): boolean {
+    return opponentCharacterName === name && !['Random', 'Mortal'].includes(name);
+  }
+
+  function select(): void {
+    if (!isCharacterTaken()) {
+      moves.SetChar(playerID, name);
+    }
   }
 
   return (
@@ -25,7 +38,7 @@ export const CharacterBox: React.FC<{ name: string }> = ({ name }) => {
           `${process.env.PUBLIC_URL}/CharacterImages/${name}.png`
         }')`,
       }}
-      className="characterBoxSelectable"
+      className={classNames('characterBoxSelectable', isCharacterTaken() && 'grayscale')}
       onClick={select}
       onKeyDown={(e) => e.key === 'Enter' && select()}
       role="button"
