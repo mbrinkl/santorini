@@ -33,7 +33,7 @@
     "plugin:react-hooks/recommended"
   ],
   "rules": {
-    "linebreak-style": ["error", "windows"],
+    "linebreak-style": "off", // windows uses CLRF, heroku uses LF
     "no-plusplus": ["error", { "allowForLoopAfterthoughts": true }],
     "no-param-reassign": "off",
     "no-nested-ternary": "off",
