@@ -17,7 +17,7 @@ export const Bia: Character = {
     char: CharacterState,
     pos: number,
   ) => {
-    const posToKill = getNextPosition(char.workers[char.selectedWorker].pos, pos);
+    const posToKill = getNextPosition(char.workers[char.selectedWorkerNum].pos, pos);
 
     if (posToKill !== -1) {
       if (G.spaces[posToKill].inhabitant) {

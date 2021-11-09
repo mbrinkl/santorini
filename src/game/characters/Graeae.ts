@@ -22,7 +22,7 @@ export const Graeae: Character = {
     const valids: number[] = [];
 
     for (let i = 0; i < char.workers.length; i++) {
-      if (i !== char.selectedWorker) {
+      if (i !== char.selectedWorkerNum) {
         // add on the adjacent positions of each worker
         adjacents = adjacents.concat(getAdjacentPositions(char.workers[i].pos));
       }

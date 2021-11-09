@@ -16,8 +16,8 @@ export const Zeus: Character = {
   ) => {
     const valids: number[] = Mortal.validBuild(G, ctx, player, char, originalPos);
 
-    if (char.workers[char.selectedWorker].height < 3) {
-      valids.push(char.workers[char.selectedWorker].pos);
+    if (char.workers[char.selectedWorkerNum].height < 3) {
+      valids.push(char.workers[char.selectedWorkerNum].pos);
     }
 
     return valids;
@@ -30,8 +30,8 @@ export const Zeus: Character = {
     char: CharacterState,
     pos: number,
   ) => {
-    if (pos === char.workers[char.selectedWorker].pos) {
-      char.workers[char.selectedWorker].height += 1;
+    if (pos === char.workers[char.selectedWorkerNum].pos) {
+      char.workers[char.selectedWorkerNum].height += 1;
     }
     return Mortal.build(G, ctx, player, char, pos);
   },

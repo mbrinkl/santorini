@@ -72,7 +72,7 @@ export const Hermes: Character<HermesAttrs> = {
   ) => {
     let returnStage: GameStage = 'build';
 
-    if (G.spaces[pos].height === char.workers[char.selectedWorker].height) {
+    if (G.spaces[pos].height === char.workers[char.selectedWorkerNum].height) {
       char.attrs.canMoveUp = false;
       char.attrs.isMoving = true;
       char.buttonText = 'Switch Workers';
@@ -83,10 +83,10 @@ export const Hermes: Character<HermesAttrs> = {
     }
 
     // free the space that is being moved from
-    Board.free(G, char.workers[char.selectedWorker].pos);
+    Board.free(G, char.workers[char.selectedWorkerNum].pos);
 
     // place the worker on the selected space
-    Board.place(G, pos, player.id, char.selectedWorker);
+    Board.place(G, pos, player.id, char.selectedWorkerNum);
 
     return returnStage;
   },
@@ -146,11 +146,11 @@ export const Hermes: Character<HermesAttrs> = {
       char.attrs.isMoving = false;
       char.buttonText = 'End Move';
       // change the selected worker
-      if (char.workers.length > 1) char.selectedWorker = (char.selectedWorker + 1) % 2;
+      if (char.workers.length > 1) char.selectedWorkerNum = (char.selectedWorkerNum + 1) % 2;
     } else {
       char.buttonActive = false;
-      if (char.selectedWorker === -1) {
-        char.selectedWorker = 0;
+      if (char.selectedWorkerNum === -1) {
+        char.selectedWorkerNum = 0;
       }
       return 'build';
     }

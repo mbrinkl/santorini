@@ -41,7 +41,7 @@ export const Eros: Character = {
     let worker: Worker | null = null;
 
     if (char.workers.length === 2) {
-      worker = char.workers[(char.selectedWorker + 1) % 2];
+      worker = char.workers[(char.selectedWorkerNum + 1) % 2];
     }
 
     if (worker !== null) {

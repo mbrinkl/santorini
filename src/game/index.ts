@@ -16,7 +16,7 @@ export function initCharacter(characterName: string): CharacterState {
 
   const {
     desc, buttonActive, buttonText, moveUpHeight, workers,
-    numWorkersToPlace, selectedWorker, attrs,
+    numWorkersToPlace, selectedWorkerNum, attrs,
   } = character;
 
   return {
@@ -27,7 +27,7 @@ export function initCharacter(characterName: string): CharacterState {
     moveUpHeight,
     workers,
     numWorkersToPlace,
-    selectedWorker,
+    selectedWorkerNum,
     attrs,
   };
 }
@@ -167,7 +167,7 @@ export const SantoriniGame = {
           const char: any = getCharacter(currPlayer.char.name);
           char.onTurnEnd?.(G, ctx, currPlayer, currPlayer.char);
 
-          G.players[ctx.currentPlayer].char.selectedWorker = -1;
+          G.players[ctx.currentPlayer].char.selectedWorkerNum = -1;
 
           CheckWinByTrap(G, ctx);
         },

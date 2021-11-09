@@ -11,7 +11,7 @@ export const Mortal: Character = {
   buttonText: 'No ability',
   buttonActive: false,
   numWorkersToPlace: 2,
-  selectedWorker: -1,
+  selectedWorkerNum: -1,
   moveUpHeight: 1,
   attrs: null,
 
@@ -60,7 +60,7 @@ export const Mortal: Character = {
       return 'select';
     }
 
-    char.selectedWorker = inhabitant.workerNum;
+    char.selectedWorkerNum = inhabitant.workerNum;
     return 'move';
   },
 
@@ -110,10 +110,10 @@ export const Mortal: Character = {
     pos: number,
   ) => {
     // free the space that is being moved from
-    Board.free(G, char.workers[char.selectedWorker].pos);
+    Board.free(G, char.workers[char.selectedWorkerNum].pos);
 
     // place the worker on the selected space
-    Board.place(G, pos, player.id, char.selectedWorker);
+    Board.place(G, pos, player.id, char.selectedWorkerNum);
 
     return 'build';
   },

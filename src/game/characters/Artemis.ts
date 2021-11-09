@@ -29,8 +29,8 @@ export const Artemis: Character<ArtemisAttrs> = {
   ) => {
     const valids: number[] = [];
 
-    if (char.selectedWorker !== -1 && char.attrs.numMoves === 0) {
-      char.attrs.prevTile = char.workers[char.selectedWorker].pos;
+    if (char.selectedWorkerNum !== -1 && char.attrs.numMoves === 0) {
+      char.attrs.prevTile = char.workers[char.selectedWorkerNum].pos;
     }
 
     getAdjacentPositions(originalPos).forEach((pos) => {
@@ -57,10 +57,10 @@ export const Artemis: Character<ArtemisAttrs> = {
     char.attrs.numMoves += 1;
 
     // free the space that is being moved from
-    Board.free(G, char.workers[char.selectedWorker].pos);
+    Board.free(G, char.workers[char.selectedWorkerNum].pos);
 
     // place the worker on the selected space
-    Board.place(G, pos, player.id, char.selectedWorker);
+    Board.place(G, pos, player.id, char.selectedWorkerNum);
 
     if (char.attrs.numMoves === 2) {
       char.attrs.numMoves = 0;

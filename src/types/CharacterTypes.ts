@@ -11,7 +11,7 @@ export interface CharacterState<AttrsType = any> {
   desc: string;
   workers: Worker[];
   numWorkersToPlace: number;
-  selectedWorker: number;
+  selectedWorkerNum: number;
   moveUpHeight: number;
   buttonText: string;
   buttonActive: boolean;

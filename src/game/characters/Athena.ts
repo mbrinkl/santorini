@@ -37,14 +37,14 @@ export const Athena: Character<AthenaAttrs> = {
     G.players[player.opponentId].char.moveUpHeight = char.attrs.opponentMoveUpHeight;
 
     // note the height before moving
-    const heightBefore = char.workers[char.selectedWorker].height;
+    const heightBefore = char.workers[char.selectedWorkerNum].height;
 
     // move to the selected space
-    Board.free(G, char.workers[char.selectedWorker].pos);
-    Board.place(G, pos, player.id, char.selectedWorker);
+    Board.free(G, char.workers[char.selectedWorkerNum].pos);
+    Board.place(G, pos, player.id, char.selectedWorkerNum);
 
     // if the worker's previous height is less than the worker's current height
-    if (heightBefore < char.workers[char.selectedWorker].height) {
+    if (heightBefore < char.workers[char.selectedWorkerNum].height) {
       // do not allow the opponent to move up the next turn
       G.players[player.opponentId].char.moveUpHeight = 0;
     }

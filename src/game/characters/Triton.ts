@@ -27,10 +27,10 @@ export const Triton: Character = {
     }
 
     // free the space that is being moved from
-    Board.free(G, char.workers[char.selectedWorker].pos);
+    Board.free(G, char.workers[char.selectedWorkerNum].pos);
 
     // place the worker on the selected space
-    Board.place(G, pos, player.id, char.selectedWorker);
+    Board.place(G, pos, player.id, char.selectedWorkerNum);
 
     return returnStage;
   },

@@ -42,7 +42,7 @@ export const Apollo: Character = {
     char: CharacterState,
     pos: number,
   ) => {
-    const originalPos = char.workers[char.selectedWorker].pos;
+    const originalPos = char.workers[char.selectedWorkerNum].pos;
     const { inhabitant } = G.spaces[pos];
 
     // if switching spaces with another worker
@@ -52,7 +52,7 @@ export const Apollo: Character = {
       Board.free(G, originalPos);
     }
 
-    Board.place(G, pos, player.id, char.selectedWorker);
+    Board.place(G, pos, player.id, char.selectedWorkerNum);
 
     return 'build';
   },

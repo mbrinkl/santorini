@@ -21,8 +21,8 @@ const checkForValidSpecial = (
   char.attrs.specialActive = true;
   let returnValue = false;
 
-  if (char.selectedWorker !== -1) {
-    const worker = char.workers[char.selectedWorker];
+  if (char.selectedWorkerNum !== -1) {
+    const worker = char.workers[char.selectedWorkerNum];
     if (Odysseus.validMove(G, ctx, player, char, worker.pos).length > 0) {
       returnValue = true;
     }

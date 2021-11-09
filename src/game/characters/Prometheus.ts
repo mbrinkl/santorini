@@ -91,7 +91,7 @@ export const Prometheus: Character<PrometheusAttrs> = {
 
     if (char.attrs.specialActive) {
       char.attrs.specialUsed = true;
-      char.attrs.originalPos = char.workers[char.selectedWorker].pos;
+      char.attrs.originalPos = char.workers[char.selectedWorkerNum].pos;
 
       char.buttonActive = false;
       char.attrs.specialActive = false;

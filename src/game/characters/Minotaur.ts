@@ -49,15 +49,15 @@ export const Minotaur: Character = {
     char: CharacterState,
     pos: number,
   ) => {
-    const posToPush = getNextPosition(char.workers[char.selectedWorker].pos, pos);
+    const posToPush = getNextPosition(char.workers[char.selectedWorkerNum].pos, pos);
     const { inhabitant } = G.spaces[pos];
 
     if (inhabitant) {
       Board.place(G, posToPush, inhabitant.playerId, inhabitant.workerNum);
     }
 
-    Board.free(G, char.workers[char.selectedWorker].pos);
-    Board.place(G, pos, player.id, char.selectedWorker);
+    Board.free(G, char.workers[char.selectedWorkerNum].pos);
+    Board.place(G, pos, player.id, char.selectedWorkerNum);
 
     return 'build';
   },
