@@ -120,8 +120,8 @@ export const SantoriniGame = {
         const p1Char: Character = getCharacter(p1charData.name);
         const p2Char: Character = getCharacter(p2charData.name);
 
-        p1Char.initialize(G, ctx, p1, p1charData);
-        p2Char.initialize(G, ctx, p1, p2charData);
+        p1Char.initialize?.(G, ctx, p1, p1charData);
+        p2Char.initialize?.(G, ctx, p1, p2charData);
       },
       turn: {
         activePlayers: { currentPlayer: 'place' },
@@ -163,12 +163,12 @@ export const SantoriniGame = {
           const currPlayer = G.players[ctx.currentPlayer];
           const char: any = getCharacter(currPlayer.char.name);
           updateValids(G, ctx, currPlayer, 'select');
-          char.onTurnBegin(G, ctx, currPlayer, currPlayer.char);
+          char.onTurnBegin?.(G, ctx, currPlayer, currPlayer.char);
         },
         onEnd: (G: GameState, ctx: Ctx) => {
           const currPlayer = G.players[ctx.currentPlayer];
           const char: any = getCharacter(currPlayer.char.name);
-          char.onTurnEnd(G, ctx, currPlayer, currPlayer.char);
+          char.onTurnEnd?.(G, ctx, currPlayer, currPlayer.char);
 
           G.players['0'].char.selectedWorker = -1;
           G.players['1'].char.selectedWorker = -1;
