@@ -96,7 +96,7 @@ export const Chaos: Character<ChaosAttrs> = {
     }
 
     const character = getCharacter(char.attrs.currentCharacter);
-    character.onTurnBegin(G, ctx, player, char);
+    character.onTurnBegin?.(G, ctx, player, char);
   },
 
   onTurnEnd: (
@@ -106,7 +106,7 @@ export const Chaos: Character<ChaosAttrs> = {
     char: CharacterState,
   ) => {
     const character = getCharacter(char.attrs.currentCharacter);
-    character.onTurnEnd(G, ctx, player, char);
+    character.onTurnEnd?.(G, ctx, player, char);
 
     const numDomes = G.spaces.filter((space) => space.isDomed === true).length;
 

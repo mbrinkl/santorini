@@ -11,6 +11,6 @@ export function Ready(G: GameState, ctx: Ctx, id: string) {
   G.players[id].ready = true;
 }
 
-export function CancelReady(G: GameState, ctx: Ctx, id: number) {
+export function CancelReady(G: GameState, ctx: Ctx, id: string) {
   G.players[id].ready = false;
 }

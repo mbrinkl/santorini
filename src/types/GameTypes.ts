@@ -1,6 +1,6 @@
 import { CharacterState } from './CharacterTypes';
 
-type PlayerIDs = '0' | '1';
+export type PlayerIDs = '0' | '1';
 export type GameStage = 'place' | 'select' | 'move' | 'build' | 'end';
 
 export interface Player {

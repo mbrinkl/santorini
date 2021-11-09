@@ -16,27 +16,6 @@ export const Mortal: Character = {
   moveUpHeight: 1,
   attrs: null,
 
-  initialize: (
-    G: GameState,
-    ctx: Ctx,
-    player: Player,
-    char: CharacterState,
-  ) => {},
-
-  onTurnBegin: (
-    G: GameState,
-    ctx: Ctx,
-    player: Player,
-    char: CharacterState,
-  ) => {},
-
-  onTurnEnd: (
-    G: GameState,
-    ctx: Ctx,
-    player: Player,
-    char: CharacterState,
-  ) => {},
-
   validPlace: (
     G: GameState,
     ctx: Ctx,

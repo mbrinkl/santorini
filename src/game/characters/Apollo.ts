@@ -47,7 +47,7 @@ export const Apollo: Character = {
 
     // if switching spaces with another worker
     if (inhabitant) {
-      Board.place(G, originalPos, player.opponentId, inhabitant.workerNum);
+      Board.place(G, originalPos, inhabitant.playerId, inhabitant.workerNum);
     } else {
       Board.free(G, originalPos);
     }

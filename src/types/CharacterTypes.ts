@@ -20,9 +20,9 @@ export interface CharacterState<AttrsType = any> {
 }
 
 export interface CharacterFunctions {
-  initialize: (G: GameState, ctx: Ctx, player: Player, char: CharacterState) => void,
-  onTurnBegin: (G: GameState, ctx: Ctx, player: Player, char: CharacterState) => void,
-  onTurnEnd: (G: GameState, ctx: Ctx, player: Player, char: CharacterState) => void,
+  initialize?: (G: GameState, ctx: Ctx, player: Player, char: CharacterState) => void,
+  onTurnBegin?: (G: GameState, ctx: Ctx, player: Player, char: CharacterState) => void,
+  onTurnEnd?: (G: GameState, ctx: Ctx, player: Player, char: CharacterState) => void,
   validPlace: (G: GameState, ctx: Ctx, player: Player, char: CharacterState) => number[],
   validSelect: (G: GameState, ctx: Ctx, player: Player, char: CharacterState) => number[],
   select: (G: GameState, ctx: Ctx, player: Player, char: CharacterState, pos: number) => GameStage,
