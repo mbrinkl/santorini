@@ -14,7 +14,7 @@ export const HelpText = () => {
 
   if (!ctx.gameover && isActive) {
     if (stage === 'place') {
-      hint = `Place ${State.players[playerID].char.numWorkers} workers`;
+      hint = `Place ${State.players[playerID].char.numWorkersToPlace} workers`;
     } else if (stage === 'select') {
       hint = 'Select a worker';
     } else if (stage === 'move') {
@@ -24,7 +24,7 @@ export const HelpText = () => {
     } else if (stage === 'end') {
       hint = 'End Turn or Undo';
     }
-  } else if (!isActive) {
+  } else if (!ctx.gameover && !isActive) {
     hint = `Waiting for ${currentPlayerName}`;
   } else {
     hint = ctx.gameover.winner === playerID ? 'You Win!' : 'You Lose';

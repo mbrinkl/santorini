@@ -106,7 +106,7 @@ export const Hermes: Character<HermesAttrs> = {
       adjacents = getAdjacentPositions(originalPos);
     } else {
       // special build, within range of either worker
-      for (let i = 0; i < char.numWorkers; i++) {
+      for (let i = 0; i < char.workers.length; i++) {
         // add on the adjacent positions of each worker
         adjacents = adjacents.concat(getAdjacentPositions(char.workers[i].pos));
       }

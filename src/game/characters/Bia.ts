@@ -31,7 +31,6 @@ export const Bia: Character = {
               if (index > -1) {
                 G.players[player.opponentId].char.workers.splice(index, 1);
               }
-              G.players[player.opponentId].char.numWorkers -= 1;
 
               // check if no workers left and end game if none
               if (G.players[player.opponentId].char.workers.length === 0) {

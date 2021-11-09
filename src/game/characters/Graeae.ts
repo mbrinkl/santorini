@@ -9,7 +9,7 @@ export const Graeae: Character = {
   desc: `Setup: When placing your Workers, place 3 of your color.\n
     Your Build: Build with a Worker that did not Move.\n
     Banned VS: Nemesis`,
-  numWorkers: 3,
+  numWorkersToPlace: 3,
 
   validBuild: (
     G: GameState,
@@ -21,7 +21,7 @@ export const Graeae: Character = {
     let adjacents: number[] = [];
     const valids: number[] = [];
 
-    for (let i = 0; i < char.numWorkers; i++) {
+    for (let i = 0; i < char.workers.length; i++) {
       if (i !== char.selectedWorker) {
         // add on the adjacent positions of each worker
         adjacents = adjacents.concat(getAdjacentPositions(char.workers[i].pos));

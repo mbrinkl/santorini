@@ -10,7 +10,6 @@ export interface CharacterState<AttrsType = any> {
   name: string;
   desc: string;
   workers: Worker[];
-  numWorkers: number;
   numWorkersToPlace: number;
   selectedWorker: number;
   moveUpHeight: number;

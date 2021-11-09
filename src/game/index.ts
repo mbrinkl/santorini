@@ -16,7 +16,7 @@ export function initCharacter(characterName: string): CharacterState {
 
   const {
     desc, buttonActive, buttonText, moveUpHeight, workers,
-    numWorkers, numWorkersToPlace, selectedWorker, attrs,
+    numWorkersToPlace, selectedWorker, attrs,
   } = character;
 
   return {
@@ -26,7 +26,6 @@ export function initCharacter(characterName: string): CharacterState {
     buttonText,
     moveUpHeight,
     workers,
-    numWorkers,
     numWorkersToPlace,
     selectedWorker,
     attrs,
