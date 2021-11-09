@@ -37,9 +37,9 @@ export const Prometheus: Character<PrometheusAttrs> = {
     char: CharacterState<PrometheusAttrs>,
     pos: number,
   ) => {
-    char.selectedWorker = G.spaces[pos].inhabitant?.workerNum || -1;
+    const returnValue = Mortal.select(G, ctx, player, char, pos);
     if (char.attrs.specialActive) return 'build';
-    return 'move';
+    return returnValue;
   },
 
   validMove: (

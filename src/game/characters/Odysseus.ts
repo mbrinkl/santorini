@@ -134,9 +134,12 @@ export const Odysseus: Character<OdysseusAttrs> = {
       }
 
       char.attrs.movingOpponent = false;
-      const oppWorkerNum = G.spaces[char.attrs.workerToMovePos].inhabitant?.workerNum || -1;
-      Board.free(G, char.attrs.workerToMovePos);
-      Board.place(G, pos, player.opponentId, oppWorkerNum);
+      const { inhabitant } = G.spaces[char.attrs.workerToMovePos];
+      if (inhabitant) {
+        const oppWorkerNum = inhabitant.workerNum;
+        Board.free(G, char.attrs.workerToMovePos);
+        Board.place(G, pos, player.opponentId, oppWorkerNum);
+      }
 
       if (!checkForValidSpecial(G, ctx, player, char)) {
         char.attrs.specialActive = false;

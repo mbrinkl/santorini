@@ -76,7 +76,13 @@ export const Mortal: Character = {
     char: CharacterState,
     pos: number,
   ) => {
-    char.selectedWorker = G.spaces[pos].inhabitant?.workerNum || -1;
+    const { inhabitant } = G.spaces[pos];
+
+    if (!inhabitant) {
+      return 'select';
+    }
+
+    char.selectedWorker = inhabitant.workerNum;
     return 'move';
   },
 
