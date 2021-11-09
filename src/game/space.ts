@@ -10,15 +10,14 @@ export const Board = {
     const { char } = G.players[playerId];
     char.workers[workerNum].pos = pos;
     char.workers[workerNum].height = G.spaces[pos].height;
-    G.spaces[pos].inhabited = true;
-    G.spaces[pos].inhabitant.playerId = playerId;
-    G.spaces[pos].inhabitant.workerNum = workerNum;
+    G.spaces[pos].inhabitant = {
+      playerId,
+      workerNum,
+    };
   },
 
   free: (G: GameState, pos: number) => {
-    G.spaces[pos].inhabited = false;
-    G.spaces[pos].inhabitant.playerId = '';
-    G.spaces[pos].inhabitant.workerNum = -1;
+    G.spaces[pos].inhabitant = undefined;
   },
 
   build: (G: GameState, pos: number) => {

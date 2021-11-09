@@ -77,11 +77,7 @@ export const SantoriniGame = {
       spaces.push({
         pos: i,
         height: 0,
-        inhabited: false,
-        inhabitant: {
-          playerId: '',
-          workerNum: -1,
-        },
+        inhabitant: undefined,
         isDomed: false,
       });
     }

@@ -26,15 +26,15 @@ export const Iris: Character = {
         && G.spaces[pos].height - G.spaces[originalPos].height <= char.moveUpHeight
       ) {
         // if the space is not inhabited
-        if (!G.spaces[pos].inhabited) {
+        if (!G.spaces[pos].inhabitant) {
         // add the space to the valid list
           valids.push(pos);
-        } else if (G.spaces[pos].inhabitant.playerId !== ctx.currentPlayer) {
+        } else if (G.spaces[pos].inhabitant?.playerId !== ctx.currentPlayer) {
           // or if the space is inhabited, but by another player
           const nextPos: number = getNextPosition(originalPos, pos);
 
           if (nextPos !== -1) {
-            if (!G.spaces[nextPos].inhabited && !G.spaces[nextPos].isDomed) {
+            if (!G.spaces[nextPos].inhabitant && !G.spaces[nextPos].isDomed) {
             // add the space to the valid list
               valids.push(nextPos);
             }

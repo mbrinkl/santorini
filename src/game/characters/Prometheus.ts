@@ -37,7 +37,7 @@ export const Prometheus: Character<PrometheusAttrs> = {
     char: CharacterState<PrometheusAttrs>,
     pos: number,
   ) => {
-    char.selectedWorker = G.spaces[pos].inhabitant.workerNum;
+    char.selectedWorker = G.spaces[pos].inhabitant?.workerNum || -1;
     if (char.attrs.specialActive) return 'build';
     return 'move';
   },
@@ -58,7 +58,7 @@ export const Prometheus: Character<PrometheusAttrs> = {
     const valids: number[] = [];
 
     adjacents.forEach((pos) => {
-      if (!G.spaces[pos].inhabited
+      if (!G.spaces[pos].inhabitant
         && !G.spaces[pos].isDomed
         && G.spaces[pos].height - G.spaces[originalPos].height <= height
       ) {

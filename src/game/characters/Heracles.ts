@@ -82,7 +82,7 @@ export const Heracles: Character<HeraclesAttrs> = {
     }
 
     adjacents.forEach((pos) => {
-      if (!G.spaces[pos].inhabited && !G.spaces[pos].isDomed) {
+      if (!G.spaces[pos].inhabitant && !G.spaces[pos].isDomed) {
         valids.push(pos);
       }
     });

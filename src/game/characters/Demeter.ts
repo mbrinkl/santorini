@@ -45,14 +45,14 @@ export const Demeter: Character<DemeterAttrs> = {
 
     if (char.attrs.numBuilds === 0) {
       adjacents.forEach((pos) => {
-        if (!G.spaces[pos].inhabited && !G.spaces[pos].isDomed) {
+        if (!G.spaces[pos].inhabitant && !G.spaces[pos].isDomed) {
           valids.push(pos);
         }
       });
     } else {
       adjacents.forEach((pos) => {
         if (
-          !G.spaces[pos].inhabited
+          !G.spaces[pos].inhabitant
           && !G.spaces[pos].isDomed
           && pos !== char.attrs.firstBuildPos
         ) {

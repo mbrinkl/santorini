@@ -104,7 +104,7 @@ export const Odysseus: Character<OdysseusAttrs> = {
         });
       } else {
         [0, 4, 20, 24].forEach((pos) => { // corner positions
-          if (!G.spaces[pos].isDomed && !G.spaces[pos].inhabited) {
+          if (!G.spaces[pos].isDomed && !G.spaces[pos].inhabitant) {
             valids.push(pos);
           }
         });
@@ -134,7 +134,7 @@ export const Odysseus: Character<OdysseusAttrs> = {
       }
 
       char.attrs.movingOpponent = false;
-      const oppWorkerNum = G.spaces[char.attrs.workerToMovePos].inhabitant.workerNum;
+      const oppWorkerNum = G.spaces[char.attrs.workerToMovePos].inhabitant?.workerNum || -1;
       Board.free(G, char.attrs.workerToMovePos);
       Board.place(G, pos, player.opponentId, oppWorkerNum);
 

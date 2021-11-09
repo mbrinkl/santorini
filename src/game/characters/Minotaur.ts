@@ -27,9 +27,9 @@ export const Minotaur: Character = {
         !G.spaces[pos].isDomed
         && G.spaces[pos].height - G.spaces[originalPos].height <= char.moveUpHeight
       ) {
-        if (!G.spaces[pos].inhabited) {
+        if (!G.spaces[pos].inhabitant) {
           valids.push(pos);
-        } else if (G.spaces[pos].inhabitant.playerId !== player.id) {
+        } else if (G.spaces[pos].inhabitant?.playerId !== player.id) {
           const posToPush = getNextPosition(originalPos, pos);
           const opponent = G.players[player.opponentId];
           if (Mortal.validMove(G, ctx, opponent, opponent.char, pos).includes(posToPush)) {
@@ -50,10 +50,10 @@ export const Minotaur: Character = {
     pos: number,
   ) => {
     const posToPush = getNextPosition(char.workers[char.selectedWorker].pos, pos);
+    const { inhabitant } = G.spaces[pos];
 
-    if (G.spaces[pos].inhabited) {
-      Board.place(G, posToPush, G.spaces[pos].inhabitant.playerId,
-        G.spaces[pos].inhabitant.workerNum);
+    if (inhabitant) {
+      Board.place(G, posToPush, inhabitant.playerId, inhabitant.workerNum);
     }
 
     Board.free(G, char.workers[char.selectedWorker].pos);

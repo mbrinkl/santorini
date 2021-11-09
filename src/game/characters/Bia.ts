@@ -20,8 +20,8 @@ export const Bia: Character = {
     const posToKill = getNextPosition(char.workers[char.selectedWorker].pos, pos);
 
     if (posToKill !== -1) {
-      if (G.spaces[posToKill].inhabited) {
-        if (G.spaces[posToKill].inhabitant.playerId === player.opponentId) {
+      if (G.spaces[posToKill].inhabitant) {
+        if (G.spaces[posToKill].inhabitant?.playerId === player.opponentId) {
           // find the opponent worker to remove from their worker array
           G.players[player.opponentId].char.workers.forEach((worker) => {
             if (worker.pos === posToKill) {
@@ -42,7 +42,10 @@ export const Bia: Character = {
                 // otherwise, make sure values referring to the worker array are still correct
                 let workerNum = 0;
                 G.players[player.opponentId].char.workers.forEach((w) => {
-                  G.spaces[w.pos].inhabitant.workerNum = workerNum;
+                  G.spaces[w.pos].inhabitant = {
+                    playerId: player.opponentId,
+                    workerNum,
+                  };
                   workerNum += 1;
                 });
               }

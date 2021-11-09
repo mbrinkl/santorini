@@ -24,9 +24,9 @@ export const Apollo: Character = {
         !G.spaces[pos].isDomed
         && G.spaces[pos].height - G.spaces[originalPos].height <= char.moveUpHeight
       ) {
-        if (!G.spaces[pos].inhabited) {
+        if (!G.spaces[pos].inhabitant) {
           valids.push(pos);
-        } else if (G.spaces[pos].inhabitant.playerId !== ctx.currentPlayer) {
+        } else if (G.spaces[pos].inhabitant?.playerId !== ctx.currentPlayer) {
           valids.push(pos);
         }
       }
@@ -43,10 +43,11 @@ export const Apollo: Character = {
     pos: number,
   ) => {
     const originalPos = char.workers[char.selectedWorker].pos;
+    const { inhabitant } = G.spaces[pos];
 
     // if switching spaces with another worker
-    if (G.spaces[pos].inhabited) {
-      Board.place(G, originalPos, player.opponentId, G.spaces[pos].inhabitant.workerNum);
+    if (inhabitant) {
+      Board.place(G, originalPos, player.opponentId, inhabitant.workerNum);
     } else {
       Board.free(G, originalPos);
     }

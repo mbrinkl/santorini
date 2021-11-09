@@ -18,7 +18,7 @@ export const Eros: Character = {
   ) => {
     const valids: number[] = [];
     G.spaces.forEach((space) => {
-      if (!space.inhabited && char.numWorkersToPlace > 0 && posIsPerimeter(space.pos)) {
+      if (!space.inhabitant && char.numWorkersToPlace > 0 && posIsPerimeter(space.pos)) {
         if (char.numWorkersToPlace === 2) {
           valids.push(space.pos);
         } else if (getOppositePerimterPositions(char.workers[0].pos).includes(space.pos)) {

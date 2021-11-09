@@ -19,8 +19,7 @@ export interface GameState {
 export interface Space {
   pos: number;
   height: number;
-  inhabited: boolean;
-  inhabitant: {
+  inhabitant?: {
     playerId: string;
     workerNum: number;
   };

@@ -44,7 +44,7 @@ export const Hermes: Character<HermesAttrs> = {
 
     if (char.attrs.canMoveUp) {
       adjacents.forEach((pos) => {
-        if (!G.spaces[pos].inhabited && !G.spaces[pos].isDomed
+        if (!G.spaces[pos].inhabitant && !G.spaces[pos].isDomed
           && G.spaces[pos].height - G.spaces[originalPos].height <= char.moveUpHeight
         ) {
           valids.push(pos);
@@ -52,7 +52,7 @@ export const Hermes: Character<HermesAttrs> = {
       });
     } else {
       adjacents.forEach((pos) => {
-        if (!G.spaces[pos].inhabited && !G.spaces[pos].isDomed
+        if (!G.spaces[pos].inhabitant && !G.spaces[pos].isDomed
           && G.spaces[pos].height === G.spaces[originalPos].height
         ) {
           valids.push(pos);
@@ -113,7 +113,7 @@ export const Hermes: Character<HermesAttrs> = {
     }
 
     adjacents.forEach((pos) => {
-      if (!G.spaces[pos].inhabited && !G.spaces[pos].isDomed) {
+      if (!G.spaces[pos].inhabitant && !G.spaces[pos].isDomed) {
         valids.push(pos);
       }
     });

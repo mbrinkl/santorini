@@ -45,7 +45,7 @@ export const Mortal: Character = {
   ) => {
     const valids: number[] = [];
     G.spaces.forEach((space) => {
-      if (!space.inhabited && char.numWorkersToPlace > 0) {
+      if (!space.inhabitant && char.numWorkersToPlace > 0) {
         valids.push(space.pos);
       }
     });
@@ -76,7 +76,7 @@ export const Mortal: Character = {
     char: CharacterState,
     pos: number,
   ) => {
-    char.selectedWorker = G.spaces[pos].inhabitant.workerNum;
+    char.selectedWorker = G.spaces[pos].inhabitant?.workerNum || -1;
     return 'move';
   },
 
@@ -91,7 +91,7 @@ export const Mortal: Character = {
 
     getAdjacentPositions(originalPos).forEach((pos) => {
       if (
-        !G.spaces[pos].inhabited
+        !G.spaces[pos].inhabitant
         && !G.spaces[pos].isDomed
         && G.spaces[pos].height - G.spaces[originalPos].height <= char.moveUpHeight
       ) {
@@ -145,7 +145,7 @@ export const Mortal: Character = {
     const valids: number[] = [];
 
     adjacents.forEach((pos) => {
-      if (!G.spaces[pos].inhabited && !G.spaces[pos].isDomed) {
+      if (!G.spaces[pos].inhabitant && !G.spaces[pos].isDomed) {
         valids.push(pos);
       }
     });

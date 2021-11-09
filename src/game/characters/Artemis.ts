@@ -35,7 +35,7 @@ export const Artemis: Character<ArtemisAttrs> = {
 
     getAdjacentPositions(originalPos).forEach((pos) => {
       if (
-        !G.spaces[pos].inhabited
+        !G.spaces[pos].inhabitant
         && !G.spaces[pos].isDomed
         && G.spaces[pos].height - G.spaces[originalPos].height <= char.moveUpHeight
         && char.attrs.prevTile !== pos
