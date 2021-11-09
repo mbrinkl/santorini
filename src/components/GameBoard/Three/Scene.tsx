@@ -1,9 +1,8 @@
 import React, {
-  useState, useEffect, useRef, useCallback,
+  useState, useEffect, useCallback,
 } from 'react';
-import { ThreeEvent, useFrame } from '@react-three/fiber';
+import { ThreeEvent } from '@react-three/fiber';
 import { OrbitControls } from '@react-three/drei';
-import { WebGLCubeRenderTarget, RGBAFormat } from 'three';
 import { useBoardContext } from '../BoardContext';
 import { Ground } from './Ground';
 import {
@@ -24,10 +23,6 @@ export const Scene: React.FC<{ boardPositions: BoardPosition[] }> = ({ boardPosi
   const [buildingsLevel1, setBuildingsLevel1] = useState<JSX.Element[]>([]);
   const [buildingsLevel2, setBuildingsLevel2] = useState<JSX.Element[]>([]);
   const [buildingsLevel3, setBuildingsLevel3] = useState<JSX.Element[]>([]);
-  const [renderTarget] = useState(new WebGLCubeRenderTarget(1024, {
-    format: RGBAFormat, generateMipmaps: true,
-  }));
-  const cubeCamera: any = useRef();
 
   useEffect(() => {
     const g: JSX.Element[] = [];
@@ -76,15 +71,17 @@ export const Scene: React.FC<{ boardPositions: BoardPosition[] }> = ({ boardPosi
     }
   }, [State, ctx, moves]);
 
-  useFrame(({ gl, scene }) => {
-    cubeCamera.current.update(gl, scene);
-  });
-
   return (
     <>
-      <cubeCamera ref={cubeCamera} position={[0, 0, 0]} args={[20, 50, renderTarget]} />
       <hemisphereLight args={['gray', 'black', 0.7]} />
       <directionalLight args={['white', 0.7]} position={[0, 10, 0]} />
+      <OrbitControls
+        enablePan={false}
+        minDistance={30}
+        maxDistance={30}
+        minPolarAngle={0}
+        maxPolarAngle={Math.PI / 3}
+      />
 
       <group onPointerDown={onMeshClicked}>
 
@@ -139,8 +136,6 @@ export const Scene: React.FC<{ boardPositions: BoardPosition[] }> = ({ boardPosi
           )))}
 
       </group>
-
-      <OrbitControls key="orbitControls" enablePan={false} minDistance={30} maxDistance={30} minPolarAngle={0} maxPolarAngle={Math.PI / 3} />
     </>
   );
 };

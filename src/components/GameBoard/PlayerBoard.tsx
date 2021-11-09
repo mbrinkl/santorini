@@ -20,8 +20,8 @@ export const PlayerBoard: React.FC = () => {
       for (let j = -2; j < 3; j++) {
         positions.push({
           pos: positions.length,
-          x: (GROUND_PADDING + GROUND_PADDING * i + GROUND_SIZE * i),
-          z: (GROUND_PADDING + GROUND_PADDING * j + GROUND_SIZE * j),
+          z: (GROUND_PADDING + GROUND_PADDING * i + GROUND_SIZE * i),
+          x: (GROUND_PADDING + GROUND_PADDING * j + GROUND_SIZE * j),
         });
       }
     }
@@ -44,7 +44,7 @@ export const PlayerBoard: React.FC = () => {
       <HelpText />
 
       <div id="canvas">
-        <Canvas>
+        <Canvas camera={{ fov: 75 }}>
           <ContextBridge>
             <Scene boardPositions={boardPositions} />
           </ContextBridge>
