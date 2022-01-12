@@ -7,16 +7,17 @@ import { Board } from '../space';
 export function updateValids(G: GameState, ctx: Ctx, player: Player, stage: string) {
   const currChar = player.char;
   const char: Character = getCharacter(currChar.name);
+  let valids: number[] = [];
 
   switch (stage) {
     case 'place':
-      G.valids = char.validPlace(G, ctx, player, currChar);
+      valids = char.validPlace(G, ctx, player, currChar);
       break;
     case 'select':
-      G.valids = char.validSelect(G, ctx, player, currChar);
+      valids = char.validSelect(G, ctx, player, currChar);
       break;
     case 'move':
-      G.valids = char.validMove(
+      valids = char.validMove(
         G,
         ctx,
         player,
@@ -25,7 +26,7 @@ export function updateValids(G: GameState, ctx: Ctx, player: Player, stage: stri
       );
       break;
     case 'build':
-      G.valids = char.validBuild(
+      valids = char.validBuild(
         G,
         ctx,
         player,
@@ -34,9 +35,11 @@ export function updateValids(G: GameState, ctx: Ctx, player: Player, stage: stri
       );
       break;
     default:
-      G.valids = [];
+      valids = [];
       break;
   }
+
+  G.valids = [...new Set(valids)];
 }
 
 export const CharacterAbility = (G: GameState, ctx: Ctx) => {
