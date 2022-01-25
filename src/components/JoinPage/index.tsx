@@ -1,4 +1,4 @@
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
 import { isMobile } from '../../utility';
 import { ButtonBack } from '../ButtonBack';
@@ -6,10 +6,10 @@ import { GithubLink } from '../LobbyPage';
 import { useStoreActions, useStoreState } from '../../store';
 import style from './style.module.scss';
 
-export const JoinPage = () => {
+export function JoinPage() {
   const listMatches = useStoreActions((s) => s.listMatches);
   const availableMatches = useStoreState((s) => s.availableMatches);
-  const history = useHistory();
+  const navigate = useNavigate();
 
   useEffect(() => {
     listMatches(null);
@@ -22,9 +22,7 @@ export const JoinPage = () => {
   function onTableRowClicked(e) {
     const row = e.target.closest('tr');
     const matchID = row.innerText.substring(0, 11);
-    history.push({
-      pathname: `/rooms/${matchID}`,
-    });
+    navigate(`/rooms/${matchID}`);
   }
 
   const matches = availableMatches.filter((m) => !m.gameover && !m.players[1].name);
@@ -59,4 +57,4 @@ export const JoinPage = () => {
       </table>
     </div>
   );
-};
+}

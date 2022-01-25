@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { LobbyPage } from '../LobbyPage';
 import { Logo } from '../Logo';
 import { Button } from '../Button';
@@ -8,11 +8,11 @@ import { ButtonBack } from '../ButtonBack';
 import { useStoreActions, useStoreState } from '../../store';
 import style from './style.module.scss';
 
-export const Welcome = () => {
+export function Welcome() {
   const [redirect, setRedirect] = useState(false);
   const createGameRoom = useStoreActions((s) => s.createGameRoom);
   const matchID = useStoreState((s) => s.matchID);
-  const history = useHistory();
+  const navigate = useNavigate();
   const [showHostOptions, setShowHostOptions] = useState(false);
   const activeRoomPlayer = useStoreState((s) => s.activeRoomPlayer);
   const leaveRoom = useStoreActions((s) => s.leaveRoom);
@@ -22,9 +22,7 @@ export const Welcome = () => {
   }
 
   async function onJoinClicked() {
-    history.push({
-      pathname: '/rooms',
-    });
+    navigate('/rooms');
   }
 
   function onRulesClicked() {
@@ -59,11 +57,9 @@ export const Welcome = () => {
 
   useEffect(() => {
     if (redirect && matchID) {
-      history.push({
-        pathname: `/rooms/${matchID}`,
-      });
+      navigate(`/rooms/${matchID}`);
     }
-  }, [matchID, redirect, history]);
+  }, [matchID, redirect, navigate]);
 
   const initialButtons = (
     <>
@@ -133,4 +129,4 @@ export const Welcome = () => {
 
     </LobbyPage>
   );
-};
+}

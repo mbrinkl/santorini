@@ -30,15 +30,13 @@ export const PlayerBoard: React.FC = () => {
 
   return (
     <div
-      className={classNames(
-        'PlayerBoard', ctx.gameover
-          ? ctx.gameover.winner === playerID
-            ? 'PlayerBoard--winner'
-            : 'PlayerBoard--loser'
-          : isActive
-            ? 'PlayerBoard--active'
-            : 'PlayerBoard--waiting',
-      )}
+      className={classNames('PlayerBoard', ctx.gameover
+        ? ctx.gameover.winner === playerID
+          ? 'PlayerBoard--winner'
+          : 'PlayerBoard--loser'
+        : isActive
+          ? 'PlayerBoard--active'
+          : 'PlayerBoard--waiting')}
     >
 
       <HelpText />

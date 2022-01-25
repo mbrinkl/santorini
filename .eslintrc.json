@@ -37,6 +37,7 @@
     "no-plusplus": ["error", { "allowForLoopAfterthoughts": true }],
     "no-param-reassign": "off",
     "no-nested-ternary": "off",
+    "no-unsafe-optional-chaining": "off",
     "import/no-cycle": "off",
     "import/no-mutable-exports": "off",
     "import/prefer-default-export": "off",
@@ -52,6 +53,9 @@
     "react/jsx-props-no-spreading": "off",
     "react/require-default-props": "off",
     "react/jsx-no-bind": "off",
+    "react/jsx-no-useless-fragment": "off",
+    "react/jsx-no-constructed-context-values": "off",
+    "react/function-component-definition": "off",
     "jsx-a11y/click-events-have-key-events": "off"
   }
 }

@@ -3,8 +3,8 @@ import React from 'react';
 import {
   BrowserRouter as Router,
   Route,
-  Switch,
-  useHistory,
+  Routes,
+  useNavigate,
 } from 'react-router-dom';
 import { JoinPage } from './components/JoinPage';
 import { GameLobby } from './components/Lobby';
@@ -24,27 +24,16 @@ const store = initializeStore({
 
 const App: React.FC = () => {
   const nickname = useStoreState((s) => s.nickname);
-  const history = useHistory();
+  const navigate = useNavigate();
 
   return (
     <div className="App">
-      <Switch>
-        <Route exact path="/">
-          <Welcome />
-        </Route>
-
-        <Route exact path="/rooms">
-          {nickname ? <JoinPage /> : <SetupNickname />}
-        </Route>
-
-        <Route path="/rooms/:id">
-          {nickname ? <GameLobby /> : <SetupNickname />}
-        </Route>
-
-        <Route path="/nickname">
-          <SetupNickname onSubmit={() => history.push('/')} />
-        </Route>
-      </Switch>
+      <Routes>
+        <Route path="/" element={<Welcome />} />
+        <Route path="/rooms" element={nickname ? <JoinPage /> : <SetupNickname />} />
+        <Route path="/rooms/:id" element={nickname ? <GameLobby /> : <SetupNickname />} />
+        <Route path="/nickname" element={<SetupNickname onSubmit={() => navigate('/')} />} />
+      </Routes>
     </div>
   );
 };

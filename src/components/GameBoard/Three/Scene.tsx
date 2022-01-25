@@ -131,7 +131,7 @@ export const Scene: React.FC<{ boardPositions: BoardPosition[] }> = ({ boardPosi
           ) : (ctx.activePlayers && ctx.activePlayers[ctx.currentPlayer]) === 'build' ? (
             <BuildIndicator key={`bulidIndicator${pos}`} boardPos={boardPositions[pos]} height={State.spaces[pos].height} />
           ) : (
-          // todo: special move indicator
+            // todo: special move indicator
             <></>
           )))}
 
