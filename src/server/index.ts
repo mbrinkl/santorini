@@ -29,3 +29,19 @@ server.run(PORT, () => {
   // eslint-disable-next-line no-console
   console.log(`Serving at: http://localhost:${PORT}/`);
 });
+
+const day = 24 * 60 * 60 * 1000;
+async function deleteStaleGames() {
+  const weekAgo = Date.now() - 7 * day;
+  // Retrieve matchIDs for matches unchanged for > 1 week.
+  const staleMatchIDs = await server.db.listMatches({
+    where: {
+      updatedBefore: weekAgo,
+    },
+  });
+  // Delete matches
+  for (let i = 0; i < staleMatchIDs.length; i++) {
+    server.db.wipe(staleMatchIDs[i]);
+  }
+}
+setInterval(deleteStaleGames, day);

@@ -3,19 +3,26 @@ export interface Player {
   name?: string;
 }
 
-export interface RoomMetadata {
-  players: Player[];
-}
-
 export interface ActiveRoomPlayer {
   playerID: number;
   credential: string;
+}
+
+export interface CreateRoomParams {
+  numPlayers: number,
+  unlisted: boolean
 }
 
 export interface JoinRoomParams {
   matchID: string;
   playerID: number;
   playerName: string;
+}
+
+export interface LeaveRoomParams {
+  matchID: string;
+  playerID: number;
+  credential: string;
 }
 
 export interface UpdatePlayerParams {

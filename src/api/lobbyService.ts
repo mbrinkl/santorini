@@ -1,11 +1,13 @@
 import { LobbyClient } from 'boardgame.io/client';
+import { LobbyAPI } from 'boardgame.io';
 import { SERVER_URL } from '../config/client';
 import { GAME_ID } from '../config';
 import {
   JoinRoomParams,
   UpdatePlayerParams,
-  RoomMetadata,
   PlayAgainParams,
+  CreateRoomParams,
+  LeaveRoomParams,
 } from '../types/ApiTypes';
 
 export class LobbyService {
@@ -15,13 +17,19 @@ export class LobbyService {
     this.lobbyClient = new LobbyClient({ server: SERVER_URL });
   }
 
-  // TODO: to add public games
-  // async getMatches() {
-  //   await this.lobbyClient.listMatches(GAME_ID);
-  // }
+  async getMatches(): Promise<LobbyAPI.Match[]> {
+    const { matches } = await this.lobbyClient.listMatches(GAME_ID);
+    return matches;
+  }
 
-  async createRoom(numPlayers: number): Promise<string> {
-    const { matchID } = await this.lobbyClient.createMatch(GAME_ID, { numPlayers });
+  async createRoom({
+    numPlayers,
+    unlisted,
+  } : CreateRoomParams): Promise<string> {
+    const { matchID } = await this.lobbyClient.createMatch(GAME_ID, {
+      numPlayers,
+      unlisted,
+    });
     return matchID;
   }
 
@@ -42,6 +50,19 @@ export class LobbyService {
     return { playerCredentials };
   }
 
+  async leaveRoom({
+    matchID, playerID, credential,
+  }: LeaveRoomParams): Promise<void> {
+    await this.lobbyClient.leaveMatch(
+      GAME_ID,
+      matchID,
+      {
+        playerID: String(playerID),
+        credentials: credential,
+      },
+    );
+  }
+
   async updatePlayer({
     matchID, playerID, credentials, newName,
   }: UpdatePlayerParams): Promise<void> {
@@ -52,7 +73,7 @@ export class LobbyService {
     });
   }
 
-  async getRoomMetadata(matchID: string): Promise<RoomMetadata> {
+  async getRoomMetadata(matchID: string): Promise<LobbyAPI.Match> {
     return this.lobbyClient.getMatch(GAME_ID, matchID);
   }
 

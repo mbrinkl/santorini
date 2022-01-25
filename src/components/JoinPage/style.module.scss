@@ -1,0 +1,45 @@
+@import "styles/shared";
+
+.joinPage {
+  background: $c-blue;
+}
+
+.noGames:hover {
+  background-color: $c-blue;
+  cursor: default;
+}
+
+table {
+  border-collapse: collapse;
+  margin-top: 4em;
+  margin-left: auto;
+  margin-right: auto;
+  width: 75%;
+}
+
+tr {
+  line-height: 40px;
+  border-bottom: 1px solid white;
+  color: white;
+}
+
+tr:last-child { 
+  border-bottom: none; 
+}
+
+th {
+  width: 33%;
+}
+
+tbody>tr:hover {
+  background-color: orange;
+  cursor: pointer;
+}
+
+td {
+  text-align: center;
+}
+
+@media only screen and (max-width: 599px) {
+
+}

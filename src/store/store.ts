@@ -43,6 +43,22 @@ export const store: StoreModel = {
       credential: playerCredentials,
       playerID: payload.playerID,
     });
+    actions.setMatchID(payload.matchID);
+  }),
+  leaveRoom: thunk(async (actions, payload, { injections }) => {
+    await injections.lobbyApi.leaveRoom(payload);
+    actions.setMatchID(null);
+    actions.setActiveRoomPlayer(null);
+    actions.setRoomMetadata(null);
+  }),
+
+  availableMatches: [],
+  setAvailableMatches: action((state, payload) => {
+    state.availableMatches = payload;
+  }),
+  listMatches: thunk(async (actions, payload, { injections }) => {
+    const matches = await injections.lobbyApi.getMatches();
+    actions.setAvailableMatches(matches);
   }),
 
   updatePlayer: thunk(async (actions, payload, { injections }) => {

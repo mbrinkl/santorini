@@ -63,6 +63,11 @@
     z-index: 1;
   }
 
+  &__disconnected {
+    margin: 0;
+    color: $c-red;
+  }
+
   &__characters {
     display: flex;
     flex-wrap: wrap;

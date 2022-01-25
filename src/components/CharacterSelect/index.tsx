@@ -78,7 +78,7 @@ export const SelectedCharacterBox: React.FC<{
 };
 
 export const CharacterSelect = () => {
-  const { State, moves } = useBoardContext();
+  const { State, moves, matchData } = useBoardContext();
 
   const roomMetadata = useStoreState((s) => s.roomMetadata);
   const activeRoomPlayer = useStoreState((s) => s.activeRoomPlayer);
@@ -123,6 +123,9 @@ export const CharacterSelect = () => {
               ? 'Random'
               : State.players['0'].char.desc}
           </span>
+          <h2 className="charSelect__disconnected">
+            {matchData?.find((p) => p.id === 0)?.isConnected || 'Disconnected'}
+          </h2>
         </div>
         <div className="charSelect__selectedChar">
           <span className="charSelect__playerName">
@@ -137,6 +140,9 @@ export const CharacterSelect = () => {
               ? 'Random'
               : State.players['1'].char.desc}
           </span>
+          <h2 className="charSelect__disconnected">
+            {matchData?.find((p) => p.id === 1)?.isConnected || 'Disconnected'}
+          </h2>
         </div>
       </div>
 

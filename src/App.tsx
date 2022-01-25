@@ -6,6 +6,7 @@ import {
   Switch,
   useHistory,
 } from 'react-router-dom';
+import { JoinPage } from './components/JoinPage';
 import { GameLobby } from './components/Lobby';
 import { SetupNickname } from './components/SetupNickname';
 import { initializeStore, useStoreState } from './store';
@@ -30,6 +31,10 @@ const App: React.FC = () => {
       <Switch>
         <Route exact path="/">
           <Welcome />
+        </Route>
+
+        <Route exact path="/rooms">
+          {nickname ? <JoinPage /> : <SetupNickname />}
         </Route>
 
         <Route path="/rooms/:id">

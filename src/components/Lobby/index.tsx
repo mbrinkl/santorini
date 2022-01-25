@@ -44,15 +44,9 @@ export const GameLobbySetup: React.FC<{ startGame(): void }> = ({
   const [tooltipVisible, setTooltipVisible] = useState(false);
   const os = getMobileOS();
 
-  const supportsCopying = !!document.queryCommandSupported('copy');
-  function copyToClipboard(value: string) {
-    const textField = document.createElement('textarea');
-    textField.innerText = value;
-    textField.style.opacity = '0';
-    document.body.appendChild(textField);
-    textField.select();
-    document.execCommand('copy');
-    textField.remove();
+  const supportsCopying = !!navigator.clipboard;
+  async function copyToClipboard(value: string) {
+    await navigator.clipboard.writeText(value);
   }
 
   const gameRoomFull = roomMetadata?.players.filter((p) => !p.name).length === 0;
@@ -69,8 +63,7 @@ export const GameLobbySetup: React.FC<{ startGame(): void }> = ({
     if (gameRoomFull) {
       setTimeout(() => startGame(), 2000);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [gameRoomFull]);
+  }, [gameRoomFull, startGame]);
 
   useEffect(() => {
     // find first empty seat ID
@@ -89,9 +82,9 @@ export const GameLobbySetup: React.FC<{ startGame(): void }> = ({
     <LobbyPage>
       <ButtonBack to="/" />
 
-      <div className="Lobby__title">Invite</div>
+      <div className="Lobby__title">{roomMetadata?.unlisted ? 'Private Game' : 'Public Game'}</div>
       <div className="Lobby__subtitle">
-        Send a link to a friend to invite them to your game
+        Send a link to someone to invite them to your game
       </div>
       <div className="Lobby__link">
         <div className="Lobby__link-box">{window.location.href}</div>
