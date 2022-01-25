@@ -33,4 +33,13 @@
   .logo {
     margin: -20px
   }
+
+  .buttonsDiv {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .buttons {
+    margin-top: 12px;
+  }
 }

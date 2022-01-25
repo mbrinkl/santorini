@@ -44,9 +44,15 @@ export const GameLobbySetup: React.FC<{ startGame(): void }> = ({
   const [tooltipVisible, setTooltipVisible] = useState(false);
   const os = getMobileOS();
 
-  const supportsCopying = !!navigator.clipboard;
-  async function copyToClipboard(value: string) {
-    await navigator.clipboard.writeText(value);
+  const supportsCopying = !!document.queryCommandSupported('copy');
+  function copyToClipboard(value: string) {
+    const textField = document.createElement('textarea');
+    textField.innerText = value;
+    textField.style.opacity = '0';
+    document.body.appendChild(textField);
+    textField.select();
+    document.execCommand('copy');
+    textField.remove();
   }
 
   const gameRoomFull = roomMetadata?.players.filter((p) => !p.name).length === 0;

@@ -1,5 +1,6 @@
 import { useHistory } from 'react-router-dom';
 import { useEffect } from 'react';
+import { isMobile } from '../../utility';
 import { ButtonBack } from '../ButtonBack';
 import { GithubLink } from '../LobbyPage';
 import { useStoreActions, useStoreState } from '../../store';
@@ -36,7 +37,7 @@ export const JoinPage = () => {
       <tr key={m.matchID} onClick={onTableRowClicked}>
         <td>{m.matchID}</td>
         <td>{m.players[0].name}</td>
-        <td>{new Date(m.createdAt).toLocaleString()}</td>
+        {!isMobile() && <td>{new Date(m.createdAt).toLocaleString()}</td>}
       </tr>
     ));
 
@@ -49,7 +50,7 @@ export const JoinPage = () => {
           <tr>
             <th>Match ID</th>
             <th>Creator</th>
-            <th>Created At</th>
+            {!isMobile() && <th>Created At</th>}
           </tr>
         </thead>
         <tbody>
