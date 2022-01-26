@@ -29,7 +29,7 @@ export function getNextPosition(fromPos: number, toPos: number): number {
 
 export function getAdjacentPositions(pos: number): number[] {
   const adjacents: number[] = [];
-  const [x, y]: number[] = posToCoord(pos);
+  const [x, y] = posToCoord(pos);
 
   if (x !== 0) {
     adjacents.push(coordToPos(x - 1, y));
@@ -43,6 +43,27 @@ export function getAdjacentPositions(pos: number): number[] {
   }
   if (y !== 0) adjacents.push(coordToPos(x, y - 1));
   if (y !== 4) adjacents.push(coordToPos(x, y + 1));
+
+  return adjacents;
+}
+
+export function getWrappedAdjacents(pos: number): number[] {
+  const adjacents: number[] = [];
+  const [x, y] = posToCoord(pos);
+
+  const left = (((x - 1) % 5) + 5) % 5;
+  const right = (((x + 1) % 5) + 5) % 5;
+  const up = (((y - 1) % 5) + 5) % 5;
+  const down = (((y + 1) % 5) + 5) % 5;
+
+  adjacents.push(coordToPos(left, y));
+  adjacents.push(coordToPos(left, up));
+  adjacents.push(coordToPos(left, down));
+  adjacents.push(coordToPos(right, y));
+  adjacents.push(coordToPos(right, up));
+  adjacents.push(coordToPos(right, down));
+  adjacents.push(coordToPos(x, up));
+  adjacents.push(coordToPos(x, down));
 
   return adjacents;
 }
