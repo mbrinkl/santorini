@@ -21,6 +21,7 @@ import { Eros } from './Eros';
 import { Chaos } from './Chaos';
 import { Character } from '../../types/CharacterTypes';
 import { Chronus } from './Chronus';
+import { Harpies } from './Harpies';
 
 export const characterList: string[] = [
   'Random',
@@ -68,7 +69,7 @@ export const characterList: string[] = [
   // "Gaea",
   'Graeae',
   // "Hades",
-  // "Harpies",
+  'Harpies',
   // "Hecate",
   // "Moerae",
   // "Nemesis",
@@ -136,6 +137,7 @@ export function getCharacter(name: string): Character {
     case 'Eros': char = Eros; break;
     case 'Chaos': char = Chaos; break;
     case 'Chronus': char = Chronus; break;
+    case 'Harpies': char = Harpies; break;
     default: char = Mortal; break;
   }
 

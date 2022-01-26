@@ -118,6 +118,16 @@ export const Mortal: Character = {
     return 'build';
   },
 
+  opponentPostMove: (
+    G: GameState,
+    ctx: Ctx,
+    player: Player,
+    char: CharacterState,
+    pos: number,
+  ) => {
+
+  },
+
   validBuild: (
     G: GameState,
     ctx: Ctx,

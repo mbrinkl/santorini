@@ -34,6 +34,9 @@ export interface CharacterFunctions {
   ) => number[],
   hasValidMoves: (G: GameState, ctx: Ctx, player: Player, char: CharacterState) => boolean,
   move: (G: GameState, ctx: Ctx, player: Player, char: CharacterState, pos: number) => GameStage,
+  opponentPostMove: (
+    G: GameState, ctx: Ctx, player: Player, char: CharacterState, pos: number
+  ) => void,
   validBuild: (
     G: GameState,
     ctx: Ctx,

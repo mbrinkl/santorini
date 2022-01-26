@@ -9,6 +9,7 @@ export function updateValids(G: GameState, ctx: Ctx, player: Player, stage: stri
   const char: Character = getCharacter(currChar.name);
   let valids: number[] = [];
 
+  // apply opp restrictions
   switch (stage) {
     case 'place':
       valids = char.validPlace(G, ctx, player, currChar);
@@ -128,8 +129,13 @@ export function Move(G: GameState, ctx: Ctx, pos: number) {
 
   const char: Character = getCharacter(currChar.name);
 
+  const ogPos = currChar.workers[currChar.selectedWorkerNum].pos;
   const stage = char.move(G, ctx, currPlayer, currChar, pos);
   ctx.events?.setStage(stage);
+
+  // opp move effect
+  const oppPlayer = G.players[currPlayer.opponentId];
+  getCharacter(oppPlayer.char.name).opponentPostMove(G, ctx, currPlayer, currChar, ogPos);
 
   updateValids(G, ctx, currPlayer, stage);
 
