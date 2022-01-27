@@ -89,6 +89,11 @@ export const PlayerControls: React.FC<{
     }
   }
 
+  // No controls for spectators
+  if (!playerID) {
+    return null;
+  }
+
   return (
     <div className="PlayerControls">
 

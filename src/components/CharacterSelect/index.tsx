@@ -4,22 +4,23 @@ import classNames from 'classnames';
 import { Button } from '../Button';
 import { getSortedCharacters } from '../../game/characters';
 import { useBoardContext } from '../GameBoard/BoardContext';
+import CheckImg from '../../assets/png/check.png';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import './style.scss';
-import { Player } from '../../types/GameTypes';
-import CheckImg from '../../assets/png/check.png';
 
 export const CharacterBox: React.FC<{ name: string }> = ({ name }) => {
   const { State, moves, playerID } = useBoardContext();
+  const takenCharacters: string[] = [];
 
-  const player: Player = State.players[playerID];
-  const opponentCharacterName = State.players[player.opponentId].char.name;
+  Object.values(State.players).forEach((player) => {
+    takenCharacters.push(player.char.name);
+  });
 
   // Return true if opponent has taken this character
   // false if Random, Mortal, or not taken
   function isCharacterTaken(): boolean {
-    return opponentCharacterName === name && !['Random', 'Mortal'].includes(name);
+    return takenCharacters.includes(name) && !['Random', 'Mortal'].includes(name);
   }
 
   function select(): void {
@@ -129,7 +130,7 @@ export const CharacterSelect = () => {
         </div>
       </div>
 
-      {State.players[playerID].ready ? (
+      {playerID && State.players[playerID].ready ? (
         <Button
           theme="red"
           className="button"

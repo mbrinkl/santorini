@@ -4,7 +4,7 @@ import { useContext, createContext } from 'react';
 import { GameState } from '../../types/GameTypes';
 
 interface IBoardContext {
-  playerID: string;
+  playerID: string | null;
   matchID: string;
   credentials: string | undefined;
   moves: Record<string, (...args: any[]) => void>;

@@ -30,7 +30,7 @@ export const GameBoard: React.FC<BoardProps<GameState>> = ({
   return (
     <BoardContext.Provider
       value={{
-        playerID: playerID || '-1',
+        playerID,
         matchID,
         credentials,
         moves,
