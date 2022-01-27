@@ -2,7 +2,6 @@ import React from 'react';
 import Slider from 'react-slick';
 import classNames from 'classnames';
 import { Button } from '../Button';
-import { useStoreState } from '../../store';
 import { getSortedCharacters } from '../../game/characters';
 import { useBoardContext } from '../GameBoard/BoardContext';
 import 'slick-carousel/slick/slick.css';
@@ -12,10 +11,7 @@ import { Player } from '../../types/GameTypes';
 import CheckImg from '../../assets/png/check.png';
 
 export const CharacterBox: React.FC<{ name: string }> = ({ name }) => {
-  const { State, moves } = useBoardContext();
-
-  const activeRoomPlayer = useStoreState((s) => s.activeRoomPlayer);
-  const playerID = String(activeRoomPlayer?.playerID);
+  const { State, moves, playerID } = useBoardContext();
 
   const player: Player = State.players[playerID];
   const opponentCharacterName = State.players[player.opponentId].char.name;
@@ -67,11 +63,9 @@ export const SelectedCharacterBox: React.FC<{
 };
 
 export const CharacterSelect = () => {
-  const { State, moves, matchData } = useBoardContext();
-
-  const roomMetadata = useStoreState((s) => s.roomMetadata);
-  const activeRoomPlayer = useStoreState((s) => s.activeRoomPlayer);
-  const playerID = String(activeRoomPlayer?.playerID);
+  const {
+    State, moves, matchData, playerID,
+  } = useBoardContext();
 
   return (
     <div className="charSelect">
@@ -101,7 +95,7 @@ export const CharacterSelect = () => {
       <div className="charSelect__selectedCharDiv">
         <div className="charSelect__selectedChar">
           <span className="charSelect__playerName">
-            {roomMetadata?.players[0].name}
+            {matchData?.find((p) => p.id === 0)?.name}
           </span>
           <SelectedCharacterBox
             name={State.players['0'].char.name}
@@ -118,7 +112,7 @@ export const CharacterSelect = () => {
         </div>
         <div className="charSelect__selectedChar">
           <span className="charSelect__playerName">
-            {roomMetadata?.players[1].name}
+            {matchData?.find((p) => p.id === 1)?.name}
           </span>
           <SelectedCharacterBox
             name={State.players['1'].char.name}

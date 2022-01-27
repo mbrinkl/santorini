@@ -1,16 +1,14 @@
 import { useBoardContext } from './BoardContext';
-import { useStoreState } from '../../store';
-import './style.scss';
 import { ConnectedIndicator } from './ConnectedIndicator';
+import './style.scss';
 
 export const PlayerInfo = () => {
-  const { playerID, State } = useBoardContext();
-  const roomMetadata = useStoreState((s) => s.roomMetadata);
+  const { playerID, State, matchData } = useBoardContext();
 
   return (
     <div className="PlayerInfo">
       <div className="PlayerInfo__P1Name">
-        <h2>{(roomMetadata?.players[0].name || '') + (playerID === '0' ? ' (you)' : '')}</h2>
+        <h2>{(matchData?.[0].name || '') + (playerID === '0' ? ' (you)' : '')}</h2>
         <h4>{State.players[0].char.name}</h4>
         <p>{State.players[0].char.desc}</p>
         <ConnectedIndicator playerID={0} />
@@ -19,7 +17,7 @@ export const PlayerInfo = () => {
         <ConnectedIndicator playerID={1} />
         <p>{State.players[1].char.desc}</p>
         <h4>{State.players[1].char.name}</h4>
-        <h2>{(roomMetadata?.players[1].name || '') + (playerID === '1' ? ' (you)' : '')}</h2>
+        <h2>{(matchData?.[1].name || '') + (playerID === '1' ? ' (you)' : '')}</h2>
       </div>
     </div>
   );

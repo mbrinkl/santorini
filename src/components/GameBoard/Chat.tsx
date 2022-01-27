@@ -1,19 +1,15 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { useStoreState } from '../../store';
 import { useBoardContext } from './BoardContext';
 import { isMobile } from '../../utility';
 import sendIcon from '../../assets/png/send.png';
 
 export const ChatMessage: React.FC<{ sender: string, message: string }> = ({ sender, message }) => {
-  const { playerID } = useBoardContext();
-  const roomMetadata = useStoreState((s) => s.roomMetadata);
-
-  const senderName = roomMetadata?.players[sender].name + (playerID === sender ? ' (you)' : '');
-  const cssClass = `sender-${sender}`;
+  const { playerID, matchData } = useBoardContext();
+  const senderName = matchData?.find((p) => String(p.id) === sender)?.name + (playerID === sender ? ' (you)' : '');
 
   return (
     <p>
-      <span className={cssClass}>{senderName}</span>
+      <span className={`sender-${sender}`}>{senderName}</span>
       :
       {message}
     </p>

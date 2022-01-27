@@ -1,72 +1,39 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { LobbyService } from '../../api/lobbyService';
 import { LobbyPage } from '../LobbyPage';
 import { Logo } from '../Logo';
 import { Button } from '../Button';
 import { ButtonChangeNickname } from '../ButtonChangeNickname';
 import { ButtonBack } from '../ButtonBack';
-import { useStoreActions, useStoreState } from '../../store';
+import { useStoreState } from '../../store';
 import style from './style.module.scss';
 
 export function Welcome() {
-  const [redirect, setRedirect] = useState(false);
-  const createGameRoom = useStoreActions((s) => s.createGameRoom);
-  const matchID = useStoreState((s) => s.matchID);
   const navigate = useNavigate();
   const [showHostOptions, setShowHostOptions] = useState(false);
   const activeRoomPlayer = useStoreState((s) => s.activeRoomPlayer);
-  const leaveRoom = useStoreActions((s) => s.leaveRoom);
-
-  function onHostClicked() {
-    setShowHostOptions(true);
-  }
-
-  async function onJoinClicked() {
-    navigate('/rooms');
-  }
-
-  function onRulesClicked() {
-    window.open('http://files.roxley.com/Santorini-Rulebook-Web-2016.08.14.pdf', '_blank');
-  }
-
-  function onPublicClicked() {
-    createGame(false);
-  }
-
-  function onPrivateClicked() {
-    createGame(true);
-  }
-
-  function onCancelClicked() {
-    setShowHostOptions(false);
-  }
+  // const leaveRoom = useStoreActions((s) => s.leaveRoom);
 
   async function createGame(unlisted: boolean) {
-    if (matchID && activeRoomPlayer) {
-      await leaveRoom({
-        matchID,
-        playerID: activeRoomPlayer.playerID,
-        credential: activeRoomPlayer.credential,
-      });
-    }
+    // if (activeRoomPlayer) {
+    //   await leaveRoom({
+    //     matchID: activeRoomPlayer.matchID,
+    //     playerID: activeRoomPlayer.playerID,
+    //     credential: activeRoomPlayer.credential,
+    //   });
+    // }
 
-    await createGameRoom({ numPlayers: 2, unlisted });
-
-    setRedirect(true);
+    const matchID = await new LobbyService().createRoom({ numPlayers: 2, unlisted });
+    navigate(`/rooms/${matchID}`);
   }
-
-  useEffect(() => {
-    if (redirect && matchID) {
-      navigate(`/rooms/${matchID}`);
-    }
-  }, [matchID, redirect, navigate]);
 
   const initialButtons = (
     <>
       <Button
         theme="green"
         className={style.buttons}
-        onClick={onHostClicked}
+        onClick={() => setShowHostOptions(true)}
       >
         Host
       </Button>
@@ -74,7 +41,7 @@ export function Welcome() {
       <Button
         theme="blue"
         className={style.buttons}
-        onClick={onJoinClicked}
+        onClick={() => navigate('/rooms')}
       >
         Join
       </Button>
@@ -82,7 +49,7 @@ export function Welcome() {
       <Button
         theme="yellow"
         className={style.buttons}
-        onClick={onRulesClicked}
+        onClick={() => window.open('http://files.roxley.com/Santorini-Rulebook-Web-2016.08.14.pdf', '_blank')}
       >
         Rules
       </Button>
@@ -94,7 +61,7 @@ export function Welcome() {
       <Button
         theme="green"
         className={style.buttons}
-        onClick={onPublicClicked}
+        onClick={() => createGame(false)}
       >
         Public
       </Button>
@@ -102,7 +69,7 @@ export function Welcome() {
       <Button
         theme="blue"
         className={style.buttons}
-        onClick={onPrivateClicked}
+        onClick={() => createGame(true)}
       >
         Private
       </Button>
@@ -110,7 +77,7 @@ export function Welcome() {
       <Button
         theme="red"
         className={style.buttons}
-        onClick={onCancelClicked}
+        onClick={() => setShowHostOptions(false)}
       >
         Cancel
       </Button>
@@ -120,7 +87,7 @@ export function Welcome() {
   return (
     <LobbyPage>
       <ButtonChangeNickname />
-      { matchID && <ButtonBack to={`/rooms/${matchID}`} />}
+      { activeRoomPlayer?.matchID && <ButtonBack to={`/rooms/${activeRoomPlayer.matchID}`} />}
       <Logo className={style.logo} size="large" />
 
       <div className={style.buttonsDiv}>

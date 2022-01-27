@@ -3,6 +3,7 @@ import { Client } from 'boardgame.io/react';
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import Tippy from '@tippyjs/react';
+import { LobbyAPI } from 'boardgame.io';
 import { isProduction } from '../../config';
 import { SERVER_URL } from '../../config/client';
 import { SantoriniGame } from '../../game';
@@ -14,6 +15,7 @@ import { Button } from '../Button';
 import { isMobile, getMobileOS } from '../../utility';
 import 'tippy.js/dist/tippy.css'; // optional
 import './style.scss';
+import { LobbyService } from '../../api/lobbyService';
 
 const GameClient = Client({
   game: SantoriniGame,
@@ -24,21 +26,21 @@ const GameClient = Client({
 
 export const GameLobby = () => {
   const [isGameRunning, setGameRunning] = useState(false);
+  const [isSpectating, setSpectating] = useState(false);
 
   return isGameRunning ? (
-    <GameLobbyPlay />
+    <GameLobbyPlay spectating={isSpectating} />
   ) : (
-    <GameLobbySetup startGame={() => setGameRunning(true)} />
+    <GameLobbySetup startGame={() => setGameRunning(true)} spectating={() => setSpectating(true)} />
   );
 };
 
-export const GameLobbySetup: React.FC<{ startGame(): void }> = ({
-  startGame,
+export const GameLobbySetup: React.FC<{ startGame(): void, spectating(): void }> = ({
+  startGame, spectating,
 }) => {
   const { id } = useParams<{ id: string }>();
   const nickname = useStoreState((s) => s.nickname);
-  const roomMetadata = useStoreState((s) => s.roomMetadata);
-  const loadRoomMetadata = useStoreActions((s) => s.loadRoomMetadata);
+  const [matchMetadata, setMatchMetadata] = useState<LobbyAPI.Match | null>(null);
   const joinRoom = useStoreActions((s) => s.joinRoom);
   const activeRoomPlayer = useStoreState((s) => s.activeRoomPlayer);
   const [tooltipVisible, setTooltipVisible] = useState(false);
@@ -55,16 +57,22 @@ export const GameLobbySetup: React.FC<{ startGame(): void }> = ({
     textField.remove();
   }
 
-  const gameRoomFull = roomMetadata?.players.filter((p) => !p.name).length === 0;
+  const gameRoomFull = matchMetadata?.players.filter((p) => !p.name).length === 0;
 
+  // poll api to load match data
   useEffect(() => {
     const intervalID = setInterval(() => {
-      if (id) loadRoomMetadata(id);
+      if (id) {
+        new LobbyService().getMatch(id).then((data) => {
+          setMatchMetadata(data);
+        });
+      }
     }, 500);
 
     return () => clearInterval(intervalID);
-  }, [loadRoomMetadata, id]);
+  }, [id]);
 
+  // if game room is full, start the game
   useEffect(() => {
     if (gameRoomFull) {
       setTimeout(() => startGame(), 2000);
@@ -73,8 +81,8 @@ export const GameLobbySetup: React.FC<{ startGame(): void }> = ({
 
   useEffect(() => {
     // find first empty seat ID
-    const emptySeatID = roomMetadata?.players.find((p) => !p.name)?.id;
-    const alreadyJoined = roomMetadata?.players.find((p) => (
+    const emptySeatID = matchMetadata?.players.find((p) => !p.name)?.id;
+    const alreadyJoined = matchMetadata?.players.find((p) => (
       p.id === activeRoomPlayer?.playerID && p.name === nickname
     ));
 
@@ -82,13 +90,13 @@ export const GameLobbySetup: React.FC<{ startGame(): void }> = ({
       joinRoom({ playerID: emptySeatID, playerName: nickname, matchID: id });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [roomMetadata]);
+  }, [matchMetadata]);
 
   return (
     <LobbyPage>
       <ButtonBack to="/" />
 
-      <div className="Lobby__title">{roomMetadata?.unlisted ? 'Private Game' : 'Public Game'}</div>
+      <div className="Lobby__title">{matchMetadata?.unlisted ? 'Private Game' : 'Public Game'}</div>
       <div className="Lobby__subtitle">
         Send a link to someone to invite them to your game
       </div>
@@ -130,8 +138,8 @@ export const GameLobbySetup: React.FC<{ startGame(): void }> = ({
       </div>
 
       <div className="Lobby__players">
-        {roomMetadata ? (
-          roomMetadata.players?.map((player) => (player.name ? (
+        {matchMetadata ? (
+          matchMetadata.players?.map((player) => (player.name ? (
             <div
               key={player.id}
               className="Lobby__player Lobby__player--active"
@@ -163,16 +171,26 @@ export const GameLobbySetup: React.FC<{ startGame(): void }> = ({
   );
 };
 
-export const GameLobbyPlay = () => {
+export const GameLobbyPlay: React.FC<{ spectating: boolean }> = ({
+  spectating,
+}) => {
   const { id } = useParams<{ id: string }>();
   const activeRoomPlayer = useStoreState((s) => s.activeRoomPlayer);
 
+  if (id && activeRoomPlayer?.matchID === id) {
+    console.log('joining as main squeeze');
+    return (
+      <GameClient
+        matchID={id}
+        playerID={String(activeRoomPlayer?.playerID)}
+        credentials={activeRoomPlayer?.credential}
+        debug={!isProduction}
+      />
+    );
+  }
+
+  console.log('joining as spectator');
   return (
-    <GameClient
-      matchID={id}
-      playerID={String(activeRoomPlayer?.playerID)}
-      credentials={activeRoomPlayer?.credential}
-      debug={!isProduction}
-    />
+    <GameClient matchID={id} />
   );
 };

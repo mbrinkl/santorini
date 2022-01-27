@@ -1,9 +1,9 @@
 import { useState, useEffect, useRef } from 'react';
 import { useParams } from 'react-router';
 import classNames from 'classnames';
+import { LobbyService } from '../../api/lobbyService';
 import { useBoardContext } from './BoardContext';
 import { Button } from '../Button';
-import { useStoreActions, useStoreState } from '../../store';
 import undoLogo from '../../assets/png/undo.png';
 import messagesLogo from '../../assets/png/messages.png';
 import { isMobile } from '../../utility';
@@ -13,13 +13,11 @@ export const PlayerControls: React.FC<{
   onOpenMessages? : () => void
 }> = ({ messagesOpen, onOpenMessages }) => {
   const {
-    playerID, State, isActive, moves, ctx, undo, chatMessages, sendChatMessage,
+    playerID, State, isActive, moves, ctx, undo, chatMessages, sendChatMessage, credentials,
+    matchID,
   } = useBoardContext();
 
   const { id } = useParams<{ id: string }>();
-  const activeRoomPlayer = useStoreState((s) => s.activeRoomPlayer);
-  const matchID = useStoreState((s) => s.matchID);
-  const playAgain = useStoreActions((s) => s.playAgain);
   const [redirect, setRedirect] = useState(false);
   const [msgBlack, setMsgBlack] = useState(false);
   const [counter, setCounter] = useState(3);
@@ -75,7 +73,7 @@ export const PlayerControls: React.FC<{
 
   const rematch = () => {
     sendChatMessage('wants to rematch...');
-    playAgain({ matchID: String(id), playerID: Number(activeRoomPlayer?.playerID), credential: activeRoomPlayer?.credential || '' });
+    new LobbyService().playAgain({ matchID: String(id), playerID: Number(playerID), credential: credentials || '' });
     setRedirect(true);
   };
 

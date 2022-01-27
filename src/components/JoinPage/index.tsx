@@ -1,23 +1,27 @@
 import { useNavigate } from 'react-router-dom';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
+import { LobbyAPI } from 'boardgame.io';
 import { isMobile } from '../../utility';
 import { ButtonBack } from '../ButtonBack';
 import { GithubLink } from '../LobbyPage';
-import { useStoreActions, useStoreState } from '../../store';
 import style from './style.module.scss';
+import { LobbyService } from '../../api/lobbyService';
 
 export function JoinPage() {
-  const listMatches = useStoreActions((s) => s.listMatches);
-  const availableMatches = useStoreState((s) => s.availableMatches);
+  const [matches, setMatches] = useState<LobbyAPI.Match[]>([]);
   const navigate = useNavigate();
 
   useEffect(() => {
-    listMatches(null);
+    new LobbyService().getMatches().then((m) => {
+      setMatches(m);
+    });
     const intervalID = setInterval(() => {
-      listMatches(null);
+      new LobbyService().getMatches().then((m) => {
+        setMatches(m);
+      });
     }, 5000);
     return () => clearInterval(intervalID);
-  }, [listMatches]);
+  }, []);
 
   function onTableRowClicked(e) {
     const row = e.target.closest('tr');
@@ -25,13 +29,13 @@ export function JoinPage() {
     navigate(`/rooms/${matchID}`);
   }
 
-  const matches = availableMatches.filter((m) => !m.gameover && !m.players[1].name);
-  const games = matches.length === 0
+  const filteredMatches = matches.filter((m) => !m.gameover && !m.players[1].name);
+  const matchTableBody = filteredMatches.length === 0
     ? (
       <tr>
         <td colSpan={3} className={style.noGames}>No Public Games Available</td>
       </tr>
-    ) : matches.map((m) => (
+    ) : filteredMatches.map((m) => (
       <tr key={m.matchID} onClick={onTableRowClicked}>
         <td>{m.matchID}</td>
         <td>{m.players[0].name}</td>
@@ -52,7 +56,7 @@ export function JoinPage() {
           </tr>
         </thead>
         <tbody>
-          {games}
+          {matchTableBody}
         </tbody>
       </table>
     </div>

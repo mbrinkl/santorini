@@ -1,9 +1,5 @@
-export interface Player {
-  id: number;
-  name?: string;
-}
-
 export interface ActiveRoomPlayer {
+  matchID: string;
   playerID: number;
   credential: string;
 }

@@ -1,6 +1,7 @@
 import * as React from 'react';
 import './style.scss';
 import { useState } from 'react';
+import { LobbyService } from '../../api/lobbyService';
 import { useStoreState, useStoreActions } from '../../store';
 import { ButtonBack } from '../ButtonBack';
 import { Button } from '../Button';
@@ -13,33 +14,25 @@ export const SetupNickname: React.FC<{ onSubmit?: () => void }> = ({
   const initialNickname = useStoreState((s) => s.nickname);
   const persistNickname = useStoreActions((s) => s.setNickname);
   const [nickname, setNickname] = useState(initialNickname || '');
-  const matchID = useStoreState((s) => s.matchID);
-  const roomMetadata = useStoreState((s) => s.roomMetadata);
   const activeRoomPlayer = useStoreState((s) => s.activeRoomPlayer);
-  const loadRoomMetadata = useStoreActions((s) => s.loadRoomMetadata);
-  const updatePlayer = useStoreActions((s) => s.updatePlayer);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     persistNickname(nickname);
-    if (onSubmit) {
-      onSubmit();
-    }
+    onSubmit?.();
 
     // update player name if they are in a game
     asyncUpdatePlayer();
   };
 
   async function asyncUpdatePlayer() {
-    if (matchID && roomMetadata && activeRoomPlayer) {
-      await updatePlayer({
-        matchID,
+    if (activeRoomPlayer) {
+      await new LobbyService().updatePlayer({
+        matchID: activeRoomPlayer.matchID,
         playerID: activeRoomPlayer.playerID,
         credentials: activeRoomPlayer.credential,
         newName: nickname,
       });
-
-      await loadRoomMetadata(matchID);
     }
   }
 

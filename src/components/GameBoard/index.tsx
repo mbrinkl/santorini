@@ -22,6 +22,8 @@ export const GameBoard: React.FC<BoardProps<GameState>> = ({
   matchData,
   sendChatMessage,
   chatMessages,
+  matchID,
+  credentials,
 }) => {
   const [showChat, setShowChat] = useState(!isMobile());
 
@@ -29,6 +31,8 @@ export const GameBoard: React.FC<BoardProps<GameState>> = ({
     <BoardContext.Provider
       value={{
         playerID: playerID || '-1',
+        matchID,
+        credentials,
         moves,
         State,
         isActive,

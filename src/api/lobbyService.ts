@@ -17,6 +17,10 @@ export class LobbyService {
     this.lobbyClient = new LobbyClient({ server: SERVER_URL });
   }
 
+  async getMatch(matchID: string): Promise<LobbyAPI.Match> {
+    return this.lobbyClient.getMatch(GAME_ID, matchID);
+  }
+
   async getMatches(): Promise<LobbyAPI.Match[]> {
     const { matches } = await this.lobbyClient.listMatches(GAME_ID);
     return matches;
@@ -71,10 +75,6 @@ export class LobbyService {
       credentials,
       newName,
     });
-  }
-
-  async getRoomMetadata(matchID: string): Promise<LobbyAPI.Match> {
-    return this.lobbyClient.getMatch(GAME_ID, matchID);
   }
 
   async playAgain({

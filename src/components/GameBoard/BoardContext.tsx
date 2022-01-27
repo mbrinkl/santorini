@@ -5,6 +5,8 @@ import { GameState } from '../../types/GameTypes';
 
 interface IBoardContext {
   playerID: string;
+  matchID: string;
+  credentials: string | undefined;
   moves: Record<string, (...args: any[]) => void>;
   State: GameState;
   isActive: boolean;
