@@ -9,6 +9,7 @@ import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import './style.scss';
 import { Player } from '../../types/GameTypes';
+import CheckImg from '../../assets/png/check.png';
 
 export const CharacterBox: React.FC<{ name: string }> = ({ name }) => {
   const { State, moves } = useBoardContext();
@@ -33,12 +34,7 @@ export const CharacterBox: React.FC<{ name: string }> = ({ name }) => {
 
   return (
     <div
-      style={{
-        backgroundImage: `url('${
-          `${process.env.PUBLIC_URL}/CharacterImages/${name}.png`
-        }')`,
-      }}
-      className={classNames('characterBoxSelectable', isCharacterTaken() && 'grayscale')}
+      className={classNames(name, 'characterBoxSelectable', isCharacterTaken() && 'grayscale')}
       onClick={select}
       onKeyDown={(e) => e.key === 'Enter' && select()}
       role="button"
@@ -56,20 +52,13 @@ export const SelectedCharacterBox: React.FC<{
   const { State } = useBoardContext();
 
   return (
-    <div
-      style={{
-        backgroundImage: `url('${
-          `${process.env.PUBLIC_URL}/CharacterImages/${name}.png`
-        }')`,
-      }}
-      className="characterBox"
-    >
+    <div className={classNames(name, 'characterBox')}>
       {State.players[playerID].ready
         && (
         <img
           className="characterBoxCheck"
           alt="ready"
-          src={`${process.env.PUBLIC_URL}/CharacterImages/check.png`}
+          src={CheckImg}
         />
         )}
       <span>{name}</span>

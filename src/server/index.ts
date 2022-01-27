@@ -2,18 +2,18 @@ import path from 'path';
 import serve from 'koa-static';
 import { historyApiFallback } from 'koa2-connect-history-api-fallback';
 import { Server, Origins } from 'boardgame.io/server';
-import { DEFAULT_PORT } from '../config';
+import { DEFAULT_PORT, isProduction } from '../config';
 import { SantoriniGame } from '../game';
 
 const root = path.join(__dirname, '../../build');
 const PORT = Number(process.env.PORT || DEFAULT_PORT);
+const serverURL = isProduction ? 'http://santorini.herokuapp.com/' : 'http://192.168.0.140:3000';
 
 const server = Server({
   games: [SantoriniGame],
   origins: [
-    'http://santorini.herokuapp.com/',
+    serverURL,
     Origins.LOCALHOST_IN_DEVELOPMENT,
-    'http://192.168.0.140:3000',
   ],
 });
 
