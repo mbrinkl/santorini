@@ -35,7 +35,9 @@ export function JoinPage() {
     }
   }
 
-  const filteredMatches = matches.filter((m) => !m.gameover && !m.players[1].name);
+  const filteredMatches = matches.filter((m) => !m.gameover
+    && !m.players[1].name
+    && m.createdAt === m.updatedAt);
   const matchTableBody = filteredMatches.length === 0
     ? (
       <tr>
