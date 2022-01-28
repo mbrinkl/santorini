@@ -12,10 +12,12 @@ import { GameBoard } from '../GameBoard';
 import { ButtonBack } from '../ButtonBack';
 import { LobbyPage } from '../LobbyPage';
 import { Button } from '../Button';
-import { isMobile, getMobileOS } from '../../utility';
+import { LobbyService } from '../../api/lobbyService';
+import {
+  isMobile, getMobileOS, supportsCopying, copyToClipboard,
+} from '../../utility';
 import 'tippy.js/dist/tippy.css'; // optional
 import './style.scss';
-import { LobbyService } from '../../api/lobbyService';
 
 const GameClient = Client({
   game: SantoriniGame,
@@ -26,17 +28,16 @@ const GameClient = Client({
 
 export const GameLobby = () => {
   const [isGameRunning, setGameRunning] = useState(false);
-  const [isSpectating, setSpectating] = useState(false);
 
   return isGameRunning ? (
-    <GameLobbyPlay spectating={isSpectating} />
+    <GameLobbyPlay />
   ) : (
-    <GameLobbySetup startGame={() => setGameRunning(true)} spectating={() => setSpectating(true)} />
+    <GameLobbySetup startGame={() => setGameRunning(true)} />
   );
 };
 
-export const GameLobbySetup: React.FC<{ startGame(): void, spectating(): void }> = ({
-  startGame, spectating,
+export const GameLobbySetup: React.FC<{ startGame(): void }> = ({
+  startGame,
 }) => {
   const { id } = useParams<{ id: string }>();
   const nickname = useStoreState((s) => s.nickname);
@@ -46,25 +47,15 @@ export const GameLobbySetup: React.FC<{ startGame(): void, spectating(): void }>
   const [tooltipVisible, setTooltipVisible] = useState(false);
   const os = getMobileOS();
 
-  const supportsCopying = !!document.queryCommandSupported('copy');
-  function copyToClipboard(value: string) {
-    const textField = document.createElement('textarea');
-    textField.innerText = value;
-    textField.style.opacity = '0';
-    document.body.appendChild(textField);
-    textField.select();
-    document.execCommand('copy');
-    textField.remove();
-  }
-
   const gameRoomFull = matchMetadata?.players.filter((p) => !p.name).length === 0;
 
   // poll api to load match data
   useEffect(() => {
+    const lobbyService = new LobbyService();
     const intervalID = setInterval(() => {
       if (id) {
-        new LobbyService().getMatch(id).then((data) => {
-          setMatchMetadata(data);
+        lobbyService.getMatch(id).then((data) => {
+          if (data) setMatchMetadata(data);
         });
       }
     }, 500);
@@ -102,6 +93,7 @@ export const GameLobbySetup: React.FC<{ startGame(): void, spectating(): void }>
       </div>
       <div className="Lobby__link">
         <div className="Lobby__link-box">{window.location.href}</div>
+
         {supportsCopying && (
           <Tippy
             visible={tooltipVisible}
@@ -119,22 +111,21 @@ export const GameLobbySetup: React.FC<{ startGame(): void, spectating(): void }>
               >
                 Copy
               </Button>
-
-              {os === 'iOS' || os === 'Android' ? (
-                <Button
-                  theme="blue"
-                  onClick={() => {
-                    window.open(os === 'iOS' ? `sms:&body=${window.location.href}` : `sms:?body=${window.location.href}`);
-                  }}
-                >
-                  Share
-                </Button>
-              ) : (
-                <></>
-              )}
             </div>
           </Tippy>
         )}
+
+        {os in ['iOS', 'Android'] && (
+          <Button
+            theme="blue"
+            onClick={() => {
+              window.open(os === 'iOS' ? `sms:&body=${window.location.href}` : `sms:?body=${window.location.href}`);
+            }}
+          >
+            Share
+          </Button>
+        )}
+
       </div>
 
       <div className="Lobby__players">
@@ -144,9 +135,7 @@ export const GameLobbySetup: React.FC<{ startGame(): void, spectating(): void }>
               key={player.id}
               className="Lobby__player Lobby__player--active"
             >
-              {player.name}
-              {' '}
-              {player.name === nickname && '(You)'}
+              {`${player.name} ${player.name === nickname && '(You)'}`}
             </div>
           ) : (
             <div
@@ -160,6 +149,7 @@ export const GameLobbySetup: React.FC<{ startGame(): void, spectating(): void }>
           <p>Loading...</p>
         )}
       </div>
+
       <div className="Lobby__status-message">
         {gameRoomFull ? (
           <p>Starting Game...</p>
@@ -171,14 +161,12 @@ export const GameLobbySetup: React.FC<{ startGame(): void, spectating(): void }>
   );
 };
 
-export const GameLobbyPlay: React.FC<{ spectating: boolean }> = ({
-  spectating,
-}) => {
+export const GameLobbyPlay: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const activeRoomPlayer = useStoreState((s) => s.activeRoomPlayer);
 
+  // Join as a player if the active room player data is set for this match id
   if (id && activeRoomPlayer?.matchID === id) {
-    console.log('joining as main squeeze');
     return (
       <GameClient
         matchID={id}
@@ -189,7 +177,7 @@ export const GameLobbyPlay: React.FC<{ spectating: boolean }> = ({
     );
   }
 
-  console.log('joining as spectator');
+  // Join as a spectator
   return (
     <GameClient matchID={id} />
   );

@@ -17,8 +17,13 @@ export class LobbyService {
     this.lobbyClient = new LobbyClient({ server: SERVER_URL });
   }
 
-  async getMatch(matchID: string): Promise<LobbyAPI.Match> {
-    return this.lobbyClient.getMatch(GAME_ID, matchID);
+  async getMatch(matchID: string): Promise<LobbyAPI.Match | undefined> {
+    try {
+      const match = await this.lobbyClient.getMatch(GAME_ID, matchID);
+      return match;
+    } catch {
+      return undefined;
+    }
   }
 
   async getMatches(): Promise<LobbyAPI.Match[]> {
@@ -57,24 +62,34 @@ export class LobbyService {
   async leaveRoom({
     matchID, playerID, credential,
   }: LeaveRoomParams): Promise<void> {
-    await this.lobbyClient.leaveMatch(
-      GAME_ID,
-      matchID,
-      {
-        playerID: String(playerID),
-        credentials: credential,
-      },
-    );
+    try {
+      await this.lobbyClient.leaveMatch(
+        GAME_ID,
+        matchID,
+        {
+          playerID: String(playerID),
+          credentials: credential,
+        },
+      );
+    // eslint-disable-next-line no-empty
+    } catch {
+
+    }
   }
 
   async updatePlayer({
     matchID, playerID, credentials, newName,
   }: UpdatePlayerParams): Promise<void> {
-    await this.lobbyClient.updatePlayer(GAME_ID, matchID, {
-      playerID: String(playerID),
-      credentials,
-      newName,
-    });
+    try {
+      await this.lobbyClient.updatePlayer(GAME_ID, matchID, {
+        playerID: String(playerID),
+        credentials,
+        newName,
+      });
+    // eslint-disable-next-line no-empty
+    } catch {
+
+    }
   }
 
   async playAgain({

@@ -2,8 +2,8 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import './style.scss';
 
-export const ButtonBack: React.FC<{ to: string }> = ({ to }) => (
+export const ButtonBack: React.FC<{ to: string, text?: string }> = ({ to, text = 'Back' }) => (
   <Link to={to} className="ButtonBack">
-    ↤ Back
+    {`↤ ${text}`}
   </Link>
 );

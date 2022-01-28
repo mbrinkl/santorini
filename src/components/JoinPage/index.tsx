@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom';
-import { useEffect, useState } from 'react';
+import { MouseEvent, useEffect, useState } from 'react';
 import { LobbyAPI } from 'boardgame.io';
 import { isMobile } from '../../utility';
 import { ButtonBack } from '../ButtonBack';
@@ -12,21 +12,27 @@ export function JoinPage() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    new LobbyService().getMatches().then((m) => {
-      setMatches(m);
-    });
-    const intervalID = setInterval(() => {
-      new LobbyService().getMatches().then((m) => {
+    const lobbyService = new LobbyService();
+    function pollMatches() {
+      lobbyService.getMatches().then((m) => {
         setMatches(m);
       });
+    }
+
+    pollMatches();
+    const intervalID = setInterval(() => {
+      pollMatches();
     }, 5000);
+
     return () => clearInterval(intervalID);
   }, []);
 
-  function onTableRowClicked(e) {
-    const row = e.target.closest('tr');
-    const matchID = row.innerText.substring(0, 11);
-    navigate(`/rooms/${matchID}`);
+  function onTableRowClicked(e: MouseEvent<HTMLTableRowElement>) : void {
+    const row = (e.target as HTMLTableRowElement).closest('tr');
+    const matchID = row?.innerText.substring(0, 11);
+    if (matchID) {
+      navigate(`/rooms/${matchID}`);
+    }
   }
 
   const filteredMatches = matches.filter((m) => !m.gameover && !m.players[1].name);

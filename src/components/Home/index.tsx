@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { LobbyService } from '../../api/lobbyService';
 import { LobbyPage } from '../LobbyPage';
@@ -6,23 +6,24 @@ import { Logo } from '../Logo';
 import { Button } from '../Button';
 import { ButtonChangeNickname } from '../ButtonChangeNickname';
 import { ButtonBack } from '../ButtonBack';
-import { useStoreState } from '../../store';
+import { useStoreActions, useStoreState } from '../../store';
 import style from './style.module.scss';
 
-export function Welcome() {
+export function Home() {
   const navigate = useNavigate();
   const [showHostOptions, setShowHostOptions] = useState(false);
   const activeRoomPlayer = useStoreState((s) => s.activeRoomPlayer);
-  // const leaveRoom = useStoreActions((s) => s.leaveRoom);
+  const leaveRoom = useStoreActions((s) => s.leaveRoom);
+  const [prevGameActive, setPrevGameActive] = useState(false);
 
   async function createGame(unlisted: boolean) {
-    // if (activeRoomPlayer) {
-    //   await leaveRoom({
-    //     matchID: activeRoomPlayer.matchID,
-    //     playerID: activeRoomPlayer.playerID,
-    //     credential: activeRoomPlayer.credential,
-    //   });
-    // }
+    if (activeRoomPlayer) {
+      await leaveRoom({
+        matchID: activeRoomPlayer.matchID,
+        playerID: activeRoomPlayer.playerID,
+        credential: activeRoomPlayer.credential,
+      });
+    }
 
     const matchID = await new LobbyService().createRoom({ numPlayers: 2, unlisted });
     navigate(`/rooms/${matchID}`);
@@ -30,25 +31,16 @@ export function Welcome() {
 
   const initialButtons = (
     <>
-      <Button
-        theme="green"
-        className={style.buttons}
-        onClick={() => setShowHostOptions(true)}
-      >
+      <Button theme="green" onClick={() => setShowHostOptions(true)}>
         Host
       </Button>
 
-      <Button
-        theme="blue"
-        className={style.buttons}
-        onClick={() => navigate('/rooms')}
-      >
+      <Button theme="blue" onClick={() => navigate('/rooms')}>
         Join
       </Button>
 
       <Button
         theme="yellow"
-        className={style.buttons}
         onClick={() => window.open('http://files.roxley.com/Santorini-Rulebook-Web-2016.08.14.pdf', '_blank')}
       >
         Rules
@@ -58,36 +50,37 @@ export function Welcome() {
 
   const hostOptionsButtons = (
     <>
-      <Button
-        theme="green"
-        className={style.buttons}
-        onClick={() => createGame(false)}
-      >
+      <Button theme="green" onClick={() => createGame(false)}>
         Public
       </Button>
 
-      <Button
-        theme="blue"
-        className={style.buttons}
-        onClick={() => createGame(true)}
-      >
+      <Button theme="blue" onClick={() => createGame(true)}>
         Private
       </Button>
 
-      <Button
-        theme="red"
-        className={style.buttons}
-        onClick={() => setShowHostOptions(false)}
-      >
+      <Button theme="red" onClick={() => setShowHostOptions(false)}>
         Cancel
       </Button>
     </>
   );
 
+  useEffect(() => {
+    async function isPrevGameActive() : Promise<void> {
+      if (activeRoomPlayer?.matchID) {
+        const matchData = await new LobbyService().getMatch(activeRoomPlayer?.matchID);
+        if (matchData && !matchData.gameover) {
+          setPrevGameActive(true);
+        }
+      }
+    }
+
+    isPrevGameActive();
+  }, [activeRoomPlayer]);
+
   return (
     <LobbyPage>
       <ButtonChangeNickname />
-      { activeRoomPlayer?.matchID && <ButtonBack to={`/rooms/${activeRoomPlayer.matchID}`} />}
+      { prevGameActive && <ButtonBack to={`/rooms/${activeRoomPlayer?.matchID}`} text="Return to Game" />}
       <Logo className={style.logo} size="large" />
 
       <div className={style.buttonsDiv}>

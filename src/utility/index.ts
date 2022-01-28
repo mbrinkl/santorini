@@ -23,3 +23,15 @@ export function getMobileOS() {
 export function isMobile() {
   return getMobileOS() !== 'unknown';
 }
+
+export const supportsCopying = !!document.queryCommandSupported('copy');
+
+export function copyToClipboard(value: string) {
+  const textField = document.createElement('textarea');
+  textField.innerText = value;
+  textField.style.opacity = '0';
+  document.body.appendChild(textField);
+  textField.select();
+  document.execCommand('copy');
+  textField.remove();
+}

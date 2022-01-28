@@ -14,6 +14,7 @@ export const store: StoreModel = {
     state.nickname = nickname;
   }),
 
+  // Metadata for a player's most recently joined game
   activeRoomPlayer: null,
   setActiveRoomPlayer: action((state, payload) => {
     localStorage.setItem(PLAYER_STORAGE_KEY, JSON.stringify(payload));

@@ -12,7 +12,7 @@ import { SetupNickname } from './components/SetupNickname';
 import { initializeStore, useStoreState } from './store';
 import { NICKNAME_STORAGE_KEY, PLAYER_STORAGE_KEY } from './config/client';
 import { StoreModel } from './types/StoreTypes';
-import { Welcome } from './components/Welcome';
+import { Home } from './components/Home';
 
 const savedNickname = localStorage.getItem(NICKNAME_STORAGE_KEY);
 const savedPlayer = localStorage.getItem(PLAYER_STORAGE_KEY);
@@ -29,7 +29,7 @@ const App: React.FC = () => {
   return (
     <div className="App">
       <Routes>
-        <Route path="/" element={<Welcome />} />
+        <Route path="/" element={<Home />} />
         <Route path="/rooms" element={nickname ? <JoinPage /> : <SetupNickname />} />
         <Route path="/rooms/:id" element={nickname ? <GameLobby /> : <SetupNickname />} />
         <Route path="/nickname" element={<SetupNickname onSubmit={() => navigate('/')} />} />

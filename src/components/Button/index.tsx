@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import { Link, LinkProps } from 'react-router-dom';
 import style from './style.module.scss';
 
-export interface ButtonProps {
+interface ButtonProps {
   theme?: 'red' | 'yellow' | 'blue' | 'green';
   size?: 'small' | 'medium';
 }
