@@ -10,10 +10,10 @@ import 'slick-carousel/slick/slick-theme.css';
 import './style.scss';
 
 export const CharacterBox: React.FC<{ name: string }> = ({ name }) => {
-  const { State, moves, playerID } = useBoardContext();
+  const { G, moves, playerID } = useBoardContext();
   const takenCharacters: string[] = [];
 
-  Object.values(State.players).forEach((player) => {
+  Object.values(G.players).forEach((player) => {
     takenCharacters.push(player.char.name);
   });
 
@@ -46,11 +46,11 @@ export const SelectedCharacterBox: React.FC<{
   name: string;
   playerID: string;
 }> = ({ name, playerID }) => {
-  const { State } = useBoardContext();
+  const { G } = useBoardContext();
 
   return (
     <div className={classNames(name, 'characterBox')}>
-      {State.players[playerID].ready
+      {G.players[playerID].ready
         && (
         <img
           className="characterBoxCheck"
@@ -65,7 +65,7 @@ export const SelectedCharacterBox: React.FC<{
 
 export const CharacterSelect = () => {
   const {
-    State, moves, matchData, playerID,
+    G, moves, matchData, playerID,
   } = useBoardContext();
 
   return (
@@ -99,13 +99,13 @@ export const CharacterSelect = () => {
             {matchData?.find((p) => p.id === 0)?.name}
           </span>
           <SelectedCharacterBox
-            name={State.players['0'].char.name}
+            name={G.players['0'].char.name}
             playerID="0"
           />
           <span>
-            {State.players['0'].char.name === 'Random'
+            {G.players['0'].char.name === 'Random'
               ? 'Random'
-              : State.players['0'].char.desc}
+              : G.players['0'].char.desc}
           </span>
           <h2 className="charSelect__disconnected">
             {matchData?.find((p) => p.id === 0)?.isConnected || 'Disconnected'}
@@ -116,13 +116,13 @@ export const CharacterSelect = () => {
             {matchData?.find((p) => p.id === 1)?.name}
           </span>
           <SelectedCharacterBox
-            name={State.players['1'].char.name}
+            name={G.players['1'].char.name}
             playerID="1"
           />
           <span>
-            {State.players['1'].char.name === 'Random'
+            {G.players['1'].char.name === 'Random'
               ? 'Random'
-              : State.players['1'].char.desc}
+              : G.players['1'].char.desc}
           </span>
           <h2 className="charSelect__disconnected">
             {matchData?.find((p) => p.id === 1)?.isConnected || 'Disconnected'}
@@ -130,7 +130,7 @@ export const CharacterSelect = () => {
         </div>
       </div>
 
-      {playerID && State.players[playerID].ready ? (
+      {playerID && G.players[playerID].ready ? (
         <Button
           theme="red"
           className="button"

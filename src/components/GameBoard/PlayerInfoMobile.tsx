@@ -4,7 +4,7 @@ import './style.scss';
 import { ConnectedIndicator } from './ConnectedIndicator';
 
 export const PlayerInfoMobile = () => {
-  const { playerID, State, matchData } = useBoardContext();
+  const { playerID, G, matchData } = useBoardContext();
   const [showOverlay, setShowOverlay] = useState(false);
 
   function toggleOverlay() {
@@ -16,8 +16,8 @@ export const PlayerInfoMobile = () => {
       <div className="MobileOverlay" onClick={toggleOverlay} role="none">
         <div className="MobileOverlay__p1">
           <span>
-            <h3>{matchData?.[0].name + (playerID === '0' ? ' (you) - ' : ' - ') + State.players[0].char.name}</h3>
-            {State.players[0].char.desc}
+            <h3>{matchData?.[0].name + (playerID === '0' ? ' (you) - ' : ' - ') + G.players[0].char.name}</h3>
+            {G.players[0].char.desc}
           </span>
         </div>
         <div className="MobileOverlay__mid">
@@ -25,8 +25,8 @@ export const PlayerInfoMobile = () => {
         </div>
         <div className="MobileOverlay__p2">
           <span>
-            <h3>{matchData?.[1].name + (playerID === '1' ? ' (you) - ' : ' - ') + State.players[1].char.name}</h3>
-            {State.players[1].char.desc}
+            <h3>{matchData?.[1].name + (playerID === '1' ? ' (you) - ' : ' - ') + G.players[1].char.name}</h3>
+            {G.players[1].char.desc}
           </span>
         </div>
       </div>
@@ -40,7 +40,7 @@ export const PlayerInfoMobile = () => {
       </div>
       <div className="PlayerInfoMobile__P1Name" onClick={toggleOverlay} role="button" tabIndex={0}>
         <h2>{matchData?.[0].name + (playerID === '0' ? ' (you)' : '')}</h2>
-        <span>{State.players[0].char.name}</span>
+        <span>{G.players[0].char.name}</span>
         <ConnectedIndicator playerID={0} />
       </div>
       <div className="PlayerInfoMobile__P2QuestionMark" onClick={toggleOverlay} role="button" tabIndex={0}>
@@ -48,7 +48,7 @@ export const PlayerInfoMobile = () => {
       </div>
       <div className="PlayerInfoMobile__P2Name" onClick={toggleOverlay} role="button" tabIndex={0}>
         <h2>{matchData?.[1].name + (playerID === '1' ? ' (you)' : '')}</h2>
-        <span>{State.players[1].char.name}</span>
+        <span>{G.players[1].char.name}</span>
         <ConnectedIndicator playerID={1} />
       </div>
     </div>

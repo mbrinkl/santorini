@@ -16,7 +16,7 @@ import { BoardPosition } from '../../../types/BoardTypes';
 
 export const Scene: React.FC<{ boardPositions: BoardPosition[] }> = ({ boardPositions }) => {
   const {
-    State, ctx, moves, isActive,
+    G, ctx, moves, isActive,
   } = useBoardContext();
 
   const [ground, setGround] = useState<JSX.Element[]>([]);
@@ -50,7 +50,7 @@ export const Scene: React.FC<{ boardPositions: BoardPosition[] }> = ({ boardPosi
     const stage = (ctx.activePlayers && ctx.activePlayers[ctx.currentPlayer]) || null;
     const { pos } = e.object.userData;
 
-    if (State.valids.includes(pos)) {
+    if (G.valids.includes(pos)) {
       if (phase === 'placeWorkers') {
         moves.Place(pos);
       } else {
@@ -69,7 +69,7 @@ export const Scene: React.FC<{ boardPositions: BoardPosition[] }> = ({ boardPosi
         }
       }
     }
-  }, [State, ctx, moves]);
+  }, [G, ctx, moves]);
 
   return (
     <>
@@ -87,7 +87,7 @@ export const Scene: React.FC<{ boardPositions: BoardPosition[] }> = ({ boardPosi
 
         {ground}
 
-        {State.players['0'].char.workers.map((worker) => (
+        {G.players['0'].char.workers.map((worker) => (
           <WorkerModel
             key={`workerModel0${worker.pos}`}
             boardPos={boardPositions[worker.pos]}
@@ -96,7 +96,7 @@ export const Scene: React.FC<{ boardPositions: BoardPosition[] }> = ({ boardPosi
           />
         ))}
 
-        {State.players['1'].char.workers.map((worker) => (
+        {G.players['1'].char.workers.map((worker) => (
           <WorkerModel
             key={`workerModel1${worker.pos}`}
             boardPos={boardPositions[worker.pos]}
@@ -105,7 +105,7 @@ export const Scene: React.FC<{ boardPositions: BoardPosition[] }> = ({ boardPosi
           />
         ))}
 
-        {State.spaces.map((space) => (
+        {G.spaces.map((space) => (
           <>
             {space.height >= 1 && buildingsLevel1[space.pos]}
             {space.height >= 2 && buildingsLevel2[space.pos]}
@@ -122,14 +122,14 @@ export const Scene: React.FC<{ boardPositions: BoardPosition[] }> = ({ boardPosi
 
         {isActive
           && !ctx.gameover
-          && State.valids.map((pos) => ((ctx.activePlayers && ctx.activePlayers[ctx.currentPlayer]) === 'place' ? (
-            <PlaceIndicator key={`placeIndicator${pos}`} boardPos={boardPositions[pos]} height={State.spaces[pos].height} />
+          && G.valids.map((pos) => ((ctx.activePlayers && ctx.activePlayers[ctx.currentPlayer]) === 'place' ? (
+            <PlaceIndicator key={`placeIndicator${pos}`} boardPos={boardPositions[pos]} height={G.spaces[pos].height} />
           ) : (ctx.activePlayers && ctx.activePlayers[ctx.currentPlayer]) === 'select' ? (
-            <SelectIndicator key={`selectIndicator${pos}`} boardPos={boardPositions[pos]} height={State.spaces[pos].height} />
+            <SelectIndicator key={`selectIndicator${pos}`} boardPos={boardPositions[pos]} height={G.spaces[pos].height} />
           ) : (ctx.activePlayers && ctx.activePlayers[ctx.currentPlayer]) === 'move' ? (
-            <MoveIndicator key={`moveIndicator${pos}`} boardPos={boardPositions[pos]} height={State.spaces[pos].height} />
+            <MoveIndicator key={`moveIndicator${pos}`} boardPos={boardPositions[pos]} height={G.spaces[pos].height} />
           ) : (ctx.activePlayers && ctx.activePlayers[ctx.currentPlayer]) === 'build' ? (
-            <BuildIndicator key={`bulidIndicator${pos}`} boardPos={boardPositions[pos]} height={State.spaces[pos].height} />
+            <BuildIndicator key={`bulidIndicator${pos}`} boardPos={boardPositions[pos]} height={G.spaces[pos].height} />
           ) : (
             // todo: special move indicator
             <></>

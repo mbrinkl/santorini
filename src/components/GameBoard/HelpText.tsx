@@ -2,7 +2,7 @@ import { useBoardContext } from './BoardContext';
 
 export const HelpText = () => {
   const {
-    State, isActive, ctx, matchData, playerID,
+    G, isActive, ctx, matchData, playerID,
   } = useBoardContext();
 
   const stage: string | null = (ctx.activePlayers && ctx.activePlayers[ctx.currentPlayer]) || null;
@@ -14,7 +14,7 @@ export const HelpText = () => {
 
   if (!ctx.gameover && isActive) {
     if (stage === 'place') {
-      hint = `Place ${State.players[ctx.currentPlayer].char.numWorkersToPlace} workers`;
+      hint = `Place ${G.players[ctx.currentPlayer].char.numWorkersToPlace} workers`;
     } else if (stage === 'select') {
       hint = 'Select a worker';
     } else if (stage === 'move') {

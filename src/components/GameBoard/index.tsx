@@ -12,37 +12,12 @@ import { Chat } from './Chat';
 import { isMobile } from '../../utility';
 import './style.scss';
 
-export const GameBoard: React.FC<BoardProps<GameState>> = ({
-  G: State,
-  moves,
-  isActive,
-  ctx,
-  playerID,
-  undo,
-  matchData,
-  sendChatMessage,
-  chatMessages,
-  matchID,
-  credentials,
-}) => {
+export const GameBoard: React.FC<BoardProps<GameState>> = (boardProps) => {
   const [showChat, setShowChat] = useState(!isMobile());
+  const { ctx } = boardProps;
 
   return (
-    <BoardContext.Provider
-      value={{
-        playerID,
-        matchID,
-        credentials,
-        moves,
-        State,
-        isActive,
-        ctx,
-        undo,
-        sendChatMessage,
-        chatMessages,
-        matchData,
-      }}
-    >
+    <BoardContext.Provider value={boardProps}>
       {ctx.phase === 'selectCharacters'
         ? <CharacterSelect />
         : (

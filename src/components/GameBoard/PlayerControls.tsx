@@ -13,7 +13,7 @@ export const PlayerControls: React.FC<{
   onOpenMessages? : () => void
 }> = ({ messagesOpen, onOpenMessages }) => {
   const {
-    playerID, State, isActive, moves, ctx, undo, chatMessages, sendChatMessage, credentials,
+    playerID, G, isActive, moves, ctx, undo, chatMessages, sendChatMessage, credentials,
     matchID,
   } = useBoardContext();
 
@@ -57,7 +57,7 @@ export const PlayerControls: React.FC<{
     }, 1000);
 
     return () => clearInterval(intervalID.current);
-  }, [counter, intervalID, State, moves, isActive, ctx]);
+  }, [counter, intervalID, moves, isActive, ctx]);
 
   function undoMove() {
     clearInterval(intervalID.current);
@@ -146,10 +146,10 @@ export const PlayerControls: React.FC<{
               theme="blue"
               size="small"
               className="PlayerControls__button"
-              disabled={!State.players[playerID].char.buttonActive}
+              disabled={!G.players[playerID].char.buttonActive}
               onClick={() => moves.CharacterAbility()}
             >
-              {State.players[playerID].char.buttonText}
+              {G.players[playerID].char.buttonText}
             </Button>
 
             <Button
