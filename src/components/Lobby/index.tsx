@@ -135,7 +135,7 @@ export const GameLobbySetup: React.FC<{ startGame(): void }> = ({
               key={player.id}
               className="Lobby__player Lobby__player--active"
             >
-              {`${player.name} ${player.name === nickname && '(You)'}`}
+              {`${player.name} ${player.name === nickname ? '(You)' : ''}`}
             </div>
           ) : (
             <div

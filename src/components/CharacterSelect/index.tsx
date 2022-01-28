@@ -1,6 +1,7 @@
 import React from 'react';
 import Slider from 'react-slick';
 import classNames from 'classnames';
+import { ConnectedIndicator } from '../GameBoard/ConnectedIndicator';
 import { Button } from '../Button';
 import { getSortedCharacters } from '../../game/characters';
 import { useBoardContext } from '../GameBoard/BoardContext';
@@ -68,6 +69,35 @@ export const CharacterSelect = () => {
     G, moves, matchData, playerID,
   } = useBoardContext();
 
+  let readyButton: JSX.Element | null = null;
+
+  // If not a spectator
+  if (playerID) {
+    if (G.players[playerID].ready) {
+      readyButton = (
+        <Button
+          theme="red"
+          onClick={() => {
+            moves.CancelReady(playerID);
+          }}
+        >
+          Cancel
+        </Button>
+      );
+    } else {
+      readyButton = (
+        <Button
+          theme="green"
+          onClick={() => {
+            moves.Ready(playerID);
+          }}
+        >
+          Ready
+        </Button>
+      );
+    }
+  }
+
   return (
     <div className="charSelect">
       <h1>Select a Character</h1>
@@ -94,63 +124,28 @@ export const CharacterSelect = () => {
       </div>
 
       <div className="charSelect__selectedCharDiv">
-        <div className="charSelect__selectedChar">
-          <span className="charSelect__playerName">
-            {matchData?.find((p) => p.id === 0)?.name}
-          </span>
-          <SelectedCharacterBox
-            name={G.players['0'].char.name}
-            playerID="0"
-          />
-          <span>
-            {G.players['0'].char.name === 'Random'
-              ? 'Random'
-              : G.players['0'].char.desc}
-          </span>
-          <h2 className="charSelect__disconnected">
-            {matchData?.find((p) => p.id === 0)?.isConnected || 'Disconnected'}
-          </h2>
-        </div>
-        <div className="charSelect__selectedChar">
-          <span className="charSelect__playerName">
-            {matchData?.find((p) => p.id === 1)?.name}
-          </span>
-          <SelectedCharacterBox
-            name={G.players['1'].char.name}
-            playerID="1"
-          />
-          <span>
-            {G.players['1'].char.name === 'Random'
-              ? 'Random'
-              : G.players['1'].char.desc}
-          </span>
-          <h2 className="charSelect__disconnected">
-            {matchData?.find((p) => p.id === 1)?.isConnected || 'Disconnected'}
-          </h2>
-        </div>
+
+        {Object.values(G.players).map((player) => (
+          <div key={`selectedChar${player.id}`} className="charSelect__selectedChar">
+            <span className="charSelect__playerName">
+              {matchData?.[player.id].name}
+            </span>
+            <SelectedCharacterBox
+              name={player.char.name}
+              playerID={player.id}
+            />
+            <span>
+              {player.char.name === 'Random'
+                ? 'Random'
+                : G.players['0'].char.desc}
+            </span>
+            <ConnectedIndicator playerID={0} />
+          </div>
+        ))}
+
       </div>
 
-      {playerID && G.players[playerID].ready ? (
-        <Button
-          theme="red"
-          className="button"
-          onClick={() => {
-            moves.CancelReady(playerID);
-          }}
-        >
-          Cancel
-        </Button>
-      ) : (
-        <Button
-          theme="green"
-          className="button"
-          onClick={() => {
-            moves.Ready(playerID);
-          }}
-        >
-          Ready
-        </Button>
-      )}
+      {readyButton}
     </div>
   );
 };
