@@ -5,5 +5,7 @@ export const ConnectedIndicator: React.FC<{ playerID: number }> = ({ playerID })
   const { matchData } = useBoardContext();
   const connected = matchData?.[playerID].isConnected;
 
-  return <h2 className="connStatus">{connected ? '' : 'Disconnected'}</h2>;
+  const status = connected ? 'Connected' : 'Disconnected';
+
+  return <div title={status} className={`connStatus ${status}`} />;
 };

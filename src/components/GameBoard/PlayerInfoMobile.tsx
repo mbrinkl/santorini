@@ -39,17 +39,21 @@ export const PlayerInfoMobile = () => {
         <span>&nbsp;?&nbsp;</span>
       </div>
       <div className="PlayerInfoMobile__P1Name" onClick={toggleOverlay} role="button" tabIndex={0}>
-        <h2>{matchData?.[0].name + (playerID === '0' ? ' (you)' : '')}</h2>
+        <div className="PlayerInfoMobile__Name">
+          <ConnectedIndicator playerID={0} />
+          <h2>{matchData?.[0].name + (playerID === '0' ? ' (you)' : '')}</h2>
+        </div>
         <span>{G.players[0].char.name}</span>
-        <ConnectedIndicator playerID={0} />
       </div>
       <div className="PlayerInfoMobile__P2QuestionMark" onClick={toggleOverlay} role="button" tabIndex={0}>
         <span>&nbsp;?&nbsp;</span>
       </div>
       <div className="PlayerInfoMobile__P2Name" onClick={toggleOverlay} role="button" tabIndex={0}>
-        <h2>{matchData?.[1].name + (playerID === '1' ? ' (you)' : '')}</h2>
+        <div className="PlayerInfoMobile__Name">
+          <ConnectedIndicator playerID={1} />
+          <h2>{matchData?.[1].name + (playerID === '1' ? ' (you)' : '')}</h2>
+        </div>
         <span>{G.players[1].char.name}</span>
-        <ConnectedIndicator playerID={1} />
       </div>
     </div>
   );

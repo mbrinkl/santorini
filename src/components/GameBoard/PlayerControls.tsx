@@ -1,6 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
 import { useParams } from 'react-router';
-import classNames from 'classnames';
 import { LobbyService } from '../../api/lobbyService';
 import { useBoardContext } from './BoardContext';
 import { Button } from '../Button';
@@ -105,7 +104,7 @@ export const PlayerControls: React.FC<{
           className="PlayerControls__button"
           onClick={showMessages}
         >
-          <img className={classNames('imgMsg', msgBlack ? 'blackmsg' : '')} src={messagesLogo} alt="msgLogo" />
+          <img className={`imgMsg ${msgBlack ? 'blackmsg' : ''}`} src={messagesLogo} alt="msgLogo" />
         </Button>
         )}
 

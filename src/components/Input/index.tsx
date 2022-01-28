@@ -1,5 +1,4 @@
 import React, { InputHTMLAttributes } from 'react';
-import classNames from 'classnames';
 import style from './style.module.scss';
 
 export const Input: React.FC<InputHTMLAttributes<HTMLInputElement>> = ({
@@ -8,7 +7,7 @@ export const Input: React.FC<InputHTMLAttributes<HTMLInputElement>> = ({
   ...props
 }) => (
   <input
-    className={classNames(style.input, className)}
+    className={`${style.input} ${className}`}
     type={type}
     {...props}
   />

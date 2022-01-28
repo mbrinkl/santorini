@@ -1,5 +1,4 @@
 import React from 'react';
-import classNames from 'classnames';
 import { ReactComponent as LogoSvg } from '../../assets/svg/logo.svg';
 import './style.scss';
 
@@ -10,7 +9,7 @@ interface Props {
 
 export const Logo: React.FC<Props> = ({ size, className, ...props }) => (
   <LogoSvg
-    className={classNames('Logo', `Logo--${size}`, className)}
+    className={`Logo ${`Logo--${size}`} ${className}`}
     {...props}
   />
 );

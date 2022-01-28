@@ -1,87 +1,119 @@
 @import "~styles/shared";
 
-.imgMsg {
-  position:"absolute";
-  width: 25px;
-  height: 25px;
-}
-
-.blackmsg {
-  filter: brightness(0%);
-}
-
-.GameBoard {
+.container {
   height: 100%;
+  width: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
-  flex-direction: column;
-}
 
-#canvas {
-  position: flex;
-  padding-left: 0;
-  padding-right: 0;
-  margin-left: auto;
-  margin-right: auto;
-  display: block;
-  outline: none;
-  -webkit-tap-highlight-color: rgba(255, 255, 255, 0); 
-  -moz-user-select: none;
-  -webkit-user-select: none;
-  -ms-user-select: none;
-}
+  .chatContainer {
+    width: 20%;
+    height: 75%;
+    margin: auto;
+  }
 
-.PlayerControls {
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  margin-top: 12px;
+  .boardContainer {
+    display: flex;
+    width: 50%;
+    height: 100%;
+    margin: auto;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 
-  &__button {
-    margin-left: 5px;
-    margin-right: 5px;
+    #canvas {
+      position: flex;
+      padding-left: 0;
+      padding-right: 0;
+      margin-left: auto;
+      margin-right: auto;
+      display: block;
+      outline: none;
+      -webkit-tap-highlight-color: rgba(255, 255, 255, 0);
+      user-select: none;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+    }
+
+    .PlayerControls {
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      margin-top: 12px;
+    
+      &__button {
+        margin-left: 5px;
+        margin-right: 5px;
+      }
+    }
+  }
+
+  .playerInfoContainer {
+    width: 20%;
+    height: 75%;
+    margin: auto;
+
+    .PlayerInfo {
+      flex-grow: 1;
+      height: 100%;
+      width: 100%;
+      font-size: 16px;
+      position: relative;
+    
+      h2, h4 {
+        margin: 0;
+      }
+    
+      p, h4, h2 {
+        text-align: center;
+      }
+    
+      &__P1Info {
+        position: absolute;
+        top: 25px;
+        left: 50%;
+        width: 100%;
+        transform: translate(-50% , 0);
+        -webkit-transform: translate(-50%, 0);
+        color: dodgerblue;
+      }
+    
+      &__P2Info {
+        position: absolute;
+        bottom: 25px;
+        left: 50%;
+        width: 100%;
+        transform: translate(-50% , 0);
+        -webkit-transform: translate(-50%, 0);
+        color: gray;
+      }
+
+      &__Name {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+      
+        div {
+          margin-right: 5px;
+        }
+      }
+    }
   }
 }
 
 .connStatus { 
-  color: red;
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
 }
 
-.PlayerInfo {
-  flex-grow: 1;
-  height: 75vh;
-  width: 15vw;
-  font-size: 16px;
-  position: relative;
+.Connected {
+  background-color: lime;
+}
 
-  h2, h4 {
-    margin: 0;
-  }
-
-  p, h4, h2 {
-    text-align: center;
-  }
-
-  &__P1Name {
-    position: absolute;
-    top: 25px;
-    left: 50%;
-    width: 100%;
-    transform: translate(-50% , 0);
-    -webkit-transform: translate(-50%, 0);
-    color: dodgerblue;
-  }
-
-  &__P2Name {
-    position: absolute;
-    bottom: 25px;
-    left: 50%;
-    width: 100%;
-    transform: translate(-50% , 0);
-    -webkit-transform: translate(-50%, 0);
-    color: gray;
-  }
+.Disconnected {
+  background-color: red;
 }
 
 .PlayerInfoMobile {
@@ -126,6 +158,16 @@
     right: 40px;
     font-size: 14px;
     text-align: right;
+  }
+
+  &__Name {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+  
+    div {
+      margin-right: 5px;
+    }
   }
 }
 
@@ -240,21 +282,21 @@
   }
 }
 
-.chat {
-  .chatWarning {
-    color: red;
-  }
+.imgMsg {
+  position:"absolute";
+  width: 25px;
+  height: 25px;
+}
 
-  .sender-0 {
-    color: dodgerblue;
-  }
-  
-  .sender-1 {
-    color: gray;
-  }  
+.blackmsg {
+  filter: brightness(0%);
 }
 
 @media only screen and (max-width: 599px) {
+  .boardContainer {
+    min-width: 100%;
+  }
+
   #canvas {
     height: 60vh;
     width: 100%;
@@ -266,80 +308,11 @@
     padding: 0;
   }
 
-  .chat {
-    position: absolute;
-    z-index: 10;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    background: transparentize($c-black, 0.10);
-
-    .sendImg {
-      width: 25px;
-      height: 25px;
-    }
-
-    .messages {
-      position: absolute;
-      top: 0;
-      right: 10px;
-      left: 10px;
-      height: 90%;
-      overflow-y: auto;
-      word-wrap: break-word;
-      text-align: left;
-      color: white;
-    }
-
-    .chatControls {
-      position: absolute;
-      display: flex;
-      justify-content: space-evenly;
-      height: 8%;
-      bottom: 0;
-      right: 0;
-      left: 0;
-      color: white;
-    
-      input {
-        width: 50%;
-        height: 100%;
-        padding-left: 5px;
-        border-radius: 10px;
-        border: none;
-        float: left;
-      }
-    
-      .sendBtn {
-        background: rgb(0, 196, 65);
-        margin-left: 5px;
-      }
-
-      .closeBtn {
-        background: red;
-        color: white;
-        font-weight: bold;
-      }
-
-      button {
-        border-radius: 10px;
-        border: none;
-        outline: none;
-        height: 100%;
-        margin-left: 5px;
-        margin-right: 5px;
-        width: 20%;
-      }
-    }
+  .chatContainer {
+    display: none;
   }
 }
 @media only screen and (min-width: 599px) {
-  .GameBoard {
-    flex-direction: row;
-    margin-left: 10px;
-    margin-right: 10px;
-  }
   
   #canvas {
     height: 65vh;
@@ -349,51 +322,5 @@
   .PlayerBoard {
     margin-left: 25px;
     margin-right: 25px;
-  }
-
-  .chat {
-    flex-grow: 1;
-    height: 75vh;
-    width: 15vw;
-    font-size: 12px;
-    position: relative;
-
-    .sendImg {
-      width: 20px;
-      height: 20px;
-    }
-
-    .messages {
-      height: 90%;
-      overflow-y: auto;
-      word-wrap: break-word;
-    }
-
-    .chatControls {
-      position: absolute;
-      bottom: 0;
-      height: 8%;
-      width: 100%;
-      
-      input {
-        height: 100%;
-        width: 75%;
-        padding-left: 5px;
-        border-radius: 10px;
-        border: none;
-        float: left;
-      }
-    
-      .sendBtn {
-        background: rgb(0, 196, 65);
-        cursor: pointer;
-        border: none;
-        outline: none;
-        border-radius: 10px;
-        float: right;
-        height: 100%;
-        width: 20%;
-      }
-    }
   }
 }

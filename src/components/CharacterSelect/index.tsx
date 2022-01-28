@@ -1,13 +1,10 @@
 import React from 'react';
-import Slider from 'react-slick';
-import classNames from 'classnames';
 import { ConnectedIndicator } from '../GameBoard/ConnectedIndicator';
 import { Button } from '../Button';
 import { getSortedCharacters } from '../../game/characters';
 import { useBoardContext } from '../GameBoard/BoardContext';
+import { Chat } from '../Chat';
 import CheckImg from '../../assets/png/check.png';
-import 'slick-carousel/slick/slick.css';
-import 'slick-carousel/slick/slick-theme.css';
 import './style.scss';
 
 export const CharacterBox: React.FC<{ name: string }> = ({ name }) => {
@@ -32,7 +29,7 @@ export const CharacterBox: React.FC<{ name: string }> = ({ name }) => {
 
   return (
     <div
-      className={classNames(name, 'characterBoxSelectable', isCharacterTaken() && 'grayscale')}
+      className={`${name} characterBoxSelectable ${isCharacterTaken() && 'grayscale'}`}
       onClick={select}
       onKeyDown={(e) => e.key === 'Enter' && select()}
       role="button"
@@ -50,7 +47,7 @@ export const SelectedCharacterBox: React.FC<{
   const { G } = useBoardContext();
 
   return (
-    <div className={classNames(name, 'characterBox')}>
+    <div className={`${name} characterBox`}>
       {G.players[playerID].ready
         && (
         <img
@@ -99,53 +96,50 @@ export const CharacterSelect = () => {
   }
 
   return (
-    <div className="charSelect">
-      <h1>Select a Character</h1>
+    <div>
+      <div className="charSelect">
 
-      <Slider
-        dots={false}
-        infinite
-        speed={500}
-        slidesToShow={3}
-        swipeToSlide
-        className="charSelect__carousel"
-      >
-        {getSortedCharacters().map((character) => (
-          <div key={character}>
-            <CharacterBox name={character} />
+        <div className="charSelect__chat">
+          <div className="chatContainer">
+            <Chat />
           </div>
-        ))}
-      </Slider>
+        </div>
 
-      <div className="charSelect__characters">
-        {getSortedCharacters().map((character) => (
-          <CharacterBox key={character} name={character} />
-        ))}
+        <div className="charSelect__selectedCharDiv">
+          <h1>Select a Character</h1>
+
+          {Object.values(G.players).map((player) => (
+            <div key={`selectedChar${player.id}`} className="charSelect__selectedChar">
+              <div className="charSelect__characterCard">
+                <div className="charSelect__playerNameDiv">
+                  <ConnectedIndicator playerID={+player.id} />
+                  <span className="charSelect__playerName">
+                    {matchData?.[player.id].name}
+                  </span>
+                </div>
+                <SelectedCharacterBox
+                  name={player.char.name}
+                  playerID={player.id}
+                />
+              </div>
+              <div className="charSelect__characterDescription">
+                {player.char.name === 'Random'
+                  ? 'Random'
+                  : G.players[player.id].char.desc}
+              </div>
+            </div>
+          ))}
+
+          {readyButton}
+
+        </div>
+
+        <div className="charSelect__characters">
+          {getSortedCharacters().map((character) => (
+            <CharacterBox key={character} name={character} />
+          ))}
+        </div>
       </div>
-
-      <div className="charSelect__selectedCharDiv">
-
-        {Object.values(G.players).map((player) => (
-          <div key={`selectedChar${player.id}`} className="charSelect__selectedChar">
-            <span className="charSelect__playerName">
-              {matchData?.[player.id].name}
-            </span>
-            <SelectedCharacterBox
-              name={player.char.name}
-              playerID={player.id}
-            />
-            <span>
-              {player.char.name === 'Random'
-                ? 'Random'
-                : G.players['0'].char.desc}
-            </span>
-            <ConnectedIndicator playerID={0} />
-          </div>
-        ))}
-
-      </div>
-
-      {readyButton}
     </div>
   );
 };

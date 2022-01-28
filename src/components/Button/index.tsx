@@ -1,5 +1,4 @@
 import React, { ButtonHTMLAttributes } from 'react';
-import classNames from 'classnames';
 import { Link, LinkProps } from 'react-router-dom';
 import style from './style.module.scss';
 
@@ -17,12 +16,11 @@ ButtonProps & ButtonHTMLAttributes<HTMLButtonElement>
   <button
     ref={ref}
     type="button"
-    className={classNames(
-      style.button,
-      style[`button--${theme}`],
-      style[`button--size-${size}`],
-      className,
-    )}
+    className={`
+      ${style.button}
+      ${style[`button--${theme}`]}
+      ${style[`button--size-${size}`]}
+      ${className}`}
     {...props}
   />
 ));
@@ -34,12 +32,11 @@ export const ButtonLink: React.FC<ButtonProps & LinkProps> = ({
   ...props
 }) => (
   <Link
-    className={classNames(
-      style.button,
-      style[`button--${theme}`],
-      style[`button--size-${size}`],
-      className,
-    )}
+    className={`
+      ${style.button},
+      ${style[`button--${theme}`]}
+      ${style[`button--size-${size}`]}
+      ${className}`}
     {...props}
   />
 );

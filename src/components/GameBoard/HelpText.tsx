@@ -30,10 +30,6 @@ export const HelpText = () => {
     hint = ctx.gameover.winner === playerID ? 'You Win!' : 'You Lose';
   }
 
-  //   <span className="PlayerBoard__hint-accent">
-  //   Waiting for{ currentPlayerName }...
-  // </span>
-
   return (
     <span className="PlayerBoard__hint">
       {hint}

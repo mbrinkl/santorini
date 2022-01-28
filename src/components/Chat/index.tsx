@@ -1,17 +1,17 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { useBoardContext } from './BoardContext';
+import { useBoardContext } from '../GameBoard/BoardContext';
 import { isMobile } from '../../utility';
 import sendIcon from '../../assets/png/send.png';
+import './style.scss';
 
 export const ChatMessage: React.FC<{ sender: string, message: string }> = ({ sender, message }) => {
   const { playerID, matchData } = useBoardContext();
-  const senderName = matchData?.find((p) => String(p.id) === sender)?.name + (playerID === sender ? ' (you)' : '');
+  const senderName = matchData?.[sender]?.name + (playerID === sender ? ' (you)' : '');
 
   return (
     <p>
       <span className={`sender-${sender}`}>{senderName}</span>
-      :
-      {message}
+      {`: ${message}`}
     </p>
   );
 };
@@ -50,7 +50,7 @@ export const Chat: React.FC<{ onCloseMessages? : () => void | null }> = ({ onClo
       <div className="messages">
         <p className="chatWarning">
           Chat messages are not stored on the server and will only be received
-          by connected players.
+          by connected players. Spectators cannot use the chat.
         </p>
         {chatMessages.map((msg) => (
           <ChatMessage key={msg.id} sender={msg.sender} message={msg.payload} />

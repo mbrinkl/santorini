@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import classNames from 'classnames';
 import { Canvas } from '@react-three/fiber';
 import { useContextBridge } from '@react-three/drei';
 import { HelpText } from './HelpText';
@@ -30,13 +29,13 @@ export const PlayerBoard: React.FC = () => {
 
   return (
     <div
-      className={classNames('PlayerBoard', ctx.gameover
+      className={`PlayerBoard ${ctx.gameover
         ? ctx.gameover.winner === playerID
           ? 'PlayerBoard--winner'
           : 'PlayerBoard--loser'
         : isActive
           ? 'PlayerBoard--active'
-          : 'PlayerBoard--waiting')}
+          : 'PlayerBoard--waiting'}`}
     >
 
       <HelpText />
