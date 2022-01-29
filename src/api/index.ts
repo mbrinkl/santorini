@@ -48,7 +48,7 @@ export async function leaveMatch({
   credentials,
 }: LeaveRoomParams): Promise<void> {
   try {
-    await axios.post<{ playerCredentials: string }>(`/${matchID}/leave`, {
+    await axios.post(`/${matchID}/leave`, {
       playerID,
       credentials,
     });
