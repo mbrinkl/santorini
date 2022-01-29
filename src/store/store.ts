@@ -26,7 +26,7 @@ export const store: StoreModel = {
     actions.setActiveRoomPlayer({
       matchID: payload.matchID,
       credential: playerCredentials,
-      playerID: +payload.playerID,
+      playerID: payload.playerID,
     });
   }),
   leaveRoom: thunk(async (actions, payload) => {

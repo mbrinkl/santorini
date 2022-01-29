@@ -2,7 +2,7 @@ import { Action, Thunk } from 'easy-peasy';
 
 interface ActiveRoomPlayer {
   matchID: string;
-  playerID: number;
+  playerID: string;
   credential: string;
 }
 

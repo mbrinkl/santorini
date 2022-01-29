@@ -63,7 +63,7 @@ export const GameLobbySetup: React.FC<{ startGame(): void }> = ({
     // find first empty seat ID
     const emptySeatID = matchMetadata?.players.find((p) => !p.name)?.id;
     const alreadyJoined = matchMetadata?.players.find((p) => (
-      p.id === activeRoomPlayer?.playerID && p.name === nickname
+      p.id.toString() === activeRoomPlayer?.playerID && p.name === nickname
     ));
 
     if (!alreadyJoined && emptySeatID !== undefined && nickname && id) {
