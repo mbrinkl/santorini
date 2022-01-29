@@ -16,15 +16,6 @@ export const SetupNickname: React.FC<{ onSubmit?: () => void }> = ({
   const [nickname, setNickname] = useState(initialNickname || '');
   const activeRoomPlayer = useStoreState((s) => s.activeRoomPlayer);
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    persistNickname(nickname);
-    onSubmit?.();
-
-    // update player name if they are in a game
-    asyncUpdatePlayer();
-  };
-
   async function asyncUpdatePlayer() {
     if (activeRoomPlayer) {
       await new LobbyService().updatePlayer({
@@ -35,6 +26,15 @@ export const SetupNickname: React.FC<{ onSubmit?: () => void }> = ({
       });
     }
   }
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    persistNickname(nickname);
+    onSubmit?.();
+
+    // update player name if they are in a game
+    asyncUpdatePlayer();
+  };
 
   return (
     <LobbyPage>

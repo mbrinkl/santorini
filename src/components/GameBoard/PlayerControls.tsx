@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { useParams } from 'react-router';
+import { useParams } from 'react-router-dom';
 import { LobbyService } from '../../api/lobbyService';
 import { useBoardContext } from './BoardContext';
 import { Button } from '../Button';
@@ -102,7 +102,7 @@ export const PlayerControls: React.FC<{
           theme="yellow"
           size="small"
           className="PlayerControls__button"
-          onClick={showMessages}
+          onClick={() => showMessages()}
         >
           <img className={`imgMsg ${msgBlack ? 'blackmsg' : ''}`} src={messagesLogo} alt="msgLogo" />
         </Button>
@@ -112,7 +112,7 @@ export const PlayerControls: React.FC<{
         <>
           <Button
             theme="red"
-            onClick={exit}
+            onClick={() => exit()}
             className="PlayerControls__button"
             size="small"
           >

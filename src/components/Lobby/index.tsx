@@ -16,7 +16,7 @@ import { LobbyService } from '../../api/lobbyService';
 import {
   isMobile, getMobileOS, supportsCopying, copyToClipboard,
 } from '../../utility';
-import 'tippy.js/dist/tippy.css'; // optional
+import 'tippy.js/dist/tippy.css';
 import './style.scss';
 
 const GameClient = Client({
@@ -25,16 +25,6 @@ const GameClient = Client({
   multiplayer: SocketIO({ server: SERVER_URL }),
   debug: !isProduction && !isMobile(),
 });
-
-export const GameLobby = () => {
-  const [isGameRunning, setGameRunning] = useState(false);
-
-  return isGameRunning ? (
-    <GameLobbyPlay />
-  ) : (
-    <GameLobbySetup startGame={() => setGameRunning(true)} />
-  );
-};
 
 export const GameLobbySetup: React.FC<{ startGame(): void }> = ({
   startGame,
@@ -180,5 +170,15 @@ export const GameLobbyPlay: React.FC = () => {
   // Join as a spectator
   return (
     <GameClient matchID={id} />
+  );
+};
+
+export const GameLobby = () => {
+  const [isGameRunning, setGameRunning] = useState(false);
+
+  return isGameRunning ? (
+    <GameLobbyPlay />
+  ) : (
+    <GameLobbySetup startGame={() => setGameRunning(true)} />
   );
 };

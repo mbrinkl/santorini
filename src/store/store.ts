@@ -33,5 +33,5 @@ export const store: StoreModel = {
     actions.setActiveRoomPlayer(null);
   }),
 
-  reset: action((state, payload) => initState),
+  reset: action(() => initState),
 };
