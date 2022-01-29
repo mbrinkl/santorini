@@ -12,7 +12,7 @@ import { GameBoard } from '../GameBoard';
 import { ButtonBack } from '../ButtonBack';
 import { LobbyPage } from '../LobbyPage';
 import { Button } from '../Button';
-import { LobbyService } from '../../api/lobbyService';
+import { getMatch } from '../../api';
 import {
   isMobile, getMobileOS, supportsCopying, copyToClipboard,
 } from '../../utility';
@@ -41,10 +41,9 @@ export const GameLobbySetup: React.FC<{ startGame(): void }> = ({
 
   // poll api to load match data
   useEffect(() => {
-    const lobbyService = new LobbyService();
     const intervalID = setInterval(() => {
       if (id) {
-        lobbyService.getMatch(id).then((data) => {
+        getMatch(id).then((data) => {
           if (data) setMatchMetadata(data);
         });
       }
@@ -68,7 +67,7 @@ export const GameLobbySetup: React.FC<{ startGame(): void }> = ({
     ));
 
     if (!alreadyJoined && emptySeatID !== undefined && nickname && id) {
-      joinRoom({ playerID: emptySeatID, playerName: nickname, matchID: id });
+      joinRoom({ playerID: emptySeatID.toString(), playerName: nickname, matchID: id });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [matchMetadata]);

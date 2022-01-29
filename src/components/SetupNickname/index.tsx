@@ -1,12 +1,11 @@
-import * as React from 'react';
-import './style.scss';
-import { useState } from 'react';
-import { LobbyService } from '../../api/lobbyService';
+import React, { useState } from 'react';
 import { useStoreState, useStoreActions } from '../../store';
+import { updatePlayer } from '../../api';
 import { ButtonBack } from '../ButtonBack';
 import { Button } from '../Button';
 import { LobbyPage } from '../LobbyPage';
 import { Input } from '../Input';
+import './style.scss';
 
 export const SetupNickname: React.FC<{ onSubmit?: () => void }> = ({
   onSubmit,
@@ -18,12 +17,12 @@ export const SetupNickname: React.FC<{ onSubmit?: () => void }> = ({
 
   async function asyncUpdatePlayer() {
     if (activeRoomPlayer) {
-      await new LobbyService().updatePlayer({
-        matchID: activeRoomPlayer.matchID,
-        playerID: activeRoomPlayer.playerID,
-        credentials: activeRoomPlayer.credential,
-        newName: nickname,
-      });
+      await updatePlayer(
+        activeRoomPlayer.matchID,
+        activeRoomPlayer.playerID.toString(),
+        activeRoomPlayer.credential,
+        nickname,
+      );
     }
   }
 

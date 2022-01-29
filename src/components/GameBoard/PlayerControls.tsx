@@ -1,6 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { useParams } from 'react-router-dom';
-import { LobbyService } from '../../api/lobbyService';
+import { playAgain } from '../../api';
 import { useBoardContext } from './BoardContext';
 import { Button } from '../Button';
 import undoLogo from '../../assets/png/undo.png';
@@ -16,8 +15,6 @@ export const PlayerControls: React.FC<{
     matchID,
   } = useBoardContext();
 
-  const { id } = useParams<{ id: string }>();
-  const [redirect, setRedirect] = useState(false);
   const [msgBlack, setMsgBlack] = useState(false);
   const [counter, setCounter] = useState(3);
   const intervalID: any = useRef(null);
@@ -36,12 +33,6 @@ export const PlayerControls: React.FC<{
     }
     return () => clearInterval(intervalMsgID.current);
   }, [chatMessages]);
-
-  useEffect(() => {
-    if (redirect && matchID && matchID !== id) {
-      window.open(`/rooms/${matchID}`, '_self');
-    }
-  }, [matchID, redirect, id]);
 
   useEffect(() => {
     intervalID.current = setInterval(() => {
@@ -70,11 +61,13 @@ export const PlayerControls: React.FC<{
     moves.EndTurn();
   }
 
-  const rematch = () => {
-    sendChatMessage('wants to rematch...');
-    new LobbyService().playAgain({ matchID: String(id), playerID: Number(playerID), credential: credentials || '' });
-    setRedirect(true);
-  };
+  async function rematch() {
+    if (playerID && credentials) {
+      sendChatMessage('wants to rematch...');
+      const nextMatchID = await playAgain(matchID, playerID, credentials);
+      window.open(`/rooms/${nextMatchID}`, '_self');
+    }
+  }
 
   function exit() {
     window.open('/', '_self');
@@ -123,7 +116,7 @@ export const PlayerControls: React.FC<{
             theme="green"
             className="PlayerControls__button"
             size="small"
-            onClick={rematch}
+            onClick={() => rematch()}
           >
             Rematch
           </Button>

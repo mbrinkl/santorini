@@ -1,12 +1,12 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { LobbyService } from '../../api/lobbyService';
 import { LobbyPage } from '../LobbyPage';
 import { Logo } from '../Logo';
 import { Button } from '../Button';
 import { ButtonChangeNickname } from '../ButtonChangeNickname';
 import { ButtonBack } from '../ButtonBack';
 import { useStoreActions, useStoreState } from '../../store';
+import { createMatch, getMatch } from '../../api';
 import style from './style.module.scss';
 
 export function Home() {
@@ -20,12 +20,12 @@ export function Home() {
     if (activeRoomPlayer) {
       await leaveRoom({
         matchID: activeRoomPlayer.matchID,
-        playerID: activeRoomPlayer.playerID,
-        credential: activeRoomPlayer.credential,
+        playerID: activeRoomPlayer.playerID.toString(),
+        credentials: activeRoomPlayer.credential,
       });
     }
 
-    const matchID = await new LobbyService().createRoom({ numPlayers: 2, unlisted });
+    const matchID = await createMatch(2, unlisted);
     navigate(`/rooms/${matchID}`);
   }
 
@@ -67,7 +67,7 @@ export function Home() {
   useEffect(() => {
     async function isPrevGameActive() : Promise<void> {
       if (activeRoomPlayer?.matchID) {
-        const matchData = await new LobbyService().getMatch(activeRoomPlayer?.matchID);
+        const matchData = await getMatch(activeRoomPlayer?.matchID);
         if (matchData && !matchData.gameover) {
           setPrevGameActive(true);
         }

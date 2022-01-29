@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useBoardContext } from './BoardContext';
-import './style.scss';
 import { ConnectedIndicator } from './ConnectedIndicator';
+import './style.scss';
 
 export const PlayerInfoMobile = () => {
   const { playerID, G, matchData } = useBoardContext();

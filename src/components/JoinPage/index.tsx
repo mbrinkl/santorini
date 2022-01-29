@@ -4,17 +4,16 @@ import { LobbyAPI } from 'boardgame.io';
 import { isMobile } from '../../utility';
 import { ButtonBack } from '../ButtonBack';
 import { GithubLink } from '../LobbyPage';
+import { getMatches } from '../../api';
 import style from './style.module.scss';
-import { LobbyService } from '../../api/lobbyService';
 
 export function JoinPage() {
   const [matches, setMatches] = useState<LobbyAPI.Match[]>([]);
   const navigate = useNavigate();
 
   useEffect(() => {
-    const lobbyService = new LobbyService();
     function pollMatches() {
-      lobbyService.getMatches().then((m) => {
+      getMatches().then((m) => {
         setMatches(m);
       });
     }
