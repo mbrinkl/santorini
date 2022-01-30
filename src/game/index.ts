@@ -1,15 +1,15 @@
 import { ActivePlayers } from 'boardgame.io/core';
-import { Ctx } from 'boardgame.io';
+import { Ctx, Game } from 'boardgame.io';
 import { GAME_ID } from '../config';
-import {
-  EndTurn, CharacterAbility, Move, Select, Build, Place, updateValids, CheckWinByTrap,
-} from './moves';
 import { characterList, getCharacter } from './characters';
-import { SetChar, Ready, CancelReady } from './moves/charSelectMoves';
+import { Character, CharacterState } from '../types/CharacterTypes';
+import { checkWinByTrap } from './winConditions';
 import {
   GameState, Player, PlayerIDs, Space,
 } from '../types/GameTypes';
-import { Character, CharacterState } from '../types/CharacterTypes';
+import {
+  setChar, ready, cancelReady, place, move, select, build, characterAbility, endTurn,
+} from './moves';
 
 export function initCharacter(characterName: string): CharacterState {
   const character: Character = getCharacter(characterName);
@@ -32,7 +32,7 @@ export function initCharacter(characterName: string): CharacterState {
   };
 }
 
-function setRandomCharacters(G: GameState, ctx: Ctx) {
+function setRandomCharacters(G: GameState) {
   const listOnlyCharacters = characterList.slice(1);
   Object.values(G.players).forEach((player) => {
     if (player.char.name === 'Random') {
@@ -55,12 +55,51 @@ function getFirstPlayer(G: GameState): number {
   return startingPlayer;
 }
 
-export const SantoriniGame = {
+export function updateValids(G: GameState, ctx: Ctx, player: Player, stage: string) {
+  const currChar = player.char;
+  const char: Character = getCharacter(currChar.name);
+  let valids: number[] = [];
+
+  // apply opp restrictions
+  switch (stage) {
+    case 'place':
+      valids = char.validPlace(G, ctx, player, currChar);
+      break;
+    case 'select':
+      valids = char.validSelect(G, ctx, player, currChar);
+      break;
+    case 'move':
+      valids = char.validMove(
+        G,
+        ctx,
+        player,
+        currChar,
+        currChar.workers[currChar.selectedWorkerNum].pos,
+      );
+      break;
+    case 'build':
+      valids = char.validBuild(
+        G,
+        ctx,
+        player,
+        currChar,
+        currChar.workers[currChar.selectedWorkerNum].pos,
+      );
+      break;
+    default:
+      valids = [];
+      break;
+  }
+
+  G.valids = [...new Set(valids)];
+}
+
+export const SantoriniGame: Game<GameState> = {
   name: GAME_ID,
   minPlayers: 2,
   maxPlayers: 2,
 
-  setup: (ctx: Ctx) => {
+  setup: ({ ctx }) => {
     const players: Record<PlayerIDs, Player> = {} as Record<PlayerIDs, Player>;
     for (let i = 0; i < ctx.numPlayers; i++) {
       players[i] = ({
@@ -94,23 +133,23 @@ export const SantoriniGame = {
     selectCharacters: {
       start: true,
       next: 'placeWorkers',
-      endIf: (G: GameState) => G.players['0'].ready && G.players['1'].ready,
+      endIf: ({ G }) => G.players['0'].ready && G.players['1'].ready,
       turn: {
         activePlayers: ActivePlayers.ALL,
       },
       moves: {
-        SetChar,
-        Ready,
-        CancelReady,
+        setChar,
+        ready,
+        cancelReady,
       },
-      onEnd: (G: GameState, ctx: Ctx) => {
-        setRandomCharacters(G, ctx);
+      onEnd: ({ G }) => {
+        setRandomCharacters(G);
       },
     },
 
     placeWorkers: {
       next: 'main',
-      onBegin: (G: GameState, ctx: Ctx) => {
+      onBegin: ({ G, ctx }) => {
         Object.values(G.players).forEach((player) => {
           const char = getCharacter(player.char.name);
           char.initialize?.(G, ctx, player, player.char);
@@ -119,22 +158,22 @@ export const SantoriniGame = {
       turn: {
         activePlayers: { currentPlayer: 'place' },
         order: {
-          first: (G: GameState, ctx: Ctx) => getFirstPlayer(G),
-          next: (G: GameState, ctx: Ctx) => (ctx.playOrderPos + 1) % ctx.numPlayers,
+          first: ({ G }) => getFirstPlayer(G),
+          next: ({ ctx }) => (ctx.playOrderPos + 1) % ctx.numPlayers,
         },
         stages: {
-          place: { moves: { Place } },
-          end: { moves: { EndTurn } },
+          place: { moves: { place } },
+          end: { moves: { endTurn } },
         },
-        onBegin: (G: GameState, ctx: Ctx) => {
+        onBegin: ({ G, ctx }) => {
           updateValids(G, ctx, G.players[ctx.currentPlayer], 'place');
         },
-        onEnd: (G: GameState, ctx: Ctx) => {
+        onEnd: ({ G, ctx, events }) => {
           if (
             G.players['0'].char.numWorkersToPlace === 0
             && G.players['1'].char.numWorkersToPlace === 0
           ) {
-            ctx.events?.endPhase();
+            events.endPhase();
           }
         },
       },
@@ -144,29 +183,29 @@ export const SantoriniGame = {
       turn: {
         activePlayers: { currentPlayer: 'select' },
         order: {
-          first: (G: GameState, ctx: Ctx) => getFirstPlayer(G),
-          next: (G: GameState, ctx: Ctx) => (ctx.playOrderPos + 1) % ctx.numPlayers,
+          first: ({ G }) => getFirstPlayer(G),
+          next: ({ ctx }) => (ctx.playOrderPos + 1) % ctx.numPlayers,
         },
         stages: {
-          select: { moves: { Select, CharacterAbility } },
-          move: { moves: { Move, CharacterAbility } },
-          build: { moves: { Build, CharacterAbility } },
-          end: { moves: { EndTurn } },
+          select: { moves: { select, characterAbility } },
+          move: { moves: { move, characterAbility } },
+          build: { moves: { build, characterAbility } },
+          end: { moves: { endTurn } },
         },
-        onBegin: (G: GameState, ctx: Ctx) => {
+        onBegin: ({ G, ctx }) => {
           const currPlayer = G.players[ctx.currentPlayer];
           const char: any = getCharacter(currPlayer.char.name);
           updateValids(G, ctx, currPlayer, 'select');
           char.onTurnBegin?.(G, ctx, currPlayer, currPlayer.char);
         },
-        onEnd: (G: GameState, ctx: Ctx) => {
+        onEnd: ({ G, ctx, events }) => {
           const currPlayer = G.players[ctx.currentPlayer];
           const char: any = getCharacter(currPlayer.char.name);
           char.onTurnEnd?.(G, ctx, currPlayer, currPlayer.char);
 
           G.players[ctx.currentPlayer].char.selectedWorkerNum = -1;
 
-          CheckWinByTrap(G, ctx);
+          checkWinByTrap(G, ctx, events);
         },
       },
     },

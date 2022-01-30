@@ -41,7 +41,7 @@ export const PlayerControls: React.FC<{
         else {
           clearInterval(intervalID.current);
           setCounter(3);
-          moves.EndTurn();
+          moves.endTurn();
         }
       }
     }, 1000);
@@ -58,7 +58,7 @@ export const PlayerControls: React.FC<{
   function endTurn() {
     clearInterval(intervalID.current);
     setCounter(3);
-    moves.EndTurn();
+    moves.endTurn();
   }
 
   async function rematch() {
@@ -139,7 +139,7 @@ export const PlayerControls: React.FC<{
               size="small"
               className="PlayerControls__button"
               disabled={!G.players[playerID].char.buttonActive}
-              onClick={() => moves.CharacterAbility()}
+              onClick={() => moves.characterAbility()}
             >
               {G.players[playerID].char.buttonText}
             </Button>

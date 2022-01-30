@@ -1,5 +1,5 @@
 import { Ctx } from 'boardgame.io';
-import { getAdjacentPositions, getOppositePerimterPositions, posIsPerimeter } from '../utility';
+import { getAdjacentPositions, getOppositePerimeterPositions, posIsPerimeter } from '../utility';
 import { Character, CharacterState, Worker } from '../../types/CharacterTypes';
 import { Mortal } from './Mortal';
 import { GameState, Player } from '../../types/GameTypes';
@@ -21,7 +21,7 @@ export const Eros: Character = {
       if (!space.inhabitant && char.numWorkersToPlace > 0 && posIsPerimeter(space.pos)) {
         if (char.numWorkersToPlace === 2) {
           valids.push(space.pos);
-        } else if (getOppositePerimterPositions(char.workers[0].pos).includes(space.pos)) {
+        } else if (getOppositePerimeterPositions(char.workers[0].pos).includes(space.pos)) {
           valids.push(space.pos);
         }
       }

@@ -23,7 +23,7 @@ export const CharacterBox: React.FC<{ name: string }> = ({ name }) => {
 
   function select(): void {
     if (!isCharacterTaken()) {
-      moves.SetChar(playerID, name);
+      moves.setChar(playerID, name);
     }
   }
 
@@ -75,7 +75,7 @@ export const CharacterSelect = () => {
         <Button
           theme="red"
           onClick={() => {
-            moves.CancelReady(playerID);
+            moves.cancelReady(playerID);
           }}
         >
           Cancel
@@ -86,7 +86,7 @@ export const CharacterSelect = () => {
         <Button
           theme="green"
           onClick={() => {
-            moves.Ready(playerID);
+            moves.ready(playerID);
           }}
         >
           Ready

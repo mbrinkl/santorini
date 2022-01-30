@@ -1,13 +1,33 @@
+/*
+  Board reffered to as a 5x5 grid of positions or x,y coordinates:
+
+   0   1   2   3   4 | 0,0  1,0  2,0  3,0  4,0
+   5   6   7   8   9 | 0,1  1,1  2,1  3,1  4,1
+  10  11  12  13  14 | 0,2  2,2  2,2  3,2  4,2
+  15  16  17  18  19 | 0,3  1,3  2,3  3,3  4,3
+  20  21  22  23  24 | 0,4  1,4  2,4  3,4  4,4
+*/
+
+/**
+ * Converts an x,y coordinate to a position
+ */
 export function coordToPos(x: number, y: number): number {
-  return y * 5 + x;
+  return (y * 5) + x;
 }
 
+/**
+ * Converts a position to an x,y coordinate
+ */
 export function posToCoord(pos: number): number[] {
   const x = pos % 5;
   const y = (pos - x) / 5;
   return [x, y];
 }
 
+/**
+  * Given two adjacent positions, get the next position
+  * ie. given 0 as fromPos and 6 as toPos, the next position is 12
+  */
 export function getNextPosition(fromPos: number, toPos: number): number {
   let nextPos = -1;
 
@@ -27,6 +47,9 @@ export function getNextPosition(fromPos: number, toPos: number): number {
   return nextPos;
 }
 
+/**
+  * Given a position, get all adjacent positions
+  */
 export function getAdjacentPositions(pos: number): number[] {
   const adjacents: number[] = [];
   const [x, y] = posToCoord(pos);
@@ -47,6 +70,10 @@ export function getAdjacentPositions(pos: number): number[] {
   return adjacents;
 }
 
+/**
+  * Given a position, get all adjacent positions, treating opposite edges
+  * and corners as if they are adjacent (Urania)
+  */
 export function getWrappedAdjacents(pos: number): number[] {
   const adjacents: number[] = [];
   const [x, y] = posToCoord(pos);
@@ -68,15 +95,25 @@ export function getWrappedAdjacents(pos: number): number[] {
   return adjacents;
 }
 
+/**
+  * Get a list of perimeter positions
+  */
 export function getPerimeterPositions(): number[] {
   return [0, 1, 2, 3, 4, 5, 9, 10, 14, 15, 19, 20, 21, 22, 23, 24];
 }
 
+/**
+  * Check if a position is in the perimeter
+  */
 export function posIsPerimeter(pos: number): boolean {
   return getPerimeterPositions().includes(pos);
 }
 
-export function getOppositePerimterPositions(pos: number): number[] {
+/**
+  * Given a perimeter position, get a list of perimeter positions on the
+  * opposite side of the board
+  */
+export function getOppositePerimeterPositions(pos: number): number[] {
   let oppositePerimeter: number[] = [];
 
   // pos can be in two perimeter cases if it is a corner, so update the list twice

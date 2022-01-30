@@ -52,17 +52,17 @@ export const Scene: React.FC<{ boardPositions: BoardPosition[] }> = ({ boardPosi
 
     if (G.valids.includes(pos)) {
       if (phase === 'placeWorkers') {
-        moves.Place(pos);
+        moves.place(pos);
       } else {
         switch (stage) {
           case 'select':
-            moves.Select(pos);
+            moves.select(pos);
             break;
           case 'move':
-            moves.Move(pos);
+            moves.move(pos);
             break;
           case 'build':
-            moves.Build(pos);
+            moves.build(pos);
             break;
           default:
             break;
