@@ -13,25 +13,25 @@ interface OdysseusAttrs {
 
 const checkForValidSpecial = (
   context: GameContext,
-  char: CharacterState<OdysseusAttrs>,
+  charState: CharacterState<OdysseusAttrs>,
 ) => {
-  char.attrs.specialActive = true;
+  charState.attrs.specialActive = true;
   let returnValue = false;
 
-  if (char.selectedWorkerNum !== -1) {
-    const worker = char.workers[char.selectedWorkerNum];
-    if (Odysseus.validMove(context, char, worker.pos).length > 0) {
+  if (charState.selectedWorkerNum !== -1) {
+    const worker = charState.workers[charState.selectedWorkerNum];
+    if (Odysseus.validMove(context, charState, worker.pos).length > 0) {
       returnValue = true;
     }
   } else {
-    char.workers.forEach((worker) => {
-      if (Odysseus.validMove(context, char, worker.pos).length > 0) {
+    charState.workers.forEach((worker) => {
+      if (Odysseus.validMove(context, charState, worker.pos).length > 0) {
         returnValue = true;
       }
     });
   }
 
-  char.attrs.specialActive = false;
+  charState.attrs.specialActive = false;
   return returnValue;
 };
 
@@ -47,40 +47,40 @@ export const Odysseus: Character<OdysseusAttrs> = {
     workerToMovePos: -1,
   },
 
-  onTurnBegin: (context, char: CharacterState<OdysseusAttrs>) => {
-    if (!char.attrs.specialUsed) {
-      char.buttonActive = checkForValidSpecial(context, char);
+  onTurnBegin: (context, charState: CharacterState<OdysseusAttrs>) => {
+    if (!charState.attrs.specialUsed) {
+      charState.buttonActive = checkForValidSpecial(context, charState);
     }
   },
 
-  buttonPressed: (context, char: CharacterState<OdysseusAttrs>) => {
-    char.attrs.specialActive = !char.attrs.specialActive;
+  buttonPressed: (context, charState: CharacterState<OdysseusAttrs>) => {
+    charState.attrs.specialActive = !charState.attrs.specialActive;
 
-    if (char.attrs.specialUsed) {
-      char.buttonActive = false;
-      char.attrs.specialActive = false;
-      char.buttonText = 'Move Opponent';
-    } else if (char.attrs.specialActive) {
-      char.buttonText = 'Cancel';
+    if (charState.attrs.specialUsed) {
+      charState.buttonActive = false;
+      charState.attrs.specialActive = false;
+      charState.buttonText = 'Move Opponent';
+    } else if (charState.attrs.specialActive) {
+      charState.buttonText = 'Cancel';
     } else {
-      char.buttonText = 'Move Opponent';
+      charState.buttonText = 'Move Opponent';
     }
 
-    return Mortal.buttonPressed(context, char);
+    return Mortal.buttonPressed(context, charState);
   },
 
-  validMove(context, char: CharacterState<OdysseusAttrs>, originalPos): number[] {
+  validMove(context, charState: CharacterState<OdysseusAttrs>, originalPos): number[] {
     const { G, playerID } = context;
-    const opponentID = G.players[playerID].opponentId;
+    const { opponentID } = G.players[playerID];
     const valids: number[] = [];
 
-    if (char.attrs.specialActive) {
+    if (charState.attrs.specialActive) {
       let adjacents: number[] = [];
-      char.workers.forEach((worker) => {
+      charState.workers.forEach((worker) => {
         adjacents = adjacents.concat(getAdjacentPositions(worker.pos));
       });
-      if (!char.attrs.movingOpponent) {
-        G.players[opponentID].char.workers.forEach((worker) => {
+      if (!charState.attrs.movingOpponent) {
+        G.players[opponentID].charState.workers.forEach((worker) => {
           if (adjacents.includes(worker.pos)) {
             valids.push(worker.pos);
           }
@@ -96,44 +96,44 @@ export const Odysseus: Character<OdysseusAttrs> = {
       return valids;
     }
 
-    return Mortal.validMove(context, char, originalPos);
+    return Mortal.validMove(context, charState, originalPos);
   },
 
-  move: (context, char: CharacterState<OdysseusAttrs>, pos) => {
+  move: (context, charState: CharacterState<OdysseusAttrs>, pos) => {
     const { G, playerID } = context;
-    const opponentID = G.players[playerID].opponentId;
+    const { opponentID } = G.players[playerID];
 
-    if (char.attrs.specialActive) {
-      char.attrs.specialUsed = true;
-      char.buttonText = 'End Ability';
+    if (charState.attrs.specialActive) {
+      charState.attrs.specialUsed = true;
+      charState.buttonText = 'End Ability';
 
-      if (!char.attrs.movingOpponent) {
-        char.attrs.movingOpponent = true;
-        char.attrs.workerToMovePos = pos;
+      if (!charState.attrs.movingOpponent) {
+        charState.attrs.movingOpponent = true;
+        charState.attrs.workerToMovePos = pos;
         return 'move';
       }
 
-      char.attrs.movingOpponent = false;
-      const { inhabitant } = G.spaces[char.attrs.workerToMovePos];
+      charState.attrs.movingOpponent = false;
+      const { inhabitant } = G.spaces[charState.attrs.workerToMovePos];
       if (inhabitant) {
         const oppWorkerNum = inhabitant.workerNum;
-        Board.free(G, char.attrs.workerToMovePos);
+        Board.free(G, charState.attrs.workerToMovePos);
         Board.place(G, pos, opponentID, oppWorkerNum);
       }
 
-      if (!checkForValidSpecial(context, char)) {
-        char.attrs.specialActive = false;
-        char.buttonText = 'Move Opponent';
-        char.buttonActive = false;
+      if (!checkForValidSpecial(context, charState)) {
+        charState.attrs.specialActive = false;
+        charState.buttonText = 'Move Opponent';
+        charState.buttonActive = false;
       } else {
-        char.attrs.specialActive = true;
+        charState.attrs.specialActive = true;
       }
 
       return 'move';
     }
 
-    char.buttonActive = false;
-    char.attrs.specialActive = false;
-    return Mortal.move(context, char, pos);
+    charState.buttonActive = false;
+    charState.attrs.specialActive = false;
+    return Mortal.move(context, charState, pos);
   },
 };

@@ -17,20 +17,20 @@ export const Demeter: Character<DemeterAttrs> = {
     firstBuildPos: 0,
   },
 
-  buttonPressed: (context, char: CharacterState<DemeterAttrs>) => {
+  buttonPressed: (context, charState: CharacterState<DemeterAttrs>) => {
     // reset stuff
-    char.attrs.numBuilds = 0;
-    char.buttonActive = false;
+    charState.attrs.numBuilds = 0;
+    charState.buttonActive = false;
 
     // set game stage
     return 'end';
   },
 
-  validBuild: ({ G }, char: CharacterState<DemeterAttrs>, originalPos) => {
+  validBuild: ({ G }, charState: CharacterState<DemeterAttrs>, originalPos) => {
     const adjacents: number[] = getAdjacentPositions(originalPos);
     const valids: number[] = [];
 
-    if (char.attrs.numBuilds === 0) {
+    if (charState.attrs.numBuilds === 0) {
       adjacents.forEach((pos) => {
         if (!G.spaces[pos].inhabitant && !G.spaces[pos].isDomed) {
           valids.push(pos);
@@ -41,7 +41,7 @@ export const Demeter: Character<DemeterAttrs> = {
         if (
           !G.spaces[pos].inhabitant
           && !G.spaces[pos].isDomed
-          && pos !== char.attrs.firstBuildPos
+          && pos !== charState.attrs.firstBuildPos
         ) {
           valids.push(pos);
         }
@@ -51,18 +51,18 @@ export const Demeter: Character<DemeterAttrs> = {
     return valids;
   },
 
-  build: ({ G }, char: CharacterState<DemeterAttrs>, pos) => {
-    char.attrs.numBuilds += 1;
+  build: ({ G }, charState: CharacterState<DemeterAttrs>, pos) => {
+    charState.attrs.numBuilds += 1;
 
-    if (char.attrs.numBuilds === 1) {
-      char.attrs.firstBuildPos = pos;
+    if (charState.attrs.numBuilds === 1) {
+      charState.attrs.firstBuildPos = pos;
       Board.build(G, pos);
-      char.buttonActive = true;
+      charState.buttonActive = true;
       return 'build';
     }
 
-    char.attrs.numBuilds = 0;
-    char.buttonActive = false;
+    charState.attrs.numBuilds = 0;
+    charState.buttonActive = false;
     Board.build(G, pos);
     return 'end';
   },

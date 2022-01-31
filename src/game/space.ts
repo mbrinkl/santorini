@@ -4,14 +4,14 @@ export const Board = {
   place: (
     G: GameState,
     pos: number,
-    playerId: string,
+    playerID: string,
     workerNum: number,
   ) => {
-    const { char } = G.players[playerId];
-    char.workers[workerNum].pos = pos;
-    char.workers[workerNum].height = G.spaces[pos].height;
+    const { charState } = G.players[playerID];
+    charState.workers[workerNum].pos = pos;
+    charState.workers[workerNum].height = G.spaces[pos].height;
     G.spaces[pos].inhabitant = {
-      playerId,
+      playerID,
       workerNum,
     };
   },

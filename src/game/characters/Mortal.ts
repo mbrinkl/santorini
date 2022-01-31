@@ -14,21 +14,21 @@ export const Mortal: Character = {
   moveUpHeight: 1,
   attrs: null,
 
-  validPlace: ({ G }, char) => {
+  validPlace: ({ G }, charState) => {
     const valids: number[] = [];
     G.spaces.forEach((space) => {
-      if (!space.inhabitant && char.numWorkersToPlace > 0) {
+      if (!space.inhabitant && charState.numWorkersToPlace > 0) {
         valids.push(space.pos);
       }
     });
     return valids;
   },
 
-  validSelect: (context, char) => {
+  validSelect: (context, charState) => {
     const valids: number[] = [];
 
-    char.workers.forEach((worker) => {
-      if (Mortal.validMove(context, char, worker.pos).length > 0) {
+    charState.workers.forEach((worker) => {
+      if (Mortal.validMove(context, charState, worker.pos).length > 0) {
         valids.push(worker.pos);
       }
     });
@@ -36,25 +36,25 @@ export const Mortal: Character = {
     return valids;
   },
 
-  select: ({ G }, char, pos) => {
+  select: ({ G }, charState, pos) => {
     const { inhabitant } = G.spaces[pos];
 
     if (!inhabitant) {
       return 'select';
     }
 
-    char.selectedWorkerNum = inhabitant.workerNum;
+    charState.selectedWorkerNum = inhabitant.workerNum;
     return 'move';
   },
 
-  validMove: ({ G }, char, originalPos) => {
+  validMove: ({ G }, charState, originalPos) => {
     const valids: number[] = [];
 
     getAdjacentPositions(originalPos).forEach((pos) => {
       if (
         !G.spaces[pos].inhabitant
         && !G.spaces[pos].isDomed
-        && G.spaces[pos].height - G.spaces[originalPos].height <= char.moveUpHeight
+        && G.spaces[pos].height - G.spaces[originalPos].height <= charState.moveUpHeight
       ) {
         valids.push(pos);
       }
@@ -63,10 +63,10 @@ export const Mortal: Character = {
     return valids;
   },
 
-  hasValidMoves: (context, char) => {
+  hasValidMoves: (context, charState) => {
     let hasMove = false;
-    char.workers.forEach((worker) => {
-      if (Mortal.validMove(context, char, worker.pos).length > 0) {
+    charState.workers.forEach((worker) => {
+      if (Mortal.validMove(context, charState, worker.pos).length > 0) {
         hasMove = true;
       }
     });
@@ -74,21 +74,21 @@ export const Mortal: Character = {
     return hasMove;
   },
 
-  move: ({ G, playerID }, char, pos) => {
+  move: ({ G, playerID }, charState, pos) => {
     // free the space that is being moved from
-    Board.free(G, char.workers[char.selectedWorkerNum].pos);
+    Board.free(G, charState.workers[charState.selectedWorkerNum].pos);
 
     // place the worker on the selected space
-    Board.place(G, pos, playerID, char.selectedWorkerNum);
+    Board.place(G, pos, playerID, charState.selectedWorkerNum);
 
     return 'build';
   },
 
-  opponentPostMove: (context, char, pos) => {
+  opponentPostMove: (context, charState, pos) => {
 
   },
 
-  validBuild: ({ G }, char, originalPos) => {
+  validBuild: ({ G }, charState, originalPos) => {
     const adjacents: number[] = getAdjacentPositions(originalPos);
     const valids: number[] = [];
 
@@ -101,11 +101,11 @@ export const Mortal: Character = {
     return valids;
   },
 
-  hasValidBuild: (context, char) => {
+  hasValidBuild: (context, charState) => {
     let hasBuild = false;
 
-    char.workers.forEach((worker) => {
-      if (Mortal.validBuild(context, char, worker.pos).length > 0) {
+    charState.workers.forEach((worker) => {
+      if (Mortal.validBuild(context, charState, worker.pos).length > 0) {
         hasBuild = true;
       }
     });
@@ -113,18 +113,18 @@ export const Mortal: Character = {
     return hasBuild;
   },
 
-  build: ({ G }, char, pos) => {
+  build: ({ G }, charState, pos) => {
     Board.build(G, pos);
     return 'end';
   },
 
-  buttonPressed: ({ ctx }, char: CharacterState) => (
+  buttonPressed: ({ ctx }, charState: CharacterState) => (
     (ctx.activePlayers && ctx.activePlayers[ctx.currentPlayer]) as GameStage
   ),
 
   checkWinByMove: (
     G: GameState,
-    char: CharacterState,
+    charState: CharacterState,
     heightBefore: number,
     heightAfter: number,
   ) => heightBefore < 3 && heightAfter === 3,

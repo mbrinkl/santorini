@@ -9,14 +9,14 @@ export const Graeae: Character = {
     Banned VS: Nemesis`,
   numWorkersToPlace: 3,
 
-  validBuild: ({ G }, char, originalPos) => {
+  validBuild: ({ G }, charState, originalPos) => {
     let adjacents: number[] = [];
     const valids: number[] = [];
 
-    for (let i = 0; i < char.workers.length; i++) {
-      if (i !== char.selectedWorkerNum) {
+    for (let i = 0; i < charState.workers.length; i++) {
+      if (i !== charState.selectedWorkerNum) {
         // add on the adjacent positions of each worker
-        adjacents = adjacents.concat(getAdjacentPositions(char.workers[i].pos));
+        adjacents = adjacents.concat(getAdjacentPositions(charState.workers[i].pos));
       }
     }
 

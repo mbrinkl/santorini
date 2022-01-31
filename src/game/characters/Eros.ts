@@ -8,13 +8,13 @@ export const Eros: Character = {
     Win Condition: You also win if one of your Workers moves to a space neighboring your
     other Worker and both are on the first level (or the same level in a 3-player game).`,
 
-  validPlace: ({ G }, char) => {
+  validPlace: ({ G }, charState) => {
     const valids: number[] = [];
     G.spaces.forEach((space) => {
-      if (!space.inhabitant && char.numWorkersToPlace > 0 && posIsPerimeter(space.pos)) {
-        if (char.numWorkersToPlace === 2) {
+      if (!space.inhabitant && charState.numWorkersToPlace > 0 && posIsPerimeter(space.pos)) {
+        if (charState.numWorkersToPlace === 2) {
           valids.push(space.pos);
-        } else if (getOppositePerimeterPositions(char.workers[0].pos).includes(space.pos)) {
+        } else if (getOppositePerimeterPositions(charState.workers[0].pos).includes(space.pos)) {
           valids.push(space.pos);
         }
       }
@@ -22,14 +22,14 @@ export const Eros: Character = {
     return valids;
   },
 
-  move: (context, char, pos) => {
+  move: (context, charState, pos) => {
     const { G, playerID, events } = context;
-    const stage = Mortal.move(context, char, pos);
+    const stage = Mortal.move(context, charState, pos);
 
     let worker: Worker | null = null;
 
-    if (char.workers.length === 2) {
-      worker = char.workers[(char.selectedWorkerNum + 1) % 2];
+    if (charState.workers.length === 2) {
+      worker = charState.workers[(charState.selectedWorkerNum + 1) % 2];
     }
 
     if (worker !== null) {

@@ -11,9 +11,9 @@ export const Minotaur: Character = {
     if their Worker can be forced one space straight backwards to an 
     unoccupied space at any level.`,
 
-  validMove: (context, char, originalPos) => {
+  validMove: (context, charState, originalPos) => {
     const { G, playerID } = context;
-    const opponentID = G.players[playerID].opponentId;
+    const { opponentID } = G.players[playerID];
 
     const adjacents: number[] = getAdjacentPositions(originalPos);
     const valids: number[] = [];
@@ -21,15 +21,15 @@ export const Minotaur: Character = {
     adjacents.forEach((pos) => {
       if (
         !G.spaces[pos].isDomed
-        && G.spaces[pos].height - G.spaces[originalPos].height <= char.moveUpHeight
+        && G.spaces[pos].height - G.spaces[originalPos].height <= charState.moveUpHeight
       ) {
         if (!G.spaces[pos].inhabitant) {
           valids.push(pos);
-        } else if (G.spaces[pos].inhabitant?.playerId !== playerID) {
+        } else if (G.spaces[pos].inhabitant?.playerID !== playerID) {
           const posToPush = getNextPosition(originalPos, pos);
           const opponent = G.players[opponentID];
           const oppContext: GameContext = { ...context, playerID: opponentID };
-          if (Mortal.validMove(oppContext, opponent.char, pos).includes(posToPush)) {
+          if (Mortal.validMove(oppContext, opponent.charState, pos).includes(posToPush)) {
             valids.push(pos);
           }
         }
@@ -39,16 +39,16 @@ export const Minotaur: Character = {
     return valids;
   },
 
-  move: ({ G, playerID }, char, pos) => {
-    const posToPush = getNextPosition(char.workers[char.selectedWorkerNum].pos, pos);
+  move: ({ G, playerID }, charState, pos) => {
+    const posToPush = getNextPosition(charState.workers[charState.selectedWorkerNum].pos, pos);
     const { inhabitant } = G.spaces[pos];
 
     if (inhabitant) {
-      Board.place(G, posToPush, inhabitant.playerId, inhabitant.workerNum);
+      Board.place(G, posToPush, inhabitant.playerID, inhabitant.workerNum);
     }
 
-    Board.free(G, char.workers[char.selectedWorkerNum].pos);
-    Board.place(G, pos, playerID, char.selectedWorkerNum);
+    Board.free(G, charState.workers[charState.selectedWorkerNum].pos);
+    Board.place(G, pos, playerID, charState.selectedWorkerNum);
 
     return 'build';
   },

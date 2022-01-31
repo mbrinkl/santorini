@@ -5,7 +5,7 @@ export const Chronus: Character = {
   ...Mortal,
   desc: 'Win Condition: You also win when there are at least five Complete Towers on the board.',
 
-  onTurnBegin: ({ G, playerID, events }, char) => {
+  onTurnBegin: ({ G, playerID, events }, charState) => {
     const numCompleteTowers: number = G.spaces.filter((space) => (
       space.isDomed === true && space.height >= 3)).length;
 
@@ -16,7 +16,7 @@ export const Chronus: Character = {
     }
   },
 
-  onTurnEnd: ({ G, playerID, events }, char) => {
+  onTurnEnd: ({ G, playerID, events }, charState) => {
     const numCompleteTowers: number = G.spaces.filter((space) => (
       space.isDomed === true && space.height >= 3)).length;
 

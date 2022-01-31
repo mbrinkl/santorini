@@ -113,35 +113,35 @@ export function getSortedCharacters(): string[] {
 }
 
 export function getCharacter(name: string): Character {
-  let char: any;
+  let character: Character;
 
   switch (name) {
-    case 'Mortal': char = Mortal; break;
-    case 'Apollo': char = Apollo; break;
-    case 'Artemis': char = Artemis; break;
-    case 'Athena': char = Athena; break;
-    case 'Atlas': char = Atlas; break;
-    case 'Demeter': char = Demeter; break;
-    case 'Hephaestus': char = Hephaestus; break;
-    case 'Hermes': char = Hermes; break;
-    case 'Minotaur': char = Minotaur; break;
-    case 'Pan': char = Pan; break;
-    case 'Prometheus': char = Prometheus; break;
-    case 'Bia': char = Bia; break;
-    case 'Triton': char = Triton; break;
-    case 'Zeus': char = Zeus; break;
-    case 'Graeae': char = Graeae; break;
-    case 'Heracles': char = Heracles; break;
-    case 'Odysseus': char = Odysseus; break;
-    case 'Iris': char = Iris; break;
-    case 'Pegasus': char = Pegasus; break;
-    case 'Eros': char = Eros; break;
-    case 'Chaos': char = Chaos; break;
-    case 'Chronus': char = Chronus; break;
-    case 'Harpies': char = Harpies; break;
-    case 'Urania': char = Urania; break;
-    default: char = Mortal; break;
+    case 'Mortal': character = Mortal; break;
+    case 'Apollo': character = Apollo; break;
+    case 'Artemis': character = Artemis; break;
+    case 'Athena': character = Athena; break;
+    case 'Atlas': character = Atlas; break;
+    case 'Demeter': character = Demeter; break;
+    case 'Hephaestus': character = Hephaestus; break;
+    case 'Hermes': character = Hermes; break;
+    case 'Minotaur': character = Minotaur; break;
+    case 'Pan': character = Pan; break;
+    case 'Prometheus': character = Prometheus; break;
+    case 'Bia': character = Bia; break;
+    case 'Triton': character = Triton; break;
+    case 'Zeus': character = Zeus; break;
+    case 'Graeae': character = Graeae; break;
+    case 'Heracles': character = Heracles; break;
+    case 'Odysseus': character = Odysseus; break;
+    case 'Iris': character = Iris; break;
+    case 'Pegasus': character = Pegasus; break;
+    case 'Eros': character = Eros; break;
+    case 'Chaos': character = Chaos; break;
+    case 'Chronus': character = Chronus; break;
+    case 'Harpies': character = Harpies; break;
+    case 'Urania': character = Urania; break;
+    default: character = Mortal; break;
   }
 
-  return char;
+  return character;
 }

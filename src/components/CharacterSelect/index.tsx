@@ -8,11 +8,11 @@ import CheckImg from '../../assets/png/check.png';
 import './style.scss';
 
 export const CharacterBox: React.FC<{ name: string }> = ({ name }) => {
-  const { G, moves, playerID } = useBoardContext();
+  const { G, moves } = useBoardContext();
   const takenCharacters: string[] = [];
 
   Object.values(G.players).forEach((player) => {
-    takenCharacters.push(player.char.name);
+    takenCharacters.push(player.charState.name);
   });
 
   // Return true if opponent has taken this character
@@ -23,7 +23,7 @@ export const CharacterBox: React.FC<{ name: string }> = ({ name }) => {
 
   function select(): void {
     if (!isCharacterTaken()) {
-      moves.setChar(playerID, name);
+      moves.setChar(name);
     }
   }
 
@@ -75,7 +75,7 @@ export const CharacterSelect = () => {
         <Button
           theme="red"
           onClick={() => {
-            moves.cancelReady(playerID);
+            moves.cancelReady();
           }}
         >
           Cancel
@@ -86,7 +86,7 @@ export const CharacterSelect = () => {
         <Button
           theme="green"
           onClick={() => {
-            moves.ready(playerID);
+            moves.ready();
           }}
         >
           Ready
@@ -109,23 +109,23 @@ export const CharacterSelect = () => {
           <h1>Select a Character</h1>
 
           {Object.values(G.players).map((player) => (
-            <div key={`selectedChar${player.id}`} className="charSelect__selectedChar">
+            <div key={`selectedChar${player.ID}`} className="charSelect__selectedChar">
               <div className="charSelect__characterCard">
                 <div className="charSelect__playerNameDiv">
-                  <ConnectedIndicator playerID={+player.id} />
+                  <ConnectedIndicator playerID={+player.ID} />
                   <span className="charSelect__playerName">
-                    {matchData?.[player.id].name}
+                    {matchData?.[player.ID].name}
                   </span>
                 </div>
                 <SelectedCharacterBox
-                  name={player.char.name}
-                  playerID={player.id}
+                  name={player.charState.name}
+                  playerID={player.ID}
                 />
               </div>
               <div className="charSelect__characterDescription">
-                {player.char.name === 'Random'
+                {player.charState.name === 'Random'
                   ? 'Random'
-                  : G.players[player.id].char.desc}
+                  : G.players[player.ID].charState.desc}
               </div>
             </div>
           ))}

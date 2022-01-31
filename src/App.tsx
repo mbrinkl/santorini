@@ -31,7 +31,7 @@ const App: React.FC = () => {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/rooms" element={nickname ? <JoinPage /> : <SetupNickname />} />
-        <Route path="/rooms/:id" element={nickname ? <GameLobby /> : <SetupNickname />} />
+        <Route path="/rooms/:matchID" element={nickname ? <GameLobby /> : <SetupNickname />} />
         <Route path="/nickname" element={<SetupNickname onSubmit={() => navigate('/')} />} />
       </Routes>
     </div>

@@ -16,8 +16,8 @@ export const PlayerInfoMobile = () => {
       <div className="MobileOverlay" onClick={toggleOverlay} role="none">
         <div className="MobileOverlay__p1">
           <span>
-            <h3>{matchData?.[0].name + (playerID === '0' ? ' (you) - ' : ' - ') + G.players[0].char.name}</h3>
-            {G.players[0].char.desc}
+            <h3>{matchData?.[0].name + (playerID === '0' ? ' (you) - ' : ' - ') + G.players[0].charState.name}</h3>
+            {G.players[0].charState.desc}
           </span>
         </div>
         <div className="MobileOverlay__mid">
@@ -25,8 +25,8 @@ export const PlayerInfoMobile = () => {
         </div>
         <div className="MobileOverlay__p2">
           <span>
-            <h3>{matchData?.[1].name + (playerID === '1' ? ' (you) - ' : ' - ') + G.players[1].char.name}</h3>
-            {G.players[1].char.desc}
+            <h3>{matchData?.[1].name + (playerID === '1' ? ' (you) - ' : ' - ') + G.players[1].charState.name}</h3>
+            {G.players[1].charState.desc}
           </span>
         </div>
       </div>
@@ -43,7 +43,7 @@ export const PlayerInfoMobile = () => {
           <ConnectedIndicator playerID={0} />
           <h2>{matchData?.[0].name + (playerID === '0' ? ' (you)' : '')}</h2>
         </div>
-        <span>{G.players[0].char.name}</span>
+        <span>{G.players[0].charState.name}</span>
       </div>
       <div className="PlayerInfoMobile__P2QuestionMark" onClick={toggleOverlay} role="button" tabIndex={0}>
         <span>&nbsp;?&nbsp;</span>
@@ -53,7 +53,7 @@ export const PlayerInfoMobile = () => {
           <ConnectedIndicator playerID={1} />
           <h2>{matchData?.[1].name + (playerID === '1' ? ' (you)' : '')}</h2>
         </div>
-        <span>{G.players[1].char.name}</span>
+        <span>{G.players[1].charState.name}</span>
       </div>
     </div>
   );

@@ -87,7 +87,7 @@ export const Scene: React.FC<{ boardPositions: BoardPosition[] }> = ({ boardPosi
 
         {ground}
 
-        {G.players['0'].char.workers.map((worker) => (
+        {G.players['0'].charState.workers.map((worker) => (
           <WorkerModel
             key={`workerModel0${worker.pos}`}
             boardPos={boardPositions[worker.pos]}
@@ -96,7 +96,7 @@ export const Scene: React.FC<{ boardPositions: BoardPosition[] }> = ({ boardPosi
           />
         ))}
 
-        {G.players['1'].char.workers.map((worker) => (
+        {G.players['1'].charState.workers.map((worker) => (
           <WorkerModel
             key={`workerModel1${worker.pos}`}
             boardPos={boardPositions[worker.pos]}

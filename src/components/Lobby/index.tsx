@@ -29,7 +29,7 @@ const GameClient = Client({
 export const GameLobbySetup: React.FC<{ startGame(): void }> = ({
   startGame,
 }) => {
-  const { id } = useParams<{ id: string }>();
+  const { matchID } = useParams<{ matchID: string }>();
   const nickname = useStoreState((s) => s.nickname);
   const [matchMetadata, setMatchMetadata] = useState<LobbyAPI.Match | null>(null);
   const joinRoom = useStoreActions((s) => s.joinRoom);
@@ -42,15 +42,15 @@ export const GameLobbySetup: React.FC<{ startGame(): void }> = ({
   // poll api to load match data
   useEffect(() => {
     const intervalID = setInterval(() => {
-      if (id) {
-        getMatch(id).then((data) => {
+      if (matchID) {
+        getMatch(matchID).then((data) => {
           if (data) setMatchMetadata(data);
         });
       }
     }, 500);
 
     return () => clearInterval(intervalID);
-  }, [id]);
+  }, [matchID]);
 
   // if game room is full, start the game
   useEffect(() => {
@@ -66,8 +66,8 @@ export const GameLobbySetup: React.FC<{ startGame(): void }> = ({
       p.id.toString() === activeRoomPlayer?.playerID && p.name === nickname
     ));
 
-    if (!alreadyJoined && emptySeatID !== undefined && nickname && id) {
-      joinRoom({ playerID: emptySeatID.toString(), playerName: nickname, matchID: id });
+    if (!alreadyJoined && emptySeatID !== undefined && nickname && matchID) {
+      joinRoom({ playerID: emptySeatID.toString(), playerName: nickname, matchID });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [matchMetadata]);
@@ -151,14 +151,14 @@ export const GameLobbySetup: React.FC<{ startGame(): void }> = ({
 };
 
 export const GameLobbyPlay: React.FC = () => {
-  const { id } = useParams<{ id: string }>();
+  const { matchID } = useParams<{ matchID: string }>();
   const activeRoomPlayer = useStoreState((s) => s.activeRoomPlayer);
 
   // Join as a player if the active room player data is set for this match id
-  if (id && activeRoomPlayer?.matchID === id) {
+  if (matchID && activeRoomPlayer?.matchID === matchID) {
     return (
       <GameClient
-        matchID={id}
+        matchID={matchID}
         playerID={String(activeRoomPlayer?.playerID)}
         credentials={activeRoomPlayer?.credential}
         debug={!isProduction}
@@ -168,7 +168,7 @@ export const GameLobbyPlay: React.FC = () => {
 
   // Join as a spectator
   return (
-    <GameClient matchID={id} />
+    <GameClient matchID={matchID} />
   );
 };
 

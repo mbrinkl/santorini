@@ -8,17 +8,17 @@ export const Apollo: Character = {
   desc: `Your Move : Your worker may move into an opponent worker's space by 
       forcing their worker to the space you just vacated.`,
 
-  validMove: ({ G, playerID }, char, originalPos) => {
+  validMove: ({ G, playerID }, charState, originalPos) => {
     const valids: number[] = [];
 
     getAdjacentPositions(originalPos).forEach((pos) => {
       if (
         !G.spaces[pos].isDomed
-        && G.spaces[pos].height - G.spaces[originalPos].height <= char.moveUpHeight
+        && G.spaces[pos].height - G.spaces[originalPos].height <= charState.moveUpHeight
       ) {
         if (!G.spaces[pos].inhabitant) {
           valids.push(pos);
-        } else if (G.spaces[pos].inhabitant?.playerId !== playerID) {
+        } else if (G.spaces[pos].inhabitant?.playerID !== playerID) {
           valids.push(pos);
         }
       }
@@ -27,18 +27,18 @@ export const Apollo: Character = {
     return valids;
   },
 
-  move: ({ G, playerID }, char, pos) => {
-    const originalPos = char.workers[char.selectedWorkerNum].pos;
+  move: ({ G, playerID }, charState, pos) => {
+    const originalPos = charState.workers[charState.selectedWorkerNum].pos;
     const { inhabitant } = G.spaces[pos];
 
     // if switching spaces with another worker
     if (inhabitant) {
-      Board.place(G, originalPos, inhabitant.playerId, inhabitant.workerNum);
+      Board.place(G, originalPos, inhabitant.playerID, inhabitant.workerNum);
     } else {
       Board.free(G, originalPos);
     }
 
-    Board.place(G, pos, playerID, char.selectedWorkerNum);
+    Board.place(G, pos, playerID, charState.selectedWorkerNum);
 
     return 'build';
   },

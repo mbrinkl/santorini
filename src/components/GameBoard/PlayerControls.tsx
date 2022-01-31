@@ -138,10 +138,10 @@ export const PlayerControls: React.FC<{
               theme="blue"
               size="small"
               className="PlayerControls__button"
-              disabled={!G.players[playerID].char.buttonActive}
+              disabled={!G.players[playerID].charState.buttonActive}
               onClick={() => moves.characterAbility()}
             >
-              {G.players[playerID].char.buttonText}
+              {G.players[playerID].charState.buttonText}
             </Button>
 
             <Button

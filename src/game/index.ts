@@ -35,21 +35,21 @@ export function initCharacter(characterName: string): CharacterState {
 function setRandomCharacters(G: GameState) {
   const listOnlyCharacters = characterList.slice(1);
   Object.values(G.players).forEach((player) => {
-    if (player.char.name === 'Random') {
+    if (player.charState.name === 'Random') {
       const nonDuplicateCharacterList = listOnlyCharacters.filter((name) => (
-        name !== (G.players[player.opponentId].char.name)
+        name !== (G.players[player.opponentID].charState.name)
       ));
       const randomCharName = (
         nonDuplicateCharacterList[Math.floor(Math.random() * (nonDuplicateCharacterList.length))]
       );
-      player.char = initCharacter(randomCharName);
+      player.charState = initCharacter(randomCharName);
     }
   });
 }
 
 function getFirstPlayer(G: GameState): number {
   let startingPlayer = 0;
-  if (G.players['1'].char.name === 'Bia') {
+  if (G.players['1'].charState.name === 'Bia') {
     startingPlayer = 1;
   }
   return startingPlayer;
@@ -57,26 +57,26 @@ function getFirstPlayer(G: GameState): number {
 
 export function updateValids(context: GameContext, charState: CharacterState, stage: string) {
   const { G } = context;
-  const char = getCharacter(charState.name);
+  const character = getCharacter(charState.name);
   let valids: number[] = [];
 
   // apply opp restrictions
   switch (stage) {
     case 'place':
-      valids = char.validPlace(context, charState);
+      valids = character.validPlace(context, charState);
       break;
     case 'select':
-      valids = char.validSelect(context, charState);
+      valids = character.validSelect(context, charState);
       break;
     case 'move':
-      valids = char.validMove(
+      valids = character.validMove(
         context,
         charState,
         charState.workers[charState.selectedWorkerNum].pos,
       );
       break;
     case 'build':
-      valids = char.validBuild(
+      valids = character.validBuild(
         context,
         charState,
         charState.workers[charState.selectedWorkerNum].pos,
@@ -106,10 +106,10 @@ export const SantoriniGame: Game<GameState> = {
     const players: Record<string, Player> = {} as Record<string, Player>;
     for (let i = 0; i < ctx.numPlayers; i++) {
       players[i] = ({
-        id: i.toString(),
-        opponentId: ((i + 1) % ctx.numPlayers).toString(),
+        ID: i.toString(),
+        opponentID: ((i + 1) % ctx.numPlayers).toString(),
         ready: false,
-        char: initCharacter('Random'),
+        charState: initCharacter('Random'),
       });
     }
 
@@ -157,8 +157,8 @@ export const SantoriniGame: Game<GameState> = {
         const { G } = contextWithPlayerID;
 
         Object.values(G.players).forEach((player) => {
-          const char = getCharacter(player.char.name);
-          char.initialize?.(contextWithPlayerID, player.char);
+          const character = getCharacter(player.charState.name);
+          character.initialize?.(contextWithPlayerID, player.charState);
         });
       },
       turn: {
@@ -174,14 +174,14 @@ export const SantoriniGame: Game<GameState> = {
         onBegin: (context) => {
           const contextWithPlayerID = getContextWithPlayerID(context);
           const { G, playerID } = contextWithPlayerID;
-          const charState = G.players[playerID].char;
+          const { charState } = G.players[playerID];
 
           updateValids(contextWithPlayerID, charState, 'place');
         },
         onEnd: ({ G, ctx, events }) => {
           if (
-            G.players['0'].char.numWorkersToPlace === 0
-            && G.players['1'].char.numWorkersToPlace === 0
+            G.players['0'].charState.numWorkersToPlace === 0
+            && G.players['1'].charState.numWorkersToPlace === 0
           ) {
             events.endPhase();
           }
@@ -205,21 +205,21 @@ export const SantoriniGame: Game<GameState> = {
         onBegin: (context) => {
           const contextWithPlayerID = getContextWithPlayerID(context);
           const { G, playerID } = contextWithPlayerID;
-          const charState = G.players[playerID].char;
+          const { charState } = G.players[playerID];
 
-          const char = getCharacter(charState.name);
+          const character = getCharacter(charState.name);
           updateValids(contextWithPlayerID, charState, 'select');
-          char.onTurnBegin?.(contextWithPlayerID, charState);
+          character.onTurnBegin?.(contextWithPlayerID, charState);
         },
         onEnd: (context) => {
           const contextWithPlayerID = getContextWithPlayerID(context);
-          const { G, ctx, playerID } = contextWithPlayerID;
-          const charState = G.players[playerID].char;
+          const { G, playerID } = contextWithPlayerID;
+          const { charState } = G.players[playerID];
 
-          const char = getCharacter(charState.name);
-          char.onTurnEnd?.(contextWithPlayerID, charState);
+          const character = getCharacter(charState.name);
+          character.onTurnEnd?.(contextWithPlayerID, charState);
 
-          G.players[ctx.currentPlayer].char.selectedWorkerNum = -1;
+          charState.selectedWorkerNum = -1;
 
           checkWinByTrap(contextWithPlayerID);
         },

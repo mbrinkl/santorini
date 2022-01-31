@@ -10,10 +10,10 @@ export type GameContext = DefaultPluginAPIs & {
 };
 
 export interface Player {
-  id: string;
-  opponentId: string;
+  ID: string;
+  opponentID: string;
   ready: boolean;
-  char: CharacterState;
+  charState: CharacterState;
 }
 
 export interface GameState {
@@ -26,7 +26,7 @@ export interface Space {
   pos: number;
   height: number;
   inhabitant?: {
-    playerId: string;
+    playerID: string;
     workerNum: number;
   };
   isDomed: boolean;

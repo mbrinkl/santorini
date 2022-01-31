@@ -6,27 +6,27 @@ import { Worker } from '../types/CharacterTypes';
 import { Board } from './space';
 import { checkWinByMove } from './winConditions';
 
-export const setChar: Move<GameState> = ({ G }, id: string, name: string) => {
-  G.players[id].ready = false;
-  G.players[id].char = initCharacter(name);
+export const setChar: Move<GameState> = ({ G, playerID }, name: string) => {
+  G.players[playerID].ready = false;
+  G.players[playerID].charState = initCharacter(name);
 };
 
-export const ready: Move<GameState> = ({ G }, id: string) => {
-  G.players[id].ready = true;
+export const ready: Move<GameState> = ({ G, playerID }) => {
+  G.players[playerID].ready = true;
 };
 
-export const cancelReady: Move<GameState> = ({ G }, id: string) => {
-  G.players[id].ready = false;
+export const cancelReady: Move<GameState> = ({ G, playerID }) => {
+  G.players[playerID].ready = false;
 };
 
 export const characterAbility: Move<GameState> = (context) => {
   const { G, playerID, events } = context;
 
-  const charState = G.players[playerID].char;
+  const { charState } = G.players[playerID];
 
-  const char = getCharacter(charState.name);
+  const character = getCharacter(charState.name);
 
-  const stage = char.buttonPressed(context, charState);
+  const stage = character.buttonPressed(context, charState);
   events.setStage(stage);
 
   updateValids(context, charState, stage);
@@ -34,7 +34,7 @@ export const characterAbility: Move<GameState> = (context) => {
 
 export const place: Move<GameState> = (context, pos: number) => {
   const { G, playerID, events } = context;
-  const charState = G.players[playerID].char;
+  const { charState } = G.players[playerID];
 
   const worker: Worker = {
     pos,
@@ -55,11 +55,11 @@ export const place: Move<GameState> = (context, pos: number) => {
 
 export const select: Move<GameState> = (context, pos: number) => {
   const { G, playerID, events } = context;
-  const charState = G.players[playerID].char;
+  const { charState } = G.players[playerID];
 
-  const char = getCharacter(charState.name);
+  const character = getCharacter(charState.name);
 
-  const stage = char.select(context, charState, pos);
+  const stage = character.select(context, charState, pos);
   events.setStage(stage);
 
   updateValids(context, charState, stage);
@@ -70,19 +70,18 @@ export const move: Move<GameState> = (context, pos: number) => {
     G, events, playerID, ctx,
   } = context;
 
-  const charState = G.players[playerID].char;
-  const { opponentId } = G.players[playerID];
+  const { charState, opponentID } = G.players[playerID];
 
   const beforeHeight = charState.workers[charState.selectedWorkerNum].height;
 
-  const char = getCharacter(charState.name);
+  const character = getCharacter(charState.name);
 
   const ogPos = charState.workers[charState.selectedWorkerNum].pos;
-  const stage = char.move(context, charState, pos);
+  const stage = character.move(context, charState, pos);
   events.setStage(stage);
 
   // opp move effect
-  const opponentCharState = G.players[opponentId].char;
+  const opponentCharState = G.players[opponentID].charState;
   getCharacter(opponentCharState.name).opponentPostMove(context, charState, ogPos);
 
   updateValids(context, charState, stage);
@@ -96,11 +95,11 @@ export const move: Move<GameState> = (context, pos: number) => {
 export const build: Move<GameState> = (context, pos: number) => {
   const { G, playerID, events } = context;
 
-  const charState = G.players[playerID].char;
+  const { charState } = G.players[playerID];
 
-  const char = getCharacter(charState.name);
+  const character = getCharacter(charState.name);
 
-  const stage = char.build(context, charState, pos);
+  const stage = character.build(context, charState, pos);
   events.setStage(stage);
 
   updateValids(context, charState, stage);

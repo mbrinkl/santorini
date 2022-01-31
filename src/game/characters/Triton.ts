@@ -9,27 +9,27 @@ export const Triton: Character = {
   desc: 'Your Move: Each time your Worker moves into a perimeter space, it may immediately move again.',
   buttonText: 'End Move',
 
-  move: ({ G, playerID }, char, pos) => {
+  move: ({ G, playerID }, charState, pos) => {
     let returnStage: GameStage = 'build';
 
     if (posIsPerimeter(pos)) {
-      char.buttonActive = true;
+      charState.buttonActive = true;
       returnStage = 'move';
     } else {
-      char.buttonActive = false;
+      charState.buttonActive = false;
     }
 
     // free the space that is being moved from
-    Board.free(G, char.workers[char.selectedWorkerNum].pos);
+    Board.free(G, charState.workers[charState.selectedWorkerNum].pos);
 
     // place the worker on the selected space
-    Board.place(G, pos, playerID, char.selectedWorkerNum);
+    Board.place(G, pos, playerID, charState.selectedWorkerNum);
 
     return returnStage;
   },
 
-  buttonPressed: (G, char) => {
-    char.buttonActive = false;
+  buttonPressed: (context, charState) => {
+    charState.buttonActive = false;
     return 'build';
   },
 };

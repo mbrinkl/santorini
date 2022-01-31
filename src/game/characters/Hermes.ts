@@ -22,18 +22,18 @@ export const Hermes: Character<HermesAttrs> = {
     canMoveUp: true,
   },
 
-  onTurnBegin: (context, char: CharacterState<HermesAttrs>) => {
-    char.buttonActive = true;
+  onTurnBegin: (context, charState: CharacterState<HermesAttrs>) => {
+    charState.buttonActive = true;
   },
 
-  validMove: ({ G }, char: CharacterState<HermesAttrs>, originalPos) => {
+  validMove: ({ G }, charState: CharacterState<HermesAttrs>, originalPos) => {
     const adjacents: number[] = getAdjacentPositions(originalPos);
     const valids: number[] = [];
 
-    if (char.attrs.canMoveUp) {
+    if (charState.attrs.canMoveUp) {
       adjacents.forEach((pos) => {
         if (!G.spaces[pos].inhabitant && !G.spaces[pos].isDomed
-          && G.spaces[pos].height - G.spaces[originalPos].height <= char.moveUpHeight
+          && G.spaces[pos].height - G.spaces[originalPos].height <= charState.moveUpHeight
         ) {
           valids.push(pos);
         }
@@ -51,40 +51,40 @@ export const Hermes: Character<HermesAttrs> = {
     return valids;
   },
 
-  move: ({ G, playerID }, char: CharacterState<HermesAttrs>, pos) => {
+  move: ({ G, playerID }, charState: CharacterState<HermesAttrs>, pos) => {
     let returnStage: GameStage = 'build';
 
-    if (G.spaces[pos].height === char.workers[char.selectedWorkerNum].height) {
-      char.attrs.canMoveUp = false;
-      char.attrs.isMoving = true;
-      char.buttonText = 'Switch Workers';
+    if (G.spaces[pos].height === charState.workers[charState.selectedWorkerNum].height) {
+      charState.attrs.canMoveUp = false;
+      charState.attrs.isMoving = true;
+      charState.buttonText = 'Switch Workers';
       returnStage = 'move';
     } else {
-      char.attrs.movedUpOrDown = true;
-      char.buttonActive = false;
+      charState.attrs.movedUpOrDown = true;
+      charState.buttonActive = false;
     }
 
     // free the space that is being moved from
-    Board.free(G, char.workers[char.selectedWorkerNum].pos);
+    Board.free(G, charState.workers[charState.selectedWorkerNum].pos);
 
     // place the worker on the selected space
-    Board.place(G, pos, playerID, char.selectedWorkerNum);
+    Board.place(G, pos, playerID, charState.selectedWorkerNum);
 
     return returnStage;
   },
 
-  validBuild: ({ G }, char: CharacterState<HermesAttrs>, originalPos) => {
+  validBuild: ({ G }, charState: CharacterState<HermesAttrs>, originalPos) => {
     const valids: number[] = [];
     let adjacents: number[] = [];
 
     // normal build
-    if (char.attrs.movedUpOrDown) {
+    if (charState.attrs.movedUpOrDown) {
       adjacents = getAdjacentPositions(originalPos);
     } else {
       // special build, within range of either worker
-      for (let i = 0; i < char.workers.length; i++) {
+      for (let i = 0; i < charState.workers.length; i++) {
         // add on the adjacent positions of each worker
-        adjacents = adjacents.concat(getAdjacentPositions(char.workers[i].pos));
+        adjacents = adjacents.concat(getAdjacentPositions(charState.workers[i].pos));
       }
     }
 
@@ -97,29 +97,31 @@ export const Hermes: Character<HermesAttrs> = {
     return valids;
   },
 
-  build: ({ G }, char: CharacterState<HermesAttrs>, pos) => {
-    char.attrs.isMoving = false;
-    char.attrs.canMoveUp = true;
-    char.attrs.movedUpOrDown = false;
+  build: ({ G }, charState: CharacterState<HermesAttrs>, pos) => {
+    charState.attrs.isMoving = false;
+    charState.attrs.canMoveUp = true;
+    charState.attrs.movedUpOrDown = false;
 
     Board.build(G, pos);
     return 'end';
   },
 
-  buttonPressed: (context, char: CharacterState<HermesAttrs>) => {
-    if (char.attrs.isMoving) {
-      char.attrs.isMoving = false;
-      char.buttonText = 'End Move';
+  buttonPressed: (context, charState: CharacterState<HermesAttrs>) => {
+    if (charState.attrs.isMoving) {
+      charState.attrs.isMoving = false;
+      charState.buttonText = 'End Move';
       // change the selected worker
-      if (char.workers.length > 1) char.selectedWorkerNum = (char.selectedWorkerNum + 1) % 2;
+      if (charState.workers.length > 1) {
+        charState.selectedWorkerNum = (charState.selectedWorkerNum + 1) % 2;
+      }
     } else {
-      char.buttonActive = false;
-      if (char.selectedWorkerNum === -1) {
-        char.selectedWorkerNum = 0;
+      charState.buttonActive = false;
+      if (charState.selectedWorkerNum === -1) {
+        charState.selectedWorkerNum = 0;
       }
       return 'build';
     }
 
-    return Mortal.buttonPressed(context, char);
+    return Mortal.buttonPressed(context, charState);
   },
 };

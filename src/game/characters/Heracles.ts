@@ -20,48 +20,48 @@ export const Heracles: Character<HeraclesAttrs> = {
     numBuilds: 0,
   },
 
-  buttonPressed: (context, char: CharacterState<HeraclesAttrs>) => {
-    char.attrs.specialActive = !char.attrs.specialActive;
+  buttonPressed: (context, charState: CharacterState<HeraclesAttrs>) => {
+    charState.attrs.specialActive = !charState.attrs.specialActive;
 
-    if (char.attrs.specialUsed) {
+    if (charState.attrs.specialUsed) {
       // reset stuff
-      char.buttonActive = false;
-      char.attrs.specialActive = false;
-      char.buttonText = 'Build Domes';
+      charState.buttonActive = false;
+      charState.attrs.specialActive = false;
+      charState.buttonText = 'Build Domes';
 
       // set game stage
       return 'end';
     }
-    if (char.attrs.specialActive) {
-      char.buttonText = 'Cancel';
+    if (charState.attrs.specialActive) {
+      charState.buttonText = 'Cancel';
     } else {
-      char.buttonText = 'Build Domes';
+      charState.buttonText = 'Build Domes';
     }
 
-    return Mortal.buttonPressed(context, char);
+    return Mortal.buttonPressed(context, charState);
   },
 
-  move: (context, char: CharacterState<HeraclesAttrs>, pos) => {
-    if (!char.attrs.specialUsed) {
-      char.attrs.numBuilds = 0;
-      char.buttonActive = true;
+  move: (context, charState: CharacterState<HeraclesAttrs>, pos) => {
+    if (!charState.attrs.specialUsed) {
+      charState.attrs.numBuilds = 0;
+      charState.buttonActive = true;
     }
-    return Mortal.move(context, char, pos);
+    return Mortal.move(context, charState, pos);
   },
 
-  validBuild: (context, char: CharacterState<HeraclesAttrs>, originalPos: number) => {
+  validBuild: (context, charState: CharacterState<HeraclesAttrs>, originalPos: number) => {
     const { G } = context;
 
-    if (!char.attrs.specialActive) {
-      return Mortal.validBuild(context, char, originalPos);
+    if (!charState.attrs.specialActive) {
+      return Mortal.validBuild(context, charState, originalPos);
     }
 
     const valids: number[] = [];
     let adjacents: number[] = [];
 
-    for (let i = 0; i < char.workers.length; i++) {
+    for (let i = 0; i < charState.workers.length; i++) {
       // add on the adjacent positions of each worker
-      adjacents = adjacents.concat(getAdjacentPositions(char.workers[i].pos));
+      adjacents = adjacents.concat(getAdjacentPositions(charState.workers[i].pos));
     }
 
     adjacents.forEach((pos) => {
@@ -73,25 +73,25 @@ export const Heracles: Character<HeraclesAttrs> = {
     return valids;
   },
 
-  build: (context, char: CharacterState<HeraclesAttrs>, pos: number) => {
+  build: (context, charState: CharacterState<HeraclesAttrs>, pos: number) => {
     const { G } = context;
 
-    if (char.attrs.specialActive) {
-      char.attrs.specialUsed = true;
-      char.buttonText = 'End Build';
-      char.attrs.numBuilds += 1;
+    if (charState.attrs.specialActive) {
+      charState.attrs.specialUsed = true;
+      charState.buttonText = 'End Build';
+      charState.attrs.numBuilds += 1;
       G.spaces[pos].isDomed = true;
 
-      if (Mortal.hasValidBuild(context, char)) {
+      if (Mortal.hasValidBuild(context, charState)) {
         return 'build';
       }
     } else {
       Board.build(G, pos);
     }
 
-    char.buttonActive = false;
-    char.attrs.specialActive = false;
-    char.buttonText = 'Build Domes';
+    charState.buttonActive = false;
+    charState.attrs.specialActive = false;
+    charState.buttonText = 'Build Domes';
     return 'end';
   },
 };

@@ -14,27 +14,27 @@ export const Atlas: Character<AtlasAttrs> = {
     specialActive: false,
   },
 
-  move: (context, char: CharacterState<AtlasAttrs>, pos) => {
-    char.buttonActive = true;
-    return Mortal.move(context, char, pos);
+  move: (context, charState: CharacterState<AtlasAttrs>, pos) => {
+    charState.buttonActive = true;
+    return Mortal.move(context, charState, pos);
   },
 
-  buttonPressed: (context, char: CharacterState<AtlasAttrs>) => {
-    char.attrs.specialActive = !char.attrs.specialActive;
-    char.buttonText = char.attrs.specialActive ? 'Cancel' : 'Build Dome';
-    return Mortal.buttonPressed(context, char);
+  buttonPressed: (context, charState: CharacterState<AtlasAttrs>) => {
+    charState.attrs.specialActive = !charState.attrs.specialActive;
+    charState.buttonText = charState.attrs.specialActive ? 'Cancel' : 'Build Dome';
+    return Mortal.buttonPressed(context, charState);
   },
 
-  build: ({ G }, char, pos) => {
-    if (char.attrs.specialActive) {
+  build: ({ G }, charState, pos) => {
+    if (charState.attrs.specialActive) {
       G.spaces[pos].isDomed = true;
     } else {
       Board.build(G, pos);
     }
 
-    char.attrs.specialActive = false;
-    char.buttonActive = false;
-    char.buttonText = 'Build Dome';
+    charState.attrs.specialActive = false;
+    charState.buttonActive = false;
+    charState.buttonText = 'Build Dome';
     return 'end';
   },
 };

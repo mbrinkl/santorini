@@ -16,30 +16,30 @@ export const Athena: Character<AthenaAttrs> = {
     opponentMoveUpHeight: -1,
   },
 
-  move: ({ G, playerID }, char: CharacterState<AthenaAttrs>, pos) => {
-    const opponentID = G.players[playerID].opponentId;
+  move: ({ G, playerID }, charState: CharacterState<AthenaAttrs>, pos) => {
+    const { opponentID } = G.players[playerID];
 
     // if the opponent move up height has not been set yet
-    if (!char.attrs.setOpponentHeight) {
+    if (!charState.attrs.setOpponentHeight) {
       // set it now
-      char.attrs.opponentMoveUpHeight = G.players[opponentID].char.moveUpHeight;
+      charState.attrs.opponentMoveUpHeight = G.players[opponentID].charState.moveUpHeight;
     }
-    char.attrs.setOpponentHeight = true;
+    charState.attrs.setOpponentHeight = true;
 
     // reset the move up height for the opponent at the beginning of the turn
-    G.players[opponentID].char.moveUpHeight = char.attrs.opponentMoveUpHeight;
+    G.players[opponentID].charState.moveUpHeight = charState.attrs.opponentMoveUpHeight;
 
     // note the height before moving
-    const heightBefore = char.workers[char.selectedWorkerNum].height;
+    const heightBefore = charState.workers[charState.selectedWorkerNum].height;
 
     // move to the selected space
-    Board.free(G, char.workers[char.selectedWorkerNum].pos);
-    Board.place(G, pos, playerID, char.selectedWorkerNum);
+    Board.free(G, charState.workers[charState.selectedWorkerNum].pos);
+    Board.place(G, pos, playerID, charState.selectedWorkerNum);
 
     // if the worker's previous height is less than the worker's current height
-    if (heightBefore < char.workers[char.selectedWorkerNum].height) {
+    if (heightBefore < charState.workers[charState.selectedWorkerNum].height) {
       // do not allow the opponent to move up the next turn
-      G.players[opponentID].char.moveUpHeight = 0;
+      G.players[opponentID].charState.moveUpHeight = 0;
     }
 
     return 'build';

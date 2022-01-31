@@ -1,6 +1,5 @@
 import { Mortal } from './Mortal';
-import { GameState } from '../../types/GameTypes';
-import { Character, CharacterState } from '../../types/CharacterTypes';
+import { Character } from '../../types/CharacterTypes';
 
 export const Pegasus: Character = {
   ...Mortal,
@@ -8,10 +7,10 @@ export const Pegasus: Character = {
   moveUpHeight: 3,
 
   checkWinByMove: (
-    G: GameState,
-    char: CharacterState,
-    heightBefore: number,
-    heightAfter: number,
+    G,
+    charState,
+    heightBefore,
+    heightAfter,
   ) => (
     heightBefore === 2 && heightAfter === 3
   ),

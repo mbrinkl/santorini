@@ -5,14 +5,14 @@ import { getCharacter } from './characters';
 
 export function checkWinByTrap(context: GameContext) {
   const { G, playerID, events } = context;
-  const nextPlayer = G.players[G.players[playerID].opponentId];
-  const currChar = nextPlayer.char;
+  const nextPlayer = G.players[G.players[playerID].opponentID];
+  const { charState } = nextPlayer;
 
-  const char = getCharacter(currChar.name);
+  const character = getCharacter(charState.name);
 
-  if (!char.hasValidMoves({ ...context, playerID: nextPlayer.id }, currChar)) {
+  if (!character.hasValidMoves({ ...context, playerID: nextPlayer.ID }, charState)) {
     events.endGame({
-      winner: nextPlayer.opponentId,
+      winner: nextPlayer.opponentID,
     });
   }
 }
@@ -24,12 +24,11 @@ export function checkWinByMove(
   heightBefore: number,
   heightAfter: number,
 ) {
-  const currPlayer = G.players[ctx.currentPlayer];
-  const currChar = currPlayer.char;
+  const { charState } = G.players[ctx.currentPlayer];
 
-  const char = getCharacter(currChar.name);
+  const character = getCharacter(charState.name);
 
-  if (char.checkWinByMove(G, currChar, heightBefore, heightAfter)) {
+  if (character.checkWinByMove(G, charState, heightBefore, heightAfter)) {
     events.endGame({
       winner: ctx.currentPlayer,
     });

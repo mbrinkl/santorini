@@ -18,19 +18,19 @@ export const Artemis: Character<ArtemisAttrs> = {
     prevTile: -1,
   },
 
-  validMove: ({ G }, char: CharacterState<ArtemisAttrs>, originalPos) => {
+  validMove: ({ G }, charState: CharacterState<ArtemisAttrs>, originalPos) => {
     const valids: number[] = [];
 
-    if (char.selectedWorkerNum !== -1 && char.attrs.numMoves === 0) {
-      char.attrs.prevTile = char.workers[char.selectedWorkerNum].pos;
+    if (charState.selectedWorkerNum !== -1 && charState.attrs.numMoves === 0) {
+      charState.attrs.prevTile = charState.workers[charState.selectedWorkerNum].pos;
     }
 
     getAdjacentPositions(originalPos).forEach((pos) => {
       if (
         !G.spaces[pos].inhabitant
         && !G.spaces[pos].isDomed
-        && G.spaces[pos].height - G.spaces[originalPos].height <= char.moveUpHeight
-        && char.attrs.prevTile !== pos
+        && G.spaces[pos].height - G.spaces[originalPos].height <= charState.moveUpHeight
+        && charState.attrs.prevTile !== pos
       ) {
         valids.push(pos);
       }
@@ -39,28 +39,28 @@ export const Artemis: Character<ArtemisAttrs> = {
     return valids;
   },
 
-  move: ({ G, playerID }, char: CharacterState<ArtemisAttrs>, pos) => {
-    char.attrs.numMoves += 1;
+  move: ({ G, playerID }, charState: CharacterState<ArtemisAttrs>, pos) => {
+    charState.attrs.numMoves += 1;
 
     // free the space that is being moved from
-    Board.free(G, char.workers[char.selectedWorkerNum].pos);
+    Board.free(G, charState.workers[charState.selectedWorkerNum].pos);
 
     // place the worker on the selected space
-    Board.place(G, pos, playerID, char.selectedWorkerNum);
+    Board.place(G, pos, playerID, charState.selectedWorkerNum);
 
-    if (char.attrs.numMoves === 2) {
-      char.attrs.numMoves = 0;
-      char.attrs.prevTile = -1;
-      char.buttonActive = false;
+    if (charState.attrs.numMoves === 2) {
+      charState.attrs.numMoves = 0;
+      charState.attrs.prevTile = -1;
+      charState.buttonActive = false;
       return 'build';
     }
 
-    char.buttonActive = true;
+    charState.buttonActive = true;
     return 'move';
   },
 
-  buttonPressed: (context, char: CharacterState) => {
-    char.buttonActive = false;
+  buttonPressed: (context, charState: CharacterState) => {
+    charState.buttonActive = false;
     return 'build';
   },
 };

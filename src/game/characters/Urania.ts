@@ -8,14 +8,14 @@ export const Urania: Character = {
     adjacent so that every space has 8 neighbors.`,
   // banned aphrodite
 
-  validMove: ({ G }, char, originalPos) => {
+  validMove: ({ G }, charState, originalPos) => {
     const valids: number[] = [];
 
     getWrappedAdjacents(originalPos).forEach((pos) => {
       if (
         !G.spaces[pos].inhabitant
         && !G.spaces[pos].isDomed
-        && G.spaces[pos].height - G.spaces[originalPos].height <= char.moveUpHeight
+        && G.spaces[pos].height - G.spaces[originalPos].height <= charState.moveUpHeight
       ) {
         valids.push(pos);
       }
@@ -24,7 +24,7 @@ export const Urania: Character = {
     return valids;
   },
 
-  validBuild: ({ G }, char, originalPos) => {
+  validBuild: ({ G }, charState, originalPos) => {
     const valids: number[] = [];
 
     getWrappedAdjacents(originalPos).forEach((pos) => {

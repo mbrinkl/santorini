@@ -14,7 +14,7 @@ export const HelpText = () => {
 
   if (!ctx.gameover && isActive) {
     if (stage === 'place') {
-      hint = `Place ${G.players[ctx.currentPlayer].char.numWorkersToPlace} workers`;
+      hint = `Place ${G.players[ctx.currentPlayer].charState.numWorkersToPlace} workers`;
     } else if (stage === 'select') {
       hint = 'Select a worker';
     } else if (stage === 'move') {

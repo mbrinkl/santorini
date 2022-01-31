@@ -19,20 +19,20 @@ export const Prometheus: Character<PrometheusAttrs> = {
     originalPos: -1,
   },
 
-  onTurnBegin: ({ G }, char: CharacterState<PrometheusAttrs>) => {
-    char.buttonActive = true;
+  onTurnBegin: (context, charState: CharacterState<PrometheusAttrs>) => {
+    charState.buttonActive = true;
   },
 
-  select: (context, char: CharacterState<PrometheusAttrs>, pos) => {
-    const returnValue = Mortal.select(context, char, pos);
-    if (char.attrs.specialActive) return 'build';
+  select: (context, charState: CharacterState<PrometheusAttrs>, pos) => {
+    const returnValue = Mortal.select(context, charState, pos);
+    if (charState.attrs.specialActive) return 'build';
     return returnValue;
   },
 
-  validMove: ({ G }, char: CharacterState<PrometheusAttrs>, originalPos) => {
-    const height = (char.attrs.specialUsed ? 0 : char.moveUpHeight);
-    if (char.attrs.specialUsed) {
-      originalPos = char.attrs.originalPos;
+  validMove: ({ G }, charState: CharacterState<PrometheusAttrs>, originalPos) => {
+    const height = (charState.attrs.specialUsed ? 0 : charState.moveUpHeight);
+    if (charState.attrs.specialUsed) {
+      originalPos = charState.attrs.originalPos;
     }
 
     const adjacents: number[] = getAdjacentPositions(originalPos);
@@ -50,44 +50,44 @@ export const Prometheus: Character<PrometheusAttrs> = {
     return valids;
   },
 
-  move: (context, char: CharacterState, pos) => {
-    char.buttonActive = false;
-    return Mortal.move(context, char, pos);
+  move: (context, charState: CharacterState, pos) => {
+    charState.buttonActive = false;
+    return Mortal.move(context, charState, pos);
   },
 
-  build: ({ G }, char: CharacterState<PrometheusAttrs>, pos) => {
+  build: ({ G }, charState: CharacterState<PrometheusAttrs>, pos) => {
     Board.build(G, pos);
 
-    if (char.attrs.specialActive) {
-      char.attrs.specialUsed = true;
-      char.attrs.originalPos = char.workers[char.selectedWorkerNum].pos;
+    if (charState.attrs.specialActive) {
+      charState.attrs.specialUsed = true;
+      charState.attrs.originalPos = charState.workers[charState.selectedWorkerNum].pos;
 
-      char.buttonActive = false;
-      char.attrs.specialActive = false;
-      char.buttonText = 'Build Before Move';
+      charState.buttonActive = false;
+      charState.attrs.specialActive = false;
+      charState.buttonText = 'Build Before Move';
 
       return 'move';
     }
 
-    char.attrs.specialUsed = false;
-    char.attrs.originalPos = -1;
+    charState.attrs.specialUsed = false;
+    charState.attrs.originalPos = -1;
     return 'end';
   },
 
-  buttonPressed: (context, char: CharacterState<PrometheusAttrs>) => {
+  buttonPressed: (context, charState: CharacterState<PrometheusAttrs>) => {
     const { ctx } = context;
-    char.attrs.specialActive = !char.attrs.specialActive;
+    charState.attrs.specialActive = !charState.attrs.specialActive;
 
     const stage = ctx.activePlayers && ctx.activePlayers[ctx.currentPlayer];
 
-    if (char.attrs.specialActive) {
-      char.buttonText = 'Cancel';
+    if (charState.attrs.specialActive) {
+      charState.buttonText = 'Cancel';
       if (stage === 'move') return 'build';
     } else {
-      char.buttonText = 'Build Before Move';
+      charState.buttonText = 'Build Before Move';
       if (stage === 'build') return 'move';
     }
 
-    return Mortal.buttonPressed(context, char);
+    return Mortal.buttonPressed(context, charState);
   },
 };
