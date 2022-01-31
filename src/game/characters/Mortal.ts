@@ -7,6 +7,7 @@ export const Mortal: Character = {
 
   workers: [],
   desc: 'No ability',
+  firstTurnRequired: false,
   buttonText: 'No ability',
   buttonActive: false,
   numWorkersToPlace: 2,

@@ -2,7 +2,7 @@ import { ActivePlayers } from 'boardgame.io/core';
 import { Game } from 'boardgame.io';
 import { GAME_ID } from '../config';
 import { characterList, getCharacter } from './characters';
-import { Character, CharacterState } from '../types/CharacterTypes';
+import { CharacterState } from '../types/CharacterTypes';
 import { checkWinByTrap } from './winConditions';
 import {
   GameContext, GameState, Player, Space,
@@ -12,16 +12,16 @@ import {
 } from './moves';
 
 export function initCharacter(characterName: string): CharacterState {
-  const character: Character = getCharacter(characterName);
-
+  // Get state properties without character functions
   const {
-    desc, buttonActive, buttonText, moveUpHeight, workers,
+    desc, firstTurnRequired, buttonActive, buttonText, moveUpHeight, workers,
     numWorkersToPlace, selectedWorkerNum, attrs,
-  } = character;
+  } = getCharacter(characterName);
 
   return {
     name: characterName,
     desc,
+    firstTurnRequired,
     buttonActive,
     buttonText,
     moveUpHeight,
@@ -32,7 +32,7 @@ export function initCharacter(characterName: string): CharacterState {
   };
 }
 
-function setRandomCharacters(G: GameState) {
+function initRandomCharacters(G: GameState) {
   const listOnlyCharacters = characterList.slice(1);
   Object.values(G.players).forEach((player) => {
     if (player.charState.name === 'Random') {
@@ -48,11 +48,7 @@ function setRandomCharacters(G: GameState) {
 }
 
 function getFirstPlayer(G: GameState): number {
-  let startingPlayer = 0;
-  if (G.players['1'].charState.name === 'Bia') {
-    startingPlayer = 1;
-  }
-  return startingPlayer;
+  return (G.players['1'].charState.firstTurnRequired ? 1 : 0);
 }
 
 export function updateValids(context: GameContext, charState: CharacterState, stage: string) {
@@ -90,7 +86,7 @@ export function updateValids(context: GameContext, charState: CharacterState, st
   G.valids = [...new Set(valids)];
 }
 
-// Uses ctx.currentPlayer as
+// Uses ctx.currentPlayer as the game context's playerID
 function getContextWithPlayerID(context: Omit<GameContext, 'playerID'>): GameContext {
   const { ctx } = context;
   const playerID = ctx.currentPlayer;
@@ -146,7 +142,7 @@ export const SantoriniGame: Game<GameState> = {
         cancelReady,
       },
       onEnd: ({ G }) => {
-        setRandomCharacters(G);
+        initRandomCharacters(G);
       },
     },
 

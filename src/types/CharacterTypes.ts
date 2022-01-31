@@ -8,6 +8,7 @@ export interface Worker {
 export interface CharacterState<AttrsType = any> {
   name: string;
   desc: string;
+  firstTurnRequired: boolean;
   workers: Worker[];
   numWorkersToPlace: number;
   selectedWorkerNum: number;
