@@ -1,7 +1,5 @@
-import { Ctx } from 'boardgame.io';
-import { Character, CharacterState } from '../../types/CharacterTypes';
+import { Character } from '../../types/CharacterTypes';
 import { Mortal } from './Mortal';
-import { GameState, Player } from '../../types/GameTypes';
 import { getAdjacentPositions } from '../utility';
 
 export const Graeae: Character = {
@@ -11,13 +9,7 @@ export const Graeae: Character = {
     Banned VS: Nemesis`,
   numWorkersToPlace: 3,
 
-  validBuild: (
-    G: GameState,
-    ctx: Ctx,
-    player: Player,
-    char: CharacterState,
-    originalPos: number,
-  ) => {
+  validBuild: ({ G }, char, originalPos) => {
     let adjacents: number[] = [];
     const valids: number[] = [];
 

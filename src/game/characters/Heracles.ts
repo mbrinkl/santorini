@@ -1,8 +1,6 @@
-import { Ctx } from 'boardgame.io';
 import { getAdjacentPositions } from '../utility';
 import { Character, CharacterState } from '../../types/CharacterTypes';
 import { Mortal } from './Mortal';
-import { GameState, Player } from '../../types/GameTypes';
 import { Board } from '../space';
 
 interface HeraclesAttrs {
@@ -22,12 +20,7 @@ export const Heracles: Character<HeraclesAttrs> = {
     numBuilds: 0,
   },
 
-  buttonPressed: (
-    G: GameState,
-    ctx: Ctx,
-    player: Player,
-    char: CharacterState<HeraclesAttrs>,
-  ) => {
+  buttonPressed: (context, char: CharacterState<HeraclesAttrs>) => {
     char.attrs.specialActive = !char.attrs.specialActive;
 
     if (char.attrs.specialUsed) {
@@ -45,32 +38,22 @@ export const Heracles: Character<HeraclesAttrs> = {
       char.buttonText = 'Build Domes';
     }
 
-    return Mortal.buttonPressed(G, ctx, player, char);
+    return Mortal.buttonPressed(context, char);
   },
 
-  move: (
-    G: GameState,
-    ctx: Ctx,
-    player: Player,
-    char: CharacterState<HeraclesAttrs>,
-    pos: number,
-  ) => {
+  move: (context, char: CharacterState<HeraclesAttrs>, pos) => {
     if (!char.attrs.specialUsed) {
       char.attrs.numBuilds = 0;
       char.buttonActive = true;
     }
-    return Mortal.move(G, ctx, player, char, pos);
+    return Mortal.move(context, char, pos);
   },
 
-  validBuild: (
-    G: GameState,
-    ctx: Ctx,
-    player: Player,
-    char: CharacterState<HeraclesAttrs>,
-    originalPos: number,
-  ) => {
+  validBuild: (context, char: CharacterState<HeraclesAttrs>, originalPos: number) => {
+    const { G } = context;
+
     if (!char.attrs.specialActive) {
-      return Mortal.validBuild(G, ctx, player, char, originalPos);
+      return Mortal.validBuild(context, char, originalPos);
     }
 
     const valids: number[] = [];
@@ -90,20 +73,16 @@ export const Heracles: Character<HeraclesAttrs> = {
     return valids;
   },
 
-  build: (
-    G: GameState,
-    ctx: Ctx,
-    player: Player,
-    char: CharacterState<HeraclesAttrs>,
-    pos: number,
-  ) => {
+  build: (context, char: CharacterState<HeraclesAttrs>, pos: number) => {
+    const { G } = context;
+
     if (char.attrs.specialActive) {
       char.attrs.specialUsed = true;
       char.buttonText = 'End Build';
       char.attrs.numBuilds += 1;
       G.spaces[pos].isDomed = true;
 
-      if (Mortal.hasValidBuild(G, ctx, player, char)) {
+      if (Mortal.hasValidBuild(context, char)) {
         return 'build';
       }
     } else {

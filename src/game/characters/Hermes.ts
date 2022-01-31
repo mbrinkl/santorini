@@ -1,8 +1,7 @@
-import { Ctx } from 'boardgame.io';
 import { getAdjacentPositions } from '../utility';
 import { Character, CharacterState } from '../../types/CharacterTypes';
 import { Mortal } from './Mortal';
-import { GameStage, GameState, Player } from '../../types/GameTypes';
+import { GameStage } from '../../types/GameTypes';
 import { Board } from '../space';
 
 interface HermesAttrs {
@@ -23,22 +22,11 @@ export const Hermes: Character<HermesAttrs> = {
     canMoveUp: true,
   },
 
-  onTurnBegin: (
-    G: GameState,
-    ctx: Ctx,
-    player: Player,
-    char: CharacterState<HermesAttrs>,
-  ) => {
+  onTurnBegin: (context, char: CharacterState<HermesAttrs>) => {
     char.buttonActive = true;
   },
 
-  validMove: (
-    G: GameState,
-    ctx: Ctx,
-    player: Player,
-    char: CharacterState<HermesAttrs>,
-    originalPos: number,
-  ) => {
+  validMove: ({ G }, char: CharacterState<HermesAttrs>, originalPos) => {
     const adjacents: number[] = getAdjacentPositions(originalPos);
     const valids: number[] = [];
 
@@ -63,13 +51,7 @@ export const Hermes: Character<HermesAttrs> = {
     return valids;
   },
 
-  move: (
-    G: GameState,
-    ctx: Ctx,
-    player: Player,
-    char: CharacterState<HermesAttrs>,
-    pos: number,
-  ) => {
+  move: ({ G, playerID }, char: CharacterState<HermesAttrs>, pos) => {
     let returnStage: GameStage = 'build';
 
     if (G.spaces[pos].height === char.workers[char.selectedWorkerNum].height) {
@@ -86,18 +68,12 @@ export const Hermes: Character<HermesAttrs> = {
     Board.free(G, char.workers[char.selectedWorkerNum].pos);
 
     // place the worker on the selected space
-    Board.place(G, pos, player.id, char.selectedWorkerNum);
+    Board.place(G, pos, playerID, char.selectedWorkerNum);
 
     return returnStage;
   },
 
-  validBuild: (
-    G: GameState,
-    ctx: Ctx,
-    player: Player,
-    char: CharacterState<HermesAttrs>,
-    originalPos: number,
-  ) => {
+  validBuild: ({ G }, char: CharacterState<HermesAttrs>, originalPos) => {
     const valids: number[] = [];
     let adjacents: number[] = [];
 
@@ -121,13 +97,7 @@ export const Hermes: Character<HermesAttrs> = {
     return valids;
   },
 
-  build: (
-    G: GameState,
-    ctx: Ctx,
-    player: Player,
-    char: CharacterState<HermesAttrs>,
-    pos: number,
-  ) => {
+  build: ({ G }, char: CharacterState<HermesAttrs>, pos) => {
     char.attrs.isMoving = false;
     char.attrs.canMoveUp = true;
     char.attrs.movedUpOrDown = false;
@@ -136,12 +106,7 @@ export const Hermes: Character<HermesAttrs> = {
     return 'end';
   },
 
-  buttonPressed: (
-    G: GameState,
-    ctx: Ctx,
-    player: Player,
-    char: CharacterState<HermesAttrs>,
-  ) => {
+  buttonPressed: (context, char: CharacterState<HermesAttrs>) => {
     if (char.attrs.isMoving) {
       char.attrs.isMoving = false;
       char.buttonText = 'End Move';
@@ -155,6 +120,6 @@ export const Hermes: Character<HermesAttrs> = {
       return 'build';
     }
 
-    return Mortal.buttonPressed(G, ctx, player, char);
+    return Mortal.buttonPressed(context, char);
   },
 };

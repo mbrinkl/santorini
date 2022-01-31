@@ -1,8 +1,6 @@
-import { Ctx } from 'boardgame.io';
 import { getAdjacentPositions } from '../utility';
 import { Character, CharacterState } from '../../types/CharacterTypes';
 import { Mortal } from './Mortal';
-import { GameState, Player } from '../../types/GameTypes';
 import { Board } from '../space';
 
 interface PrometheusAttrs {
@@ -21,34 +19,17 @@ export const Prometheus: Character<PrometheusAttrs> = {
     originalPos: -1,
   },
 
-  onTurnBegin: (
-    G: GameState,
-    ctx: Ctx,
-    player: Player,
-    char: CharacterState<PrometheusAttrs>,
-  ) => {
+  onTurnBegin: ({ G }, char: CharacterState<PrometheusAttrs>) => {
     char.buttonActive = true;
   },
 
-  select: (
-    G: GameState,
-    ctx: Ctx,
-    player: Player,
-    char: CharacterState<PrometheusAttrs>,
-    pos: number,
-  ) => {
-    const returnValue = Mortal.select(G, ctx, player, char, pos);
+  select: (context, char: CharacterState<PrometheusAttrs>, pos) => {
+    const returnValue = Mortal.select(context, char, pos);
     if (char.attrs.specialActive) return 'build';
     return returnValue;
   },
 
-  validMove: (
-    G: GameState,
-    ctx: Ctx,
-    player: Player,
-    char: CharacterState<PrometheusAttrs>,
-    originalPos: number,
-  ) => {
+  validMove: ({ G }, char: CharacterState<PrometheusAttrs>, originalPos) => {
     const height = (char.attrs.specialUsed ? 0 : char.moveUpHeight);
     if (char.attrs.specialUsed) {
       originalPos = char.attrs.originalPos;
@@ -69,24 +50,12 @@ export const Prometheus: Character<PrometheusAttrs> = {
     return valids;
   },
 
-  move: (
-    G: GameState,
-    ctx: Ctx,
-    player: Player,
-    char: CharacterState,
-    pos: number,
-  ) => {
+  move: (context, char: CharacterState, pos) => {
     char.buttonActive = false;
-    return Mortal.move(G, ctx, player, char, pos);
+    return Mortal.move(context, char, pos);
   },
 
-  build: (
-    G: GameState,
-    ctx: Ctx,
-    player: Player,
-    char: CharacterState<PrometheusAttrs>,
-    pos: number,
-  ) => {
+  build: ({ G }, char: CharacterState<PrometheusAttrs>, pos) => {
     Board.build(G, pos);
 
     if (char.attrs.specialActive) {
@@ -105,12 +74,8 @@ export const Prometheus: Character<PrometheusAttrs> = {
     return 'end';
   },
 
-  buttonPressed: (
-    G: GameState,
-    ctx: Ctx,
-    player: Player,
-    char: CharacterState<PrometheusAttrs>,
-  ) => {
+  buttonPressed: (context, char: CharacterState<PrometheusAttrs>) => {
+    const { ctx } = context;
     char.attrs.specialActive = !char.attrs.specialActive;
 
     const stage = ctx.activePlayers && ctx.activePlayers[ctx.currentPlayer];
@@ -123,6 +88,6 @@ export const Prometheus: Character<PrometheusAttrs> = {
       if (stage === 'build') return 'move';
     }
 
-    return Mortal.buttonPressed(G, ctx, player, char);
+    return Mortal.buttonPressed(context, char);
   },
 };

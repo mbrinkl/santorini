@@ -1,5 +1,4 @@
-import { Ctx } from 'boardgame.io';
-import { GameStage, GameState, Player } from '../../types/GameTypes';
+import { GameStage, GameState } from '../../types/GameTypes';
 import { Character, CharacterState } from '../../types/CharacterTypes';
 import { getAdjacentPositions } from '../utility';
 import { Board } from '../space';
@@ -15,12 +14,7 @@ export const Mortal: Character = {
   moveUpHeight: 1,
   attrs: null,
 
-  validPlace: (
-    G: GameState,
-    ctx: Ctx,
-    player: Player,
-    char: CharacterState,
-  ) => {
+  validPlace: ({ G }, char) => {
     const valids: number[] = [];
     G.spaces.forEach((space) => {
       if (!space.inhabitant && char.numWorkersToPlace > 0) {
@@ -30,16 +24,11 @@ export const Mortal: Character = {
     return valids;
   },
 
-  validSelect: (
-    G: GameState,
-    ctx: Ctx,
-    player: Player,
-    char: CharacterState,
-  ) => {
+  validSelect: (context, char) => {
     const valids: number[] = [];
 
     char.workers.forEach((worker) => {
-      if (Mortal.validMove(G, ctx, player, char, worker.pos).length > 0) {
+      if (Mortal.validMove(context, char, worker.pos).length > 0) {
         valids.push(worker.pos);
       }
     });
@@ -47,13 +36,7 @@ export const Mortal: Character = {
     return valids;
   },
 
-  select: (
-    G: GameState,
-    ctx: Ctx,
-    player: Player,
-    char: CharacterState,
-    pos: number,
-  ) => {
+  select: ({ G }, char, pos) => {
     const { inhabitant } = G.spaces[pos];
 
     if (!inhabitant) {
@@ -64,13 +47,7 @@ export const Mortal: Character = {
     return 'move';
   },
 
-  validMove: (
-    G: GameState,
-    ctx: Ctx,
-    player: Player,
-    char: CharacterState,
-    originalPos: number,
-  ) => {
+  validMove: ({ G }, char, originalPos) => {
     const valids: number[] = [];
 
     getAdjacentPositions(originalPos).forEach((pos) => {
@@ -86,15 +63,10 @@ export const Mortal: Character = {
     return valids;
   },
 
-  hasValidMoves: (
-    G: GameState,
-    ctx: Ctx,
-    player: Player,
-    char: CharacterState,
-  ) => {
+  hasValidMoves: (context, char) => {
     let hasMove = false;
     char.workers.forEach((worker) => {
-      if (Mortal.validMove(G, ctx, player, char, worker.pos).length > 0) {
+      if (Mortal.validMove(context, char, worker.pos).length > 0) {
         hasMove = true;
       }
     });
@@ -102,39 +74,21 @@ export const Mortal: Character = {
     return hasMove;
   },
 
-  move: (
-    G: GameState,
-    ctx: Ctx,
-    player: Player,
-    char: CharacterState,
-    pos: number,
-  ) => {
+  move: ({ G, playerID }, char, pos) => {
     // free the space that is being moved from
     Board.free(G, char.workers[char.selectedWorkerNum].pos);
 
     // place the worker on the selected space
-    Board.place(G, pos, player.id, char.selectedWorkerNum);
+    Board.place(G, pos, playerID, char.selectedWorkerNum);
 
     return 'build';
   },
 
-  opponentPostMove: (
-    G: GameState,
-    ctx: Ctx,
-    player: Player,
-    char: CharacterState,
-    pos: number,
-  ) => {
+  opponentPostMove: (context, char, pos) => {
 
   },
 
-  validBuild: (
-    G: GameState,
-    ctx: Ctx,
-    player: Player,
-    char: CharacterState,
-    originalPos: number,
-  ) => {
+  validBuild: ({ G }, char, originalPos) => {
     const adjacents: number[] = getAdjacentPositions(originalPos);
     const valids: number[] = [];
 
@@ -147,16 +101,11 @@ export const Mortal: Character = {
     return valids;
   },
 
-  hasValidBuild: (
-    G: GameState,
-    ctx: Ctx,
-    player: Player,
-    char: CharacterState,
-  ) => {
+  hasValidBuild: (context, char) => {
     let hasBuild = false;
 
     char.workers.forEach((worker) => {
-      if (Mortal.validBuild(G, ctx, player, char, worker.pos).length > 0) {
+      if (Mortal.validBuild(context, char, worker.pos).length > 0) {
         hasBuild = true;
       }
     });
@@ -164,23 +113,14 @@ export const Mortal: Character = {
     return hasBuild;
   },
 
-  build: (
-    G: GameState,
-    ctx: Ctx,
-    player: Player,
-    char: CharacterState,
-    pos: number,
-  ) => {
+  build: ({ G }, char, pos) => {
     Board.build(G, pos);
     return 'end';
   },
 
-  buttonPressed: (
-    G: GameState,
-    ctx: Ctx,
-    player: Player,
-    char: CharacterState,
-  ) => (ctx.activePlayers && ctx.activePlayers[ctx.currentPlayer]) as GameStage,
+  buttonPressed: ({ ctx }, char: CharacterState) => (
+    (ctx.activePlayers && ctx.activePlayers[ctx.currentPlayer]) as GameStage
+  ),
 
   checkWinByMove: (
     G: GameState,

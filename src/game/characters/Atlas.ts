@@ -1,7 +1,5 @@
-import { Ctx } from 'boardgame.io';
 import { Character, CharacterState } from '../../types/CharacterTypes';
 import { Mortal } from './Mortal';
-import { GameState, Player } from '../../types/GameTypes';
 import { Board } from '../space';
 
 interface AtlasAttrs {
@@ -16,37 +14,23 @@ export const Atlas: Character<AtlasAttrs> = {
     specialActive: false,
   },
 
-  move: (
-    G: GameState,
-    ctx: Ctx,
-    player: Player,
-    char: CharacterState<AtlasAttrs>,
-    pos: number,
-  ) => {
+  move: (context, char: CharacterState<AtlasAttrs>, pos) => {
     char.buttonActive = true;
-    return Mortal.move(G, ctx, player, char, pos);
+    return Mortal.move(context, char, pos);
   },
 
-  buttonPressed: (
-    G: GameState,
-    ctx: Ctx,
-    player: Player,
-    char: CharacterState<AtlasAttrs>,
-  ) => {
+  buttonPressed: (context, char: CharacterState<AtlasAttrs>) => {
     char.attrs.specialActive = !char.attrs.specialActive;
     char.buttonText = char.attrs.specialActive ? 'Cancel' : 'Build Dome';
-    return Mortal.buttonPressed(G, ctx, player, char as CharacterState);
+    return Mortal.buttonPressed(context, char);
   },
 
-  build: (
-    G: GameState,
-    ctx: Ctx,
-    player: Player,
-    char: CharacterState<AtlasAttrs>,
-    pos: number,
-  ) => {
-    if (char.attrs.specialActive) G.spaces[pos].isDomed = true;
-    else Board.build(G, pos);
+  build: ({ G }, char, pos) => {
+    if (char.attrs.specialActive) {
+      G.spaces[pos].isDomed = true;
+    } else {
+      Board.build(G, pos);
+    }
 
     char.attrs.specialActive = false;
     char.buttonActive = false;

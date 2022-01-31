@@ -1,8 +1,7 @@
-import { Ctx } from 'boardgame.io';
+import { GameContext } from '../../types/GameTypes';
 import { getAdjacentPositions, getNextPosition } from '../utility';
-import { Character, CharacterState } from '../../types/CharacterTypes';
+import { Character } from '../../types/CharacterTypes';
 import { Mortal } from './Mortal';
-import { GameState, Player } from '../../types/GameTypes';
 import { Board } from '../space';
 
 export const Minotaur: Character = {
@@ -12,13 +11,10 @@ export const Minotaur: Character = {
     if their Worker can be forced one space straight backwards to an 
     unoccupied space at any level.`,
 
-  validMove: (
-    G: GameState,
-    ctx: Ctx,
-    player: Player,
-    char: CharacterState,
-    originalPos: number,
-  ) => {
+  validMove: (context, char, originalPos) => {
+    const { G, playerID } = context;
+    const opponentID = G.players[playerID].opponentId;
+
     const adjacents: number[] = getAdjacentPositions(originalPos);
     const valids: number[] = [];
 
@@ -29,10 +25,11 @@ export const Minotaur: Character = {
       ) {
         if (!G.spaces[pos].inhabitant) {
           valids.push(pos);
-        } else if (G.spaces[pos].inhabitant?.playerId !== player.id) {
+        } else if (G.spaces[pos].inhabitant?.playerId !== playerID) {
           const posToPush = getNextPosition(originalPos, pos);
-          const opponent = G.players[player.opponentId];
-          if (Mortal.validMove(G, ctx, opponent, opponent.char, pos).includes(posToPush)) {
+          const opponent = G.players[opponentID];
+          const oppContext: GameContext = { ...context, playerID: opponentID };
+          if (Mortal.validMove(oppContext, opponent.char, pos).includes(posToPush)) {
             valids.push(pos);
           }
         }
@@ -42,13 +39,7 @@ export const Minotaur: Character = {
     return valids;
   },
 
-  move: (
-    G: GameState,
-    ctx: Ctx,
-    player: Player,
-    char: CharacterState,
-    pos: number,
-  ) => {
+  move: ({ G, playerID }, char, pos) => {
     const posToPush = getNextPosition(char.workers[char.selectedWorkerNum].pos, pos);
     const { inhabitant } = G.spaces[pos];
 
@@ -57,7 +48,7 @@ export const Minotaur: Character = {
     }
 
     Board.free(G, char.workers[char.selectedWorkerNum].pos);
-    Board.place(G, pos, player.id, char.selectedWorkerNum);
+    Board.place(G, pos, playerID, char.selectedWorkerNum);
 
     return 'build';
   },

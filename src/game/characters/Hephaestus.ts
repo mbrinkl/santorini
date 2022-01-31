@@ -1,8 +1,6 @@
-import { Ctx } from 'boardgame.io';
 import { Character, CharacterState } from '../../types/CharacterTypes';
 import { Mortal } from './Mortal';
 import { getAdjacentPositions } from '../utility';
-import { GameState, Player } from '../../types/GameTypes';
 import { Board } from '../space';
 
 interface HephaestusAttrs {
@@ -19,12 +17,7 @@ export const Hephaestus: Character<HephaestusAttrs> = {
     firstBuildPos: -1,
   },
 
-  buttonPressed: (
-    G: GameState,
-    ctx: Ctx,
-    player: Player,
-    char: CharacterState<HephaestusAttrs>,
-  ) => {
+  buttonPressed: (context, char: CharacterState<HephaestusAttrs>) => {
     // reset stuff
     char.attrs.numBuilds = 0;
     char.buttonActive = false;
@@ -33,13 +26,7 @@ export const Hephaestus: Character<HephaestusAttrs> = {
     return 'end';
   },
 
-  validBuild: (
-    G: GameState,
-    ctx: Ctx,
-    player: Player,
-    char: CharacterState<HephaestusAttrs>,
-    originalPos: number,
-  ) => {
+  validBuild: ({ G }, char: CharacterState<HephaestusAttrs>, originalPos) => {
     const adjacents: number[] = getAdjacentPositions(originalPos);
     const valids: number[] = [];
 
@@ -56,13 +43,7 @@ export const Hephaestus: Character<HephaestusAttrs> = {
     return valids;
   },
 
-  build: (
-    G: GameState,
-    ctx: Ctx,
-    player: Player,
-    char: CharacterState<HephaestusAttrs>,
-    pos: number,
-  ) => {
+  build: ({ G }, char: CharacterState<HephaestusAttrs>, pos) => {
     char.attrs.numBuilds += 1;
 
     if (char.attrs.numBuilds === 1) {

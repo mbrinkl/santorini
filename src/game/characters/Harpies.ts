@@ -1,7 +1,5 @@
-import { Ctx } from 'boardgame.io';
 import { Mortal } from './Mortal';
-import { GameState, Player } from '../../types/GameTypes';
-import { Character, CharacterState } from '../../types/CharacterTypes';
+import { Character } from '../../types/CharacterTypes';
 import { Board } from '../space';
 import { getNextPosition } from '../utility';
 
@@ -11,13 +9,7 @@ export const Harpies: Character = {
     direction until the next space is at a higher level or it is obstructed.`,
   // banned ['Hermes', 'Triton']
 
-  opponentPostMove: (
-    G: GameState,
-    ctx: Ctx,
-    player: Player,
-    char: CharacterState,
-    pos: number, // the original pos
-  ) => {
+  opponentPostMove: ({ G, playerID }, char, pos) => {
     const worker = char.workers[char.selectedWorkerNum];
 
     let originalPos = pos;
@@ -31,7 +23,7 @@ export const Harpies: Character = {
       && !G.spaces[toPos].isDomed
     ) {
       Board.free(G, worker.pos);
-      Board.place(G, toPos, player.id, char.selectedWorkerNum);
+      Board.place(G, toPos, playerID, char.selectedWorkerNum);
 
       originalPos = newPos;
       newPos = toPos;

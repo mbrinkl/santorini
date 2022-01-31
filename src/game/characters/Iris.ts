@@ -1,21 +1,13 @@
-import { Ctx } from 'boardgame.io';
-import { Character, CharacterState } from '../../types/CharacterTypes';
+import { Character } from '../../types/CharacterTypes';
 import { Mortal } from './Mortal';
 import { getAdjacentPositions, getNextPosition } from '../utility';
-import { GameState, Player } from '../../types/GameTypes';
 
 export const Iris: Character = {
   ...Mortal,
   desc: `Your Move: If there is a Worker neighboring your Worker and the space directly on the 
       other side of it is unoccupied, your worker may move to that space regardless of its level.`,
 
-  validMove: (
-    G: GameState,
-    ctx: Ctx,
-    player: Player,
-    char: CharacterState,
-    originalPos: number,
-  ) => {
+  validMove: ({ G, playerID }, char, originalPos) => {
     const adjacents: number[] = getAdjacentPositions(originalPos);
     const valids: number[] = [];
 
@@ -29,7 +21,7 @@ export const Iris: Character = {
         if (!G.spaces[pos].inhabitant) {
         // add the space to the valid list
           valids.push(pos);
-        } else if (G.spaces[pos].inhabitant?.playerId !== ctx.currentPlayer) {
+        } else if (G.spaces[pos].inhabitant?.playerId !== playerID) {
           // or if the space is inhabited, but by another player
           const nextPos: number = getNextPosition(originalPos, pos);
 

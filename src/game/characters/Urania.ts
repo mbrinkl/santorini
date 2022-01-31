@@ -1,7 +1,5 @@
-import { Ctx } from 'boardgame.io';
-import { Player, GameState } from '../../types/GameTypes';
 import { getWrappedAdjacents } from '../utility';
-import { Character, CharacterState } from '../../types/CharacterTypes';
+import { Character } from '../../types/CharacterTypes';
 import { Mortal } from './Mortal';
 
 export const Urania: Character = {
@@ -10,13 +8,7 @@ export const Urania: Character = {
     adjacent so that every space has 8 neighbors.`,
   // banned aphrodite
 
-  validMove: (
-    G: GameState,
-    ctx: Ctx,
-    player: Player,
-    char: CharacterState<any>,
-    originalPos: number,
-  ) => {
+  validMove: ({ G }, char, originalPos) => {
     const valids: number[] = [];
 
     getWrappedAdjacents(originalPos).forEach((pos) => {
@@ -32,13 +24,7 @@ export const Urania: Character = {
     return valids;
   },
 
-  validBuild: (
-    G: GameState,
-    ctx: Ctx,
-    player: Player,
-    char: CharacterState,
-    originalPos: number,
-  ) => {
+  validBuild: ({ G }, char, originalPos) => {
     const valids: number[] = [];
 
     getWrappedAdjacents(originalPos).forEach((pos) => {

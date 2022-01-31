@@ -1,8 +1,6 @@
-import { Ctx } from 'boardgame.io';
 import { Mortal } from './Mortal';
 import { getAdjacentPositions } from '../utility';
-import { Character, CharacterState } from '../../types/CharacterTypes';
-import { GameState, Player } from '../../types/GameTypes';
+import { Character } from '../../types/CharacterTypes';
 import { Board } from '../space';
 
 export const Apollo: Character = {
@@ -10,13 +8,7 @@ export const Apollo: Character = {
   desc: `Your Move : Your worker may move into an opponent worker's space by 
       forcing their worker to the space you just vacated.`,
 
-  validMove: (
-    G: GameState,
-    ctx: Ctx,
-    player: Player,
-    char: CharacterState,
-    originalPos: number,
-  ) => {
+  validMove: ({ G, playerID }, char, originalPos) => {
     const valids: number[] = [];
 
     getAdjacentPositions(originalPos).forEach((pos) => {
@@ -26,7 +18,7 @@ export const Apollo: Character = {
       ) {
         if (!G.spaces[pos].inhabitant) {
           valids.push(pos);
-        } else if (G.spaces[pos].inhabitant?.playerId !== ctx.currentPlayer) {
+        } else if (G.spaces[pos].inhabitant?.playerId !== playerID) {
           valids.push(pos);
         }
       }
@@ -35,13 +27,7 @@ export const Apollo: Character = {
     return valids;
   },
 
-  move: (
-    G: GameState,
-    ctx: Ctx,
-    player: Player,
-    char: CharacterState,
-    pos: number,
-  ) => {
+  move: ({ G, playerID }, char, pos) => {
     const originalPos = char.workers[char.selectedWorkerNum].pos;
     const { inhabitant } = G.spaces[pos];
 
@@ -52,7 +38,7 @@ export const Apollo: Character = {
       Board.free(G, originalPos);
     }
 
-    Board.place(G, pos, player.id, char.selectedWorkerNum);
+    Board.place(G, pos, playerID, char.selectedWorkerNum);
 
     return 'build';
   },

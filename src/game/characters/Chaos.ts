@@ -1,6 +1,5 @@
-import { Ctx } from 'boardgame.io';
 import { Mortal } from './Mortal';
-import { GameState, Player } from '../../types/GameTypes';
+import { GameContext } from '../../types/GameTypes';
 import { Character, CharacterState } from '../../types/CharacterTypes';
 import { getCharacter } from '.';
 import { AthenaAttrs } from './Athena';
@@ -15,21 +14,20 @@ interface ChaosAttrs {
 }
 
 function changeEmulatingCharacter(
-  G: GameState,
-  ctx: Ctx,
-  player: Player,
+  { G, playerID, random }: GameContext,
   char: CharacterState,
   numDomes: number,
 ) : void {
+  const opponentID = G.players[playerID].opponentId;
   const attrs: ChaosAttrs = char.attrs as ChaosAttrs;
 
   if (attrs.currentCharacter === 'Athena') {
     const athenaAttrs = char.attrs as AthenaAttrs;
-    G.players[player.opponentId].char.moveUpHeight = athenaAttrs.opponentMoveUpHeight;
+    G.players[opponentID].char.moveUpHeight = athenaAttrs.opponentMoveUpHeight;
   }
 
   if (attrs.nextCharacterList.length === 0) {
-    char.attrs.nextCharacterList = ctx.random?.Shuffle([
+    char.attrs.nextCharacterList = random.Shuffle([
       'Apollo',
       'Artemis',
       'Athena',
@@ -43,8 +41,8 @@ function changeEmulatingCharacter(
     ]);
   }
 
-  const newCharacterName: PossibleCharacters = attrs.nextCharacterList.shift() || 'Apollo'; // fallback;
-  const newCharacter: Character<any> = getCharacter(newCharacterName);
+  const newCharacterName = attrs.nextCharacterList.shift() || 'Apollo'; // fallback;
+  const newCharacter = getCharacter(newCharacterName);
 
   char.desc = `${newCharacterName} - ${newCharacter.desc} ${Chaos.desc}`;
   char.buttonActive = newCharacter.buttonActive;
@@ -73,77 +71,64 @@ export const Chaos: Character<ChaosAttrs> = {
     currentCharacter: 'Apollo',
   },
 
-  initialize: (
-    G: GameState,
-    ctx: Ctx,
-    player: Player,
-    char: CharacterState,
-  ) => {
-    changeEmulatingCharacter(G, ctx, player, char, 0);
+  initialize: (context, char: CharacterState<ChaosAttrs>) => {
+    changeEmulatingCharacter(context, char, 0);
   },
 
-  onTurnBegin: (
-    G: GameState,
-    ctx: Ctx,
-    player: Player,
-    char: CharacterState,
-  ) => {
+  onTurnBegin: (context, char: CharacterState<ChaosAttrs>) => {
+    const { G } = context;
     const numDomes: number = G.spaces.filter((space) => space.isDomed === true).length;
 
     if (char.attrs.numDomes < numDomes) {
-      changeEmulatingCharacter(G, ctx, player, char, numDomes);
+      changeEmulatingCharacter(context, char, numDomes);
       char.attrs = char.attrs as ChaosAttrs;
     }
 
     const character = getCharacter(char.attrs.currentCharacter);
-    character.onTurnBegin?.(G, ctx, player, char);
+    character.onTurnBegin?.(context, char);
   },
 
-  onTurnEnd: (
-    G: GameState,
-    ctx: Ctx,
-    player: Player,
-    char: CharacterState,
-  ) => {
+  onTurnEnd: (context, char: CharacterState<ChaosAttrs>) => {
+    const { G } = context;
     const character = getCharacter(char.attrs.currentCharacter);
-    character.onTurnEnd?.(G, ctx, player, char);
+    character.onTurnEnd?.(context, char);
 
     const numDomes = G.spaces.filter((space) => space.isDomed === true).length;
 
     if (char.attrs.numDomes < numDomes) {
-      changeEmulatingCharacter(G, ctx, player, char, numDomes);
+      changeEmulatingCharacter(context, char, numDomes);
     }
   },
 
-  validSelect: (G, ctx, player, char: CharacterState<ChaosAttrs>) => (
-    getCharacter(char.attrs.currentCharacter).validSelect(G, ctx, player, char)
+  validSelect: (context, char: CharacterState<ChaosAttrs>) => (
+    getCharacter(char.attrs.currentCharacter).validSelect(context, char)
   ),
-  select: (G, ctx, player, char: CharacterState<ChaosAttrs>, pos) => (
-    getCharacter(char.attrs.currentCharacter).select(G, ctx, player, char, pos)
+  select: (context, char: CharacterState<ChaosAttrs>, pos) => (
+    getCharacter(char.attrs.currentCharacter).select(context, char, pos)
   ),
-  validMove: (G, ctx, player, char: CharacterState<ChaosAttrs>, originalPos) => (
+  validMove: (context, char: CharacterState<ChaosAttrs>, originalPos) => (
     getCharacter(char.attrs.currentCharacter)
-      .validMove(G, ctx, player, char, originalPos)
+      .validMove(context, char, originalPos)
   ),
-  hasValidMoves: (G, ctx, player, char: CharacterState<ChaosAttrs>) => (
+  hasValidMoves: (context, char: CharacterState<ChaosAttrs>) => (
     getCharacter(char.attrs.currentCharacter)
-      .hasValidMoves(G, ctx, player, char)
+      .hasValidMoves(context, char)
   ),
-  move: (G, ctx, player, char: CharacterState<ChaosAttrs>, pos) => (
-    getCharacter(char.attrs.currentCharacter).move(G, ctx, player, char, pos)
+  move: (context, char: CharacterState<ChaosAttrs>, pos) => (
+    getCharacter(char.attrs.currentCharacter).move(context, char, pos)
   ),
-  validBuild: (G, ctx, player, char: CharacterState<ChaosAttrs>, originalPos) => (
+  validBuild: (context, char: CharacterState<ChaosAttrs>, originalPos) => (
     getCharacter(char.attrs.currentCharacter)
-      .validBuild(G, ctx, player, char, originalPos)
+      .validBuild(context, char, originalPos)
   ),
-  hasValidBuild: (G, ctx, player, char: CharacterState<ChaosAttrs>) => (
-    getCharacter(char.attrs.currentCharacter).hasValidBuild(G, ctx, player, char)
+  hasValidBuild: (context, char: CharacterState<ChaosAttrs>) => (
+    getCharacter(char.attrs.currentCharacter).hasValidBuild(context, char)
   ),
-  build: (G, ctx, player, char: CharacterState<ChaosAttrs>, pos) => (
-    getCharacter(char.attrs.currentCharacter).build(G, ctx, player, char, pos)
+  build: (context, char: CharacterState<ChaosAttrs>, pos) => (
+    getCharacter(char.attrs.currentCharacter).build(context, char, pos)
   ),
-  buttonPressed: (G, ctx, player, char: CharacterState<ChaosAttrs>) => (
-    getCharacter(char.attrs.currentCharacter).buttonPressed(G, ctx, player, char)
+  buttonPressed: (context, char: CharacterState<ChaosAttrs>) => (
+    getCharacter(char.attrs.currentCharacter).buttonPressed(context, char)
   ),
   checkWinByMove: (G, char: CharacterState<ChaosAttrs>, heightBefore, heightAfter) => (
     getCharacter(char.attrs.currentCharacter)

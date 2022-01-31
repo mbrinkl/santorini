@@ -1,8 +1,6 @@
-import { Ctx } from 'boardgame.io';
 import { Character, CharacterState } from '../../types/CharacterTypes';
 import { Mortal } from './Mortal';
 import { getAdjacentPositions } from '../utility';
-import { GameState, Player } from '../../types/GameTypes';
 import { Board } from '../space';
 
 interface DemeterAttrs {
@@ -19,12 +17,7 @@ export const Demeter: Character<DemeterAttrs> = {
     firstBuildPos: 0,
   },
 
-  buttonPressed: (
-    G: GameState,
-    ctx: Ctx,
-    player: Player,
-    char: CharacterState<DemeterAttrs>,
-  ) => {
+  buttonPressed: (context, char: CharacterState<DemeterAttrs>) => {
     // reset stuff
     char.attrs.numBuilds = 0;
     char.buttonActive = false;
@@ -33,13 +26,7 @@ export const Demeter: Character<DemeterAttrs> = {
     return 'end';
   },
 
-  validBuild: (
-    G: GameState,
-    ctx: Ctx,
-    player: Player,
-    char: CharacterState<DemeterAttrs>,
-    originalPos: number,
-  ) => {
+  validBuild: ({ G }, char: CharacterState<DemeterAttrs>, originalPos) => {
     const adjacents: number[] = getAdjacentPositions(originalPos);
     const valids: number[] = [];
 
@@ -64,13 +51,7 @@ export const Demeter: Character<DemeterAttrs> = {
     return valids;
   },
 
-  build: (
-    G: GameState,
-    ctx: Ctx,
-    player: Player,
-    char: CharacterState<DemeterAttrs>,
-    pos: number,
-  ) => {
+  build: ({ G }, char: CharacterState<DemeterAttrs>, pos) => {
     char.attrs.numBuilds += 1;
 
     if (char.attrs.numBuilds === 1) {

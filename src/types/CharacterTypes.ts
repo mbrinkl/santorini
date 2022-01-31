@@ -1,5 +1,4 @@
-import { Ctx } from 'boardgame.io';
-import { GameStage, GameState, Player } from './GameTypes';
+import { GameContext, GameStage, GameState } from './GameTypes';
 
 export interface Worker {
   pos: number;
@@ -19,34 +18,20 @@ export interface CharacterState<AttrsType = any> {
 }
 
 export interface CharacterFunctions {
-  initialize?: (G: GameState, ctx: Ctx, player: Player, char: CharacterState) => void,
-  onTurnBegin?: (G: GameState, ctx: Ctx, player: Player, char: CharacterState) => void,
-  onTurnEnd?: (G: GameState, ctx: Ctx, player: Player, char: CharacterState) => void,
-  validPlace: (G: GameState, ctx: Ctx, player: Player, char: CharacterState) => number[],
-  validSelect: (G: GameState, ctx: Ctx, player: Player, char: CharacterState) => number[],
-  select: (G: GameState, ctx: Ctx, player: Player, char: CharacterState, pos: number) => GameStage,
-  validMove: (
-    G: GameState,
-    ctx: Ctx,
-    player: Player,
-    char: CharacterState,
-    originalPos: number
-  ) => number[],
-  hasValidMoves: (G: GameState, ctx: Ctx, player: Player, char: CharacterState) => boolean,
-  move: (G: GameState, ctx: Ctx, player: Player, char: CharacterState, pos: number) => GameStage,
-  opponentPostMove: (
-    G: GameState, ctx: Ctx, player: Player, char: CharacterState, pos: number
-  ) => void,
-  validBuild: (
-    G: GameState,
-    ctx: Ctx,
-    player: Player,
-    char: CharacterState,
-    originalPos: number
-  ) => number[],
-  hasValidBuild: (G: GameState, ctx: Ctx, player: Player, char: CharacterState) => boolean,
-  build: (G: GameState, ctx: Ctx, player: Player, char: CharacterState, pos: number) => GameStage,
-  buttonPressed: (G: GameState, ctx: Ctx, player: Player, char: CharacterState) => GameStage,
+  initialize?: (context: GameContext, char: CharacterState) => void,
+  onTurnBegin?: (context: GameContext, char: CharacterState) => void,
+  onTurnEnd?: (context: GameContext, char: CharacterState) => void,
+  validPlace: (context: GameContext, char: CharacterState) => number[],
+  validSelect: (context: GameContext, char: CharacterState) => number[],
+  select: (context: GameContext, char: CharacterState, pos: number) => GameStage,
+  validMove: (context: GameContext, char: CharacterState, originalPos: number) => number[],
+  hasValidMoves: (context: GameContext, char: CharacterState) => boolean,
+  move: (context: GameContext, char: CharacterState, pos: number) => GameStage,
+  opponentPostMove: (context: GameContext, char: CharacterState, pos: number) => void,
+  validBuild: (context: GameContext, char: CharacterState, originalPos: number) => number[],
+  hasValidBuild: (context: GameContext, char: CharacterState) => boolean,
+  build: (context: GameContext, char: CharacterState, pos: number) => GameStage,
+  buttonPressed: (context: GameContext, char: CharacterState) => GameStage,
   checkWinByMove: (
     G: GameState,
     char: CharacterState,

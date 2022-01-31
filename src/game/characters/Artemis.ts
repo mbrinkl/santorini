@@ -1,8 +1,6 @@
-import { Ctx } from 'boardgame.io';
 import { getAdjacentPositions } from '../utility';
 import { Character, CharacterState } from '../../types/CharacterTypes';
 import { Mortal } from './Mortal';
-import { GameState, Player } from '../../types/GameTypes';
 import { Board } from '../space';
 
 interface ArtemisAttrs {
@@ -20,13 +18,7 @@ export const Artemis: Character<ArtemisAttrs> = {
     prevTile: -1,
   },
 
-  validMove: (
-    G: GameState,
-    ctx: Ctx,
-    player: Player,
-    char: CharacterState<ArtemisAttrs>,
-    originalPos: number,
-  ) => {
+  validMove: ({ G }, char: CharacterState<ArtemisAttrs>, originalPos) => {
     const valids: number[] = [];
 
     if (char.selectedWorkerNum !== -1 && char.attrs.numMoves === 0) {
@@ -47,20 +39,14 @@ export const Artemis: Character<ArtemisAttrs> = {
     return valids;
   },
 
-  move: (
-    G: GameState,
-    ctx: Ctx,
-    player: Player,
-    char: CharacterState<ArtemisAttrs>,
-    pos: number,
-  ) => {
+  move: ({ G, playerID }, char: CharacterState<ArtemisAttrs>, pos) => {
     char.attrs.numMoves += 1;
 
     // free the space that is being moved from
     Board.free(G, char.workers[char.selectedWorkerNum].pos);
 
     // place the worker on the selected space
-    Board.place(G, pos, player.id, char.selectedWorkerNum);
+    Board.place(G, pos, playerID, char.selectedWorkerNum);
 
     if (char.attrs.numMoves === 2) {
       char.attrs.numMoves = 0;
@@ -73,12 +59,7 @@ export const Artemis: Character<ArtemisAttrs> = {
     return 'move';
   },
 
-  buttonPressed: (
-    G: GameState,
-    ctx: Ctx,
-    player: Player,
-    char: CharacterState,
-  ) => {
+  buttonPressed: (context, char: CharacterState) => {
     char.buttonActive = false;
     return 'build';
   },
