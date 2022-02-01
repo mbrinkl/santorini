@@ -20,9 +20,9 @@ export const Iris: Character = {
         if (!G.spaces[pos].inhabitant) {
         // add the space to the valid list
           valids.add(pos);
-        } else if (G.spaces[pos].inhabitant?.playerID !== playerID) {
-          // or if the space is inhabited, but by another player
-          const nextPos: number = getNextPosition(fromPos, pos);
+        } else {
+          // or if the space is inhabited
+          const nextPos = getNextPosition(fromPos, pos);
 
           if (nextPos !== -1) {
             if (!G.spaces[nextPos].inhabitant && !G.spaces[nextPos].isDomed) {
