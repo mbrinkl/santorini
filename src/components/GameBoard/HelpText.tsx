@@ -21,6 +21,8 @@ export const HelpText = () => {
       hint = 'Move';
     } else if (stage === 'build') {
       hint = 'Build';
+    } else if (stage === 'special') {
+      hint = 'Special';
     } else if (stage === 'end') {
       hint = 'End Turn or Undo';
     }

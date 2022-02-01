@@ -69,11 +69,7 @@ export function updateValids(context: GameContext, charState: CharacterState, st
       G.valids = [...character.validSelect(context, charState)];
       break;
     case 'move':
-      G.valids = [...character.validMove(
-        context,
-        charState,
-        selecedWorkerPos,
-      )];
+      G.valids = [...character.validMove(context, charState, selecedWorkerPos)];
       G.valids = [...opponentCharacter.restrictOpponentMove(
         context,
         opponentCharState,
@@ -82,11 +78,7 @@ export function updateValids(context: GameContext, charState: CharacterState, st
       )];
       break;
     case 'build':
-      G.valids = [...character.validBuild(
-        context,
-        charState,
-        selecedWorkerPos,
-      )];
+      G.valids = [...character.validBuild(context, charState, selecedWorkerPos)];
       G.valids = [...opponentCharacter.restrictOpponentBuild(
         context,
         opponentCharState,
@@ -95,11 +87,7 @@ export function updateValids(context: GameContext, charState: CharacterState, st
       )];
       break;
     case 'special':
-      G.valids = [...character.validSpecial(
-        context,
-        charState,
-        selecedWorkerPos,
-      )];
+      G.valids = [...character.validSpecial(context, charState, selecedWorkerPos)];
       break;
     default:
       G.valids = [];
@@ -175,7 +163,7 @@ export const SantoriniGame: Game<GameState> = {
 
         Object.values(G.players).forEach((player) => {
           const character = getCharacter(player.charState);
-          character.initialize?.(contextWithPlayerID, player.charState);
+          character.initialize(contextWithPlayerID, player.charState);
         });
       },
       turn: {
@@ -227,7 +215,7 @@ export const SantoriniGame: Game<GameState> = {
 
           const character = getCharacter(charState);
           updateValids(contextWithPlayerID, charState, 'select');
-          character.onTurnBegin?.(contextWithPlayerID, charState);
+          character.onTurnBegin(contextWithPlayerID, charState);
         },
         onEnd: (context) => {
           const contextWithPlayerID = getContextWithPlayerID(context);
@@ -235,7 +223,7 @@ export const SantoriniGame: Game<GameState> = {
           const { charState } = G.players[playerID];
 
           const character = getCharacter(charState);
-          character.onTurnEnd?.(contextWithPlayerID, charState);
+          character.onTurnEnd(contextWithPlayerID, charState);
 
           charState.selectedWorkerNum = -1;
 

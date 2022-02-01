@@ -8,13 +8,13 @@ export const Apollo: Character = {
   desc: `Your Move : Your worker may move into an opponent worker's space by 
       forcing their worker to the space you just vacated.`,
 
-  validMove: ({ G, playerID }, charState, originalPos) => {
+  validMove: ({ G, playerID }, charState, fromPos) => {
     const valids = new Set<number>();
 
-    getAdjacentPositions(originalPos).forEach((pos) => {
+    getAdjacentPositions(fromPos).forEach((pos) => {
       if (
         !G.spaces[pos].isDomed
-        && G.spaces[pos].height - G.spaces[originalPos].height <= charState.moveUpHeight
+        && G.spaces[pos].height - G.spaces[fromPos].height <= charState.moveUpHeight
       ) {
         if (!G.spaces[pos].inhabitant) {
           valids.add(pos);
