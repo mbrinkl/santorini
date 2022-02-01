@@ -9,7 +9,7 @@ export const Urania: Character = {
   // banned aphrodite
 
   validMove: ({ G }, charState, originalPos) => {
-    const valids: number[] = [];
+    const valids = new Set<number>();
 
     getWrappedAdjacents(originalPos).forEach((pos) => {
       if (
@@ -17,19 +17,19 @@ export const Urania: Character = {
         && !G.spaces[pos].isDomed
         && G.spaces[pos].height - G.spaces[originalPos].height <= charState.moveUpHeight
       ) {
-        valids.push(pos);
+        valids.add(pos);
       }
     });
 
     return valids;
   },
 
-  validBuild: ({ G }, charState, originalPos) => {
-    const valids: number[] = [];
+  validBuild: ({ G }, charState, fromPos) => {
+    const valids = new Set<number>();
 
-    getWrappedAdjacents(originalPos).forEach((pos) => {
+    getWrappedAdjacents(fromPos).forEach((pos) => {
       if (!G.spaces[pos].inhabitant && !G.spaces[pos].isDomed) {
-        valids.push(pos);
+        valids.add(pos);
       }
     });
 

@@ -7,28 +7,27 @@ export const Iris: Character = {
   desc: `Your Move: If there is a Worker neighboring your Worker and the space directly on the 
       other side of it is unoccupied, your worker may move to that space regardless of its level.`,
 
-  validMove: ({ G, playerID }, charState, originalPos) => {
-    const adjacents: number[] = getAdjacentPositions(originalPos);
-    const valids: number[] = [];
+  validMove: ({ G, playerID }, charState, fromPos) => {
+    const valids = new Set<number>();
 
-    adjacents.forEach((pos) => {
+    getAdjacentPositions(fromPos).forEach((pos) => {
       // if the space is in valid range and height and not domed
       if (
         !G.spaces[pos].isDomed
-        && G.spaces[pos].height - G.spaces[originalPos].height <= charState.moveUpHeight
+        && G.spaces[pos].height - G.spaces[fromPos].height <= charState.moveUpHeight
       ) {
         // if the space is not inhabited
         if (!G.spaces[pos].inhabitant) {
         // add the space to the valid list
-          valids.push(pos);
+          valids.add(pos);
         } else if (G.spaces[pos].inhabitant?.playerID !== playerID) {
           // or if the space is inhabited, but by another player
-          const nextPos: number = getNextPosition(originalPos, pos);
+          const nextPos: number = getNextPosition(fromPos, pos);
 
           if (nextPos !== -1) {
             if (!G.spaces[nextPos].inhabitant && !G.spaces[nextPos].isDomed) {
             // add the space to the valid list
-              valids.push(nextPos);
+              valids.add(nextPos);
             }
           }
         }

@@ -1,7 +1,6 @@
 import { getAdjacentPositions } from '../utility';
 import { Character, CharacterState } from '../../types/CharacterTypes';
 import { Mortal } from './Mortal';
-import { GameStage } from '../../types/GameTypes';
 import { Board } from '../space';
 
 interface HermesAttrs {
@@ -28,14 +27,14 @@ export const Hermes: Character<HermesAttrs> = {
 
   validMove: ({ G }, charState: CharacterState<HermesAttrs>, originalPos) => {
     const adjacents: number[] = getAdjacentPositions(originalPos);
-    const valids: number[] = [];
+    const valids = new Set<number>();
 
     if (charState.attrs.canMoveUp) {
       adjacents.forEach((pos) => {
         if (!G.spaces[pos].inhabitant && !G.spaces[pos].isDomed
           && G.spaces[pos].height - G.spaces[originalPos].height <= charState.moveUpHeight
         ) {
-          valids.push(pos);
+          valids.add(pos);
         }
       });
     } else {
@@ -43,7 +42,7 @@ export const Hermes: Character<HermesAttrs> = {
         if (!G.spaces[pos].inhabitant && !G.spaces[pos].isDomed
           && G.spaces[pos].height === G.spaces[originalPos].height
         ) {
-          valids.push(pos);
+          valids.add(pos);
         }
       });
     }
@@ -52,13 +51,10 @@ export const Hermes: Character<HermesAttrs> = {
   },
 
   move: ({ G, playerID }, charState: CharacterState<HermesAttrs>, pos) => {
-    let returnStage: GameStage = 'build';
-
     if (G.spaces[pos].height === charState.workers[charState.selectedWorkerNum].height) {
       charState.attrs.canMoveUp = false;
       charState.attrs.isMoving = true;
       charState.buttonText = 'Switch Workers';
-      returnStage = 'move';
     } else {
       charState.attrs.movedUpOrDown = true;
       charState.buttonActive = false;
@@ -69,12 +65,18 @@ export const Hermes: Character<HermesAttrs> = {
 
     // place the worker on the selected space
     Board.place(G, pos, playerID, charState.selectedWorkerNum);
+  },
 
-    return returnStage;
+  getStageAfterMove: (context, charState: CharacterState<HermesAttrs>) => {
+    if (charState.attrs.isMoving && !charState.attrs.movedUpOrDown) {
+      return 'move';
+    }
+
+    return 'build';
   },
 
   validBuild: ({ G }, charState: CharacterState<HermesAttrs>, originalPos) => {
-    const valids: number[] = [];
+    const valids = new Set<number>();
     let adjacents: number[] = [];
 
     // normal build
@@ -90,7 +92,7 @@ export const Hermes: Character<HermesAttrs> = {
 
     adjacents.forEach((pos) => {
       if (!G.spaces[pos].inhabitant && !G.spaces[pos].isDomed) {
-        valids.push(pos);
+        valids.add(pos);
       }
     });
 

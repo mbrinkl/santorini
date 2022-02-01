@@ -119,3 +119,27 @@ export const BuildIndicator: React.FC<{
     </Box>
   );
 };
+
+export const SpecialIndicator: React.FC<{
+  boardPos: BoardPosition,
+  height: number
+}> = ({ boardPos, height }) => {
+  const yMap = [0, 3, 5, 7, 7];
+  const mesh: any = useRef();
+
+  useFrame(() => {
+    mesh.current.rotation.z -= (0.01);
+  });
+
+  return (
+    <Ring
+      userData={{ pos: boardPos.pos }}
+      ref={mesh}
+      args={[1, 2, 8]}
+      position={[boardPos.x, yMap[height] + 0.1, boardPos.z]}
+      rotation={[(3 * Math.PI) / 2, 0, 0]}
+    >
+      <meshStandardMaterial color="purple" />
+    </Ring>
+  );
+};

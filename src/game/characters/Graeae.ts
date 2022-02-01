@@ -9,9 +9,9 @@ export const Graeae: Character = {
     Banned VS: Nemesis`,
   numWorkersToPlace: 3,
 
-  validBuild: ({ G }, charState, originalPos) => {
+  validBuild: ({ G }, charState, fromPos) => {
     let adjacents: number[] = [];
-    const valids: number[] = [];
+    const valids = new Set<number>();
 
     for (let i = 0; i < charState.workers.length; i++) {
       if (i !== charState.selectedWorkerNum) {
@@ -22,7 +22,7 @@ export const Graeae: Character = {
 
     adjacents.forEach((pos) => {
       if (!G.spaces[pos].inhabitant && !G.spaces[pos].isDomed) {
-        valids.push(pos);
+        valids.add(pos);
       }
     });
 

@@ -19,7 +19,7 @@ import { Iris } from './Iris';
 import { Pegasus } from './Pegasus';
 import { Eros } from './Eros';
 import { Chaos } from './Chaos';
-import { Character } from '../../types/CharacterTypes';
+import { Character, CharacterState } from '../../types/CharacterTypes';
 import { Chronus } from './Chronus';
 import { Harpies } from './Harpies';
 import { Urania } from './Urania';
@@ -112,7 +112,15 @@ export function getSortedCharacters(): string[] {
   return ['Random', 'Mortal'].concat(characterList.slice(2).sort());
 }
 
-export function getCharacter(name: string): Character {
+export function getCharacter(charState: CharacterState): Character {
+  if (charState.powerBlocked) {
+    return Mortal;
+  }
+
+  return getCharacterByName(charState.name);
+}
+
+export function getCharacterByName(name: string): Character {
   let character: Character;
 
   switch (name) {

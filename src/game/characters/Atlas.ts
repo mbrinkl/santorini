@@ -16,7 +16,7 @@ export const Atlas: Character<AtlasAttrs> = {
 
   move: (context, charState: CharacterState<AtlasAttrs>, pos) => {
     charState.buttonActive = true;
-    return Mortal.move(context, charState, pos);
+    Mortal.move(context, charState, pos);
   },
 
   buttonPressed: (context, charState: CharacterState<AtlasAttrs>) => {
@@ -35,6 +35,5 @@ export const Atlas: Character<AtlasAttrs> = {
     charState.attrs.specialActive = false;
     charState.buttonActive = false;
     charState.buttonText = 'Build Dome';
-    return 'end';
   },
 };

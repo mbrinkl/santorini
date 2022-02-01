@@ -9,7 +9,7 @@ export const Apollo: Character = {
       forcing their worker to the space you just vacated.`,
 
   validMove: ({ G, playerID }, charState, originalPos) => {
-    const valids: number[] = [];
+    const valids = new Set<number>();
 
     getAdjacentPositions(originalPos).forEach((pos) => {
       if (
@@ -17,9 +17,9 @@ export const Apollo: Character = {
         && G.spaces[pos].height - G.spaces[originalPos].height <= charState.moveUpHeight
       ) {
         if (!G.spaces[pos].inhabitant) {
-          valids.push(pos);
+          valids.add(pos);
         } else if (G.spaces[pos].inhabitant?.playerID !== playerID) {
-          valids.push(pos);
+          valids.add(pos);
         }
       }
     });
@@ -39,7 +39,5 @@ export const Apollo: Character = {
     }
 
     Board.place(G, pos, playerID, charState.selectedWorkerNum);
-
-    return 'build';
   },
 };

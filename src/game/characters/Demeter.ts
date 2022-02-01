@@ -26,14 +26,14 @@ export const Demeter: Character<DemeterAttrs> = {
     return 'end';
   },
 
-  validBuild: ({ G }, charState: CharacterState<DemeterAttrs>, originalPos) => {
-    const adjacents: number[] = getAdjacentPositions(originalPos);
-    const valids: number[] = [];
+  validBuild: ({ G }, charState: CharacterState<DemeterAttrs>, fromPos) => {
+    const adjacents: number[] = getAdjacentPositions(fromPos);
+    const valids = new Set<number>();
 
     if (charState.attrs.numBuilds === 0) {
       adjacents.forEach((pos) => {
         if (!G.spaces[pos].inhabitant && !G.spaces[pos].isDomed) {
-          valids.push(pos);
+          valids.add(pos);
         }
       });
     } else {
@@ -43,7 +43,7 @@ export const Demeter: Character<DemeterAttrs> = {
           && !G.spaces[pos].isDomed
           && pos !== charState.attrs.firstBuildPos
         ) {
-          valids.push(pos);
+          valids.add(pos);
         }
       });
     }

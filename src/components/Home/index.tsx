@@ -20,7 +20,7 @@ export function Home() {
     if (activeRoomPlayer) {
       await leaveRoom({
         matchID: activeRoomPlayer.matchID,
-        playerID: activeRoomPlayer.playerID.toString(),
+        playerID: activeRoomPlayer.playerID,
         credentials: activeRoomPlayer.credential,
       });
     }

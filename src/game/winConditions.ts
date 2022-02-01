@@ -1,6 +1,4 @@
-import { Ctx } from 'boardgame.io';
-import { EventsAPI } from 'boardgame.io/dist/types/src/plugins/plugin-events';
-import { GameContext, GameState } from '../types/GameTypes';
+import { GameContext } from '../types/GameTypes';
 import { getCharacter } from './characters';
 
 export function checkWinByTrap(context: GameContext) {
@@ -8,7 +6,7 @@ export function checkWinByTrap(context: GameContext) {
   const nextPlayer = G.players[G.players[playerID].opponentID];
   const { charState } = nextPlayer;
 
-  const character = getCharacter(charState.name);
+  const character = getCharacter(charState);
 
   if (!character.hasValidMoves({ ...context, playerID: nextPlayer.ID }, charState)) {
     events.endGame({
@@ -17,20 +15,23 @@ export function checkWinByTrap(context: GameContext) {
   }
 }
 
-export function checkWinByMove(
-  G: GameState,
-  ctx: Ctx,
-  events: EventsAPI,
-  heightBefore: number,
-  heightAfter: number,
-) {
-  const { charState } = G.players[ctx.currentPlayer];
+export function checkWinByMove(context: GameContext, posBefore: number, posAfter: number) {
+  const { G, playerID, events } = context;
+  const { charState, opponentID } = G.players[playerID];
 
-  const character = getCharacter(charState.name);
+  const character = getCharacter(charState);
+  const opponentCharacter = getCharacter(G.players[opponentID].charState);
 
-  if (character.checkWinByMove(G, charState, heightBefore, heightAfter)) {
+  const winRestricted = opponentCharacter.restrictOpponentWin(
+    context,
+    G.players[opponentID].charState,
+    posBefore,
+    posAfter,
+  );
+
+  if (!winRestricted && character.checkWinByMove(context, charState, posBefore, posAfter)) {
     events.endGame({
-      winner: ctx.currentPlayer,
+      winner: playerID,
     });
   }
 }

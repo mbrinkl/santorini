@@ -1,7 +1,6 @@
 import { getAdjacentPositions } from '../utility';
 import { Character, CharacterState } from '../../types/CharacterTypes';
 import { Mortal } from './Mortal';
-import { Board } from '../space';
 
 interface PrometheusAttrs {
   specialActive: boolean,
@@ -23,10 +22,12 @@ export const Prometheus: Character<PrometheusAttrs> = {
     charState.buttonActive = true;
   },
 
-  select: (context, charState: CharacterState<PrometheusAttrs>, pos) => {
-    const returnValue = Mortal.select(context, charState, pos);
-    if (charState.attrs.specialActive) return 'build';
-    return returnValue;
+  getStageAfterSelect: (context, charState: CharacterState<PrometheusAttrs>) => {
+    if (charState.attrs.specialActive) {
+      return 'build';
+    }
+
+    return Mortal.getStageAfterSelect(context, charState);
   },
 
   validMove: ({ G }, charState: CharacterState<PrometheusAttrs>, originalPos) => {
@@ -36,14 +37,14 @@ export const Prometheus: Character<PrometheusAttrs> = {
     }
 
     const adjacents: number[] = getAdjacentPositions(originalPos);
-    const valids: number[] = [];
+    const valids = new Set<number>();
 
     adjacents.forEach((pos) => {
       if (!G.spaces[pos].inhabitant
         && !G.spaces[pos].isDomed
         && G.spaces[pos].height - G.spaces[originalPos].height <= height
       ) {
-        valids.push(pos);
+        valids.add(pos);
       }
     });
 
@@ -52,12 +53,10 @@ export const Prometheus: Character<PrometheusAttrs> = {
 
   move: (context, charState: CharacterState, pos) => {
     charState.buttonActive = false;
-    return Mortal.move(context, charState, pos);
+    Mortal.move(context, charState, pos);
   },
 
-  build: ({ G }, charState: CharacterState<PrometheusAttrs>, pos) => {
-    Board.build(G, pos);
-
+  getStageAfterBuild: (context, charState) => {
     if (charState.attrs.specialActive) {
       charState.attrs.specialUsed = true;
       charState.attrs.originalPos = charState.workers[charState.selectedWorkerNum].pos;

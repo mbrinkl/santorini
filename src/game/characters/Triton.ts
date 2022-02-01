@@ -1,31 +1,21 @@
 import { Character } from '../../types/CharacterTypes';
 import { Mortal } from './Mortal';
-import { Board } from '../space';
 import { posIsPerimeter } from '../utility';
-import { GameStage } from '../../types/GameTypes';
 
 export const Triton: Character = {
   ...Mortal,
   desc: 'Your Move: Each time your Worker moves into a perimeter space, it may immediately move again.',
   buttonText: 'End Move',
 
-  move: ({ G, playerID }, charState, pos) => {
-    let returnStage: GameStage = 'build';
-
+  getStageAfterMove: (context, charState) => {
+    const { pos } = charState.workers[charState.selectedWorkerNum];
     if (posIsPerimeter(pos)) {
       charState.buttonActive = true;
-      returnStage = 'move';
-    } else {
-      charState.buttonActive = false;
+      return 'move';
     }
 
-    // free the space that is being moved from
-    Board.free(G, charState.workers[charState.selectedWorkerNum].pos);
-
-    // place the worker on the selected space
-    Board.place(G, pos, playerID, charState.selectedWorkerNum);
-
-    return returnStage;
+    charState.buttonActive = false;
+    return 'build';
   },
 
   buttonPressed: (context, charState) => {

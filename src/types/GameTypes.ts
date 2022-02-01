@@ -1,7 +1,7 @@
 import { Ctx, DefaultPluginAPIs } from 'boardgame.io';
 import { CharacterState } from './CharacterTypes';
 
-export type GameStage = 'place' | 'select' | 'move' | 'build' | 'end';
+export type GameStage = 'place' | 'select' | 'move' | 'build' | 'special' | 'end';
 
 export type GameContext = DefaultPluginAPIs & {
   G: GameState,
@@ -18,7 +18,7 @@ export interface Player {
 
 export interface GameState {
   spaces: Space[];
-  players: Record<string, Player>
+  players: Record<string, Player>;
   valids: number[];
 }
 

@@ -139,7 +139,7 @@ export const PlayerControls: React.FC<{
               size="small"
               className="PlayerControls__button"
               disabled={!G.players[playerID].charState.buttonActive}
-              onClick={() => moves.characterAbility()}
+              onClick={() => moves.onButtonPressed()}
             >
               {G.players[playerID].charState.buttonText}
             </Button>

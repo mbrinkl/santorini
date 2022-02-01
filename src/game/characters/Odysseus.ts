@@ -1,39 +1,25 @@
-import { getAdjacentPositions } from '../utility';
+import { Board } from '../space';
+import { getCornerPositions, positionsAreAdjacent } from '../utility';
 import { Character, CharacterState } from '../../types/CharacterTypes';
 import { Mortal } from './Mortal';
 import { GameContext } from '../../types/GameTypes';
-import { Board } from '../space';
 
 interface OdysseusAttrs {
-  specialActive: boolean,
   specialUsed: boolean,
-  movingOpponent: boolean,
   workerToMovePos: number
 }
 
-const checkForValidSpecial = (
-  context: GameContext,
-  charState: CharacterState<OdysseusAttrs>,
-) => {
-  charState.attrs.specialActive = true;
-  let returnValue = false;
+function getOpenCorners({ G }: GameContext, charState: CharacterState<OdysseusAttrs>): Set<number> {
+  const openCorners = new Set<number>();
 
-  if (charState.selectedWorkerNum !== -1) {
-    const worker = charState.workers[charState.selectedWorkerNum];
-    if (Odysseus.validMove(context, charState, worker.pos).length > 0) {
-      returnValue = true;
+  getCornerPositions().forEach((corner) => {
+    if (!G.spaces[corner].isDomed && !G.spaces[corner].inhabitant) {
+      openCorners.add(corner);
     }
-  } else {
-    charState.workers.forEach((worker) => {
-      if (Odysseus.validMove(context, charState, worker.pos).length > 0) {
-        returnValue = true;
-      }
-    });
-  }
+  });
 
-  charState.attrs.specialActive = false;
-  return returnValue;
-};
+  return openCorners;
+}
 
 export const Odysseus: Character<OdysseusAttrs> = {
   ...Mortal,
@@ -41,99 +27,83 @@ export const Odysseus: Character<OdysseusAttrs> = {
     number of opponent Workers that neighbor your Workers.`,
   buttonText: 'Move Opponent',
   attrs: {
-    specialActive: false,
     specialUsed: false,
-    movingOpponent: false,
     workerToMovePos: -1,
   },
 
   onTurnBegin: (context, charState: CharacterState<OdysseusAttrs>) => {
     if (!charState.attrs.specialUsed) {
-      charState.buttonActive = checkForValidSpecial(context, charState);
+      charState.buttonActive = (Odysseus.validSpecial(context, charState, -1).size > 0);
     }
   },
 
   buttonPressed: (context, charState: CharacterState<OdysseusAttrs>) => {
-    charState.attrs.specialActive = !charState.attrs.specialActive;
-
-    if (charState.attrs.specialUsed) {
-      charState.buttonActive = false;
-      charState.attrs.specialActive = false;
-      charState.buttonText = 'Move Opponent';
-    } else if (charState.attrs.specialActive) {
-      charState.buttonText = 'Cancel';
-    } else {
-      charState.buttonText = 'Move Opponent';
+    if (!charState.attrs.specialUsed) {
+      charState.attrs.specialUsed = true;
+      charState.buttonText = 'End';
+      return 'special';
     }
 
-    return Mortal.buttonPressed(context, charState);
+    charState.buttonText = 'Move Workers';
+    charState.buttonActive = false;
+    return 'select';
   },
 
-  validMove(context, charState: CharacterState<OdysseusAttrs>, originalPos): number[] {
+  select: (context, charState: CharacterState<OdysseusAttrs>, pos) => {
+    charState.buttonActive = false;
+    Mortal.select(context, charState, pos);
+  },
+
+  validSpecial: (context, charState: CharacterState<OdysseusAttrs>, fromPos) => {
     const { G, playerID } = context;
     const { opponentID } = G.players[playerID];
-    const valids: number[] = [];
 
-    if (charState.attrs.specialActive) {
-      let adjacents: number[] = [];
-      charState.workers.forEach((worker) => {
-        adjacents = adjacents.concat(getAdjacentPositions(worker.pos));
-      });
-      if (!charState.attrs.movingOpponent) {
-        G.players[opponentID].charState.workers.forEach((worker) => {
-          if (adjacents.includes(worker.pos)) {
-            valids.push(worker.pos);
-          }
-        });
-      } else {
-        [0, 4, 20, 24].forEach((pos) => { // corner positions
-          if (!G.spaces[pos].isDomed && !G.spaces[pos].inhabitant) {
-            valids.push(pos);
-          }
-        });
-      }
+    const valids = new Set<number>();
+    const openCorners = getOpenCorners(context, charState);
 
+    // valid if there are opponent workers adjacent to any of Odysseus's workers
+    // and at least one corner space is free
+    if (openCorners.size === 0) {
       return valids;
     }
 
-    return Mortal.validMove(context, charState, originalPos);
-  },
-
-  move: (context, charState: CharacterState<OdysseusAttrs>, pos) => {
-    const { G, playerID } = context;
-    const { opponentID } = G.players[playerID];
-
-    if (charState.attrs.specialActive) {
-      charState.attrs.specialUsed = true;
-      charState.buttonText = 'End Ability';
-
-      if (!charState.attrs.movingOpponent) {
-        charState.attrs.movingOpponent = true;
-        charState.attrs.workerToMovePos = pos;
-        return 'move';
-      }
-
-      charState.attrs.movingOpponent = false;
-      const { inhabitant } = G.spaces[charState.attrs.workerToMovePos];
-      if (inhabitant) {
-        const oppWorkerNum = inhabitant.workerNum;
-        Board.free(G, charState.attrs.workerToMovePos);
-        Board.place(G, pos, opponentID, oppWorkerNum);
-      }
-
-      if (!checkForValidSpecial(context, charState)) {
-        charState.attrs.specialActive = false;
-        charState.buttonText = 'Move Opponent';
-        charState.buttonActive = false;
-      } else {
-        charState.attrs.specialActive = true;
-      }
-
-      return 'move';
+    if (charState.attrs.workerToMovePos === -1) {
+      charState.workers.forEach((worker) => {
+        G.players[opponentID].charState.workers.forEach((opponentWorker) => {
+          if (positionsAreAdjacent(worker.pos, opponentWorker.pos)) {
+            valids.add(opponentWorker.pos);
+          }
+        });
+      });
+    } else {
+      return openCorners;
     }
 
+    return valids;
+  },
+
+  special: ({ G, playerID }, charState: CharacterState<OdysseusAttrs>, pos) => {
+    if (charState.attrs.workerToMovePos === -1) {
+      charState.attrs.workerToMovePos = pos;
+      charState.buttonActive = false;
+    } else {
+      const { inhabitant } = G.spaces[charState.attrs.workerToMovePos];
+      if (inhabitant) {
+        Board.free(G, charState.attrs.workerToMovePos);
+        Board.place(G, pos, G.players[playerID].opponentID, inhabitant.workerNum);
+      }
+      charState.attrs.workerToMovePos = -1;
+      charState.buttonActive = true;
+    }
+  },
+
+  getStageAfterSpecial: (context, charState: CharacterState<OdysseusAttrs>) => {
+    if (Odysseus.validSpecial(context, charState, -1).size > 0) {
+      return 'special';
+    }
+
+    charState.buttonText = 'Move Workers';
     charState.buttonActive = false;
-    charState.attrs.specialActive = false;
-    return Mortal.move(context, charState, pos);
+    return 'select';
   },
 };

@@ -6,10 +6,10 @@ export const Zeus: Character = {
   desc: 'Your Build: Your Worker may build a block under itself.',
 
   validBuild: (context, charState, originalPos) => {
-    const valids: number[] = Mortal.validBuild(context, charState, originalPos);
+    const valids = Mortal.validBuild(context, charState, originalPos);
 
     if (charState.workers[charState.selectedWorkerNum].height < 3) {
-      valids.push(charState.workers[charState.selectedWorkerNum].pos);
+      valids.add(charState.workers[charState.selectedWorkerNum].pos);
     }
 
     return valids;
@@ -19,7 +19,7 @@ export const Zeus: Character = {
     if (pos === charState.workers[charState.selectedWorkerNum].pos) {
       charState.workers[charState.selectedWorkerNum].height += 1;
     }
-    return Mortal.build(context, charState, pos);
+    Mortal.build(context, charState, pos);
   },
 
 };

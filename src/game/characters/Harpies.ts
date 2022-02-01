@@ -9,12 +9,11 @@ export const Harpies: Character = {
     direction until the next space is at a higher level or it is obstructed.`,
   // banned ['Hermes', 'Triton']
 
-  opponentPostMove: ({ G, playerID }, charState, pos) => {
-    const worker = charState.workers[charState.selectedWorkerNum];
+  afterOpponentMove: ({ G, playerID }, charState, oppCharState, fromPos) => {
+    const worker = oppCharState.workers[oppCharState.selectedWorkerNum];
 
-    let originalPos = pos;
-    let newPos = charState.workers[charState.selectedWorkerNum].pos;
-    let toPos = getNextPosition(originalPos, newPos);
+    let newPos = oppCharState.workers[oppCharState.selectedWorkerNum].pos;
+    let toPos = getNextPosition(fromPos, newPos);
 
     while (
       toPos !== -1
@@ -23,11 +22,11 @@ export const Harpies: Character = {
       && !G.spaces[toPos].isDomed
     ) {
       Board.free(G, worker.pos);
-      Board.place(G, toPos, playerID, charState.selectedWorkerNum);
+      Board.place(G, toPos, playerID, oppCharState.selectedWorkerNum);
 
-      originalPos = newPos;
+      fromPos = newPos;
       newPos = toPos;
-      toPos = getNextPosition(originalPos, newPos);
+      toPos = getNextPosition(fromPos, newPos);
     }
   },
 };

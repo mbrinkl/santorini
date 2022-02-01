@@ -28,16 +28,16 @@ export const Hephaestus: Character<HephaestusAttrs> = {
 
   validBuild: ({ G }, charState: CharacterState<HephaestusAttrs>, originalPos) => {
     const adjacents: number[] = getAdjacentPositions(originalPos);
-    const valids: number[] = [];
+    const valids = new Set<number>();
 
     if (charState.attrs.numBuilds === 0) {
       adjacents.forEach((pos) => {
         if (!G.spaces[pos].inhabitant && !G.spaces[pos].isDomed) {
-          valids.push(pos);
+          valids.add(pos);
         }
       });
     } else {
-      valids.push(charState.attrs.firstBuildPos);
+      valids.add(charState.attrs.firstBuildPos);
     }
 
     return valids;

@@ -6,12 +6,12 @@ export const Pan: Character = {
   desc: 'Win Condition: You also win if your Worker moves down two or more levels.',
 
   checkWinByMove: (
-    G,
+    { G },
     charState,
-    heightBefore,
-    heightAfter,
+    posBefore,
+    posAfter,
   ) => (
-    (heightBefore < 3 && heightAfter === 3)
-    || (heightBefore - heightAfter > 1)
+    (G.spaces[posBefore].height < 3 && G.spaces[posAfter].height === 3)
+    || ((G.spaces[posBefore].height - G.spaces[posAfter].height) > 1)
   ),
 };

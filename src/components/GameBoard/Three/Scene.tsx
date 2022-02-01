@@ -9,7 +9,7 @@ import {
   BuildingBase, BuildingMid, BuildingTop, Dome,
 } from './Buildings';
 import {
-  PlaceIndicator, SelectIndicator, MoveIndicator, BuildIndicator,
+  PlaceIndicator, SelectIndicator, MoveIndicator, BuildIndicator, SpecialIndicator,
 } from './Indicators';
 import { WorkerModel } from './WorkerModel';
 import { BoardPosition } from '../../../types/BoardTypes';
@@ -63,6 +63,9 @@ export const Scene: React.FC<{ boardPositions: BoardPosition[] }> = ({ boardPosi
             break;
           case 'build':
             moves.build(pos);
+            break;
+          case 'special':
+            moves.special(pos);
             break;
           default:
             break;
@@ -131,8 +134,7 @@ export const Scene: React.FC<{ boardPositions: BoardPosition[] }> = ({ boardPosi
           ) : (ctx.activePlayers && ctx.activePlayers[ctx.currentPlayer]) === 'build' ? (
             <BuildIndicator key={`bulidIndicator${pos}`} boardPos={boardPositions[pos]} height={G.spaces[pos].height} />
           ) : (
-            // todo: special move indicator
-            <></>
+            <SpecialIndicator key={`moveIndicator${pos}`} boardPos={boardPositions[pos]} height={G.spaces[pos].height} />
           )))}
 
       </group>

@@ -16,7 +16,7 @@ export const Minotaur: Character = {
     const { opponentID } = G.players[playerID];
 
     const adjacents: number[] = getAdjacentPositions(originalPos);
-    const valids: number[] = [];
+    const valids = new Set<number>();
 
     adjacents.forEach((pos) => {
       if (
@@ -24,13 +24,13 @@ export const Minotaur: Character = {
         && G.spaces[pos].height - G.spaces[originalPos].height <= charState.moveUpHeight
       ) {
         if (!G.spaces[pos].inhabitant) {
-          valids.push(pos);
+          valids.add(pos);
         } else if (G.spaces[pos].inhabitant?.playerID !== playerID) {
           const posToPush = getNextPosition(originalPos, pos);
           const opponent = G.players[opponentID];
           const oppContext: GameContext = { ...context, playerID: opponentID };
-          if (Mortal.validMove(oppContext, opponent.charState, pos).includes(posToPush)) {
-            valids.push(pos);
+          if (Mortal.validMove(oppContext, opponent.charState, pos).has(posToPush)) {
+            valids.add(pos);
           }
         }
       }
@@ -49,7 +49,5 @@ export const Minotaur: Character = {
 
     Board.free(G, charState.workers[charState.selectedWorkerNum].pos);
     Board.place(G, pos, playerID, charState.selectedWorkerNum);
-
-    return 'build';
   },
 };

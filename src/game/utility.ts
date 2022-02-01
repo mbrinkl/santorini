@@ -95,6 +95,10 @@ export function getWrappedAdjacents(pos: number): number[] {
   return adjacents;
 }
 
+export function positionsAreAdjacent(pos1: number, pos2: number): boolean {
+  return getAdjacentPositions(pos1).includes(pos2);
+}
+
 /**
   * Get a list of perimeter positions
   */
@@ -107,6 +111,13 @@ export function getPerimeterPositions(): number[] {
   */
 export function posIsPerimeter(pos: number): boolean {
   return getPerimeterPositions().includes(pos);
+}
+
+/**
+ *
+ */
+export function getCornerPositions(): number[] {
+  return [0, 4, 20, 24];
 }
 
 /**
