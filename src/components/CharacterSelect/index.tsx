@@ -1,13 +1,16 @@
 import React from 'react';
 import { ConnectedIndicator } from '../GameBoard/ConnectedIndicator';
 import { Button } from '../Button';
-import { getSortedCharacters } from '../../game/characters';
+import { banList, getSortedCharacters } from '../../game/characters';
 import { useBoardContext } from '../GameBoard/BoardContext';
 import { Chat } from '../Chat';
 import CheckImg from '../../assets/png/check.png';
 import './style.scss';
 
-export const CharacterBox: React.FC<{ name: string }> = ({ name }) => {
+export const CharacterBox: React.FC<{
+  playerID: string | null,
+  name: string
+}> = ({ playerID, name }) => {
   const { G, moves } = useBoardContext();
   const takenCharacters: string[] = [];
 
@@ -15,21 +18,37 @@ export const CharacterBox: React.FC<{ name: string }> = ({ name }) => {
     takenCharacters.push(player.charState.name);
   });
 
-  // Return true if opponent has taken this character
-  // false if Random, Mortal, or not taken
-  function isCharacterTaken(): boolean {
-    return takenCharacters.includes(name) && !['Random', 'Mortal'].includes(name);
+  function isBanned(): boolean {
+    if (!playerID) {
+      return false;
+    }
+
+    const { opponentID } = G.players[playerID];
+    const opponentCharName = G.players[opponentID].charState.name;
+    if (banList.filter((ban) => ban.includes(name) && ban.includes(opponentCharName)).length > 0) {
+      return true;
+    }
+
+    return false;
+  }
+
+  function isUnselectable(): boolean {
+    if (['Random', 'Mortal'].includes(name)) {
+      return false;
+    }
+
+    return takenCharacters.includes(name) || isBanned();
   }
 
   function select(): void {
-    if (!isCharacterTaken()) {
+    if (!isUnselectable()) {
       moves.setChar(name);
     }
   }
 
   return (
     <div
-      className={`${name} characterBoxSelectable ${isCharacterTaken() && 'grayscale'}`}
+      className={`${name} characterBoxSelectable ${isUnselectable() && 'grayscale'}`}
       onClick={select}
       onKeyDown={(e) => e.key === 'Enter' && select()}
       role="button"
@@ -136,7 +155,7 @@ export const CharacterSelect = () => {
 
         <div className="charSelect__characters">
           {getSortedCharacters().map((character) => (
-            <CharacterBox key={character} name={character} />
+            <CharacterBox key={character} playerID={playerID} name={character} />
           ))}
         </div>
       </div>

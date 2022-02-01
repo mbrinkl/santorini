@@ -1,7 +1,9 @@
 import { ActivePlayers } from 'boardgame.io/core';
 import { Game } from 'boardgame.io';
 import { GAME_ID } from '../config';
-import { characterList, getCharacter, getCharacterByName } from './characters';
+import {
+  banList, characterList, getCharacter, getCharacterByName,
+} from './characters';
 import { CharacterState } from '../types/CharacterTypes';
 import { checkWinByTrap } from './winConditions';
 import {
@@ -34,14 +36,18 @@ export function initCharacter(characterName: string): CharacterState {
 }
 
 function initRandomCharacters(G: GameState) {
+  // Remove 'Random'
   const listOnlyCharacters = characterList.slice(1);
+
   Object.values(G.players).forEach((player) => {
     if (player.charState.name === 'Random') {
-      const nonDuplicateCharacterList = listOnlyCharacters.filter((name) => (
-        name !== (G.players[player.opponentID].charState.name)
+      const opponentCharName = G.players[player.opponentID].charState.name;
+      const bannedPairs = banList.filter((ban) => ban.includes(opponentCharName));
+      const bannedChars = bannedPairs.flat().filter((charName) => charName !== opponentCharName);
+      const possibleChars = listOnlyCharacters.filter((name) => (
+        name !== opponentCharName && !bannedChars.includes(name)
       ));
-      const randomCharName = (
-        nonDuplicateCharacterList[Math.floor(Math.random() * (nonDuplicateCharacterList.length))]
+      const randomCharName = (possibleChars[Math.floor(Math.random() * (possibleChars.length))]
       );
       player.charState = initCharacter(randomCharName);
     }

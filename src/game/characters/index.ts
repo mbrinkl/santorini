@@ -106,6 +106,13 @@ export const characterList: string[] = [
   'Pegasus',
 ];
 
+export const banList: [string, string][] = [
+  ['Graeae', 'Nemesis'],
+  ['Harpies', 'Hermes'],
+  ['Harpies', 'Triton'],
+  ['Urania', 'Aphrodite'],
+];
+
 // Returns the character list sorted alphabetically, with 'random'
 // and 'mortal' at the start
 export function getSortedCharacters(): string[] {

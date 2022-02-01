@@ -6,7 +6,6 @@ export const Urania: Character = {
   ...Mortal,
   desc: `Your Turn: When your Worker moves or builds, treat opposite edges and corners as if they are
     adjacent so that every space has 8 neighbors.`,
-  // banned aphrodite
 
   validMove: ({ G }, charState, originalPos) => {
     const valids = new Set<number>();

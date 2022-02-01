@@ -7,7 +7,6 @@ export const Harpies: Character = {
   ...Mortal,
   desc: `Opponent’s Turn: Each time an opponent’s Worker moves, it is forced space by space in the same
     direction until the next space is at a higher level or it is obstructed.`,
-  // banned ['Hermes', 'Triton']
 
   afterOpponentMove: ({ G, playerID }, charState, oppCharState, fromPos) => {
     const worker = oppCharState.workers[oppCharState.selectedWorkerNum];
