@@ -1,4 +1,8 @@
 {
   "editor.tabSize": 2,
-  "editor.codeActionsOnSave": { "source.fixAll.eslint": true }
+  "editor.codeActionsOnSave": { "source.fixAll.eslint": true },
+  "files.exclude": {
+    "node_modules": true,
+    "package-lock.json": true,
+  }
 }
