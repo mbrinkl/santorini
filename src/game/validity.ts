@@ -1,4 +1,3 @@
-import { updateValids } from '.';
 import { GameContext, GameStage } from '../types/GameTypes';
 import { getCharacter } from './characters';
 
@@ -9,21 +8,6 @@ interface PossibleMove {
     type: GameStage,
     pos: number
   }[]
-}
-
-function initStack(
-  context: GameContext,
-) : PossibleMove[] {
-  const { G, ctx } = context;
-  const { valids } = G;
-  const stage = (ctx.activePlayers && ctx.activePlayers[ctx.currentPlayer]) as GameStage;
-  const possibleMoves: PossibleMove[] = [];
-
-  valids.forEach((pos) => {
-    possibleMoves.push({ type: stage, pos, prevs: [] });
-  });
-
-  return possibleMoves;
 }
 
 function getSpawnedMoves(
@@ -47,33 +31,33 @@ function getSpawnedMoves(
       case 'select':
         character.select(cloneContext, charState, prevMove.pos);
         stage = character.getStageAfterSelect(cloneContext, charState);
-        updateValids(cloneContext, charState, stage);
+        updateValids(cloneContext, stage);
         break;
       case 'move':
         character.move(cloneContext, charState, prevMove.pos);
         stage = character.getStageAfterMove(cloneContext, charState);
-        updateValids(cloneContext, charState, stage);
+        updateValids(cloneContext, stage);
         break;
       case 'build':
         character.build(cloneContext, charState, prevMove.pos);
         stage = character.getStageAfterBuild(cloneContext, charState);
-        updateValids(cloneContext, charState, stage);
+        updateValids(cloneContext, stage);
         break;
       case 'special':
         character.special(cloneContext, charState, prevMove.pos);
         stage = character.getStageAfterSpecial(cloneContext, charState);
-        updateValids(cloneContext, charState, stage);
+        updateValids(cloneContext, stage);
         break;
       default:
         break;
     }
   });
 
-  const { valids } = G;
-  valids.forEach((valid) => {
+  G.valids.forEach((valid) => {
     possibleMoves.push({ type: stage as GameStage, pos: valid, prevs });
   });
 
+  // Push the 'end' possibility at the end, so it will be the next popped
   if (stage === 'end') {
     possibleMoves.push({ type: 'end', pos: -1, prevs: [] });
   }
@@ -85,11 +69,12 @@ function getSpawnedMoves(
  * Return true if the 'end' GameStage can be reached from a given position.
  * Traverses possible moves as a DFS, exit immediately if 'end' is reached
  */
-export function canReachEndStage(
+function canReachEndStage(
   context: GameContext,
+  stage: GameStage,
   fromPos: number,
 ) : boolean {
-  const possibleMoveStack = initStack(context);
+  const possibleMoveStack: PossibleMove[] = [{ type: stage, pos: fromPos, prevs: [] }];
   const checkedMoves: PossibleMove[] = [];
 
   while (possibleMoveStack.length > 0) {
@@ -115,4 +100,51 @@ export function canReachEndStage(
 
   // End stage was never reached, return false
   return false;
+}
+
+export function updateValids(context: GameContext, stage: string) {
+  const { G, playerID } = context;
+  const { opponentID, charState } = G.players[playerID];
+  const character = getCharacter(charState);
+  const opponentCharState = G.players[opponentID].charState;
+  const opponentCharacter = getCharacter(opponentCharState);
+  const selecedWorkerPos = charState.selectedWorkerNum === -1 ? -1
+    : charState.workers[charState.selectedWorkerNum].pos;
+
+  switch (stage) {
+    case 'place':
+      G.valids = [...character.validPlace(context, charState)];
+      break;
+    case 'select':
+      G.valids = [...character.validSelect(context, charState)];
+      break;
+    case 'move':
+      G.valids = [...character.validMove(context, charState, selecedWorkerPos)];
+      G.valids = [...opponentCharacter.restrictOpponentMove(
+        context,
+        opponentCharState,
+        charState,
+        selecedWorkerPos,
+      )];
+      break;
+    case 'build':
+      G.valids = [...character.validBuild(context, charState, selecedWorkerPos)];
+      G.valids = [...opponentCharacter.restrictOpponentBuild(
+        context,
+        opponentCharState,
+        charState,
+        selecedWorkerPos,
+      )];
+      break;
+    case 'special':
+      G.valids = [...character.validSpecial(context, charState, selecedWorkerPos)];
+      break;
+    default:
+      G.valids = [];
+      break;
+  }
+
+  if (!G.isClone && stage !== 'place') {
+    G.valids = G.valids.filter((pos) => canReachEndStage(context, stage as GameStage, pos));
+  }
 }

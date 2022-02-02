@@ -38,9 +38,7 @@ export const Mortal: Character = {
     const valids = new Set<number>();
 
     charState.workers.forEach((worker) => {
-      if (Mortal.validMove(context, charState, worker.pos).size > 0) {
-        valids.add(worker.pos);
-      }
+      valids.add(worker.pos);
     });
 
     return valids;

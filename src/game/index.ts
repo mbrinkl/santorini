@@ -1,7 +1,6 @@
 import { ActivePlayers } from 'boardgame.io/core';
 import { Game } from 'boardgame.io';
 import { GAME_ID } from '../config';
-import { canReachEndStage } from './validity';
 import { CharacterState } from '../types/CharacterTypes';
 import {
   banList, characterList, getCharacter, getCharacterByName,
@@ -12,6 +11,7 @@ import {
 import {
   setChar, ready, cancelReady, place, move, select, build, special, onButtonPressed, endTurn,
 } from './moves';
+import { updateValids } from './validity';
 
 export function initCharacter(characterName: string): CharacterState {
   // Get state properties without character functions
@@ -56,53 +56,6 @@ function initRandomCharacters(G: GameState) {
 
 function getFirstPlayer(G: GameState): number {
   return (G.players['1'].charState.firstTurnRequired ? 1 : 0);
-}
-
-export function updateValids(context: GameContext, charState: CharacterState, stage: string) {
-  const { G, playerID } = context;
-  const { opponentID } = G.players[playerID];
-  const character = getCharacter(charState);
-  const opponentCharState = G.players[opponentID].charState;
-  const opponentCharacter = getCharacter(opponentCharState);
-  const selecedWorkerPos = charState.selectedWorkerNum === -1 ? -1
-    : charState.workers[charState.selectedWorkerNum].pos;
-
-  switch (stage) {
-    case 'place':
-      G.valids = [...character.validPlace(context, charState)];
-      break;
-    case 'select':
-      G.valids = [...character.validSelect(context, charState)];
-      break;
-    case 'move':
-      G.valids = [...character.validMove(context, charState, selecedWorkerPos)];
-      G.valids = [...opponentCharacter.restrictOpponentMove(
-        context,
-        opponentCharState,
-        charState,
-        selecedWorkerPos,
-      )];
-      break;
-    case 'build':
-      G.valids = [...character.validBuild(context, charState, selecedWorkerPos)];
-      G.valids = [...opponentCharacter.restrictOpponentBuild(
-        context,
-        opponentCharState,
-        charState,
-        selecedWorkerPos,
-      )];
-      break;
-    case 'special':
-      G.valids = [...character.validSpecial(context, charState, selecedWorkerPos)];
-      break;
-    default:
-      G.valids = [];
-      break;
-  }
-
-  if (!G.isClone && stage !== 'place') {
-    G.valids = G.valids.filter((pos) => canReachEndStage(context, pos) === true);
-  }
 }
 
 // Uses ctx.currentPlayer as the game context's playerID
@@ -189,10 +142,7 @@ export const SantoriniGame: Game<GameState> = {
         },
         onBegin: (context) => {
           const contextWithPlayerID = getContextWithPlayerID(context);
-          const { G, playerID } = contextWithPlayerID;
-          const { charState } = G.players[playerID];
-
-          updateValids(contextWithPlayerID, charState, 'place');
+          updateValids(contextWithPlayerID, 'place');
         },
         onEnd: ({ G, ctx, events }) => {
           if (
@@ -225,7 +175,7 @@ export const SantoriniGame: Game<GameState> = {
           const { charState } = G.players[playerID];
           const character = getCharacter(charState);
 
-          updateValids(contextWithPlayerID, charState, 'select');
+          updateValids(contextWithPlayerID, 'select');
 
           // If there are no valid moves for the current player, that player loses
           if (G.valids.length === 0) {

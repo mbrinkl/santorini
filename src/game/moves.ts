@@ -1,10 +1,11 @@
 import { Move } from 'boardgame.io';
-import { initCharacter, updateValids } from '.';
+import { initCharacter } from '.';
 import { GameState } from '../types/GameTypes';
 import { getCharacter } from './characters';
 import { Worker } from '../types/CharacterTypes';
 import { Board } from './space';
 import { checkWinByMove } from './winConditions';
+import { updateValids } from './validity';
 
 export const setChar: Move<GameState> = ({ G, playerID }, name: string) => {
   G.players[playerID].ready = false;
@@ -29,7 +30,7 @@ export const onButtonPressed: Move<GameState> = (context) => {
   const stage = character.buttonPressed(context, charState);
   events.setStage(stage);
 
-  updateValids(context, charState, stage);
+  updateValids(context, stage);
 };
 
 export const place: Move<GameState> = (context, pos: number) => {
@@ -50,7 +51,7 @@ export const place: Move<GameState> = (context, pos: number) => {
     events.setStage('end');
   }
 
-  updateValids(context, charState, 'place');
+  updateValids(context, 'place');
 };
 
 export const select: Move<GameState> = (context, pos: number) => {
@@ -63,7 +64,7 @@ export const select: Move<GameState> = (context, pos: number) => {
   const stage = character.getStageAfterSelect(context, charState);
   events.setStage(stage);
 
-  updateValids(context, charState, stage);
+  updateValids(context, stage);
 };
 
 export const move: Move<GameState> = (context, pos: number) => {
@@ -82,7 +83,7 @@ export const move: Move<GameState> = (context, pos: number) => {
   const stage = character.getStageAfterMove(context, charState);
   events.setStage(stage);
 
-  updateValids(context, charState, stage);
+  updateValids(context, stage);
 
   const posAfter = charState.workers[charState.selectedWorkerNum].pos;
   checkWinByMove(context, posBefore, posAfter);
@@ -101,7 +102,7 @@ export const build: Move<GameState> = (context, pos: number) => {
   const stage = character.getStageAfterBuild(context, charState);
   events.setStage(stage);
 
-  updateValids(context, charState, stage);
+  updateValids(context, stage);
 };
 
 export const special: Move<GameState> = (context, pos: number) => {
@@ -114,7 +115,7 @@ export const special: Move<GameState> = (context, pos: number) => {
   const stage = character.getStageAfterSpecial(context, charState);
   events.setStage(stage);
 
-  updateValids(context, charState, stage);
+  updateValids(context, stage);
 };
 
 export const endTurn: Move<GameState> = ({ events }) => {
