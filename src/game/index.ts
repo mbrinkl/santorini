@@ -1,11 +1,11 @@
 import { ActivePlayers } from 'boardgame.io/core';
 import { Game } from 'boardgame.io';
 import { GAME_ID } from '../config';
+import { canReachEndStage } from './validity';
+import { CharacterState } from '../types/CharacterTypes';
 import {
   banList, characterList, getCharacter, getCharacterByName,
 } from './characters';
-import { CharacterState } from '../types/CharacterTypes';
-import { checkWinByTrap } from './winConditions';
 import {
   GameContext, GameState, Player, Space,
 } from '../types/GameTypes';
@@ -99,6 +99,10 @@ export function updateValids(context: GameContext, charState: CharacterState, st
       G.valids = [];
       break;
   }
+
+  if (!G.isClone && stage !== 'place') {
+    G.valids = G.valids.filter((pos) => canReachEndStage(context, pos) === true);
+  }
 }
 
 // Uses ctx.currentPlayer as the game context's playerID
@@ -135,6 +139,7 @@ export const SantoriniGame: Game<GameState> = {
     }
 
     const initialState: GameState = {
+      isClone: false,
       players,
       spaces,
       valids: [],
@@ -216,11 +221,19 @@ export const SantoriniGame: Game<GameState> = {
         },
         onBegin: (context) => {
           const contextWithPlayerID = getContextWithPlayerID(context);
-          const { G, playerID } = contextWithPlayerID;
+          const { G, playerID, events } = contextWithPlayerID;
           const { charState } = G.players[playerID];
-
           const character = getCharacter(charState);
+
           updateValids(contextWithPlayerID, charState, 'select');
+
+          // If there are no valid moves for the current player, that player loses
+          if (G.valids.length === 0) {
+            events.endGame({
+              winner: G.players[playerID].opponentID,
+            });
+          }
+
           character.onTurnBegin(contextWithPlayerID, charState);
         },
         onEnd: (context) => {
@@ -232,8 +245,6 @@ export const SantoriniGame: Game<GameState> = {
           character.onTurnEnd(contextWithPlayerID, charState);
 
           charState.selectedWorkerNum = -1;
-
-          checkWinByTrap(contextWithPlayerID);
         },
       },
     },

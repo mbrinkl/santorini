@@ -1,20 +1,9 @@
 import { GameContext } from '../types/GameTypes';
 import { getCharacter } from './characters';
 
-export function checkWinByTrap(context: GameContext) {
-  const { G, playerID, events } = context;
-  const nextPlayer = G.players[G.players[playerID].opponentID];
-  const { charState } = nextPlayer;
-
-  const character = getCharacter(charState);
-
-  if (!character.hasValidMoves({ ...context, playerID: nextPlayer.ID }, charState)) {
-    events.endGame({
-      winner: nextPlayer.opponentID,
-    });
-  }
-}
-
+/**
+ * Check if a player wins after moving
+ */
 export function checkWinByMove(context: GameContext, posBefore: number, posAfter: number) {
   const { G, playerID, events } = context;
   const { charState, opponentID } = G.players[playerID];

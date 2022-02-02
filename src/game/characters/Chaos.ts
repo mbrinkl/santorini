@@ -102,9 +102,6 @@ export const Chaos: Character<ChaosAttrs> = {
   validMove: (context, charState: CharacterState<ChaosAttrs>, originalPos) => (
     getCharacterByName(charState.attrs.currentCharacter).validMove(context, charState, originalPos)
   ),
-  hasValidMoves: (context, charState: CharacterState<ChaosAttrs>) => (
-    getCharacterByName(charState.attrs.currentCharacter).hasValidMoves(context, charState)
-  ),
   move: (context, charState: CharacterState<ChaosAttrs>, pos) => (
     getCharacterByName(charState.attrs.currentCharacter).move(context, charState, pos)
   ),
@@ -124,9 +121,6 @@ export const Chaos: Character<ChaosAttrs> = {
 
   validBuild: (context, charState: CharacterState<ChaosAttrs>, originalPos) => (
     getCharacterByName(charState.attrs.currentCharacter).validBuild(context, charState, originalPos)
-  ),
-  hasValidBuild: (context, charState: CharacterState<ChaosAttrs>) => (
-    getCharacterByName(charState.attrs.currentCharacter).hasValidBuild(context, charState)
   ),
   build: (context, charState: CharacterState<ChaosAttrs>, pos) => (
     getCharacterByName(charState.attrs.currentCharacter).build(context, charState, pos)

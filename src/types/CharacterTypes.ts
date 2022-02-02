@@ -37,7 +37,6 @@ export interface CharacterFunctions {
     oppCharState: CharacterState,
     fromPos: number,
   ) => Set<number>
-  hasValidMoves: (context: GameContext, charState: CharacterState) => boolean,
   move: (context: GameContext, charState: CharacterState, pos: number) => void,
   afterOpponentMove: (
     context: GameContext,
@@ -54,7 +53,6 @@ export interface CharacterFunctions {
     oppCharState: CharacterState,
     fromPos: number,
   ) => Set<number>,
-  hasValidBuild: (context: GameContext, charState: CharacterState) => boolean,
   build: (context: GameContext, charState: CharacterState, pos: number) => void,
   afterOpponentBuild: (
     context: GameContext,

@@ -80,17 +80,6 @@ export const Mortal: Character = {
 
   restrictOpponentMove: ({ G }, charState, oppCharState, fromPos) => new Set(G.valids),
 
-  hasValidMoves: (context, charState) => {
-    let hasMove = false;
-    charState.workers.forEach((worker) => {
-      if (Mortal.validMove(context, charState, worker.pos).size > 0) {
-        hasMove = true;
-      }
-    });
-
-    return hasMove;
-  },
-
   move: ({ G, playerID }, charState, pos) => {
     Board.free(G, charState.workers[charState.selectedWorkerNum].pos);
     Board.place(G, pos, playerID, charState.selectedWorkerNum);
@@ -113,18 +102,6 @@ export const Mortal: Character = {
   },
 
   restrictOpponentBuild: ({ G }, charState, oppCharState, fromPos) => new Set(G.valids),
-
-  hasValidBuild: (context, charState) => {
-    let hasBuild = false;
-
-    charState.workers.forEach((worker) => {
-      if (Mortal.validBuild(context, charState, worker.pos).size > 0) {
-        hasBuild = true;
-      }
-    });
-
-    return hasBuild;
-  },
 
   build: ({ G }, charState, pos) => {
     Board.build(G, pos);

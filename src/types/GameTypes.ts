@@ -17,6 +17,7 @@ export interface Player {
 }
 
 export interface GameState {
+  isClone: boolean;
   spaces: Space[];
   players: Record<string, Player>;
   valids: number[];
