@@ -1,12 +1,7 @@
-import { Character, CharacterState } from '../../types/CharacterTypes';
+import { Character } from '../../types/CharacterTypes';
 import { Mortal } from './Mortal';
-import { Board } from '../space';
 
-interface AtlasAttrs {
-  specialActive: boolean,
-}
-
-export const Atlas: Character<AtlasAttrs> = {
+export const Atlas: Character = {
   ...Mortal,
   desc: 'Your Build: Your worker may build a dome at any level.',
   buttonText: 'Build Dome',
@@ -14,26 +9,24 @@ export const Atlas: Character<AtlasAttrs> = {
     specialActive: false,
   },
 
-  move: (context, charState: CharacterState<AtlasAttrs>, pos) => {
+  move: (context, charState, pos) => {
     charState.buttonActive = true;
     Mortal.move(context, charState, pos);
   },
 
-  buttonPressed: (context, charState: CharacterState<AtlasAttrs>) => {
-    charState.attrs.specialActive = !charState.attrs.specialActive;
-    charState.buttonText = charState.attrs.specialActive ? 'Cancel' : 'Build Dome';
-    return Mortal.buttonPressed(context, charState);
+  build: (context, charState, pos) => {
+    charState.buttonActive = false;
+    Mortal.build(context, charState, pos);
   },
 
-  build: ({ G }, charState, pos) => {
-    if (charState.attrs.specialActive) {
-      G.spaces[pos].isDomed = true;
-    } else {
-      Board.build(G, pos);
-    }
+  validSpecial: (context, charState, fromPos) => Mortal.validBuild(context, charState, fromPos),
 
-    charState.attrs.specialActive = false;
+  special: ({ G }, charState, pos) => {
+    G.spaces[pos].isDomed = true;
+  },
+
+  buttonPressed: (context, charState) => {
     charState.buttonActive = false;
-    charState.buttonText = 'Build Dome';
+    return 'special';
   },
 };
