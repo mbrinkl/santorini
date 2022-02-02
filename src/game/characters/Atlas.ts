@@ -5,9 +5,6 @@ export const Atlas: Character = {
   ...Mortal,
   desc: 'Your Build: Your worker may build a dome at any level.',
   buttonText: 'Build Dome',
-  attrs: {
-    specialActive: false,
-  },
 
   move: (context, charState, pos) => {
     charState.buttonActive = true;
