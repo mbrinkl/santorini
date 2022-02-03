@@ -6,7 +6,7 @@ import './style.scss';
 
 export const ChatMessage: React.FC<{ sender: string, message: string }> = ({ sender, message }) => {
   const { playerID, matchData } = useBoardContext();
-  const senderName = matchData?.[sender]?.name + (playerID === sender ? ' (you)' : '');
+  const senderName = (matchData?.[sender].name || `Player ${sender}`) + (playerID === sender ? ' (you)' : '');
 
   return (
     <p>

@@ -1,5 +1,4 @@
 import { StoreProvider } from 'easy-peasy';
-import React from 'react';
 import {
   BrowserRouter as Router,
   Route,
@@ -22,7 +21,7 @@ const store = initializeStore({
   activeRoomPlayer: savedPlayer ? JSON.parse(savedPlayer) : null,
 } as StoreModel);
 
-const App: React.FC = () => {
+const App = () => {
   const nickname = useStoreState((s) => s.nickname);
   const navigate = useNavigate();
 
@@ -38,7 +37,7 @@ const App: React.FC = () => {
   );
 };
 
-const AppRoot: React.FC = () => (
+const AppRoot = () => (
   <StoreProvider store={store}>
     <Router>
       <App />

@@ -3,11 +3,6 @@ import { StoreModel } from '../types/StoreTypes';
 import { NICKNAME_STORAGE_KEY, PLAYER_STORAGE_KEY } from '../config/client';
 import { joinMatch, leaveMatch } from '../api';
 
-export let initState: any = {};
-export const setInitState = (state?: StoreModel) => {
-  if (state) initState = state;
-};
-
 export const store: StoreModel = {
   nickname: null,
   setNickname: action((state, nickname) => {
@@ -33,6 +28,4 @@ export const store: StoreModel = {
     await leaveMatch(payload);
     actions.setActiveRoomPlayer(null);
   }),
-
-  reset: action(() => initState),
 };

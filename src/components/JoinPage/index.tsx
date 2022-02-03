@@ -7,7 +7,7 @@ import { GithubLink } from '../LobbyPage';
 import { getMatches } from '../../api';
 import style from './style.module.scss';
 
-export function JoinPage() {
+export const JoinPage = () => {
   const [matches, setMatches] = useState<LobbyAPI.Match[]>([]);
   const navigate = useNavigate();
 
@@ -68,4 +68,4 @@ export function JoinPage() {
       </table>
     </div>
   );
-}
+};

@@ -24,6 +24,7 @@ ButtonProps & ButtonHTMLAttributes<HTMLButtonElement>
     {...props}
   />
 ));
+Button.displayName = 'Button';
 
 export const ButtonLink: React.FC<ButtonProps & LinkProps> = ({
   className,

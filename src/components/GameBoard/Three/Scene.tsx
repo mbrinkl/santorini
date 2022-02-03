@@ -3,14 +3,13 @@ import React, {
 } from 'react';
 import { ThreeEvent } from '@react-three/fiber';
 import { OrbitControls } from '@react-three/drei';
+import { GameStage } from '../../../types/GameTypes';
 import { useBoardContext } from '../BoardContext';
 import { Ground } from './Ground';
 import {
   BuildingBase, BuildingMid, BuildingTop, Dome,
 } from './Buildings';
-import {
-  PlaceIndicator, SelectIndicator, MoveIndicator, BuildIndicator, SpecialIndicator,
-} from './Indicators';
+import { Indicator } from './Indicators';
 import { WorkerModel } from './WorkerModel';
 import { BoardPosition } from '../../../types/BoardTypes';
 
@@ -123,20 +122,14 @@ export const Scene: React.FC<{ boardPositions: BoardPosition[] }> = ({ boardPosi
           </>
         ))}
 
-        {isActive
-          && !ctx.gameover
-          && G.valids.map((pos) => ((ctx.activePlayers && ctx.activePlayers[ctx.currentPlayer]) === 'place' ? (
-            <PlaceIndicator key={`placeIndicator${pos}`} boardPos={boardPositions[pos]} height={G.spaces[pos].height} />
-          ) : (ctx.activePlayers && ctx.activePlayers[ctx.currentPlayer]) === 'select' ? (
-            <SelectIndicator key={`selectIndicator${pos}`} boardPos={boardPositions[pos]} height={G.spaces[pos].height} />
-          ) : (ctx.activePlayers && ctx.activePlayers[ctx.currentPlayer]) === 'move' ? (
-            <MoveIndicator key={`moveIndicator${pos}`} boardPos={boardPositions[pos]} height={G.spaces[pos].height} />
-          ) : (ctx.activePlayers && ctx.activePlayers[ctx.currentPlayer]) === 'build' ? (
-            <BuildIndicator key={`bulidIndicator${pos}`} boardPos={boardPositions[pos]} height={G.spaces[pos].height} />
-          ) : (
-            <SpecialIndicator key={`moveIndicator${pos}`} boardPos={boardPositions[pos]} height={G.spaces[pos].height} />
-          )))}
-
+        {isActive && !ctx.gameover && G.valids.map((pos) => (
+          <Indicator
+            key={`Indicator${pos}`}
+            boardPos={boardPositions[pos]}
+            height={G.spaces[pos].height}
+            stage={(ctx.activePlayers && ctx.activePlayers[ctx.currentPlayer]) as GameStage}
+          />
+        ))}
       </group>
     </>
   );

@@ -25,5 +25,4 @@ export interface StoreModel {
   setActiveRoomPlayer: Action<StoreModel, ActiveRoomPlayer | null>;
   joinRoom: Thunk<StoreModel, JoinRoomParams>;
   leaveRoom: Thunk<StoreModel, LeaveRoomParams>;
-  reset: Action<StoreModel, string>;
 }

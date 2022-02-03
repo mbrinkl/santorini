@@ -4,6 +4,7 @@ import {
 } from '@react-three/drei';
 import { useFrame } from '@react-three/fiber';
 import { BoardPosition } from '../../../types/BoardTypes';
+import { GameStage } from '../../../types/GameTypes';
 
 export const PlaceIndicator: React.FC<{
   boardPos: BoardPosition,
@@ -142,4 +143,25 @@ export const SpecialIndicator: React.FC<{
       <meshStandardMaterial color="purple" />
     </Ring>
   );
+};
+
+export const Indicator = ({
+  boardPos,
+  height,
+  stage,
+} : { boardPos: BoardPosition, height: number, stage: GameStage }) => {
+  switch (stage) {
+    case 'place':
+      return <PlaceIndicator boardPos={boardPos} height={height} />;
+    case 'select':
+      return <SelectIndicator boardPos={boardPos} height={height} />;
+    case 'move':
+      return <MoveIndicator boardPos={boardPos} height={height} />;
+    case 'build':
+      return <BuildIndicator boardPos={boardPos} height={height} />;
+    case 'special':
+      return <SpecialIndicator boardPos={boardPos} height={height} />;
+    default:
+      return null;
+  }
 };
