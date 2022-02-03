@@ -2,10 +2,10 @@ import { GameContext, GameStage } from '../types/GameTypes';
 import { getCharacter } from './characters';
 
 interface PossibleMove {
-  type: GameStage // todo: check for button press move
+  type: GameStage | 'buttonPress',
   pos: number,
   prevs: {
-    type: GameStage,
+    type: GameStage | 'buttonPress',
     pos: number
   }[]
 }
@@ -48,16 +48,26 @@ function getSpawnedMoves(
         stage = character.getStageAfterSpecial(cloneContext, charState);
         updateValids(cloneContext, stage);
         break;
+      case 'buttonPress':
+        stage = character.buttonPressed(cloneContext, charState);
+        updateValids(cloneContext, stage);
+        break;
       default:
         break;
     }
   });
 
+  // Push to possibleMoves in this specific order so that 'end' will be popped first
+  // if available, then buttonPress, then normal valids
+  // Assumes no endless loop of button presses
   G.valids.forEach((valid) => {
     possibleMoves.push({ type: stage as GameStage, pos: valid, prevs });
   });
 
-  // Push the 'end' possibility at the end, so it will be the next popped
+  if (charState.buttonActive) {
+    possibleMoves.push({ type: 'buttonPress', pos: -1, prevs });
+  }
+
   if (stage === 'end') {
     possibleMoves.push({ type: 'end', pos: -1, prevs: [] });
   }
@@ -69,11 +79,12 @@ function getSpawnedMoves(
  * Return true if the 'end' GameStage can be reached from a given position.
  * Traverses possible moves as a DFS, exit immediately if 'end' is reached
  */
-function canReachEndStage(
+export function canReachEndStage(
   context: GameContext,
-  stage: GameStage,
+  stage: GameStage | 'buttonPress',
   fromPos: number,
 ) : boolean {
+  // ADD BUTTON PRESS IMMEDIATELY IF POSSIBLE
   const possibleMoveStack: PossibleMove[] = [{ type: stage, pos: fromPos, prevs: [] }];
   const checkedMoves: PossibleMove[] = [];
 
@@ -85,9 +96,14 @@ function canReachEndStage(
         return true;
       }
 
-      // If we have not checked this type and position
-      if (!checkedMoves.find((c) => c.type === possibleMove.type && c.pos === possibleMove.pos)) {
-        // Add it to the checked list
+      if (possibleMove.type === 'buttonPress') {
+        getSpawnedMoves(context, possibleMove).forEach((newMove) => {
+          possibleMoveStack.push(newMove);
+        });
+      } else if (
+        !checkedMoves.find((c) => c.type === possibleMove.type && c.pos === possibleMove.pos)
+      ) {
+        // If we have not checked this type and position, add it to the checked list
         checkedMoves.push(possibleMove);
 
         // Get the moves spawned from this possible move

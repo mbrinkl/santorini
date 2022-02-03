@@ -11,7 +11,7 @@ import {
 import {
   setChar, ready, cancelReady, place, move, select, build, special, onButtonPressed, endTurn,
 } from './moves';
-import { updateValids } from './validity';
+import { canReachEndStage, updateValids } from './validity';
 
 export function initCharacter(characterName: string): CharacterState {
   // Get state properties without character functions
@@ -175,16 +175,21 @@ export const SantoriniGame: Game<GameState> = {
           const { charState } = G.players[playerID];
           const character = getCharacter(charState);
 
+          character.onTurnBegin(contextWithPlayerID, charState);
+
           updateValids(contextWithPlayerID, 'select');
 
-          // If there are no valid moves for the current player, that player loses
+          // If there are no valid moves for the current player
           if (G.valids.length === 0) {
-            events.endGame({
-              winner: G.players[playerID].opponentID,
-            });
+            // First check if there is a possible route to the end stage through the
+            // buttonPressed move event
+            if (!(charState.buttonActive && canReachEndStage(contextWithPlayerID, 'buttonPress', -1))) {
+              // If not, that player loses
+              events.endGame({
+                winner: G.players[playerID].opponentID,
+              });
+            }
           }
-
-          character.onTurnBegin(contextWithPlayerID, charState);
         },
         onEnd: (context) => {
           const contextWithPlayerID = getContextWithPlayerID(context);
