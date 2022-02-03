@@ -75,18 +75,20 @@ export const move: Move<GameState> = (context, pos: number) => {
   const character = getCharacter(charState);
   const opponentCharacter = getCharacter(opponentCharState);
 
-  const posBefore = charState.workers[charState.selectedWorkerNum].pos;
   const movedFromPos = charState.workers[charState.selectedWorkerNum].pos;
 
   character.move(context, charState, pos);
   opponentCharacter.afterOpponentMove(context, opponentCharState, charState, movedFromPos);
+
+  // Check to see if the player was forced off of the intended pos
+  if (charState.workers[charState.selectedWorkerNum].pos === pos) {
+    checkWinByMove(context, movedFromPos, pos);
+  }
+
   const stage = character.getStageAfterMove(context, charState);
   events.setStage(stage);
 
   updateValids(context, stage);
-
-  const posAfter = charState.workers[charState.selectedWorkerNum].pos;
-  checkWinByMove(context, posBefore, posAfter);
 };
 
 export const build: Move<GameState> = (context, pos: number) => {
