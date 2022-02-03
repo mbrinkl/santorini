@@ -16,6 +16,8 @@ const server = Server({
   ],
 });
 
+server.app.use(serve(root));
+
 server.run(PORT, () => {
   server.app.use(
     (ctx, next) => serve(root)(
