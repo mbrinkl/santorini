@@ -1,7 +1,0 @@
-{
-    "extends": "./tsconfig.json",
-    "include": ["src/server"],
-    "compilerOptions": {
-      "module": "commonjs",
-    }
-}
