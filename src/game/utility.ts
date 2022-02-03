@@ -95,6 +95,9 @@ export function getWrappedAdjacents(pos: number): number[] {
   return adjacents;
 }
 
+/**
+ * Given two positions, return true if they are adjacent
+ */
 export function positionsAreAdjacent(pos1: number, pos2: number): boolean {
   return getAdjacentPositions(pos1).includes(pos2);
 }

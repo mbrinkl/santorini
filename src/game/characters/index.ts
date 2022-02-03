@@ -23,6 +23,7 @@ import { Character, CharacterState } from '../../types/CharacterTypes';
 import { Chronus } from './Chronus';
 import { Harpies } from './Harpies';
 import { Urania } from './Urania';
+import { Charon } from './Charon';
 
 export const characterList: string[] = [
   'Random',
@@ -45,7 +46,7 @@ export const characterList: string[] = [
   // "Ares",
   'Bia',
   'Chaos',
-  // "Charon",
+  'Charon',
   'Chronus',
   // "Circe",
   // "Dionysus",
@@ -155,6 +156,7 @@ export function getCharacterByName(name: string): Character {
     case 'Chronus': character = Chronus; break;
     case 'Harpies': character = Harpies; break;
     case 'Urania': character = Urania; break;
+    case 'Charon': character = Charon; break;
     default: character = Mortal; break;
   }
 
