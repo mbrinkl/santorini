@@ -7,9 +7,7 @@ import { LobbyPage } from '../LobbyPage';
 import { Input } from '../Input';
 import './style.scss';
 
-export const SetupNickname: React.FC<{ onSubmit?: () => void }> = ({
-  onSubmit,
-}) => {
+export const SetupNickname = ({ onSubmit } : { onSubmit?: () => void }) : JSX.Element => {
   const initialNickname = useStoreState((s) => s.nickname);
   const persistNickname = useStoreActions((s) => s.setNickname);
   const [nickname, setNickname] = useState(initialNickname || '');

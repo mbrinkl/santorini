@@ -1,8 +1,7 @@
-import React from 'react';
 import { Box, Sphere } from '@react-three/drei';
 import { BoardPosition } from '../../../types/BoardTypes';
 
-export const BuildingBase: React.FC<{ boardPos: BoardPosition }> = ({ boardPos }) => (
+export const BuildingBase = ({ boardPos } : { boardPos: BoardPosition }): JSX.Element => (
   <Box
     userData={{ pos: boardPos.pos }}
     args={[5, 3, 5]}
@@ -12,7 +11,7 @@ export const BuildingBase: React.FC<{ boardPos: BoardPosition }> = ({ boardPos }
   </Box>
 );
 
-export const BuildingMid: React.FC<{ boardPos: BoardPosition }> = ({ boardPos }) => (
+export const BuildingMid = ({ boardPos } : { boardPos: BoardPosition }): JSX.Element => (
   <Box
     userData={{ pos: boardPos.pos }}
     args={[4, 2, 4]}
@@ -22,7 +21,7 @@ export const BuildingMid: React.FC<{ boardPos: BoardPosition }> = ({ boardPos })
   </Box>
 );
 
-export const BuildingTop: React.FC<{ boardPos: BoardPosition }> = ({ boardPos }) => (
+export const BuildingTop = ({ boardPos } : { boardPos: BoardPosition }): JSX.Element => (
   <Box
     userData={{ pos: boardPos.pos }}
     args={[3, 2, 3]}
@@ -32,10 +31,10 @@ export const BuildingTop: React.FC<{ boardPos: BoardPosition }> = ({ boardPos })
   </Box>
 );
 
-export const Dome: React.FC<{
+export const Dome = ({ boardPos, height } : {
   boardPos: BoardPosition,
   height: number
-}> = ({ boardPos, height }) => {
+}): JSX.Element => {
   const yPosHeightMap = [0, 3, 5, 7, 7];
 
   return (

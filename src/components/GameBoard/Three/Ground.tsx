@@ -1,9 +1,8 @@
-import React from 'react';
 import { Plane } from '@react-three/drei';
 import { BoardPosition } from '../../../types/BoardTypes';
 import { GROUND_SIZE } from '../../../config/board';
 
-export const Ground: React.FC<{ boardPos: BoardPosition }> = ({ boardPos }) => (
+export const Ground = ({ boardPos }: { boardPos: BoardPosition }): JSX.Element => (
   <Plane
     userData={{ pos: boardPos.pos }}
     args={[GROUND_SIZE, GROUND_SIZE]}

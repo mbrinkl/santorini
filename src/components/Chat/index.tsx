@@ -1,10 +1,13 @@
-import React, { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useBoardContext } from '../GameBoard/BoardContext';
 import { isMobile } from '../../utility';
 import sendIcon from '../../assets/png/send.png';
 import './style.scss';
 
-export const ChatMessage: React.FC<{ sender: string, message: string }> = ({ sender, message }) => {
+export const ChatMessage = ({ sender, message } : {
+  sender: string,
+  message: string
+}) : JSX.Element => {
   const { playerID, matchData } = useBoardContext();
   const senderName = (matchData?.[sender].name || `Player ${sender}`) + (playerID === sender ? ' (you)' : '');
 
@@ -16,7 +19,9 @@ export const ChatMessage: React.FC<{ sender: string, message: string }> = ({ sen
   );
 };
 
-export const Chat: React.FC<{ onCloseMessages? : () => void | null }> = ({ onCloseMessages }) => {
+export const Chat = ({ onCloseMessages } : {
+  onCloseMessages? : () => void
+}) : JSX.Element => {
   const { chatMessages, sendChatMessage } = useBoardContext();
   const [message, setMessage] = useState('');
   const messagesEndRef: any = useRef(null);

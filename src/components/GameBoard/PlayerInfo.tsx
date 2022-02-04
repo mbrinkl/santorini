@@ -2,7 +2,7 @@ import { useBoardContext } from './BoardContext';
 import { ConnectedIndicator } from './ConnectedIndicator';
 import './style.scss';
 
-export const PlayerInfo = () => {
+export const PlayerInfo = () : JSX.Element => {
   const { playerID, G, matchData } = useBoardContext();
 
   return (

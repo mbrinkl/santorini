@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import { useRef } from 'react';
 import {
   Box, Cone, Cylinder, Ring,
 } from '@react-three/drei';
@@ -7,10 +7,10 @@ import { Mesh } from 'three';
 import { BoardPosition } from '../../../types/BoardTypes';
 import { GameStage } from '../../../types/GameTypes';
 
-export const PlaceIndicator: React.FC<{
+export const PlaceIndicator = ({ boardPos, height } : {
   boardPos: BoardPosition,
   height: number
-}> = ({ boardPos, height }) => {
+}): JSX.Element => {
   const yMap = [0, 3, 5, 7, 7];
   const mesh = useRef<Mesh>();
 
@@ -36,10 +36,10 @@ export const PlaceIndicator: React.FC<{
   );
 };
 
-export const SelectIndicator: React.FC<{
+export const SelectIndicator = ({ boardPos, height } : {
   boardPos: BoardPosition,
   height: number
-}> = ({ boardPos, height }) => {
+}): JSX.Element => {
   const yMap = [4, 8, 10, 12, 12];
   const headMesh = useRef<Mesh>();
   const tailMesh = useRef<Mesh>();
@@ -77,10 +77,10 @@ export const SelectIndicator: React.FC<{
   );
 };
 
-export const MoveIndicator: React.FC<{
+export const MoveIndicator = ({ boardPos, height } : {
   boardPos: BoardPosition,
   height: number
-}> = ({ boardPos, height }) => {
+}) : JSX.Element => {
   const yMap = [0, 3, 5, 7, 7];
   const mesh = useRef<Mesh>();
 
@@ -103,10 +103,10 @@ export const MoveIndicator: React.FC<{
   );
 };
 
-export const BuildIndicator: React.FC<{
+export const BuildIndicator = ({ boardPos, height } : {
   boardPos: BoardPosition,
   height: number
-}> = ({ boardPos, height }) => {
+}): JSX.Element => {
   const yMap = [0, 3, 5, 7, 7];
   const mesh = useRef<Mesh>();
 
@@ -130,10 +130,10 @@ export const BuildIndicator: React.FC<{
   );
 };
 
-export const SpecialIndicator: React.FC<{
+export const SpecialIndicator = ({ boardPos, height } : {
   boardPos: BoardPosition,
   height: number
-}> = ({ boardPos, height }) => {
+}): JSX.Element => {
   const yMap = [0, 3, 5, 7, 7];
   const mesh = useRef<Mesh>();
 
@@ -156,11 +156,11 @@ export const SpecialIndicator: React.FC<{
   );
 };
 
-export const Indicator = ({
-  boardPos,
-  height,
-  stage,
-} : { boardPos: BoardPosition, height: number, stage: GameStage }) => {
+export const Indicator = ({ boardPos, height, stage } : {
+  boardPos: BoardPosition,
+  height: number,
+  stage: GameStage
+}): JSX.Element | null => {
   switch (stage) {
     case 'place':
       return <PlaceIndicator boardPos={boardPos} height={height} />;

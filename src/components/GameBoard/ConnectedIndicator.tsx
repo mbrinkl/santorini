@@ -1,7 +1,6 @@
-import React from 'react';
 import { useBoardContext } from './BoardContext';
 
-export const ConnectedIndicator: React.FC<{ playerID: number }> = ({ playerID }) => {
+export const ConnectedIndicator = ({ playerID } : { playerID: number }) : JSX.Element => {
   const { matchData } = useBoardContext();
   const connected = matchData?.[playerID].isConnected;
 

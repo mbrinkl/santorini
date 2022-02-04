@@ -3,7 +3,7 @@ import { useBoardContext } from './BoardContext';
 import { ConnectedIndicator } from './ConnectedIndicator';
 import './style.scss';
 
-export const PlayerInfoMobile = () => {
+export const PlayerInfoMobile = () : JSX.Element => {
   const { playerID, G, matchData } = useBoardContext();
   const [showOverlay, setShowOverlay] = useState(false);
 

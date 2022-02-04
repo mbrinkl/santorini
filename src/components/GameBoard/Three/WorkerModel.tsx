@@ -1,11 +1,11 @@
 import { Sphere } from '@react-three/drei';
 import { BoardPosition } from '../../../types/BoardTypes';
 
-export const WorkerModel: React.FC<{
+export const WorkerModel = ({ boardPos, height, color } : {
   boardPos: BoardPosition,
   height: number,
   color: string
-}> = ({ boardPos, height, color }) => {
+}) : JSX.Element => {
   const yPosHeightMap = [1, 4, 6, 8];
 
   return (
@@ -16,6 +16,5 @@ export const WorkerModel: React.FC<{
     >
       <meshStandardMaterial name="mat" color={color} roughness={0.25} />
     </Sphere>
-
   );
 };

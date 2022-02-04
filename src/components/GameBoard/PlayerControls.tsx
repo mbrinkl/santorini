@@ -6,10 +6,10 @@ import undoLogo from '../../assets/png/undo.png';
 import messagesLogo from '../../assets/png/messages.png';
 import { isMobile } from '../../utility';
 
-export const PlayerControls: React.FC<{
+export const PlayerControls = ({ messagesOpen, onOpenMessages } : {
   messagesOpen? : boolean,
   onOpenMessages? : () => void
-}> = ({ messagesOpen, onOpenMessages }) => {
+}) : JSX.Element | null => {
   const {
     playerID, G, isActive, moves, ctx, undo, chatMessages, sendChatMessage, credentials,
     matchID,

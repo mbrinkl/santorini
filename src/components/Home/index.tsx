@@ -9,7 +9,7 @@ import { useStoreActions, useStoreState } from '../../store';
 import { createMatch, getMatch } from '../../api';
 import style from './style.module.scss';
 
-export const Home = () => {
+export const Home = () : JSX.Element => {
   const navigate = useNavigate();
   const [showHostOptions, setShowHostOptions] = useState(false);
   const activeRoomPlayer = useStoreState((s) => s.activeRoomPlayer);

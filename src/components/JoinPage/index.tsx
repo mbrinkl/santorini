@@ -7,7 +7,7 @@ import { GithubLink } from '../LobbyPage';
 import { getMatches } from '../../api';
 import style from './style.module.scss';
 
-export const JoinPage = () => {
+export const JoinPage = () : JSX.Element => {
   const [matches, setMatches] = useState<LobbyAPI.Match[]>([]);
   const navigate = useNavigate();
 

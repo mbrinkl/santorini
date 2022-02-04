@@ -1,6 +1,6 @@
 import { useBoardContext } from './BoardContext';
 
-export const HelpText = () => {
+export const HelpText = () : JSX.Element => {
   const {
     G, isActive, ctx, matchData, playerID,
   } = useBoardContext();

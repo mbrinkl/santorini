@@ -1,6 +1,4 @@
-import React, {
-  useState, useEffect, useCallback,
-} from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { ThreeEvent } from '@react-three/fiber';
 import { OrbitControls } from '@react-three/drei';
 import { GameStage } from '../../../types/GameTypes';
@@ -13,7 +11,9 @@ import { Indicator } from './Indicators';
 import { WorkerModel } from './WorkerModel';
 import { BoardPosition } from '../../../types/BoardTypes';
 
-export const Scene: React.FC<{ boardPositions: BoardPosition[] }> = ({ boardPositions }) => {
+export const Scene = ({ boardPositions } : {
+  boardPositions: BoardPosition[]
+}): JSX.Element => {
   const {
     G, ctx, moves, isActive,
   } = useBoardContext();

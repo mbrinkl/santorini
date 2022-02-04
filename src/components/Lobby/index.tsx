@@ -1,6 +1,6 @@
 import { SocketIO } from 'boardgame.io/multiplayer';
 import { Client } from 'boardgame.io/react';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import Tippy from '@tippyjs/react';
 import { LobbyAPI } from 'boardgame.io';
@@ -26,9 +26,7 @@ const GameClient = Client({
   debug: !isProduction && !isMobile(),
 });
 
-export const GameLobbySetup: React.FC<{ startGame(): void }> = ({
-  startGame,
-}) => {
+export const GameLobbySetup = ({ startGame } : { startGame(): void }) : JSX.Element => {
   const { matchID } = useParams<{ matchID: string }>();
   const nickname = useStoreState((s) => s.nickname);
   const [matchMetadata, setMatchMetadata] = useState<LobbyAPI.Match | null>(null);
@@ -150,7 +148,7 @@ export const GameLobbySetup: React.FC<{ startGame(): void }> = ({
   );
 };
 
-export const GameLobbyPlay: React.FC = () => {
+export const GameLobbyPlay = () : JSX.Element => {
   const { matchID } = useParams<{ matchID: string }>();
   const activeRoomPlayer = useStoreState((s) => s.activeRoomPlayer);
 
@@ -161,7 +159,6 @@ export const GameLobbyPlay: React.FC = () => {
         matchID={matchID}
         playerID={String(activeRoomPlayer?.playerID)}
         credentials={activeRoomPlayer?.credential}
-        debug={!isProduction}
       />
     );
   }
@@ -172,7 +169,7 @@ export const GameLobbyPlay: React.FC = () => {
   );
 };
 
-export const GameLobby = () => {
+export const GameLobby = () : JSX.Element => {
   const [isGameRunning, setGameRunning] = useState(false);
 
   return isGameRunning ? (

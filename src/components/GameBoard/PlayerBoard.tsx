@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Canvas } from '@react-three/fiber';
 import { useContextBridge } from '@react-three/drei';
 import { HelpText } from './HelpText';
@@ -7,7 +7,7 @@ import { Scene } from './Three/Scene';
 import { BoardPosition } from '../../types/BoardTypes';
 import { GROUND_PADDING, GROUND_SIZE } from '../../config/board';
 
-export const PlayerBoard: React.FC = () => {
+export const PlayerBoard = () : JSX.Element => {
   const { isActive, ctx, playerID } = useBoardContext();
   const ContextBridge = useContextBridge(BoardContext);
   const [boardPositions, setBoardPositions] = useState<BoardPosition[]>([]);

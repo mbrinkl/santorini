@@ -1,4 +1,3 @@
-import React from 'react';
 import { ConnectedIndicator } from '../GameBoard/ConnectedIndicator';
 import { Button } from '../Button';
 import { banList, getSortedCharacters } from '../../game/characters';
@@ -7,10 +6,10 @@ import { Chat } from '../Chat';
 import CheckImg from '../../assets/png/check.png';
 import './style.scss';
 
-export const CharacterBox: React.FC<{
+export const CharacterBox = ({ playerID, name } : {
   playerID: string | null,
   name: string
-}> = ({ playerID, name }) => {
+}) : JSX.Element => {
   const { G, moves } = useBoardContext();
   const takenCharacters: string[] = [];
 
@@ -59,10 +58,10 @@ export const CharacterBox: React.FC<{
   );
 };
 
-export const SelectedCharacterBox: React.FC<{
+export const SelectedCharacterBox = ({ name, playerID } : {
   name: string;
   playerID: string;
-}> = ({ name, playerID }) => {
+}) : JSX.Element => {
   const { G } = useBoardContext();
 
   return (
@@ -80,7 +79,7 @@ export const SelectedCharacterBox: React.FC<{
   );
 };
 
-export const CharacterSelect = () => {
+export const CharacterSelect = () : JSX.Element => {
   const {
     G, moves, matchData, playerID,
   } = useBoardContext();
