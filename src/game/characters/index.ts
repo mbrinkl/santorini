@@ -25,6 +25,9 @@ import { Harpies } from './Harpies';
 import { Urania } from './Urania';
 import { Charon } from './Charon';
 import { Ares } from './Ares';
+import { Hades } from './Hades';
+import { Maenads } from './Maenads';
+import { Asteria } from './Asteria';
 
 export const characterList: string[] = [
   'Random',
@@ -71,7 +74,7 @@ export const characterList: string[] = [
   // "Europa & Talus",
   // "Gaea",
   'Graeae',
-  // "Hades",
+  'Hades',
   'Harpies',
   // "Hecate",
   // "Moerae",
@@ -99,8 +102,8 @@ export const characterList: string[] = [
   // "Proteus",
   // "Castor & Pollox",
   // "Eris",
-  // "Maenads",
-  // "Asteria",
+  'Maenads',
+  'Asteria',
   // "Hippolyta",
   // "Hydra",
   'Iris',
@@ -113,6 +116,8 @@ export const banList: [string, string][] = [
   ['Harpies', 'Hermes'],
   ['Harpies', 'Triton'],
   ['Urania', 'Aphrodite'],
+  ['Hades', 'Pan'],
+  ['Asteria', 'Hades'],
 ];
 
 // Returns the character list sorted alphabetically, with 'random'
@@ -159,6 +164,9 @@ export function getCharacterByName(name: string): Character {
     case 'Urania': character = Urania; break;
     case 'Charon': character = Charon; break;
     case 'Ares': character = Ares; break;
+    case 'Asteria': character = Asteria; break;
+    case 'Maenads': character = Maenads; break;
+    case 'Hades': character = Hades; break;
     default: character = Mortal; break;
   }
 
