@@ -29,7 +29,7 @@ const App = () => {
     <div className="App">
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/rooms" element={nickname ? <JoinPage /> : <SetupNickname />} />
+        <Route path="/rooms" element={<JoinPage />} />
         <Route path="/rooms/:matchID" element={nickname ? <GameLobby /> : <SetupNickname />} />
         <Route path="/nickname" element={<SetupNickname onSubmit={() => navigate('/')} />} />
       </Routes>

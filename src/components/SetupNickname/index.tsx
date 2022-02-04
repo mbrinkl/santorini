@@ -1,16 +1,19 @@
 import React, { useState } from 'react';
+import Tippy from '@tippyjs/react';
 import { useStoreState, useStoreActions } from '../../store';
 import { updatePlayer } from '../../api';
 import { ButtonBack } from '../ButtonBack';
 import { Button } from '../Button';
 import { LobbyPage } from '../LobbyPage';
 import { Input } from '../Input';
+import 'tippy.js/dist/tippy.css';
 import './style.scss';
 
 export const SetupNickname = ({ onSubmit } : { onSubmit?: () => void }) : JSX.Element => {
   const initialNickname = useStoreState((s) => s.nickname);
   const persistNickname = useStoreActions((s) => s.setNickname);
   const [nickname, setNickname] = useState(initialNickname || '');
+  const [tooltipVisible, setTooltipVisible] = useState(false);
   const activeRoomPlayer = useStoreState((s) => s.activeRoomPlayer);
 
   async function asyncUpdatePlayer() {
@@ -26,11 +29,16 @@ export const SetupNickname = ({ onSubmit } : { onSubmit?: () => void }) : JSX.El
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    persistNickname(nickname);
-    onSubmit?.();
+    if (nickname.length > 0) {
+      persistNickname(nickname);
+      onSubmit?.();
 
-    // update player name if they are in a game
-    asyncUpdatePlayer();
+      // update player name if they are in a game
+      asyncUpdatePlayer();
+    } else {
+      setTooltipVisible(true);
+      setTimeout(() => setTooltipVisible(false), 1500);
+    }
   };
 
   return (
@@ -50,12 +58,21 @@ export const SetupNickname = ({ onSubmit } : { onSubmit?: () => void }) : JSX.El
           maxLength={8}
         />
 
-        <Button
-          theme="blue"
-          type="submit"
+        <Tippy
+          visible={tooltipVisible}
+          offset={[0, 12]}
+          content={<p>Nickname cannot be empty.</p>}
         >
-          Save
-        </Button>
+          <div className="Lobby__link-buttons">
+            <Button
+              theme="blue"
+              type="submit"
+            >
+              Save
+            </Button>
+          </div>
+        </Tippy>
+
       </form>
     </LobbyPage>
   );

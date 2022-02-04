@@ -76,7 +76,9 @@ export const GameLobbySetup = ({ startGame } : { startGame(): void }) : JSX.Elem
 
       <div className="Lobby__title">{matchMetadata?.unlisted ? 'Private Game' : 'Public Game'}</div>
       <div className="Lobby__subtitle">
-        Send a link to someone to invite them to your game
+        Send a link to someone to invite them to your game.
+        <br />
+        Copy in another browser to play locally. (ie Chrome and Edge)
       </div>
       <div className="Lobby__link">
         <div className="Lobby__link-box">{window.location.href}</div>
