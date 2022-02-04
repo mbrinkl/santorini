@@ -17,10 +17,10 @@ const server = Server({
   ],
 });
 
+server.app.use(sslify({ resolver }));
 server.app.use(serve(root));
 
 server.run(PORT, () => {
-  server.app.use(sslify({ resolver }));
   server.app.use(
     (ctx, next) => serve(root)(
       { ...ctx, path: 'index.html' },
