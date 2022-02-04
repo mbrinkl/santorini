@@ -1,12 +1,14 @@
 import path from 'path';
 import serve from 'koa-static';
+import sslify, { xForwardedProtoResolver as resolver } from 'koa-sslify';
+import { historyApiFallback } from 'koa2-connect-history-api-fallback';
 import { Server, Origins } from 'boardgame.io/server';
 import { DEFAULT_PORT, isProduction } from '../src/config';
 import { SantoriniGame } from '../src/game';
 
 const root = path.join(__dirname, '../build');
 const PORT = Number(process.env.PORT || DEFAULT_PORT);
-const serverURL = isProduction ? 'http://santorini.herokuapp.com/' : 'http://192.168.0.140:3000';
+const serverURL = isProduction ? 'https://santorini.herokuapp.com/' : 'http://192.168.0.140:3000';
 
 const server = Server({
   games: [SantoriniGame],
@@ -16,16 +18,18 @@ const server = Server({
   ],
 });
 
+if (isProduction) {
+  server.app.use(sslify({ resolver }));
+}
+server.app.use(
+  historyApiFallback({
+    index: 'index.html',
+    whiteList: ['/games', '/.well-known'],
+  }),
+);
 server.app.use(serve(root));
 
-server.run(PORT, () => {
-  server.app.use(
-    (ctx, next) => serve(root)(
-      { ...ctx, path: 'index.html' },
-      next,
-    ),
-  );
-});
+server.run(PORT);
 
 const day = 24 * 60 * 60 * 1000;
 async function deleteStaleGames() {
