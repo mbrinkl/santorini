@@ -1,15 +1,14 @@
+import { tryEndGame } from '../winConditions';
 import { GameContext } from '../../types/GameTypes';
 import { Character } from '../../types/CharacterTypes';
 import { Mortal } from './Mortal';
 
-function checkWinCondition({ G, playerID, events }: GameContext) {
-  const numCompleteTowers = G.spaces.filter((space) => (
+function checkWinCondition(context: GameContext, chronusPlayerID: string) {
+  const numCompleteTowers = context.G.spaces.filter((space) => (
     space.isDomed === true && space.height >= 3)).length;
 
   if (numCompleteTowers >= 5) {
-    events.endGame({
-      winner: playerID,
-    });
+    tryEndGame(context, chronusPlayerID);
   }
 }
 
@@ -18,10 +17,27 @@ export const Chronus: Character = {
   desc: 'Win Condition: You also win when there are at least five Complete Towers on the board.',
 
   onTurnBegin: (context, charState) => {
-    checkWinCondition(context);
+    checkWinCondition(context, context.playerID);
   },
 
   onTurnEnd: (context, charState) => {
-    checkWinCondition(context);
+    checkWinCondition(context, context.playerID);
+  },
+
+  build: (context, charState, pos) => {
+    Mortal.build(context, charState, pos);
+    checkWinCondition(context, context.playerID);
+  },
+
+  afterOpponentBuild: (context, charState, opponentCharacter, builtPos) => {
+    const { G, playerID } = context;
+    const chronusPlayerID = G.players[playerID].opponentID;
+    checkWinCondition(context, chronusPlayerID);
+  },
+
+  afterOpponentSpecial: (context, charState, opponentCharacter) => {
+    const { G, playerID } = context;
+    const chronusPlayerID = G.players[playerID].opponentID;
+    checkWinCondition(context, chronusPlayerID);
   },
 };

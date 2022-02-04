@@ -111,6 +111,7 @@ export const Mortal: Character = {
 
   validSpecial: (context, charState, fromPos) => new Set<number>(),
   special: (context, charState, pos) => {},
+  afterOpponentSpecial: () => {},
   getStageAfterSpecial: (context, charStates) => 'end',
 
   buttonPressed: ({ ctx }, charState) => (

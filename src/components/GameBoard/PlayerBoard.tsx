@@ -29,7 +29,7 @@ export const PlayerBoard: React.FC = () => {
 
   let outlineClass = 'PlayerBoard';
   if (ctx.gameover) {
-    outlineClass += (ctx.gameover === playerID) ? ' PlayerBoard--winner' : ' PlayerBoard--loser';
+    outlineClass += (ctx.gameover.winner === playerID) ? ' PlayerBoard--winner' : ' PlayerBoard--loser';
   } else {
     outlineClass += isActive ? ' PlayerBoard--active' : ' PlayerBoard--waiting';
   }

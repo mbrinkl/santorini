@@ -1,3 +1,4 @@
+import { tryEndGame } from '../winConditions';
 import { Character } from '../../types/CharacterTypes';
 import { Mortal } from './Mortal';
 import { Board } from '../space';
@@ -23,7 +24,7 @@ export const Bia: Character = {
   },
 
   move: (context, charState, pos) => {
-    const { G, playerID, events } = context;
+    const { G, playerID } = context;
     const { opponentID } = G.players[playerID];
     const opponentCharState = G.players[opponentID].charState;
     const posToKill = getNextPosition(charState.workers[charState.selectedWorkerNum].pos, pos);
@@ -47,9 +48,7 @@ export const Bia: Character = {
 
         // Check if no workers left and end game if none
         if (opponentCharState.workers.length === 0) {
-          events.endGame({
-            winner: playerID,
-          });
+          tryEndGame(context, playerID);
         } else {
           // Otherwise, iterate opponent workers and update worker numbers
           let workerNum = 0;

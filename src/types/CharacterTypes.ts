@@ -64,6 +64,11 @@ export interface CharacterFunctions {
 
   validSpecial: (context: GameContext, charState: CharacterState, fromPos: number) => Set<number>,
   special: (context: GameContext, charState: CharacterState, pos: number) => void,
+  afterOpponentSpecial: (
+    context: GameContext,
+    charState: CharacterState,
+    oppCharState: CharacterState,
+  ) => void,
   getStageAfterSpecial: (context: GameContext, charState: CharacterState) => GameStage,
 
   buttonPressed: (context: GameContext, charState: CharacterState) => GameStage,

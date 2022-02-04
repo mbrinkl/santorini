@@ -100,7 +100,7 @@ export const build: Move<GameState> = (context, pos: number) => {
   const opponentCharacter = getCharacter(opponentCharState);
 
   character.build(context, charState, pos);
-  opponentCharacter.afterOpponentMove(context, opponentCharState, charState, pos);
+  opponentCharacter.afterOpponentBuild(context, opponentCharState, charState, pos);
   const stage = character.getStageAfterBuild(context, charState);
   events.setStage(stage);
 
@@ -110,10 +110,13 @@ export const build: Move<GameState> = (context, pos: number) => {
 export const special: Move<GameState> = (context, pos: number) => {
   const { G, playerID, events } = context;
 
-  const { charState } = G.players[playerID];
+  const { charState, opponentID } = G.players[playerID];
+  const opponentCharState = G.players[opponentID].charState;
   const character = getCharacter(charState);
+  const opponentCharacter = getCharacter(opponentCharState);
 
   character.special(context, charState, pos);
+  opponentCharacter.afterOpponentSpecial(context, opponentCharState, charState);
   const stage = character.getStageAfterSpecial(context, charState);
   events.setStage(stage);
 

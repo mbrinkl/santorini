@@ -17,14 +17,19 @@ function getSpawnedMoves(
   const cloneContext = JSON.parse(JSON.stringify(context)) as GameContext;
   const { G, playerID } = cloneContext;
   G.isClone = true;
-  const { charState } = G.players[playerID];
+  const { charState, opponentID } = G.players[playerID];
+  const opponentCharState = G.players[opponentID].charState;
   const character = getCharacter(charState);
+  const opponentCharacter = getCharacter(opponentCharState);
 
   const possibleMoves: PossibleMove[] = [];
   const { type, pos, prevs } = fromPossibleMove;
   prevs.push({ type, pos });
 
   let stage: GameStage | undefined;
+  let movedFromPos = -1;
+  let win = false; // Not checking for a definite winning possibility, just an alternative to
+  // reaching the 'end' stage
 
   prevs.forEach((prevMove) => {
     switch (prevMove.type) {
@@ -34,17 +39,35 @@ function getSpawnedMoves(
         updateValids(cloneContext, stage);
         break;
       case 'move':
+        movedFromPos = charState.workers[charState.selectedWorkerNum].pos;
         character.move(cloneContext, charState, prevMove.pos);
+        opponentCharacter.afterOpponentMove(
+          cloneContext,
+          opponentCharState,
+          charState,
+          prevMove.pos,
+        );
         stage = character.getStageAfterMove(cloneContext, charState);
+        if (charState.workers[charState.selectedWorkerNum].pos === prevMove.pos) {
+          win = win
+            || character.checkWinByMove(cloneContext, charState, movedFromPos, prevMove.pos);
+        }
         updateValids(cloneContext, stage);
         break;
       case 'build':
         character.build(cloneContext, charState, prevMove.pos);
+        opponentCharacter.afterOpponentBuild(
+          cloneContext,
+          opponentCharState,
+          charState,
+          prevMove.pos,
+        );
         stage = character.getStageAfterBuild(cloneContext, charState);
         updateValids(cloneContext, stage);
         break;
       case 'special':
         character.special(cloneContext, charState, prevMove.pos);
+        opponentCharacter.afterOpponentSpecial(cloneContext, opponentCharState, charState);
         stage = character.getStageAfterSpecial(cloneContext, charState);
         updateValids(cloneContext, stage);
         break;
@@ -68,7 +91,7 @@ function getSpawnedMoves(
     possibleMoves.push({ type: 'buttonPress', pos: -1, prevs });
   }
 
-  if (stage === 'end') {
+  if (stage === 'end' || win) {
     possibleMoves.push({ type: 'end', pos: -1, prevs: [] });
   }
 

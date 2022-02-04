@@ -24,3 +24,15 @@ export function checkWinByMove(context: GameContext, posBefore: number, posAfter
     });
   }
 }
+
+/**
+ * Immediately end the game if possible
+ */
+export function tryEndGame(context: GameContext, winner: string) {
+  const { G, events } = context;
+  if (!G.isClone) {
+    events.endGame({
+      winner,
+    });
+  }
+}
