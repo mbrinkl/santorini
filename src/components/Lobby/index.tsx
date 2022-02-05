@@ -28,11 +28,11 @@ const GameClient = Client({
 
 export const GameLobbySetup = ({ startGame } : { startGame(): void }) : JSX.Element => {
   const { matchID } = useParams<{ matchID: string }>();
-  const nickname = useStoreState((s) => s.nickname);
   const [matchMetadata, setMatchMetadata] = useState<LobbyAPI.Match | null>(null);
-  const joinRoom = useStoreActions((s) => s.joinRoom);
-  const activeRoomPlayer = useStoreState((s) => s.activeRoomPlayer);
   const [tooltipVisible, setTooltipVisible] = useState(false);
+  const nickname = useStoreState((s) => s.nickname);
+  const activeRoomPlayer = useStoreState((s) => s.activeRoomPlayer);
+  const joinRoom = useStoreActions((s) => s.joinRoom);
   const os = getMobileOS();
 
   const gameRoomFull = matchMetadata?.players.filter((p) => !p.name).length === 0;
@@ -42,7 +42,9 @@ export const GameLobbySetup = ({ startGame } : { startGame(): void }) : JSX.Elem
     const intervalID = setInterval(() => {
       if (matchID) {
         getMatch(matchID).then((data) => {
-          if (data) setMatchMetadata(data);
+          if (data) {
+            setMatchMetadata(data);
+          }
         });
       }
     }, 500);
@@ -60,9 +62,7 @@ export const GameLobbySetup = ({ startGame } : { startGame(): void }) : JSX.Elem
   useEffect(() => {
     // find first empty seat ID
     const emptySeatID = matchMetadata?.players.find((p) => !p.name)?.id;
-    const alreadyJoined = matchMetadata?.players.find((p) => (
-      p.id.toString() === activeRoomPlayer?.playerID && p.name === nickname
-    ));
+    const alreadyJoined = activeRoomPlayer && activeRoomPlayer.matchID === matchID;
 
     if (!alreadyJoined && emptySeatID !== undefined && nickname && matchID) {
       joinRoom({ playerID: emptySeatID.toString(), playerName: nickname, matchID });
@@ -124,7 +124,13 @@ export const GameLobbySetup = ({ startGame } : { startGame(): void }) : JSX.Elem
               key={player.id}
               className="Lobby__player Lobby__player--active"
             >
-              {`${player.name} ${player.name === nickname ? '(You)' : ''}`}
+              {`${player.name} ${
+                activeRoomPlayer
+                && activeRoomPlayer.matchID === matchID
+                && activeRoomPlayer.playerID === player.id.toString()
+                  ? '(You)'
+                  : ''
+              }`}
             </div>
           ) : (
             <div

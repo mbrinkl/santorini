@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { animalList } from '../../utility';
 import { LobbyPage } from '../LobbyPage';
 import { Logo } from '../Logo';
 import { Button } from '../Button';
@@ -12,9 +13,13 @@ import style from './style.module.scss';
 export const Home = () : JSX.Element => {
   const navigate = useNavigate();
   const [showHostOptions, setShowHostOptions] = useState(false);
-  const activeRoomPlayer = useStoreState((s) => s.activeRoomPlayer);
-  const leaveRoom = useStoreActions((s) => s.leaveRoom);
   const [prevGameActive, setPrevGameActive] = useState(false);
+  const nickname = useStoreState((s) => s.nickname);
+  const setNickname = useStoreActions((s) => s.setNickname);
+  const activeRoomPlayer = useStoreState((s) => s.activeRoomPlayer);
+  const setActiveRoomPlayer = useStoreActions((s) => s.setActiveRoomPlayer);
+  const joinRoom = useStoreActions((s) => s.joinRoom);
+  const leaveRoom = useStoreActions((s) => s.leaveRoom);
 
   async function createGame(unlisted: boolean) {
     if (activeRoomPlayer) {
@@ -26,6 +31,15 @@ export const Home = () : JSX.Element => {
     }
 
     const matchID = await createMatch(2, unlisted);
+
+    if (!nickname) {
+      const randomNickname = animalList[Math.floor(Math.random() * animalList.length)];
+      setNickname(randomNickname);
+      joinRoom({ matchID, playerID: '0', playerName: randomNickname });
+    } else {
+      joinRoom({ matchID, playerID: '0', playerName: nickname });
+    }
+
     navigate(`/rooms/${matchID}`);
   }
 
@@ -66,16 +80,17 @@ export const Home = () : JSX.Element => {
 
   useEffect(() => {
     async function isPrevGameActive() : Promise<void> {
-      if (activeRoomPlayer?.matchID) {
-        const matchData = await getMatch(activeRoomPlayer?.matchID);
+      if (activeRoomPlayer) {
+        const matchData = await getMatch(activeRoomPlayer.matchID);
         if (matchData && !matchData.gameover) {
           setPrevGameActive(true);
+        } else {
+          setActiveRoomPlayer(null);
         }
       }
     }
-
     isPrevGameActive();
-  }, [activeRoomPlayer]);
+  }, [activeRoomPlayer, setActiveRoomPlayer]);
 
   return (
     <LobbyPage>
