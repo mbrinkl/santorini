@@ -56,6 +56,7 @@ export const SetupNickname = ({ onSubmit } : { onSubmit?: () => void }) : JSX.El
           onChange={(e) => setNickname(e.target.value)}
           value={nickname}
           maxLength={8}
+          autoFocus
         />
 
         <Tippy

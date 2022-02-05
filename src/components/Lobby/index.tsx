@@ -52,6 +52,25 @@ export const GameLobbySetup = ({ startGame } : { startGame(): void }) : JSX.Elem
     return () => clearInterval(intervalID);
   }, [matchID]);
 
+  useEffect(() => {
+    function pollMatch() {
+      if (matchID) {
+        getMatch(matchID).then((m) => {
+          if (m) {
+            setMatchMetadata(m);
+          }
+        });
+      }
+    }
+
+    pollMatch();
+    const intervalID = setInterval(() => {
+      pollMatch();
+    }, 500);
+
+    return () => clearInterval(intervalID);
+  }, [matchID]);
+
   // if game room is full, start the game
   useEffect(() => {
     if (gameRoomFull) {

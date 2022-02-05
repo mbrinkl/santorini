@@ -5,6 +5,7 @@ import {
   Routes,
   useNavigate,
 } from 'react-router-dom';
+import { CreatePage } from './components/CreatePage';
 import { JoinPage } from './components/JoinPage';
 import { GameLobby } from './components/Lobby';
 import { SetupNickname } from './components/SetupNickname';
@@ -29,6 +30,7 @@ const App = () => {
     <div className="App">
       <Routes>
         <Route path="/" element={<Home />} />
+        <Route path="/create" element={<CreatePage />} />
         <Route path="/rooms" element={<JoinPage />} />
         <Route path="/rooms/:matchID" element={nickname ? <GameLobby /> : <SetupNickname />} />
         <Route path="/nickname" element={<SetupNickname onSubmit={() => navigate('/')} />} />
