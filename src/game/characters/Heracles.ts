@@ -15,14 +15,9 @@ export const Heracles: Character<HeraclesAttrs> = {
   },
 
   buttonPressed: ({ ctx }, charState: CharacterState<HeraclesAttrs>) => {
-    const stage = ctx.activePlayers && ctx.activePlayers[ctx.currentPlayer];
-    if (!stage) {
-      return 'end';
-    }
-
-    if (stage === 'build') {
-      charState.buttonText = 'Build Nothing';
+    if (!charState.attrs.specialUsed) {
       charState.attrs.specialUsed = true;
+      charState.buttonText = 'Build Nothing';
       return 'special';
     }
 
