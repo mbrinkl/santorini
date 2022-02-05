@@ -14,7 +14,7 @@ export const Heracles: Character<HeraclesAttrs> = {
     specialUsed: false,
   },
 
-  buttonPressed: ({ ctx }, charState: CharacterState<HeraclesAttrs>) => {
+  buttonPressed: (context, charState: CharacterState<HeraclesAttrs>) => {
     if (!charState.attrs.specialUsed) {
       charState.attrs.specialUsed = true;
       charState.buttonText = 'Build Nothing';
