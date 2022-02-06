@@ -22,8 +22,12 @@ export const Scene = ({ boardPositions } : {
   const onMeshClicked = useCallback((e: ThreeEvent<PointerEvent>) => {
     e.stopPropagation();
 
+    if (!isActive) {
+      return;
+    }
+
     const { phase } = ctx;
-    const stage = (ctx.activePlayers && ctx.activePlayers[ctx.currentPlayer]) || null;
+    const stage = ctx.activePlayers?.[ctx.currentPlayer];
     const { pos } = e.object.userData;
 
     if (G.valids.includes(pos)) {
