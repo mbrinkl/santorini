@@ -39,20 +39,6 @@ export const GameLobbySetup = ({ startGame } : { startGame(): void }) : JSX.Elem
 
   // poll api to load match data
   useEffect(() => {
-    const intervalID = setInterval(() => {
-      if (matchID) {
-        getMatch(matchID).then((data) => {
-          if (data) {
-            setMatchMetadata(data);
-          }
-        });
-      }
-    }, 500);
-
-    return () => clearInterval(intervalID);
-  }, [matchID]);
-
-  useEffect(() => {
     function pollMatch() {
       if (matchID) {
         getMatch(matchID).then((m) => {
