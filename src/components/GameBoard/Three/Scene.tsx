@@ -52,7 +52,7 @@ export const Scene = ({ boardPositions } : {
         }
       }
     }
-  }, [G, ctx, moves]);
+  }, [G, ctx, moves, isActive]);
 
   return (
     <>

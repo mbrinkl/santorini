@@ -35,7 +35,7 @@ export function initCharacter(characterName: string): CharacterState {
   };
 }
 
-function initRandomCharacters(G: GameState) {
+function initRandomCharacters({ G, random }: GameContext) {
   // Remove 'Random'
   const listOnlyCharacters = characterList.slice(1);
 
@@ -47,8 +47,7 @@ function initRandomCharacters(G: GameState) {
       const possibleChars = listOnlyCharacters.filter((name) => (
         name !== opponentCharName && !bannedChars.includes(name)
       ));
-      const randomCharName = (possibleChars[Math.floor(Math.random() * (possibleChars.length))]
-      );
+      const randomCharName = random.Shuffle(possibleChars)[0];
       player.charState = initCharacter(randomCharName);
     }
   });
@@ -114,8 +113,9 @@ export const SantoriniGame: Game<GameState> = {
         ready,
         cancelReady,
       },
-      onEnd: ({ G }) => {
-        initRandomCharacters(G);
+      onEnd: (context) => {
+        const contextWithPlayerID = getContextWithPlayerID(context);
+        initRandomCharacters(contextWithPlayerID);
       },
     },
 
