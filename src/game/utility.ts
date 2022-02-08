@@ -3,7 +3,7 @@
 
    0   1   2   3   4 | 0,0  1,0  2,0  3,0  4,0
    5   6   7   8   9 | 0,1  1,1  2,1  3,1  4,1
-  10  11  12  13  14 | 0,2  2,2  2,2  3,2  4,2
+  10  11  12  13  14 | 0,2  1,2  2,2  3,2  4,2
   15  16  17  18  19 | 0,3  1,3  2,3  3,3  4,3
   20  21  22  23  24 | 0,4  1,4  2,4  3,4  4,4
 */
@@ -31,11 +31,19 @@ export function posToCoord(pos: number): number[] {
 export function getNextPosition(fromPos: number, toPos: number): number {
   let nextPos = -1;
 
+  if (!getWrappedAdjacents(fromPos).includes(toPos)) {
+    return nextPos;
+  }
+
   const [fromX, fromY]: number[] = posToCoord(fromPos);
   const [toX, toY]: number[] = posToCoord(toPos);
 
-  const dirX = fromX - toX;
-  const dirY = fromY - toY;
+  let dirX = fromX - toX;
+  let dirY = fromY - toY;
+
+  // Account for board wrapping moves
+  if (dirX === 4) dirX = -1; else if (dirX === -4) dirX = 1;
+  if (dirY === 4) dirY = -1; else if (dirY === -4) dirY = 1;
 
   const nextPosX = toX - dirX;
   const nextPosY = toY - dirY;
