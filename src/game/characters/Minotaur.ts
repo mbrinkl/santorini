@@ -2,7 +2,7 @@ import { GameContext } from '../../types/GameTypes';
 import { getAdjacentPositions, getNextPosition } from '../utility';
 import { Character } from '../../types/CharacterTypes';
 import { Mortal } from './Mortal';
-import { Board } from '../space';
+import { Board } from '../boardUtil';
 
 export const Minotaur: Character = {
 
@@ -20,7 +20,7 @@ export const Minotaur: Character = {
 
     adjacents.forEach((pos) => {
       if (
-        !G.spaces[pos].isDomed
+        !G.spaces[pos].isDomed && !Board.tokenObstructing(G, playerID, pos)
         && G.spaces[pos].height - G.spaces[originalPos].height <= charState.moveUpHeight
       ) {
         if (!G.spaces[pos].inhabitant) {
@@ -39,15 +39,16 @@ export const Minotaur: Character = {
     return valids;
   },
 
-  move: ({ G, playerID }, charState, pos) => {
+  move: (context, charState, pos) => {
+    const { G, playerID } = context;
     const posToPush = getNextPosition(charState.workers[charState.selectedWorkerNum].pos, pos);
     const { inhabitant } = G.spaces[pos];
 
     if (inhabitant) {
-      Board.place(G, posToPush, inhabitant.playerID, inhabitant.workerNum);
+      Board.place(context, posToPush, inhabitant.playerID, inhabitant.workerNum);
     }
 
-    Board.free(G, charState.workers[charState.selectedWorkerNum].pos);
-    Board.place(G, pos, playerID, charState.selectedWorkerNum);
+    Board.free(context, charState.workers[charState.selectedWorkerNum].pos);
+    Board.place(context, pos, playerID, charState.selectedWorkerNum);
   },
 };

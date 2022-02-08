@@ -1,6 +1,6 @@
 import { Mortal } from './Mortal';
 import { Character } from '../../types/CharacterTypes';
-import { Board } from '../space';
+import { Board } from '../boardUtil';
 import { getNextPosition } from '../utility';
 
 export const Harpies: Character = {
@@ -8,7 +8,8 @@ export const Harpies: Character = {
   desc: `Opponent’s Turn: Each time an opponent’s Worker moves, it is forced space by space in the same
     direction until the next space is at a higher level or it is obstructed.`,
 
-  afterOpponentMove: ({ G, playerID }, charState, oppCharState, fromPos) => {
+  afterOpponentMove: (context, charState, oppCharState, fromPos) => {
+    const { G, playerID } = context;
     const worker = oppCharState.workers[oppCharState.selectedWorkerNum];
 
     let newPos = oppCharState.workers[oppCharState.selectedWorkerNum].pos;
@@ -17,11 +18,10 @@ export const Harpies: Character = {
     while (
       toPos !== -1
       && G.spaces[toPos].height <= worker.height
-      && !G.spaces[toPos].inhabitant
-      && !G.spaces[toPos].isDomed
+      && !Board.isObstructed(G, playerID, toPos)
     ) {
-      Board.free(G, worker.pos);
-      Board.place(G, toPos, playerID, oppCharState.selectedWorkerNum);
+      Board.free(context, worker.pos);
+      Board.place(context, toPos, playerID, oppCharState.selectedWorkerNum);
 
       fromPos = newPos;
       newPos = toPos;

@@ -1,13 +1,12 @@
 import { GameStage } from '../../types/GameTypes';
-import { Character } from '../../types/CharacterTypes';
+import { Character, Worker } from '../../types/CharacterTypes';
 import { getAdjacentPositions } from '../utility';
-import { Board } from '../space';
+import { Board } from '../boardUtil';
 
 export const Mortal: Character = {
 
   workers: [],
   desc: 'No ability',
-  firstTurnRequired: false,
   buttonText: 'No ability',
   buttonActive: false,
   numWorkersToPlace: 2,
@@ -22,16 +21,29 @@ export const Mortal: Character = {
 
   onTurnEnd: (context, charState) => {},
 
-  validPlace: ({ G }, charState) => {
+  validPlace: ({ G, playerID }, charState) => {
     const valids = new Set<number>();
 
     G.spaces.forEach((space) => {
-      if (!space.inhabitant && charState.numWorkersToPlace > 0) {
+      if (!Board.isObstructed(G, playerID, space.pos) && charState.numWorkersToPlace > 0) {
         valids.add(space.pos);
       }
     });
 
     return valids;
+  },
+  place: (context, charState, pos) => {
+    const { G, playerID } = context;
+
+    const worker: Worker = {
+      pos,
+      height: G.spaces[pos].height,
+    };
+
+    charState.workers.push(worker);
+    Board.place(context, pos, playerID, charState.workers.length - 1);
+
+    charState.numWorkersToPlace -= 1;
   },
 
   validSelect: (context, charState) => {
@@ -60,13 +72,12 @@ export const Mortal: Character = {
     return 'move';
   },
 
-  validMove: ({ G }, charState, fromPos) => {
+  validMove: ({ G, playerID }, charState, fromPos) => {
     const valids = new Set<number>();
 
     getAdjacentPositions(fromPos).forEach((pos) => {
       if (
-        !G.spaces[pos].inhabitant
-        && !G.spaces[pos].isDomed
+        !Board.isObstructed(G, playerID, pos)
         && G.spaces[pos].height - G.spaces[fromPos].height <= charState.moveUpHeight
       ) {
         valids.add(pos);
@@ -78,20 +89,20 @@ export const Mortal: Character = {
 
   restrictOpponentMove: ({ G }, charState, oppCharState, fromPos) => new Set(G.valids),
 
-  move: ({ G, playerID }, charState, pos) => {
-    Board.free(G, charState.workers[charState.selectedWorkerNum].pos);
-    Board.place(G, pos, playerID, charState.selectedWorkerNum);
+  move: (context, charState, pos) => {
+    Board.free(context, charState.workers[charState.selectedWorkerNum].pos);
+    Board.place(context, pos, context.playerID, charState.selectedWorkerNum);
   },
 
   afterOpponentMove: (context, charState, oppCharState, pos) => {},
 
   getStageAfterMove: (context, charState) => 'build',
 
-  validBuild: ({ G }, charState, fromPos) => {
+  validBuild: ({ G, playerID }, charState, fromPos) => {
     const valids = new Set<number>();
 
     getAdjacentPositions(fromPos).forEach((pos) => {
-      if (!G.spaces[pos].inhabitant && !G.spaces[pos].isDomed) {
+      if (!Board.isObstructed(G, playerID, pos)) {
         valids.add(pos);
       }
     });
@@ -117,6 +128,8 @@ export const Mortal: Character = {
   buttonPressed: ({ ctx }, charState) => (
     (ctx.activePlayers && ctx.activePlayers[ctx.currentPlayer]) as GameStage
   ),
+
+  tokenEffects: (context, charState, pos) => {},
 
   restrictOpponentWin: (context, charState, posBefore, posAfter) => false,
 

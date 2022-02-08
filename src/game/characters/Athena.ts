@@ -1,6 +1,6 @@
 import { Character, CharacterState } from '../../types/CharacterTypes';
 import { Mortal } from './Mortal';
-import { Board } from '../space';
+import { Board } from '../boardUtil';
 
 interface AthenaAttrs {
   movedUp: boolean,
@@ -18,11 +18,12 @@ export const Athena: Character<AthenaAttrs> = {
     charState.attrs.movedUp = false;
   },
 
-  move: ({ G, playerID }, charState: CharacterState<AthenaAttrs>, pos) => {
+  move: (context, charState: CharacterState<AthenaAttrs>, pos) => {
+    const { playerID } = context;
     const heightBefore = charState.workers[charState.selectedWorkerNum].height;
 
-    Board.free(G, charState.workers[charState.selectedWorkerNum].pos);
-    Board.place(G, pos, playerID, charState.selectedWorkerNum);
+    Board.free(context, charState.workers[charState.selectedWorkerNum].pos);
+    Board.place(context, pos, playerID, charState.selectedWorkerNum);
 
     if (heightBefore < charState.workers[charState.selectedWorkerNum].height) {
       charState.attrs.movedUp = true;

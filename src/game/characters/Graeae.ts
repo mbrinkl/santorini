@@ -1,6 +1,7 @@
 import { Character } from '../../types/CharacterTypes';
 import { Mortal } from './Mortal';
 import { getAdjacentPositions } from '../utility';
+import { Board } from '../boardUtil';
 
 export const Graeae: Character = {
   ...Mortal,
@@ -8,7 +9,7 @@ export const Graeae: Character = {
     Your Build: Build with a Worker that did not Move.`,
   numWorkersToPlace: 3,
 
-  validBuild: ({ G }, charState, fromPos) => {
+  validBuild: ({ G, playerID }, charState, fromPos) => {
     let adjacents: number[] = [];
     const valids = new Set<number>();
 
@@ -20,7 +21,7 @@ export const Graeae: Character = {
     }
 
     adjacents.forEach((pos) => {
-      if (!G.spaces[pos].inhabitant && !G.spaces[pos].isDomed) {
+      if (!Board.isObstructed(G, playerID, pos)) {
         valids.add(pos);
       }
     });

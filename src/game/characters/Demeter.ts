@@ -1,6 +1,6 @@
 import { Character, CharacterState } from '../../types/CharacterTypes';
 import { Mortal } from './Mortal';
-import { Board } from '../space';
+import { Board } from '../boardUtil';
 
 interface DemeterAttrs {
   firstBuildPos: number,

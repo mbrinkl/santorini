@@ -1,7 +1,7 @@
 import { tryEndGame } from '../winConditions';
 import { Character } from '../../types/CharacterTypes';
 import { Mortal } from './Mortal';
-import { Board } from '../space';
+import { Board } from '../boardUtil';
 import { getNextPosition, getPerimeterPositions } from '../utility';
 
 export const Bia: Character = {
@@ -9,7 +9,7 @@ export const Bia: Character = {
   desc: `Setup: Place your Workers first. Your Workers must be placed in perimeter spaces.
     Your Move: If your Worker moves into a space and the next space in the same direction is 
     occupied by an opponent Worker, the opponent’s Worker is removed from the game.`,
-  firstTurnRequired: true,
+  turnOrder: 0,
 
   validPlace: ({ G }, charState) => {
     const valids = new Set<number>();
@@ -38,7 +38,7 @@ export const Bia: Character = {
 
       if (worker) {
         // Free the space
-        Board.free(G, posToKill);
+        Board.free(context, posToKill);
 
         // Remove the worker from opponent character's state
         const index = opponentCharState.workers.indexOf(worker);

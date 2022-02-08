@@ -1,7 +1,7 @@
 import { Mortal } from './Mortal';
 import { getAdjacentPositions } from '../utility';
 import { Character } from '../../types/CharacterTypes';
-import { Board } from '../space';
+import { Board } from '../boardUtil';
 
 export const Apollo: Character = {
   ...Mortal,
@@ -13,7 +13,7 @@ export const Apollo: Character = {
 
     getAdjacentPositions(fromPos).forEach((pos) => {
       if (
-        !G.spaces[pos].isDomed
+        !G.spaces[pos].isDomed && !Board.tokenObstructing(G, playerID, pos)
         && G.spaces[pos].height - G.spaces[fromPos].height <= charState.moveUpHeight
       ) {
         if (!G.spaces[pos].inhabitant) {
@@ -27,17 +27,18 @@ export const Apollo: Character = {
     return valids;
   },
 
-  move: ({ G, playerID }, charState, pos) => {
+  move: (context, charState, pos) => {
+    const { G, playerID } = context;
     const originalPos = charState.workers[charState.selectedWorkerNum].pos;
     const { inhabitant } = G.spaces[pos];
 
     // if switching spaces with another worker
     if (inhabitant) {
-      Board.place(G, originalPos, inhabitant.playerID, inhabitant.workerNum);
+      Board.place(context, originalPos, inhabitant.playerID, inhabitant.workerNum);
     } else {
-      Board.free(G, originalPos);
+      Board.free(context, originalPos);
     }
 
-    Board.place(G, pos, playerID, charState.selectedWorkerNum);
+    Board.place(context, pos, playerID, charState.selectedWorkerNum);
   },
 };

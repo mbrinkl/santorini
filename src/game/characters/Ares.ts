@@ -1,3 +1,4 @@
+import { Board } from '../boardUtil';
 import { getAdjacentPositions } from '../utility';
 import { Mortal } from './Mortal';
 import { Character } from '../../types/CharacterTypes';
@@ -22,7 +23,7 @@ export const Ares: Character = {
     return 'end';
   },
 
-  validSpecial: ({ G }, charState, fromPos) => {
+  validSpecial: ({ G, playerID }, charState, fromPos) => {
     const valids = new Set<number>();
 
     if (charState.workers.length < 2) {
@@ -30,7 +31,7 @@ export const Ares: Character = {
     }
     fromPos = charState.workers[(charState.selectedWorkerNum + 1) % 2].pos;
     getAdjacentPositions(fromPos).forEach((pos) => {
-      if (!G.spaces[pos].inhabitant && !G.spaces[pos].isDomed && G.spaces[pos].height > 0) {
+      if (!Board.isObstructed(G, playerID, pos) && G.spaces[pos].height > 0) {
         valids.add(pos);
       }
     });

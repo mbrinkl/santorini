@@ -1,3 +1,4 @@
+import { Board } from '../boardUtil';
 import { Character } from '../../types/CharacterTypes';
 import { Mortal } from './Mortal';
 import { getAdjacentPositions, getNextPosition } from '../utility';
@@ -13,7 +14,7 @@ export const Iris: Character = {
     getAdjacentPositions(fromPos).forEach((pos) => {
       // If the space is in valid range and height and not domed
       if (
-        !G.spaces[pos].isDomed
+        !G.spaces[pos].isDomed && !Board.tokenObstructing(G, playerID, pos)
         && G.spaces[pos].height - G.spaces[fromPos].height <= charState.moveUpHeight
       ) {
         // If the space is not inhabited

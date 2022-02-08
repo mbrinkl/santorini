@@ -1,5 +1,5 @@
 import { getAdjacentPositions, getNextPosition } from '../utility';
-import { Board } from '../space';
+import { Board } from '../boardUtil';
 import { Mortal } from './Mortal';
 import { Character, CharacterState } from '../../types/CharacterTypes';
 
@@ -39,8 +39,7 @@ export const Charon: Character = {
       if (
         G.spaces[pos].inhabitant?.playerID === opponentID
         && oppositeAdjacentPos !== -1
-        && !G.spaces[oppositeAdjacentPos].isDomed
-        && !G.spaces[oppositeAdjacentPos].inhabitant
+        && !Board.isObstructed(G, opponentID, oppositeAdjacentPos)
       ) {
         valids.add(pos);
       }
@@ -49,13 +48,14 @@ export const Charon: Character = {
     return valids;
   },
 
-  special: ({ G }, charState, pos) => {
+  special: (context, charState, pos) => {
+    const { G } = context;
     const workerPos = charState.workers[charState.selectedWorkerNum].pos;
     const { inhabitant } = G.spaces[pos];
     const oppositeAdjacentPos = getNextPosition(pos, workerPos);
     if (inhabitant) {
-      Board.free(G, pos);
-      Board.place(G, oppositeAdjacentPos, inhabitant.playerID, inhabitant.workerNum);
+      Board.free(context, pos);
+      Board.place(context, oppositeAdjacentPos, inhabitant.playerID, inhabitant.workerNum);
     }
   },
 

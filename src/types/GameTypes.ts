@@ -31,4 +31,12 @@ export interface Space {
     workerNum: number;
   };
   isDomed: boolean;
+  tokens: Token[];
+}
+
+export interface Token {
+  playerID: string,
+  obstructing: 'none' | 'all' | 'opponent',
+  secret: boolean,
+  removable: boolean,
 }

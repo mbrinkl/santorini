@@ -2,8 +2,6 @@ import { Move } from 'boardgame.io';
 import { initCharacter } from '.';
 import { GameState } from '../types/GameTypes';
 import { getCharacter } from './characters';
-import { Worker } from '../types/CharacterTypes';
-import { Board } from './space';
 import { checkWinByMove } from './winConditions';
 import { updateValids } from './validity';
 
@@ -36,16 +34,9 @@ export const onButtonPressed: Move<GameState> = (context) => {
 export const place: Move<GameState> = (context, pos: number) => {
   const { G, playerID, events } = context;
   const { charState } = G.players[playerID];
+  const character = getCharacter(charState);
 
-  const worker: Worker = {
-    pos,
-    height: G.spaces[pos].height,
-  };
-
-  charState.workers.push(worker);
-  Board.place(G, pos, playerID, charState.workers.length - 1);
-
-  charState.numWorkersToPlace -= 1;
+  character.place(context, charState, pos);
 
   if (charState.numWorkersToPlace === 0) {
     events.setStage('end');

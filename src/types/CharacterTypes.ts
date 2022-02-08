@@ -8,7 +8,7 @@ export interface Worker {
 export interface CharacterState<AttrsType = any> {
   name: string;
   desc: string;
-  firstTurnRequired: boolean;
+  turnOrder?: 0 | 1;
   workers: Worker[];
   numWorkersToPlace: number;
   selectedWorkerNum: number;
@@ -25,6 +25,7 @@ export interface CharacterFunctions {
   onTurnEnd: (context: GameContext, charState: CharacterState) => void,
 
   validPlace: (context: GameContext, charState: CharacterState) => Set<number>,
+  place: (context: GameContext, charState: CharacterState, pos: number) => void,
 
   validSelect: (context: GameContext, charState: CharacterState) => Set<number>,
   select: (context: GameContext, charState: CharacterState, pos: number) => void,
@@ -72,6 +73,8 @@ export interface CharacterFunctions {
   getStageAfterSpecial: (context: GameContext, charState: CharacterState) => GameStage,
 
   buttonPressed: (context: GameContext, charState: CharacterState) => GameStage,
+
+  tokenEffects: (context: GameContext, charState: CharacterState, pos: number) => void;
 
   restrictOpponentWin: (
     context: GameContext,

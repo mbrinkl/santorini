@@ -16,14 +16,14 @@ import { canReachEndStage, updateValids } from './validity';
 export function initCharacter(characterName: string): CharacterState {
   // Get state properties without character functions
   const {
-    desc, firstTurnRequired, buttonActive, buttonText, moveUpHeight, workers,
+    desc, turnOrder, buttonActive, buttonText, moveUpHeight, workers,
     numWorkersToPlace, selectedWorkerNum, powerBlocked, attrs,
   } = getCharacterByName(characterName);
 
   return {
     name: characterName,
     desc,
-    firstTurnRequired,
+    turnOrder,
     buttonActive,
     buttonText,
     moveUpHeight,
@@ -54,7 +54,11 @@ function initRandomCharacters({ G, random }: GameContext) {
 }
 
 function getFirstPlayer(G: GameState): number {
-  return (G.players['1'].charState.firstTurnRequired ? 1 : 0);
+  if (G.players['0'].charState.turnOrder === 1 || G.players['1'].charState.turnOrder === 0) {
+    return 1;
+  }
+
+  return 0;
 }
 
 // Uses ctx.currentPlayer as the game context's playerID
@@ -62,6 +66,20 @@ function getContextWithPlayerID(context: Omit<GameContext, 'playerID'>): GameCon
   const { ctx } = context;
   const playerID = ctx.currentPlayer;
   return { ...context, playerID };
+}
+
+function stripSecrets(G: GameState, playerID: string | null) : GameState {
+  const strippedState = JSON.parse(JSON.stringify(G)) as GameState;
+  strippedState.spaces.map((space) => {
+    const { tokens } = space;
+    for (let i = tokens.length - 1; i >= 0; i--) {
+      if (tokens[i].secret && tokens[i].playerID !== playerID) {
+        tokens.splice(i, 1);
+      }
+    }
+    return space;
+  });
+  return { ...strippedState, isClone: true };
 }
 
 export const SantoriniGame: Game<GameState> = {
@@ -87,6 +105,7 @@ export const SantoriniGame: Game<GameState> = {
         height: 0,
         inhabitant: undefined,
         isDomed: false,
+        tokens: [],
       });
     }
 
@@ -99,6 +118,8 @@ export const SantoriniGame: Game<GameState> = {
 
     return initialState;
   },
+
+  playerView: ({ G, playerID }) => stripSecrets(G, playerID),
 
   phases: {
     selectCharacters: {

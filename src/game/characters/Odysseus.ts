@@ -1,4 +1,4 @@
-import { Board } from '../space';
+import { Board } from '../boardUtil';
 import { getCornerPositions, positionsAreAdjacent } from '../utility';
 import { Character, CharacterState } from '../../types/CharacterTypes';
 import { Mortal } from './Mortal';
@@ -9,11 +9,15 @@ interface OdysseusAttrs {
   workerToMovePos: number
 }
 
-function getOpenCorners({ G }: GameContext, charState: CharacterState<OdysseusAttrs>): Set<number> {
+function getOpenCorners(
+  { G, playerID }: GameContext,
+  charState: CharacterState<OdysseusAttrs>,
+): Set<number> {
+  const { opponentID } = G.players[playerID];
   const openCorners = new Set<number>();
 
   getCornerPositions().forEach((corner) => {
-    if (!G.spaces[corner].isDomed && !G.spaces[corner].inhabitant) {
+    if (!Board.isObstructed(G, opponentID, corner)) {
       openCorners.add(corner);
     }
   });
@@ -82,15 +86,16 @@ export const Odysseus: Character<OdysseusAttrs> = {
     return valids;
   },
 
-  special: ({ G, playerID }, charState: CharacterState<OdysseusAttrs>, pos) => {
+  special: (context, charState: CharacterState<OdysseusAttrs>, pos) => {
+    const { G, playerID } = context;
     if (charState.attrs.workerToMovePos === -1) {
       charState.attrs.workerToMovePos = pos;
       charState.buttonActive = false;
     } else {
       const { inhabitant } = G.spaces[charState.attrs.workerToMovePos];
       if (inhabitant) {
-        Board.free(G, charState.attrs.workerToMovePos);
-        Board.place(G, pos, G.players[playerID].opponentID, inhabitant.workerNum);
+        Board.free(context, charState.attrs.workerToMovePos);
+        Board.place(context, pos, G.players[playerID].opponentID, inhabitant.workerNum);
       }
       charState.attrs.workerToMovePos = -1;
       charState.buttonActive = true;

@@ -28,6 +28,8 @@ import { Ares } from './Ares';
 import { Hades } from './Hades';
 import { Maenads } from './Maenads';
 import { Asteria } from './Asteria';
+import { Tartarus } from './Tartarus';
+import { Clio } from './Clio';
 
 export const characterList: string[] = [
   'Random',
@@ -70,7 +72,7 @@ export const characterList: string[] = [
   // Golden Fleece Gods
   // "Aeuolus",
   // "Charybdis",
-  // "Clio",
+  'Clio',
   // "Europa & Talus",
   // "Gaea",
   'Graeae',
@@ -80,7 +82,7 @@ export const characterList: string[] = [
   // "Moerae",
   // "Nemesis",
   // "Siren",
-  // "Tartarus",
+  'Tartarus',
   // "Terpsichore",
   'Urania',
 
@@ -118,6 +120,11 @@ export const banList: [string, string][] = [
   ['Urania', 'Aphrodite'],
   ['Hades', 'Pan'],
   ['Asteria', 'Hades'],
+  ['Clio', 'Circe'],
+  ['Clio', 'Nemesis'],
+  ['Tartarus', 'Bia'],
+  ['Tartarus', 'Hecate'],
+  ['Tartarus', 'Moerae'],
 ];
 
 // Returns the character list sorted alphabetically, with 'random'
@@ -167,6 +174,8 @@ export function getCharacterByName(name: string): Character {
     case 'Asteria': character = Asteria; break;
     case 'Maenads': character = Maenads; break;
     case 'Hades': character = Hades; break;
+    case 'Clio': character = Clio; break;
+    case 'Tartarus': character = Tartarus; break;
     default: character = Mortal; break;
   }
 

@@ -11,6 +11,7 @@ import { Indicator } from './Indicators';
 import { WorkerModel } from './WorkerModel';
 import { BoardPosition } from '../../../types/BoardTypes';
 import { TextCoords } from './TextCoords';
+import { GenericToken } from './Tokens';
 
 export const Scene = ({ boardPositions } : {
   boardPositions: BoardPosition[]
@@ -81,6 +82,8 @@ export const Scene = ({ boardPositions } : {
               && <BuildingTop key={`buildingTop${space.pos}`} boardPos={boardPositions[space.pos]} />}
             {space.isDomed
               && <Dome key={`dome${space.pos}`} boardPos={boardPositions[space.pos]} height={space.height} />}
+            {space.tokens.length > 0 // TODO: individual tokens
+              && <GenericToken key={`token${space.pos}`} boardPos={boardPositions[space.pos]} height={space.height} />}
           </>
         ))}
 

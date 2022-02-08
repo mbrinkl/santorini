@@ -1,3 +1,4 @@
+import { Board } from '../boardUtil';
 import { Mortal } from './Mortal';
 import { Character, CharacterState } from '../../types/CharacterTypes';
 
@@ -41,10 +42,10 @@ export const Asteria: Character<AsteriaAttrs> = {
     return 'end';
   },
 
-  validSpecial: ({ G }, charState: CharacterState<AsteriaAttrs>, fromPos) => {
+  validSpecial: ({ G, playerID }, charState: CharacterState<AsteriaAttrs>, fromPos) => {
     const valids = new Set<number>();
     G.spaces.forEach((space) => {
-      if (!space.inhabitant && !space.isDomed) {
+      if (!Board.isObstructed(G, playerID, space.pos)) {
         valids.add(space.pos);
       }
     });

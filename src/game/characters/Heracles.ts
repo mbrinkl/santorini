@@ -1,6 +1,7 @@
 import { getAdjacentPositions } from '../utility';
 import { Character, CharacterState } from '../../types/CharacterTypes';
 import { Mortal } from './Mortal';
+import { Board } from '../boardUtil';
 
 interface HeraclesAttrs {
   specialUsed: boolean,
@@ -38,12 +39,12 @@ export const Heracles: Character<HeraclesAttrs> = {
     return Mortal.build(context, charState, pos);
   },
 
-  validSpecial: ({ G }, charState, fromPos) => {
+  validSpecial: ({ G, playerID }, charState, fromPos) => {
     const valids = new Set<number>();
 
     charState.workers.forEach((worker) => {
       getAdjacentPositions(worker.pos).forEach((pos) => {
-        if (!G.spaces[pos].inhabitant && !G.spaces[pos].isDomed) {
+        if (!Board.isObstructed(G, playerID, pos)) {
           valids.add(pos);
         }
       });
