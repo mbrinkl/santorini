@@ -22,6 +22,7 @@ export const GenericToken = ({ boardPos, height, tokens } : {
         tokens.map((token, index) => (
           <RoundedBox
             key={`token${token.color}`}
+            userData={{ pos: boardPos.pos }}
             args={tokenArgs}
             position={index === 0 ? token0Pos : token1Pos}
             radius={0.05}
