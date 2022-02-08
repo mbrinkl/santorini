@@ -36,7 +36,7 @@ export const Tartarus: Character<TartarusAttrs> = {
     if (!charState.attrs.placedToken) {
       const { G, playerID } = context;
       const token: Token = {
-        playerID, obstructing: 'none', secret: true, removable: false,
+        playerID, obstructing: 'none', secret: true, removable: false, color: 'black',
       };
       Board.placeToken(G, pos, token);
       charState.attrs.placedToken = true;

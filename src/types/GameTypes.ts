@@ -39,4 +39,5 @@ export interface Token {
   obstructing: 'none' | 'all' | 'opponent',
   secret: boolean,
   removable: boolean,
+  color: string, // just distinguish by color for now
 }

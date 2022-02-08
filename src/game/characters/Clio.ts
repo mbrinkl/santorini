@@ -25,7 +25,7 @@ export const Clio: Character<ClioAttrs> = {
 
     if (charState.attrs.numTokens > 0) {
       const token: Token = {
-        playerID, obstructing: 'opponent', removable: false, secret: false,
+        playerID, obstructing: 'opponent', removable: false, secret: false, color: 'yellow',
       };
       Board.placeToken(G, pos, token);
       charState.attrs.numTokens -= 1;

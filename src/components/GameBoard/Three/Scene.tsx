@@ -83,7 +83,14 @@ export const Scene = ({ boardPositions } : {
             {space.isDomed
               && <Dome key={`dome${space.pos}`} boardPos={boardPositions[space.pos]} height={space.height} />}
             {space.tokens.length > 0 // TODO: individual tokens
-              && <GenericToken key={`token${space.pos}`} boardPos={boardPositions[space.pos]} height={space.height} />}
+              && (
+              <GenericToken
+                key={`token${space.pos}`}
+                boardPos={boardPositions[space.pos]}
+                height={space.height}
+                tokens={space.tokens}
+              />
+              )}
           </>
         ))}
 
