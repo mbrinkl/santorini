@@ -1,5 +1,5 @@
 import { ActivePlayers } from 'boardgame.io/core';
-import { Game } from 'boardgame.io';
+import { Ctx, Game } from 'boardgame.io';
 import { GAME_ID } from '../config';
 import { CharacterState } from '../types/CharacterTypes';
 import {
@@ -17,7 +17,7 @@ export function initCharacter(characterName: string): CharacterState {
   // Get state properties without character functions
   const {
     desc, turnOrder, buttonActive, buttonText, moveUpHeight, workers,
-    numWorkersToPlace, selectedWorkerNum, powerBlocked, attrs,
+    numWorkersToPlace, selectedWorkerNum, secretWorkers, powerBlocked, attrs,
   } = getCharacterByName(characterName);
 
   return {
@@ -30,6 +30,7 @@ export function initCharacter(characterName: string): CharacterState {
     workers,
     numWorkersToPlace,
     selectedWorkerNum,
+    secretWorkers,
     powerBlocked,
     attrs,
   };
@@ -68,8 +69,23 @@ function getContextWithPlayerID(context: Omit<GameContext, 'playerID'>): GameCon
   return { ...context, playerID };
 }
 
-function stripSecrets(G: GameState, playerID: string | null) : GameState {
+function stripSecrets(G: GameState, ctx: Ctx, playerID: string | null) : GameState {
+  if (ctx.gameover) {
+    return G;
+  }
+
   const strippedState = JSON.parse(JSON.stringify(G)) as GameState;
+
+  Object.values(strippedState.players).forEach((player) => {
+    if (player.charState.secretWorkers && player.ID !== playerID) {
+      player.charState.workers.forEach((worker) => {
+        strippedState.spaces[worker.pos].inhabitant = undefined;
+      });
+      player.charState.workers = [];
+      player.charState.attrs = undefined;
+    }
+  });
+
   strippedState.spaces.map((space) => {
     const { tokens } = space;
     for (let i = tokens.length - 1; i >= 0; i--) {
@@ -79,7 +95,8 @@ function stripSecrets(G: GameState, playerID: string | null) : GameState {
     }
     return space;
   });
-  return { ...strippedState, isClone: true };
+
+  return { ...strippedState };
 }
 
 export const SantoriniGame: Game<GameState> = {
@@ -119,7 +136,7 @@ export const SantoriniGame: Game<GameState> = {
     return initialState;
   },
 
-  playerView: ({ G, playerID }) => stripSecrets(G, playerID),
+  playerView: ({ G, ctx, playerID }) => stripSecrets(G, ctx, playerID),
 
   phases: {
     selectCharacters: {

@@ -30,6 +30,7 @@ import { Maenads } from './Maenads';
 import { Asteria } from './Asteria';
 import { Tartarus } from './Tartarus';
 import { Clio } from './Clio';
+import { Hecate } from './Hecate';
 
 export const characterList: string[] = [
   'Random',
@@ -78,7 +79,7 @@ export const characterList: string[] = [
   'Graeae',
   'Hades',
   'Harpies',
-  // "Hecate",
+  'Hecate',
   // "Moerae",
   // "Nemesis",
   // "Siren",
@@ -125,6 +126,8 @@ export const banList: [string, string][] = [
   ['Tartarus', 'Bia'],
   ['Tartarus', 'Hecate'],
   ['Tartarus', 'Moerae'],
+  ['Hecate', 'Charon'],
+  ['Hecate', 'Circe'],
 ];
 
 // Returns the character list sorted alphabetically, with 'random'
@@ -176,6 +179,7 @@ export function getCharacterByName(name: string): Character {
     case 'Hades': character = Hades; break;
     case 'Clio': character = Clio; break;
     case 'Tartarus': character = Tartarus; break;
+    case 'Hecate': character = Hecate; break;
     default: character = Mortal; break;
   }
 

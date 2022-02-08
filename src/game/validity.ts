@@ -177,6 +177,12 @@ export function updateValids(context: GameContext, stage: string) {
       break;
     case 'special':
       G.valids = [...character.validSpecial(context, charState, selecedWorkerPos)];
+      G.valids = [...opponentCharacter.restrictOpponentSpecial(
+        context,
+        opponentCharState,
+        charState,
+        selecedWorkerPos,
+      )];
       break;
     default:
       G.valids = [];

@@ -11,6 +11,7 @@ export const Mortal: Character = {
   buttonActive: false,
   numWorkersToPlace: 2,
   selectedWorkerNum: -1,
+  secretWorkers: false,
   moveUpHeight: 1,
   powerBlocked: false,
   attrs: null,
@@ -121,6 +122,7 @@ export const Mortal: Character = {
   getStageAfterBuild: (context, charState) => 'end',
 
   validSpecial: (context, charState, fromPos) => new Set<number>(),
+  restrictOpponentSpecial: ({ G }, charState, oppCharState, fromPos) => new Set(G.valids),
   special: (context, charState, pos) => {},
   afterOpponentSpecial: () => {},
   getStageAfterSpecial: (context, charStates) => 'end',

@@ -12,6 +12,7 @@ export interface CharacterState<AttrsType = any> {
   workers: Worker[];
   numWorkersToPlace: number;
   selectedWorkerNum: number;
+  secretWorkers: boolean;
   moveUpHeight: number;
   buttonText: string;
   buttonActive: boolean;
@@ -64,6 +65,12 @@ export interface CharacterFunctions {
   getStageAfterBuild: (context: GameContext, charState: CharacterState) => GameStage,
 
   validSpecial: (context: GameContext, charState: CharacterState, fromPos: number) => Set<number>,
+  restrictOpponentSpecial: (
+    context: GameContext,
+    charState: CharacterState,
+    oppCharState: CharacterState,
+    fromPos: number,
+  ) => Set<number>,
   special: (context: GameContext, charState: CharacterState, pos: number) => void,
   afterOpponentSpecial: (
     context: GameContext,
