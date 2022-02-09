@@ -1,44 +1,27 @@
 import { useState, useEffect, useRef } from 'react';
 import { playAgain } from '../../api';
 import { useBoardContext } from '../../context/boardContext';
-import { Button } from '../Button';
+import { Button, ImageButton } from '../Button';
 import undoLogo from '../../assets/png/undo.png';
-import messagesLogo from '../../assets/png/messages.png';
-import { isMobile } from '../../util';
 
 export const PlayerControls = ({ messagesOpen, onOpenMessages } : {
   messagesOpen? : boolean,
   onOpenMessages? : () => void
 }) : JSX.Element | null => {
   const {
-    playerID, G, isActive, moves, ctx, undo, chatMessages, sendChatMessage, credentials,
+    playerID, G, isActive, moves, ctx, undo, sendChatMessage, credentials,
     matchID,
   } = useBoardContext();
 
-  const [msgBlack, setMsgBlack] = useState(false);
   const [counter, setCounter] = useState(3);
   const intervalID: any = useRef(null);
-  const intervalMsgID: any = useRef(null);
-
-  useEffect(() => {
-    clearInterval(intervalMsgID.current);
-    setMsgBlack(false);
-  }, [messagesOpen]);
-
-  useEffect(() => {
-    if (chatMessages.length > 0) {
-      intervalMsgID.current = setInterval(() => {
-        setMsgBlack((prev) => !prev);
-      }, 1000);
-    }
-    return () => clearInterval(intervalMsgID.current);
-  }, [chatMessages]);
 
   useEffect(() => {
     intervalID.current = setInterval(() => {
       if ((ctx.activePlayers && ctx.activePlayers[ctx.currentPlayer] === 'end') && isActive) {
-        if (counter > 0) setCounter(counter - 1);
-        else {
+        if (counter > 0) {
+          setCounter(counter - 1);
+        } else {
           clearInterval(intervalID.current);
           setCounter(3);
           moves.endTurn();
@@ -73,14 +56,6 @@ export const PlayerControls = ({ messagesOpen, onOpenMessages } : {
     window.open('/', '_self');
   }
 
-  function showMessages() {
-    clearInterval(intervalMsgID.current);
-    setMsgBlack(false);
-    if (onOpenMessages) {
-      onOpenMessages();
-    }
-  }
-
   // No controls for spectators
   if (!playerID) {
     return null;
@@ -88,18 +63,6 @@ export const PlayerControls = ({ messagesOpen, onOpenMessages } : {
 
   return (
     <div className="PlayerControls">
-
-      {isMobile()
-        && (
-        <Button
-          theme="yellow"
-          size="small"
-          className="PlayerControls__button"
-          onClick={() => showMessages()}
-        >
-          <img className={`imgMsg ${msgBlack ? 'blackmsg' : ''}`} src={messagesLogo} alt="msgLogo" />
-        </Button>
-        )}
 
       {ctx.gameover ? (
         <>
@@ -124,15 +87,15 @@ export const PlayerControls = ({ messagesOpen, onOpenMessages } : {
       )
         : (
           <>
-            <Button
+            <ImageButton
+              src={undoLogo}
+              alt="undoLogo"
               theme="red"
               size="small"
               className="PlayerControls__button"
               disabled={!ctx.numMoves || !isActive}
               onClick={() => undoMove()}
-            >
-              <img src={undoLogo} style={{ position: 'absolute', width: 25, height: 25 }} alt="undoLogo" />
-            </Button>
+            />
 
             <Button
               theme="blue"

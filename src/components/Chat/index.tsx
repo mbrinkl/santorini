@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { useBoardContext } from '../../context/boardContext';
 import { isMobile } from '../../util';
+import { ImageButton } from '../Button';
 import sendIcon from '../../assets/png/send.png';
 import './style.scss';
 
@@ -12,23 +13,21 @@ export const ChatMessage = ({ sender, message } : {
   const senderName = (matchData?.[sender].name || `Player ${sender}`) + (playerID === sender ? ' (you)' : '');
 
   return (
-    <p>
-      <span className={`sender-${sender}`}>{senderName}</span>
+    <p className="chat__message">
+      <span className={`chat__message--sender-${sender}`}>{senderName}</span>
       {`: ${message}`}
     </p>
   );
 };
 
-export const Chat = ({ onCloseMessages } : {
-  onCloseMessages? : () => void
-}) : JSX.Element => {
+export const Chat = () : JSX.Element => {
   const { chatMessages, sendChatMessage } = useBoardContext();
   const [message, setMessage] = useState('');
   const messagesEndRef: any = useRef(null);
   const inputRef: any = useRef(null);
 
   useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'start' });
   }, [chatMessages]);
 
   const send = (e) => {
@@ -44,16 +43,10 @@ export const Chat = ({ onCloseMessages } : {
     }
   };
 
-  const close = () => {
-    if (onCloseMessages) {
-      onCloseMessages();
-    }
-  };
-
   return (
     <div className="chat">
-      <div className="messages">
-        <p className="chatWarning">
+      <div className="chat__message-list">
+        <p className="chat__message chat__message--warning">
           Chat messages are not stored on the server and will only be received
           by connected players. Spectators cannot use the chat.
         </p>
@@ -63,17 +56,14 @@ export const Chat = ({ onCloseMessages } : {
         <div ref={messagesEndRef} />
       </div>
 
-      <form className="chatControls" onSubmit={send}>
+      <form className="chat__controls" onSubmit={send}>
         <input
           ref={inputRef}
           onChange={(e) => setMessage(e.target.value)}
           value={message}
           placeholder="Enter your message..."
         />
-        <button className="sendBtn" onClick={send} type="button">
-          <img className="sendImg" src={sendIcon} alt="send" />
-        </button>
-        {isMobile() && <button className="closeBtn" onClick={close} type="button">Close</button>}
+        <ImageButton theme="green" size="small" onClick={send} src={sendIcon} alt="sendIcon" />
       </form>
     </div>
   );

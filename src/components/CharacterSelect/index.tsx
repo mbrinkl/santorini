@@ -46,7 +46,11 @@ export const CharacterSelect = () : JSX.Element => {
         ))}
 
         {playerID && (
-        <Button theme={ready ? 'red' : 'green'} onClick={() => { moves.ready(!ready); }}>
+        <Button
+          className="char-select__ready-button"
+          theme={ready ? 'red' : 'green'}
+          onClick={() => { moves.ready(!ready); }}
+        >
           {ready ? 'Cancel' : 'Ready'}
         </Button>
         )}

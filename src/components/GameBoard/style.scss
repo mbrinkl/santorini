@@ -51,7 +51,7 @@
 
   .playerInfoContainer {
     width: 20%;
-    height: 75%;
+    height: 70%;
     margin: auto;
 
     .PlayerInfo {
@@ -268,18 +268,17 @@
   }
 }
 
-.imgMsg {
-  position:"absolute";
-  width: 25px;
-  height: 25px;
-}
-
-.blackmsg {
-  filter: brightness(0%);
-}
-
 @media only screen and (max-width: 599px) {
+  .PlayerInfo {
+    order: 1;
+  }
+
+  .container {
+    flex-wrap: wrap;
+  }
+
   .boardContainer {
+    order: 2;
     min-width: 100%;
   }
 
@@ -295,9 +294,13 @@
   }
 
   .chatContainer {
-    display: none;
+    order: 3;
+    min-width: 95%;
+    height: 100%;
+    margin: 0 auto;
   }
 }
+
 @media only screen and (min-width: 599px) {
   
   #canvas {

@@ -1,4 +1,4 @@
-import React, { ButtonHTMLAttributes } from 'react';
+import React, { ButtonHTMLAttributes, ImgHTMLAttributes } from 'react';
 import { Link, LinkProps } from 'react-router-dom';
 import style from './style.module.scss';
 
@@ -40,3 +40,27 @@ export const ButtonLink = ({
     {...props}
   />
 );
+
+export const ImageButton = ({
+  className,
+  theme = 'blue',
+  size = 'medium',
+  src,
+  alt,
+  ...props
+} : ButtonProps &
+ButtonHTMLAttributes<HTMLButtonElement> &
+ImgHTMLAttributes<HTMLImageElement>) : JSX.Element => (
+  <button
+    type="button"
+    className={`
+      ${style.button}
+      ${style[`button--${theme}`]}
+      ${style[`button--size-${size}`]}
+      ${className}`}
+    {...props}
+  >
+    <img style={{ position: 'relative', width: 25, height: 25 }} src={src} alt={alt} />
+  </button>
+);
+ImageButton.displayName = 'ImageButton';

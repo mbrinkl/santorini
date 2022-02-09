@@ -54,7 +54,7 @@ export const JoinPage = () : JSX.Element => {
     ));
 
   return (
-    <LobbyPage className="testeroni">
+    <LobbyPage className="lobby-top">
       <ButtonBack to="/" />
       <table className="match-table">
         <thead>

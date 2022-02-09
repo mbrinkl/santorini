@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { BoardProps } from 'boardgame.io/react';
 import { GameState } from '../../types/GameTypes';
 import { BoardContext } from '../../context/boardContext';
@@ -12,7 +11,6 @@ import { isMobile } from '../../util';
 import './style.scss';
 
 export const GameBoard = (boardProps: BoardProps<GameState>) : JSX.Element => {
-  const [showChat, setShowChat] = useState(!isMobile());
   const { ctx } = boardProps;
 
   return (
@@ -22,30 +20,18 @@ export const GameBoard = (boardProps: BoardProps<GameState>) : JSX.Element => {
         : (
           <div className="container">
             <div className="chatContainer">
-              {showChat && <Chat onCloseMessages={() => setShowChat(false)} />}
+              <Chat />
             </div>
 
-            {isMobile() ? (
-              <>
-                <div className="boardContainer">
-                  <PlayerBoard />
-                  <PlayerControls
-                    messagesOpen={showChat}
-                    onOpenMessages={() => setShowChat(true)}
-                  />
-                </div>
-                <PlayerInfoMobile />
-              </>
-            ) : (
-              <>
-                <div className="boardContainer">
-                  <PlayerBoard />
-                  <PlayerControls />
-                </div>
-                <div className="playerInfoContainer">
-                  <PlayerInfo />
-                </div>
-              </>
+            <div className="boardContainer">
+              <PlayerBoard />
+              <PlayerControls />
+            </div>
+
+            {isMobile() ? <PlayerInfoMobile /> : (
+              <div className="playerInfoContainer">
+                <PlayerInfo />
+              </div>
             )}
           </div>
         )}

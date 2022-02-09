@@ -1,32 +1,26 @@
 @import "~styles/shared";
 
-
-.chatContainer {
-  height: 75%;
-  width: 95%;
-}
-
 .char-select {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  background-color: $c-blue;
   width: 100%;
   height: 100%;
+  display: flex;
+  align-items: center;
+  background-color: $c-blue;
   text-align: center;
-  
-  h1, span {
-    color: white;
-  }
 
-  Button {
+  h1 {
+    color: $c-white;
+  }
+  
+  &__ready-button {
     margin: 50px auto;
   }
 
   &__chat {
-    width: 33.33%;
+    width: 25%;
     height: 75%;
-    margin-left: 1em;
+    margin-left: auto;
+    margin-right: auto;
   }
 
   &__main {
@@ -59,6 +53,7 @@
   &__playerName {
     font-size: 18px;
     font-weight: bold;
+    color: $c-white;
   }
 
   &__player-char {
@@ -85,21 +80,29 @@
   }
 }
 
-@media only screen and (max-width: 599px) {
+@include tablet-max {
   .char-select {
+    flex-wrap: wrap;
+    height: 100%;
+
     &__chat {
-      display: none;
+      height: 100%;
+      width: 100%;
+      margin: 0 auto;
+      order: 3;
     }
 
     &__main {
+      order: 1;
       width: 70%;
     }
 
     &__characters {
+      order: 2;
       width: 30%;
     }
 
-    &__characterCard {
+    &__player-data {
       width: 50%;
       float: left;
     }

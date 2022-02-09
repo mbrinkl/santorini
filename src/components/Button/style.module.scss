@@ -23,6 +23,7 @@
   font-weight: 600;
   color: $c-white;
   outline: none;
+  user-select: none;
   cursor: pointer;
 
   &--red {
