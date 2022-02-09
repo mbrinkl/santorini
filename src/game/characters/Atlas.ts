@@ -3,7 +3,7 @@ import { Mortal } from './Mortal';
 
 export const Atlas: Character = {
   ...Mortal,
-  desc: 'Your Build: Your worker may build a dome at any level.',
+  desc: ['Your Build: Your worker may build a dome at any level.'],
   buttonText: 'Build Dome',
 
   move: (context, charState, pos) => {

@@ -11,8 +11,8 @@ interface HermesAttrs {
 
 export const Hermes: Character<HermesAttrs> = {
   ...Mortal,
-  desc: `Your Turn: If your Workers do not move up or down, they may 
-    each move any number of times (even zero), and then either builds`,
+  desc: [`Your Turn: If your Workers do not move up or down, they may 
+    each move any number of times (even zero), and then either builds`],
   buttonText: 'End Move',
 
   attrs: {

@@ -4,7 +4,9 @@ import { posIsPerimeter } from '../utility';
 
 export const Triton: Character = {
   ...Mortal,
-  desc: 'Your Move: Each time your Worker moves into a perimeter space, it may immediately move again.',
+  desc: [
+    'Your Move: Each time your Worker moves into a perimeter space, it may immediately move again.',
+  ],
   buttonText: 'End Move',
 
   getStageAfterMove: (context, charState) => {

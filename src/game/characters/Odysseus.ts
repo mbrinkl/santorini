@@ -27,8 +27,8 @@ function getOpenCorners(
 
 export const Odysseus: Character<OdysseusAttrs> = {
   ...Mortal,
-  desc: `Start of Your Turn: Once, force to unoccupied corner spaces any 
-    number of opponent Workers that neighbor your Workers.`,
+  desc: [`Start of Your Turn: Once, force to unoccupied corner spaces any 
+    number of opponent Workers that neighbor your Workers.`],
   buttonText: 'Move Opponent',
   attrs: {
     specialUsed: false,

@@ -40,7 +40,11 @@ export const CharacterSelect = () : JSX.Element => {
             <div className="char-select__characterDescription">
               {player.charState.name === 'Random'
                 ? 'Random'
-                : G.players[player.ID].charState.desc}
+                : G.players[player.ID].charState.desc.map((line) => (
+                  <p key="line">
+                    {line}
+                  </p>
+                ))}
             </div>
           </div>
         ))}

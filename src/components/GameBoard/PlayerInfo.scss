@@ -1,0 +1,50 @@
+@import "~styles/shared";
+
+.player-info {
+  height: 100%;
+  width: 100%;
+  font-size: 16px;
+  position: relative;
+  text-align: center;
+
+  h2, h4 {
+    margin: 0;
+  }
+
+  &__p0-info {
+    position: absolute;
+    top: 25px;
+    left: 50%;
+    width: 100%;
+    transform: translate(-50% , 0);
+    -webkit-transform: translate(-50%, 0);
+    color: $c-player-0;
+  }
+
+  &__p1-info {
+    position: absolute;
+    bottom: 25px;
+    left: 50%;
+    width: 100%;
+    transform: translate(-50% , 0);
+    -webkit-transform: translate(-50%, 0);
+    color: $c-player-1;
+  }
+
+  &__identifiers {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+  
+    div {
+      margin-right: 5px;
+    }
+  }
+
+  &__description {
+    max-height: 150px;
+    margin-bottom: auto;
+    margin-top: auto;
+    overflow-y: auto;
+  }
+}

@@ -4,10 +4,7 @@ import { useBoardContext } from '../../context/boardContext';
 import { Button, ImageButton } from '../Button';
 import undoLogo from '../../assets/png/undo.png';
 
-export const PlayerControls = ({ messagesOpen, onOpenMessages } : {
-  messagesOpen? : boolean,
-  onOpenMessages? : () => void
-}) : JSX.Element | null => {
+export const PlayerControls = () : JSX.Element | null => {
   const {
     playerID, G, isActive, moves, ctx, undo, sendChatMessage, credentials,
     matchID,

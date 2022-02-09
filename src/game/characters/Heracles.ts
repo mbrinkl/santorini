@@ -9,7 +9,7 @@ interface HeraclesAttrs {
 
 export const Heracles: Character<HeraclesAttrs> = {
   ...Mortal,
-  desc: 'Instead of Your Build: Once, both your Workers build any number of domes (even zero) at any level',
+  desc: ['Instead of Your Build: Once, both your Workers build any number of domes (even zero) at any level'],
   buttonText: 'Build Domes',
   attrs: {
     specialUsed: false,

@@ -5,8 +5,8 @@ import { Character } from '../../types/CharacterTypes';
 
 export const Ares: Character = {
   ...Mortal,
-  desc: `End of Your Turn: You may remove an unoccupied block (not dome) neighboring your
-    unmoved Worker. You also remove any Tokens on the block.`,
+  desc: [`End of Your Turn: You may remove an unoccupied block (not dome) neighboring your
+    unmoved Worker. You also remove any Tokens on the block.`],
   buttonText: 'Skip Remove',
 
   buttonPressed: (context, charState) => {

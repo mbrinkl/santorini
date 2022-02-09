@@ -10,10 +10,12 @@ interface TartarusAttrs {
 
 export const Tartarus: Character<TartarusAttrs> = {
   ...Mortal,
-  desc: `Setup: Place your Workers first. After all players' Workers are placed, secretly place your Abyss Token
-    on an unoccupied space. This space is the Abyss. Lose Condition: If any player's Worker enters the
-    Abyss, they immediately lose. Workers cannot win by entering the Abyss.
-  Banned VS: Bia, Hecate, Moerae`,
+  desc: [
+    `Setup: Place your Workers first. After all players' Workers are placed, secretly place your Abyss Token
+    on an unoccupied space. This space is the Abyss.`,
+    `Lose Condition: If any player's Worker enters the Abyss, they immediately lose. 
+    Workers cannot win by entering the Abyss.`,
+  ],
   turnOrder: 1,
   attrs: {
     placedToken: false,

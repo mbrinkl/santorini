@@ -5,8 +5,8 @@ import { Character } from '../../types/CharacterTypes';
 
 export const Maenads: Character = {
   ...Mortal,
-  desc: `End of your turn: If your workers neighbour an opponent’s worker on opposite sides, 
-    that opponent loses the game.`,
+  desc: [`End of your turn: If your workers neighbour an opponent’s worker on opposite sides, 
+    that opponent loses the game.`],
 
   onTurnEnd: (context, charState) => {
     if (charState.workers.length === 2) {

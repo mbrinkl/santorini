@@ -8,8 +8,8 @@ interface AsteriaAttrs {
 
 export const Asteria: Character<AsteriaAttrs> = {
   ...Mortal,
-  desc: `End of Your Turn: If one of your Workers moved down this turn, 
-    you may build a dome on any unoccupied space.`,
+  desc: [`End of Your Turn: If one of your Workers moved down this turn, 
+    you may build a dome on any unoccupied space.`],
   attrs: {
     movedDown: false,
   },

@@ -8,8 +8,8 @@ interface AthenaAttrs {
 
 export const Athena: Character<AthenaAttrs> = {
   ...Mortal,
-  desc: `Opponent's Turn: If one of your workers moved up on your last turn, 
-        opponent workers cannot move up this turn.`,
+  desc: [`Opponent's Turn: If one of your workers moved up on your last turn, 
+        opponent workers cannot move up this turn.`],
   attrs: {
     movedUp: false,
   },

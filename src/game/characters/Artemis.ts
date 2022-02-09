@@ -7,8 +7,8 @@ interface ArtemisAttrs {
 
 export const Artemis: Character<ArtemisAttrs> = {
   ...Mortal,
-  desc: `Your Move: Your worker may move one additional time, but not back to
-      its initial space.`,
+  desc: [`Your Move: Your worker may move one additional time, but not back to
+      its initial space.`],
   buttonText: 'End Move',
   attrs: {
     prevPos: -1,

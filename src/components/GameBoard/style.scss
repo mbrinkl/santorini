@@ -51,54 +51,8 @@
 
   .playerInfoContainer {
     width: 20%;
-    height: 70%;
+    height: 90%;
     margin: auto;
-
-    .PlayerInfo {
-      flex-grow: 1;
-      height: 100%;
-      width: 100%;
-      font-size: 16px;
-      position: relative;
-    
-      h2, h4 {
-        margin: 0;
-      }
-    
-      p, h4, h2 {
-        text-align: center;
-      }
-    
-      &__P1Info {
-        position: absolute;
-        top: 25px;
-        left: 50%;
-        width: 100%;
-        transform: translate(-50% , 0);
-        -webkit-transform: translate(-50%, 0);
-        color: dodgerblue;
-      }
-    
-      &__P2Info {
-        position: absolute;
-        bottom: 25px;
-        left: 50%;
-        width: 100%;
-        transform: translate(-50% , 0);
-        -webkit-transform: translate(-50%, 0);
-        color: gray;
-      }
-
-      &__Name {
-        display: flex;
-        flex-direction: row;
-        justify-content: center;
-      
-        div {
-          margin-right: 5px;
-        }
-      }
-    }
   }
 }
 

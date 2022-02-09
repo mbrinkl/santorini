@@ -6,7 +6,7 @@ import { Board } from '../boardUtil';
 export const Mortal: Character = {
 
   workers: [],
-  desc: 'No ability',
+  desc: ['No ability'],
   buttonText: 'No ability',
   buttonActive: false,
   numWorkersToPlace: 2,

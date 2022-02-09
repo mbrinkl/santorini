@@ -5,8 +5,8 @@ import { Board } from '../boardUtil';
 
 export const Urania: Character = {
   ...Mortal,
-  desc: `Your Turn: When your Worker moves or builds, treat opposite edges and corners as if they are
-    adjacent so that every space has 8 neighbors.`,
+  desc: [`Your Turn: When your Worker moves or builds, treat opposite edges and corners as if they are
+    adjacent so that every space has 8 neighbors.`],
 
   validMove: ({ G, playerID }, charState, originalPos) => {
     const valids = new Set<number>();

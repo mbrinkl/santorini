@@ -35,7 +35,9 @@ function changeEmulatingCharacter(
   const newCharacterName = charState.attrs.nextCharacterList.shift() || 'Apollo'; // fallback;
   const newCharacter = getCharacterByName(newCharacterName);
 
-  charState.desc = `${newCharacterName} - ${newCharacter.desc} ${Chaos.desc}`;
+  const newDesc = `${newCharacterName} - ${newCharacter.desc}`;
+  charState.desc.splice(1, 1, newDesc);
+
   charState.buttonActive = newCharacter.buttonActive;
   charState.buttonText = newCharacter.buttonText;
   charState.moveUpHeight = newCharacter.moveUpHeight;
@@ -55,7 +57,9 @@ function changeEmulatingCharacter(
 export const Chaos: Character<ChaosAttrs> = {
   ...Mortal,
 
-  desc: '(Changes between Simple God Powers after any turn in which at least one dome is built)',
+  desc: [
+    'Any Time: Changes between Simple God Powers after any turn in which at least one dome is built)',
+  ],
   attrs: {
     numDomes: 0,
     nextCharacterList: [],

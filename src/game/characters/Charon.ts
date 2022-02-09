@@ -5,8 +5,8 @@ import { Character, CharacterState } from '../../types/CharacterTypes';
 
 export const Charon: Character = {
   ...Mortal,
-  desc: `Your Move: Before your Worker moves, you may force a neighboring opponent Worker
-    to the space directly on the other side of your Worker, if that space is unoccupied.`,
+  desc: [`Your Move: Before your Worker moves, you may force a neighboring opponent Worker
+    to the space directly on the other side of your Worker, if that space is unoccupied.`],
   buttonText: 'Move Opponent',
 
   buttonPressed: (context, charState: CharacterState) => {

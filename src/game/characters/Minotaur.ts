@@ -7,9 +7,9 @@ import { Board } from '../boardUtil';
 export const Minotaur: Character = {
 
   ...Mortal,
-  desc: `Your Move: Your Worker may move into an opponent Worker’s space, 
+  desc: [`Your Move: Your Worker may move into an opponent Worker’s space, 
     if their Worker can be forced one space straight backwards to an 
-    unoccupied space at any level.`,
+    unoccupied space at any level.`],
 
   validMove: (context, charState, originalPos) => {
     const { G, playerID } = context;

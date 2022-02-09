@@ -7,7 +7,7 @@ export interface Worker {
 
 export interface CharacterState<AttrsType = any> {
   name: string;
-  desc: string;
+  desc: string[];
   turnOrder?: 0 | 1;
   workers: Worker[];
   numWorkersToPlace: number;

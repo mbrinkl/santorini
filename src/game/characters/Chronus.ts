@@ -14,7 +14,7 @@ function checkWinCondition(context: GameContext, chronusPlayerID: string) {
 
 export const Chronus: Character = {
   ...Mortal,
-  desc: 'Win Condition: You also win when there are at least five Complete Towers on the board.',
+  desc: ['Win Condition: You also win when there are at least five Complete Towers on the board.'],
 
   onTurnBegin: (context, charState) => {
     checkWinCondition(context, context.playerID);
