@@ -1,0 +1,43 @@
+@import "styles/shared";
+
+.testeroni {
+  justify-content: start;
+}
+
+.match-table {
+  border-collapse: collapse;
+  width: 75%;
+
+  &__row {
+    line-height: 40px;
+    border-bottom: 1px solid $c-white;
+    color: $c-white;
+
+    &--match:hover {
+      background-color: orange;
+      cursor: pointer;
+    }
+
+    &:last-child {
+      border-bottom: none;
+    }
+
+    th {
+      width: 33%;
+    }
+    
+    td {
+      text-align: center;
+    }
+
+    @include tablet-max {
+      th:last-child, td:last-child {
+        display: none;
+      }
+    }
+  }
+
+  @include phone-max {
+    margin-top: 4em;
+  }
+}

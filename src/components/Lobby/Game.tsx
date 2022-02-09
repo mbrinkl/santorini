@@ -10,14 +10,12 @@ import { SantoriniGame } from '../../game';
 import { useStoreActions, useStoreState } from '../../store';
 import { GameBoard } from '../GameBoard';
 import { ButtonBack } from '../ButtonBack';
-import { LobbyPage } from '../LobbyPage';
+import { LobbyPage } from './Wrapper';
 import { Button } from '../Button';
 import { getMatch } from '../../api';
-import {
-  isMobile, getMobileOS, supportsCopying, copyToClipboard,
-} from '../../utility';
+import { isMobile, supportsCopying, copyToClipboard } from '../../util';
 import 'tippy.js/dist/tippy.css';
-import './style.scss';
+import './Game.scss';
 
 const GameClient = Client({
   game: SantoriniGame,
@@ -33,7 +31,6 @@ export const GameLobbySetup = ({ startGame } : { startGame(): void }) : JSX.Elem
   const nickname = useStoreState((s) => s.nickname);
   const activeRoomPlayer = useStoreState((s) => s.activeRoomPlayer);
   const joinRoom = useStoreActions((s) => s.joinRoom);
-  const os = getMobileOS();
 
   const gameRoomFull = matchMetadata?.players.filter((p) => !p.name).length === 0;
 
@@ -79,14 +76,14 @@ export const GameLobbySetup = ({ startGame } : { startGame(): void }) : JSX.Elem
     <LobbyPage>
       <ButtonBack to="/" />
 
-      <div className="Lobby__title">{matchMetadata?.unlisted ? 'Private Game' : 'Public Game'}</div>
-      <div className="Lobby__subtitle">
+      <div className="lobby__title">{matchMetadata?.unlisted ? 'Private Game' : 'Public Game'}</div>
+      <div className="lobby__subtitle">
         Send a link to someone to invite them to your game.
         <br />
         Copy in another browser to play locally. (ie Chrome and Edge)
       </div>
-      <div className="Lobby__link">
-        <div className="Lobby__link-box">{window.location.href}</div>
+      <div className="lobby__link">
+        <div className="lobby__link-box">{window.location.href}</div>
 
         {supportsCopying && (
           <Tippy
@@ -94,7 +91,7 @@ export const GameLobbySetup = ({ startGame } : { startGame(): void }) : JSX.Elem
             offset={[0, 12]}
             content={<p>Copied!</p>}
           >
-            <div className="Lobby__link-buttons">
+            <div className="lobby__link-buttons">
               <Button
                 theme="blue"
                 onClick={() => {
@@ -109,25 +106,14 @@ export const GameLobbySetup = ({ startGame } : { startGame(): void }) : JSX.Elem
           </Tippy>
         )}
 
-        {os in ['iOS', 'Android'] && (
-          <Button
-            theme="blue"
-            onClick={() => {
-              window.open(os === 'iOS' ? `sms:&body=${window.location.href}` : `sms:?body=${window.location.href}`);
-            }}
-          >
-            Share
-          </Button>
-        )}
-
       </div>
 
-      <div className="Lobby__players">
+      <div className="lobby__players">
         {matchMetadata ? (
           matchMetadata.players?.map((player) => (player.name ? (
             <div
               key={player.id}
-              className="Lobby__player Lobby__player--active"
+              className="lobby__player lobby__player--active"
             >
               {`${player.name} ${
                 activeRoomPlayer
@@ -140,7 +126,7 @@ export const GameLobbySetup = ({ startGame } : { startGame(): void }) : JSX.Elem
           ) : (
             <div
               key={player.id}
-              className="Lobby__player Lobby__player--inactive"
+              className="lobby__player lobby__player--inactive"
             >
               Waiting for player...
             </div>
@@ -150,7 +136,7 @@ export const GameLobbySetup = ({ startGame } : { startGame(): void }) : JSX.Elem
         )}
       </div>
 
-      <div className="Lobby__status-message">
+      <div className="lobby__status-message">
         {gameRoomFull ? (
           <p>Starting Game...</p>
         ) : (

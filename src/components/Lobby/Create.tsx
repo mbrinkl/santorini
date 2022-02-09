@@ -1,14 +1,14 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { ButtonGroup } from '../ButtonGroup';
 import { ButtonBack } from '../ButtonBack';
-import { SetupNickname } from '../SetupNickname';
+import { SetupNickname } from './SetupNickname';
 import { Logo } from '../Logo';
-import { LobbyPage } from '../LobbyPage';
+import { LobbyPage } from './Wrapper';
 import { Button } from '../Button';
 import { ButtonChangeNickname } from '../ButtonChangeNickname';
 import { useStoreActions, useStoreState } from '../../store';
 import { createMatch } from '../../api';
-import style from './style.module.scss';
 
 export const CreatePage = () : JSX.Element => {
   const navigate = useNavigate();
@@ -53,9 +53,9 @@ export const CreatePage = () : JSX.Element => {
       : (
         <LobbyPage>
           <ButtonBack to="/" />
-          <Logo className={style.logo} size="large" />
+          <Logo />
           <ButtonChangeNickname />
-          <div className={style.buttonsDiv}>
+          <ButtonGroup>
             <Button theme="green" onClick={() => host(false)}>
               Public
             </Button>
@@ -63,7 +63,7 @@ export const CreatePage = () : JSX.Element => {
             <Button theme="blue" onClick={() => host(true)}>
               Private
             </Button>
-          </div>
+          </ButtonGroup>
         </LobbyPage>
       )
   );

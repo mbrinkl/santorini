@@ -1,4 +1,4 @@
-import { useBoardContext } from './BoardContext';
+import { useBoardContext } from '../../context/boardContext';
 
 export const HelpText = () : JSX.Element => {
   const {

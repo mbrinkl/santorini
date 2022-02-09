@@ -1,6 +1,6 @@
 import { Plane } from '@react-three/drei';
-import { BoardPosition } from '../../../types/BoardTypes';
-import { GROUND_SIZE } from '../../../config/board';
+import { BoardPosition } from '../../types/BoardTypes';
+import { GROUND_SIZE } from '../../config/board';
 
 export const Ground = ({ boardPos }: { boardPos: BoardPosition }): JSX.Element => (
   <Plane

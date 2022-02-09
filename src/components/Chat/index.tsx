@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
-import { useBoardContext } from '../GameBoard/BoardContext';
-import { isMobile } from '../../utility';
+import { useBoardContext } from '../../context/boardContext';
+import { isMobile } from '../../util';
 import sendIcon from '../../assets/png/send.png';
 import './style.scss';
 

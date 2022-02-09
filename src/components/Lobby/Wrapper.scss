@@ -1,8 +1,8 @@
 @import "~styles/shared";
 
-.lobbyPage {
+.lobby-page {
   position: relative;
-  padding: 40px 60px;
+  padding: 0px 20px;
   width: 100%;
   height: 100%;
   background: $c-blue;
@@ -12,31 +12,24 @@
   flex-direction: column;
 }
 
-.smallLogo {
-  position: absolute;
-  top: 40px;
-  left: 60px;
-}
-
-.githubLink {
+.github-link {
   color: $c-white;
   position: fixed;
   top: 0px;
   right: 0px;
-
-  width: 100px;
+  width: 75px;
 
   &:hover{
     opacity: 0.7;
   }
 }
 
-@media only screen and (max-width: 599px) {
-  .githubLink {
-    width: 75px;
+@include tablet-min {
+  .github-link {
+    width: 100px;
   }
 
-  .lobbyPage {
-    padding: 0px 20px;
+  .lobby-page {
+    padding: 40px 60px;
   }
 }

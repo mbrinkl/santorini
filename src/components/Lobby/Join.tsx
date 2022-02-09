@@ -1,11 +1,10 @@
 import { useNavigate } from 'react-router-dom';
 import { MouseEvent, useEffect, useState } from 'react';
 import { LobbyAPI } from 'boardgame.io';
-import { isMobile } from '../../utility';
+import { LobbyPage } from './Wrapper';
 import { ButtonBack } from '../ButtonBack';
-import { GithubLink } from '../LobbyPage';
 import { getMatches } from '../../api';
-import style from './style.module.scss';
+import './Join.scss';
 
 export const JoinPage = () : JSX.Element => {
   const [matches, setMatches] = useState<LobbyAPI.Match[]>([]);
@@ -39,33 +38,36 @@ export const JoinPage = () : JSX.Element => {
     && m.createdAt === m.updatedAt);
   const matchTableBody = filteredMatches.length === 0
     ? (
-      <tr>
-        <td colSpan={3} className={style.noGames}>No Public Games Available</td>
+      <tr className="match-table__row">
+        <td colSpan={3}>No Public Games Available</td>
       </tr>
     ) : filteredMatches.map((m) => (
-      <tr key={m.matchID} onClick={onTableRowClicked}>
+      <tr
+        key={m.matchID}
+        className="match-table__row match-table__row--match"
+        onClick={onTableRowClicked}
+      >
         <td>{m.matchID}</td>
         <td>{m.players[0].name}</td>
-        {!isMobile() && <td>{new Date(m.createdAt).toLocaleString()}</td>}
+        <td>{new Date(m.createdAt).toLocaleString()}</td>
       </tr>
     ));
 
   return (
-    <div className={style.joinPage}>
-      <GithubLink />
+    <LobbyPage className="testeroni">
       <ButtonBack to="/" />
-      <table>
+      <table className="match-table">
         <thead>
-          <tr>
+          <tr className="match-table__row">
             <th>Match ID</th>
             <th>Creator</th>
-            {!isMobile() && <th>Created At</th>}
+            <th>Created At</th>
           </tr>
         </thead>
         <tbody>
           {matchTableBody}
         </tbody>
       </table>
-    </div>
+    </LobbyPage>
   );
 };

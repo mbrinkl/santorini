@@ -1,4 +1,4 @@
-import { useBoardContext } from './BoardContext';
+import { useBoardContext } from '../../context/boardContext';
 
 export const ConnectedIndicator = ({ playerID } : { playerID: number }) : JSX.Element => {
   const { matchData } = useBoardContext();

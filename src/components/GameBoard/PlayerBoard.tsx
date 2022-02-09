@@ -2,8 +2,8 @@ import { useState, useEffect } from 'react';
 import { Canvas } from '@react-three/fiber';
 import { useContextBridge } from '@react-three/drei';
 import { HelpText } from './HelpText';
-import { useBoardContext, BoardContext } from './BoardContext';
-import { Scene } from './Three/Scene';
+import { useBoardContext, BoardContext } from '../../context/boardContext';
+import { Scene } from '../Three/Scene';
 import { BoardPosition } from '../../types/BoardTypes';
 import { GROUND_PADDING, GROUND_SIZE } from '../../config/board';
 

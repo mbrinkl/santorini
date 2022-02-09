@@ -4,8 +4,8 @@ import {
 } from '@react-three/drei';
 import { useFrame } from '@react-three/fiber';
 import { Mesh } from 'three';
-import { BoardPosition } from '../../../types/BoardTypes';
-import { GameStage } from '../../../types/GameTypes';
+import { BoardPosition } from '../../types/BoardTypes';
+import { GameStage } from '../../types/GameTypes';
 
 export const PlaceIndicator = ({ boardPos, height } : {
   boardPos: BoardPosition,

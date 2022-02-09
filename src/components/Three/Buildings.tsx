@@ -1,5 +1,5 @@
 import { Box, Sphere } from '@react-three/drei';
-import { BoardPosition } from '../../../types/BoardTypes';
+import { BoardPosition } from '../../types/BoardTypes';
 
 export const BuildingBase = ({ boardPos } : { boardPos: BoardPosition }): JSX.Element => (
   <Box

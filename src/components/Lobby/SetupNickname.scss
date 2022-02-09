@@ -1,8 +1,8 @@
 @import "~styles/shared";
 
-.SetupNickname {
+.setup-nickname {
   &__input {
-    width: 80%;
+    width: 100%;
     margin: 36px 0;
   }
 
@@ -16,20 +16,18 @@
   }
 
   &__title {
-    font-size: 50px;
+    font-size: 26px;
     color: $c-white;
     margin: 0;
   }
-}
 
-@media only screen and (max-width: 599px) {
-  .SetupNickname {
+  @include tablet-min {
     &__input {
-      width: 100%;
+      width: 80%;
     }
   
     &__title {
-      font-size: 26px;
+      font-size: 50px;
     }
   }
 }

@@ -4,10 +4,10 @@ import { useStoreState, useStoreActions } from '../../store';
 import { updatePlayer } from '../../api';
 import { ButtonBack } from '../ButtonBack';
 import { Button } from '../Button';
-import { LobbyPage } from '../LobbyPage';
+import { LobbyPage } from './Wrapper';
 import { Input } from '../Input';
 import 'tippy.js/dist/tippy.css';
-import './style.scss';
+import './SetupNickname.scss';
 
 export const SetupNickname = ({ onSubmit } : { onSubmit?: () => void }) : JSX.Element => {
   const initialNickname = useStoreState((s) => s.nickname);
@@ -16,7 +16,7 @@ export const SetupNickname = ({ onSubmit } : { onSubmit?: () => void }) : JSX.El
   const [tooltipVisible, setTooltipVisible] = useState(false);
   const activeRoomPlayer = useStoreState((s) => s.activeRoomPlayer);
 
-  async function asyncUpdatePlayer() {
+  const asyncUpdatePlayer = async () => {
     if (activeRoomPlayer) {
       await updatePlayer(
         activeRoomPlayer.matchID,
@@ -25,7 +25,7 @@ export const SetupNickname = ({ onSubmit } : { onSubmit?: () => void }) : JSX.El
         nickname,
       );
     }
-  }
+  };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -45,14 +45,14 @@ export const SetupNickname = ({ onSubmit } : { onSubmit?: () => void }) : JSX.El
     <LobbyPage>
       <ButtonBack to="/" />
 
-      <h3 className="SetupNickname__title">
+      <h3 className="setup-nickname__title">
         Set your nickname
       </h3>
 
-      <form onSubmit={handleSubmit} className="SetupNickname__form">
+      <form onSubmit={handleSubmit} className="setup-nickname__form">
         <Input
           placeholder="Enter a nickname..."
-          className="SetupNickname__input"
+          className="setup-nickname__input"
           onChange={(e) => setNickname(e.target.value)}
           value={nickname}
           maxLength={8}
@@ -64,14 +64,12 @@ export const SetupNickname = ({ onSubmit } : { onSubmit?: () => void }) : JSX.El
           offset={[0, 12]}
           content={<p>Nickname cannot be empty.</p>}
         >
-          <div className="Lobby__link-buttons">
-            <Button
-              theme="blue"
-              type="submit"
-            >
-              Save
-            </Button>
-          </div>
+          <Button
+            theme="blue"
+            type="submit"
+          >
+            Save
+          </Button>
         </Tippy>
 
       </form>

@@ -1,7 +1,7 @@
 import { RoundedBox } from '@react-three/drei';
 import { Vector3 } from '@react-three/fiber';
-import { Token } from '../../../types/GameTypes';
-import { BoardPosition } from '../../../types/BoardTypes';
+import { Token } from '../../types/GameTypes';
+import { BoardPosition } from '../../types/BoardTypes';
 
 export const GenericToken = ({ boardPos, height, tokens } : {
   boardPos: BoardPosition,

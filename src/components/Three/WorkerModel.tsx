@@ -1,5 +1,5 @@
 import { Sphere } from '@react-three/drei';
-import { BoardPosition } from '../../../types/BoardTypes';
+import { BoardPosition } from '../../types/BoardTypes';
 
 export const WorkerModel = ({ boardPos, height, color } : {
   boardPos: BoardPosition,

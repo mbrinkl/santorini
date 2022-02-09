@@ -1,7 +1,7 @@
-import { ConnectedIndicator } from '../GameBoard/ConnectedIndicator';
+import { ConnectedIndicator } from '../ConnectedIndicator';
 import { Button } from '../Button';
 import { banList, getSortedCharacters } from '../../game/characters';
-import { useBoardContext } from '../GameBoard/BoardContext';
+import { useBoardContext } from '../../context/boardContext';
 import { Chat } from '../Chat';
 import CheckImg from '../../assets/png/check.png';
 import './style.scss';

@@ -1,16 +1,14 @@
 import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { LobbyPage } from '../LobbyPage';
+import { LobbyPage } from './Wrapper';
 import { Logo } from '../Logo';
-import { Button } from '../Button';
+import { Button, ButtonLink } from '../Button';
 import { ButtonChangeNickname } from '../ButtonChangeNickname';
 import { ButtonBack } from '../ButtonBack';
 import { useStoreActions, useStoreState } from '../../store';
 import { getMatch } from '../../api';
-import style from './style.module.scss';
+import { ButtonGroup } from '../ButtonGroup';
 
 export const Home = () : JSX.Element => {
-  const navigate = useNavigate();
   const [prevGameActive, setPrevGameActive] = useState(false);
   const activeRoomPlayer = useStoreState((s) => s.activeRoomPlayer);
   const setActiveRoomPlayer = useStoreActions((s) => s.setActiveRoomPlayer);
@@ -33,16 +31,16 @@ export const Home = () : JSX.Element => {
     <LobbyPage>
       <ButtonChangeNickname />
       { prevGameActive && <ButtonBack to={`/rooms/${activeRoomPlayer?.matchID}`} text="Return to Game" />}
-      <Logo className={style.logo} size="large" />
+      <Logo />
 
-      <div className={style.buttonsDiv}>
-        <Button theme="green" onClick={() => navigate('/create')}>
+      <ButtonGroup>
+        <ButtonLink theme="green" to="/create">
           Host
-        </Button>
+        </ButtonLink>
 
-        <Button theme="blue" onClick={() => navigate('/rooms')}>
+        <ButtonLink theme="blue" to="/rooms">
           Join
-        </Button>
+        </ButtonLink>
 
         <Button
           theme="yellow"
@@ -50,7 +48,7 @@ export const Home = () : JSX.Element => {
         >
           Rules
         </Button>
-      </div>
+      </ButtonGroup>
     </LobbyPage>
   );
 };

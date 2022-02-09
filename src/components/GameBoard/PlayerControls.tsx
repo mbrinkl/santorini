@@ -1,10 +1,10 @@
 import { useState, useEffect, useRef } from 'react';
 import { playAgain } from '../../api';
-import { useBoardContext } from './BoardContext';
+import { useBoardContext } from '../../context/boardContext';
 import { Button } from '../Button';
 import undoLogo from '../../assets/png/undo.png';
 import messagesLogo from '../../assets/png/messages.png';
-import { isMobile } from '../../utility';
+import { isMobile } from '../../util';
 
 export const PlayerControls = ({ messagesOpen, onOpenMessages } : {
   messagesOpen? : boolean,

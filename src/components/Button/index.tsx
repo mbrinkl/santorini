@@ -8,8 +8,7 @@ interface ButtonProps {
 }
 
 export const Button = React.forwardRef<
-HTMLButtonElement,
-ButtonProps & ButtonHTMLAttributes<HTMLButtonElement>
+HTMLButtonElement, ButtonProps & ButtonHTMLAttributes<HTMLButtonElement>
 >(({
   className, theme = 'blue', size = 'medium', ...props
 }, ref) => (
@@ -34,7 +33,7 @@ export const ButtonLink = ({
 }: ButtonProps & LinkProps) : JSX.Element => (
   <Link
     className={`
-      ${style.button},
+      ${style.button}
       ${style[`button--${theme}`]}
       ${style[`button--size-${size}`]}
       ${className}`}

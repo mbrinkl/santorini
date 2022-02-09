@@ -21,3 +21,31 @@
     box-shadow: $size $size 0px $light, -#{$size} -#{$size} 0px $dark;
   }
 }
+
+$phone-width: 600px;
+$tablet-width: 768px;
+$desktop-width: 1024px;
+
+@mixin phone-max {
+  @media (max-width: #{$phone-width - 1}) {
+    @content;
+  }
+}
+
+@mixin tablet-min {
+  @media (min-width: #{$tablet-width}) {
+    @content;
+  }
+}
+
+@mixin tablet-max {
+  @media (max-width: #{$tablet-width - 1}) {
+    @content;
+  }
+}
+
+@mixin desktop-min {
+  @media (min-width: #{$desktop-width}) {
+    @content;
+  }
+}
