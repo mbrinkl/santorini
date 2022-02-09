@@ -1,0 +1,15 @@
+@import "~styles/shared";
+
+.connected-ind {
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+
+  &--Connected {
+    background-color: $c-light-green;
+  }
+
+  &--Disconnected {
+    background-color: $c-red;
+  }
+}

@@ -1,10 +1,16 @@
 import { useBoardContext } from '../../context/boardContext';
+import './style.scss';
 
-export const ConnectedIndicator = ({ playerID } : { playerID: number }) : JSX.Element => {
+export const ConnectedIndicator = ({ playerID } : { playerID: string }) : JSX.Element | null => {
   const { matchData } = useBoardContext();
-  const connected = matchData?.[playerID].isConnected;
 
-  const status = connected ? 'Connected' : 'Disconnected';
+  if (matchData) {
+    const { isConnected } = matchData[playerID];
+    const status = isConnected ? 'Connected' : 'Disconnected';
+    return (
+      <div title={status} className={`connected-ind connected-ind--${status}`} />
+    );
+  }
 
-  return <div title={status} className={`connStatus ${status}`} />;
+  return null;
 };

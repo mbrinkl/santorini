@@ -9,7 +9,7 @@ import {
   GameContext, GameState, Player, Space,
 } from '../types/GameTypes';
 import {
-  setChar, ready, cancelReady, place, move, select, build, special, onButtonPressed, endTurn,
+  setChar, ready, place, move, select, build, special, onButtonPressed, endTurn,
 } from './moves';
 import { canReachEndStage, updateValids } from './validity';
 
@@ -149,7 +149,6 @@ export const SantoriniGame: Game<GameState> = {
       moves: {
         setChar,
         ready,
-        cancelReady,
       },
       onEnd: (context) => {
         const contextWithPlayerID = getContextWithPlayerID(context);

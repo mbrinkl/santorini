@@ -10,12 +10,8 @@ export const setChar: Move<GameState> = ({ G, playerID }, name: string) => {
   G.players[playerID].charState = initCharacter(name);
 };
 
-export const ready: Move<GameState> = ({ G, playerID }) => {
-  G.players[playerID].ready = true;
-};
-
-export const cancelReady: Move<GameState> = ({ G, playerID }) => {
-  G.players[playerID].ready = false;
+export const ready: Move<GameState> = ({ G, playerID }, status: boolean) => {
+  G.players[playerID].ready = status;
 };
 
 export const onButtonPressed: Move<GameState> = (context) => {

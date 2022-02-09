@@ -42,7 +42,7 @@ export const PlayerInfoMobile = () : JSX.Element => {
       {/* eslint-disable-next-line jsx-a11y/click-events-have-key-events */}
       <div className="PlayerInfoMobile__P1Name" onClick={toggleOverlay} role="button" tabIndex={0}>
         <div className="PlayerInfoMobile__Name">
-          <ConnectedIndicator playerID={0} />
+          <ConnectedIndicator playerID="0" />
           <h2>{(matchData?.[0].name || 'Player 0') + (playerID === '0' ? ' (you)' : '')}</h2>
         </div>
         <span>{G.players[0].charState.name}</span>
@@ -54,7 +54,7 @@ export const PlayerInfoMobile = () : JSX.Element => {
       {/* eslint-disable-next-line jsx-a11y/click-events-have-key-events */}
       <div className="PlayerInfoMobile__P2Name" onClick={toggleOverlay} role="button" tabIndex={0}>
         <div className="PlayerInfoMobile__Name">
-          <ConnectedIndicator playerID={1} />
+          <ConnectedIndicator playerID="1" />
           <h2>{(matchData?.[1].name || 'Player 1') + (playerID === '1' ? ' (you)' : '')}</h2>
         </div>
         <span>{G.players[1].charState.name}</span>

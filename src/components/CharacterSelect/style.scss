@@ -1,121 +1,50 @@
 @import "~styles/shared";
 
-.Apollo { background-image:url('../../assets/png/CharacterImages/Apollo.png'); }
-.Ares { background-image:url('../../assets/png/CharacterImages/Ares.png'); }
-.Artemis { background-image:url('../../assets/png/CharacterImages/Artemis.png'); }
-.Asteria { background-image:url('../../assets/png/CharacterImages/Asteria.png'); }
-.Athena { background-image:url('../../assets/png/CharacterImages/Athena.png'); }
-.Atlas { background-image:url('../../assets/png/CharacterImages/Atlas.png'); }
-.Bia { background-image:url('../../assets/png/CharacterImages/Bia.png'); }
-.Chaos { background-image:url('../../assets/png/CharacterImages/Chaos.png'); }
-.Charon { background-image:url('../../assets/png/CharacterImages/Charon.png'); }
-.Chronus { background-image:url('../../assets/png/CharacterImages/Chronus.png'); }
-.Clio { background-image:url('../../assets/png/CharacterImages/Clio.png'); }
-.Demeter { background-image:url('../../assets/png/CharacterImages/Demeter.png'); }
-.Eros { background-image:url('../../assets/png/CharacterImages/Eros.png'); }
-.Graeae { background-image:url('../../assets/png/CharacterImages/Graeae.png'); }
-.Hades { background-image:url('../../assets/png/CharacterImages/Hades.png'); }
-.Harpies { background-image:url('../../assets/png/CharacterImages/Harpies.png'); }
-.Hecate { background-image:url('../../assets/png/CharacterImages/Hecate.png'); }
-.Hephaestus { background-image:url('../../assets/png/CharacterImages/Hephaestus.png'); }
-.Heracles { background-image:url('../../assets/png/CharacterImages/Heracles.png'); }
-.Hermes { background-image:url('../../assets/png/CharacterImages/Hermes.png'); }
-.Iris { background-image:url('../../assets/png/CharacterImages/Iris.png'); }
-.Maenads { background-image:url('../../assets/png/CharacterImages/Maenads.png'); }
-.Minotaur { background-image:url('../../assets/png/CharacterImages/Minotaur.png'); }
-.Mortal { background-image:url('../../assets/png/CharacterImages/Mortal.png'); }
-.Odysseus { background-image:url('../../assets/png/CharacterImages/Odysseus.png'); }
-.Pan { background-image:url('../../assets/png/CharacterImages/Pan.png'); }
-.Pegasus { background-image:url('../../assets/png/CharacterImages/Pegasus.png'); }
-.Prometheus { background-image:url('../../assets/png/CharacterImages/Prometheus.png'); }
-.Random { background-image:url('../../assets/png/CharacterImages/Random.png'); }
-.Tartarus { background-image:url('../../assets/png/CharacterImages/Tartarus.png'); }
-.Triton { background-image:url('../../assets/png/CharacterImages/Triton.png'); }
-.Urania { background-image:url('../../assets/png/CharacterImages/Urania.png'); }
-.Zeus { background-image:url('../../assets/png/CharacterImages/Zeus.png'); }
-
-.grayscale {
-  filter: grayscale(100%);
-  opacity: 0.8;
-}
-
-.characterBox, .characterBoxSelectable {
-  position: relative;
-  width: 100px;
-  height: 150px;
-  background-size: cover;
-  background-repeat: no-repeat;
-  text-align: left;
-  color: $c-white;
-  font-size: 16px;
-  font-weight: 500;
-  text-shadow: -1px -1px 0 black, 1px -1px 0 black, -1px 1px 0 black, 1px 1px 0 black;
-  border: 2px solid transparent;
-  border-radius: 10%;
-  margin: auto;
-}
-
-.characterBox span, .characterBoxSelectable span, .characterBoxCheck {
-  position: absolute;
-  width: 100%;
-  bottom: 0;
-  text-align: center;
-}
-
-.characterBoxSelectable {
-  cursor: pointer;  
-}
-
-.characterBoxSelectable:hover {
-  border: 2px solid lime;
-}
 
 .chatContainer {
   height: 75%;
   width: 95%;
 }
 
-.charSelect {
+.char-select {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
   background-color: $c-blue;
-  position: absolute; top: 0; left: 0;
   width: 100%;
   height: 100%;
-  overflow-y: auto;
-  margin: 0 auto;
   text-align: center;
-
+  
   h1, span {
-      color: white;
+    color: white;
   }
 
   Button {
     margin: 50px auto;
   }
 
+  &__chat {
+    width: 33.33%;
+    height: 75%;
+    margin-left: 1em;
+  }
+
+  &__main {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    width: 33.33%;
+    align-items: center;
+    justify-content: space-evenly;
+  }
+
   &__characters {
     display: flex;
     flex-wrap: wrap;
-    flex-direction: row;
-    justify-content: center;
     overflow-y: auto;
-
-    display: flex;
-    float: left;
     width: 33.33%;
     height: 100%;
-    align-items: center;
-    justify-content: center;
   }
-
-  &__chat {
-    display: flex;
-    float: left;
-    width: 33.33%;
-    height: 100%;
-    align-items: center;
-    justify-content: center;
-  }
-
 
   &__playerNameDiv {
     display: flex;
@@ -132,19 +61,7 @@
     font-weight: bold;
   }
 
-  &__selectedCharDiv {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-evenly;
-    height: 100%;
-    display: flex;
-    float: left;
-    width: 33.33%;
-    align-items: center;
-    justify-content: center;
-  }
-
-  &__selectedChar {
+  &__player-char {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -154,25 +71,27 @@
     margin-bottom: 10px;
   }
 
-  &__characterCard {
+  &__player-data {
     width: 30%;
     float: left;
   }
 
   &__characterDescription {
+    max-height: 150px;
     width: 70%;
     color: white;
-    text-align: center;
+    text-align: left;
+    overflow-y: auto;
   }
 }
 
 @media only screen and (max-width: 599px) {
-  .charSelect {
+  .char-select {
     &__chat {
       display: none;
     }
 
-    &__selectedCharDiv {
+    &__main {
       width: 70%;
     }
 
