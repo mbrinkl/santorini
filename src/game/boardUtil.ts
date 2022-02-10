@@ -30,10 +30,10 @@ export const Board = {
   ),
 
   tokenObstructing: (G: GameState, playerID: string, pos: number) => (
-    G.spaces[pos].tokens.filter((token) => (
+    G.spaces[pos].tokens.some((token) => (
       token.obstructing === 'all'
       || (token.obstructing === 'opponent' && token.playerID !== playerID)
-    )).length > 0
+    ))
   ),
 
   build: (G: GameState, pos: number) => {

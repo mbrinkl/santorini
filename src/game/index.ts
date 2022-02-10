@@ -96,7 +96,7 @@ function stripSecrets(G: GameState, ctx: Ctx, playerID: string | null) : GameSta
     return space;
   });
 
-  return { ...strippedState };
+  return strippedState;
 }
 
 export const SantoriniGame: Game<GameState> = {
@@ -141,8 +141,7 @@ export const SantoriniGame: Game<GameState> = {
   phases: {
     selectCharacters: {
       start: true,
-      next: 'placeWorkers',
-      endIf: ({ G }) => G.players['0'].ready && G.players['1'].ready,
+      next: 'boardSetup',
       turn: {
         activePlayers: ActivePlayers.ALL,
       },
@@ -150,13 +149,14 @@ export const SantoriniGame: Game<GameState> = {
         setChar,
         ready,
       },
+      endIf: ({ G }) => Object.values(G.players).every((player) => player.ready),
       onEnd: (context) => {
         const contextWithPlayerID = getContextWithPlayerID(context);
         initRandomCharacters(contextWithPlayerID);
       },
     },
 
-    placeWorkers: {
+    boardSetup: {
       next: 'main',
       onBegin: (context) => {
         const contextWithPlayerID = getContextWithPlayerID(context);
@@ -181,7 +181,7 @@ export const SantoriniGame: Game<GameState> = {
           const contextWithPlayerID = getContextWithPlayerID(context);
           updateValids(contextWithPlayerID, 'place');
         },
-        onEnd: ({ G, ctx, events }) => {
+        onEnd: ({ G, events }) => {
           if (
             G.players['0'].charState.numWorkersToPlace === 0
             && G.players['1'].charState.numWorkersToPlace === 0

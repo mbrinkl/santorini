@@ -49,8 +49,7 @@ function getSpawnedMoves(
         );
         stage = character.getStageAfterMove(cloneContext, charState);
         if (charState.workers[charState.selectedWorkerNum].pos === prevMove.pos) {
-          win = win
-            || character.checkWinByMove(cloneContext, charState, movedFromPos, prevMove.pos);
+          win ||= character.checkWinByMove(cloneContext, charState, movedFromPos, prevMove.pos);
         }
         updateValids(cloneContext, stage);
         break;
@@ -107,7 +106,6 @@ export function canReachEndStage(
   stage: GameStage | 'buttonPress',
   fromPos: number,
 ) : boolean {
-  // ADD BUTTON PRESS IMMEDIATELY IF POSSIBLE
   const possibleMoveStack: PossibleMove[] = [{ type: stage, pos: fromPos, prevs: [] }];
   const checkedMoves: PossibleMove[] = [];
 
@@ -141,8 +139,8 @@ export function canReachEndStage(
   return false;
 }
 
-export function updateValids(context: GameContext, stage: string) {
-  const { G, playerID } = context;
+export function updateValids(context: GameContext, stage: GameStage) {
+  const { G, ctx, playerID } = context;
   const { opponentID, charState } = G.players[playerID];
   const character = getCharacter(charState);
   const opponentCharState = G.players[opponentID].charState;
@@ -189,7 +187,7 @@ export function updateValids(context: GameContext, stage: string) {
       break;
   }
 
-  if (!G.isClone && stage !== 'place') {
-    G.valids = G.valids.filter((pos) => canReachEndStage(context, stage as GameStage, pos));
+  if (!G.isClone && ctx.phase === 'main') {
+    G.valids = G.valids.filter((pos) => canReachEndStage(context, stage, pos));
   }
 }

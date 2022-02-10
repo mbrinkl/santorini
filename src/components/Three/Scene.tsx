@@ -32,7 +32,7 @@ export const Scene = ({ boardPositions } : {
     const { pos } = e.object.userData;
 
     if (G.valids.includes(pos)) {
-      if (phase === 'placeWorkers') {
+      if (phase === 'boardSetup') {
         moves.place(pos);
       } else {
         switch (stage) {
