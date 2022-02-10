@@ -6,6 +6,7 @@ export const Pegasus: Character = {
   desc: [
     'Your Move: Your Worker may move up more than one level, but cannot win the game by doing so.',
   ],
+  pack: 'promo',
   moveUpHeight: 3,
 
   checkWinByMove: ({ G }, charState, posBefore, posAfter) => (

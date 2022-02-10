@@ -9,6 +9,7 @@ interface HephaestusAttrs {
 export const Hephaestus: Character<HephaestusAttrs> = {
   ...Mortal,
   desc: ['Your Build: Your Worker may build one additional block (not dome) on top of your first block.'],
+  pack: 'simple',
   buttonText: 'Skip 2nd Build',
   attrs: {
     firstBuildPos: -1,

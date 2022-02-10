@@ -8,6 +8,7 @@ interface PrometheusAttrs {
 export const Prometheus: Character<PrometheusAttrs> = {
   ...Mortal,
   desc: ['Your Turn: If your Worker does not move up, it may build both before and after moving.'],
+  pack: 'simple',
   buttonText: 'Bulid Before Move',
   attrs: {
     specialUsed: false,

@@ -9,6 +9,7 @@ export const Eros: Character = {
     `Win Condition: You also win if one of your Workers moves to a space neighboring your
     other Worker and both are on the first level.`,
   ],
+  pack: 'advanced',
 
   validPlace: ({ G }, charState) => {
     const valids = new Set<number>();

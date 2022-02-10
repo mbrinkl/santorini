@@ -1,6 +1,7 @@
+import { ChangeEventHandler, useState } from 'react';
 import { ConnectedIndicator } from '../ConnectedIndicator';
 import { Button } from '../Button';
-import { getSortedCharacters } from '../../game/characters';
+import { getCharacterByName, getSortedCharacters } from '../../game/characters';
 import { useBoardContext } from '../../context/boardContext';
 import { Chat } from '../Chat';
 import './style.scss';
@@ -10,8 +11,22 @@ export const CharacterSelect = () : JSX.Element => {
   const {
     G, moves, matchData, playerID,
   } = useBoardContext();
+  const [characterList, setCharacterList] = useState(getSortedCharacters());
 
   const ready = playerID && G.players[playerID].ready;
+
+  const filterCharacters: ChangeEventHandler<HTMLSelectElement> = (e) => {
+    const { options } = e.target;
+    const pack = options[options.selectedIndex].value;
+    if (pack === 'all') {
+      setCharacterList(getSortedCharacters());
+    } else {
+      const filteredList = getSortedCharacters().filter((char) => (
+        getCharacterByName(char).pack === pack
+      ));
+      setCharacterList(filteredList);
+    }
+  };
 
   return (
     <div className="char-select">
@@ -62,7 +77,17 @@ export const CharacterSelect = () : JSX.Element => {
       </div>
 
       <div className="char-select__characters">
-        {getSortedCharacters().map((character) => (
+        <select className="char-select__dropdown" onChange={filterCharacters}>
+          <option value="all">All</option>
+          <option value="simple">Simple</option>
+          <option value="advanced">Advanced</option>
+          <option value="gf">Golden Fleece</option>
+          <option value="heroes">Heroes</option>
+          <option value="promo">Promo</option>
+          <option value="custom">Custom</option>
+        </select>
+
+        {characterList.map((character) => (
           <CharacterCard key={character} playerID={playerID} name={character} />
         ))}
       </div>

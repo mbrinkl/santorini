@@ -60,6 +60,7 @@ export const Chaos: Character<ChaosAttrs> = {
   desc: [
     'Any Time: Changes between Simple God Powers after any turn in which at least one dome is built)',
   ],
+  pack: 'advanced',
   attrs: {
     numDomes: 0,
     nextCharacterList: [],

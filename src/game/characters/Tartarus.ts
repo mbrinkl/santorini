@@ -16,6 +16,7 @@ export const Tartarus: Character<TartarusAttrs> = {
     `Lose Condition: If any player's Worker enters the Abyss, they immediately lose. 
     Workers cannot win by entering the Abyss.`,
   ],
+  pack: 'gf',
   turnOrder: 1,
   attrs: {
     placedToken: false,

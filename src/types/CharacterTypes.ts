@@ -1,5 +1,7 @@
 import { GameContext, GameStage } from './GameTypes';
 
+export type Pack = 'none' | 'simple' | 'advanced' | 'gf' | 'heroes' | 'promo' | 'custom';
+
 export interface Worker {
   pos: number;
   height: number;
@@ -8,6 +10,7 @@ export interface Worker {
 export interface CharacterState<AttrsType = any> {
   name: string;
   desc: string[];
+  pack: Pack;
   turnOrder?: 0 | 1;
   workers: Worker[];
   numWorkersToPlace: number;

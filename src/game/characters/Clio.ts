@@ -14,6 +14,7 @@ export const Clio: Character<ClioAttrs> = {
     `Opponent’s Turn: Opponents treat spaces containing your Coin Tokens as if they contain
     only a dome`,
   ],
+  pack: 'gf',
   attrs: {
     numTokens: 3,
   },

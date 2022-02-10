@@ -34,10 +34,20 @@
 
   &__characters {
     display: flex;
+    align-content: flex-start;
     flex-wrap: wrap;
     overflow-y: auto;
     width: 33.33%;
     height: 100%;
+  }
+
+  &__dropdown {
+    width: 100px;
+    height: 150px;
+    background-color: $c-blue;
+    border: none;
+    outline: none;
+    color: white;
   }
 
   &__playerNameDiv {

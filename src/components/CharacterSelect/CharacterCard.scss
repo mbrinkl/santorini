@@ -13,7 +13,8 @@
   text-shadow: -1px -1px 0 black, 1px -1px 0 black, -1px 1px 0 black, 1px 1px 0 black;
   border: 2px solid transparent;
   border-radius: 10%;
-  margin: auto;
+  margin-left: 1px;
+  margin-right: 1px;
 
   &--selectable {
     cursor: pointer; 

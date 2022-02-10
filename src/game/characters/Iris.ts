@@ -7,6 +7,7 @@ export const Iris: Character = {
   ...Mortal,
   desc: [`Your Move: If there is a Worker neighboring your Worker and the space directly on the 
       other side of it is unoccupied, your worker may move to that space regardless of its level.`],
+  pack: 'promo',
 
   validMove: ({ G, playerID }, charState, fromPos) => {
     const valids = new Set<number>();

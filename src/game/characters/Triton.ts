@@ -7,6 +7,7 @@ export const Triton: Character = {
   desc: [
     'Your Move: Each time your Worker moves into a perimeter space, it may immediately move again.',
   ],
+  pack: 'advanced',
   buttonText: 'End Move',
 
   getStageAfterMove: (context, charState) => {

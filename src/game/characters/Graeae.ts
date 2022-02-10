@@ -9,6 +9,7 @@ export const Graeae: Character = {
     'Setup: When placing your Workers, place 3 of your color.',
     'Your Build: Build with a Worker that did not Move.',
   ],
+  pack: 'gf',
   numWorkersToPlace: 3,
 
   validBuild: ({ G, playerID }, charState, fromPos) => {

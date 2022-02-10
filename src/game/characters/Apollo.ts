@@ -7,6 +7,7 @@ export const Apollo: Character = {
   ...Mortal,
   desc: [`Your Move : Your worker may move into an opponent worker's space by 
       forcing their worker to the space you just vacated.`],
+  pack: 'simple',
 
   validMove: ({ G, playerID }, charState, fromPos) => {
     const valids = new Set<number>();

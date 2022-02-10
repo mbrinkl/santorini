@@ -29,6 +29,7 @@ export const Odysseus: Character<OdysseusAttrs> = {
   ...Mortal,
   desc: [`Start of Your Turn: Once, force to unoccupied corner spaces any 
     number of opponent Workers that neighbor your Workers.`],
+  pack: 'heroes',
   buttonText: 'Move Opponent',
   attrs: {
     specialUsed: false,

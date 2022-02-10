@@ -50,6 +50,8 @@ export const Hecate: Character<HecateAttrs> = {
     When possible, use their power on their behalf to make their turns legal
     without informing them`,
   ],
+  pack: 'gf',
+
   turnOrder: 1,
   secretWorkers: true,
   attrs: {

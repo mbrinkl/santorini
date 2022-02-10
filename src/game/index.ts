@@ -16,13 +16,14 @@ import { canReachEndStage, updateValids } from './validity';
 export function initCharacter(characterName: string): CharacterState {
   // Get state properties without character functions
   const {
-    desc, turnOrder, buttonActive, buttonText, moveUpHeight, workers,
+    desc, pack, turnOrder, buttonActive, buttonText, moveUpHeight, workers,
     numWorkersToPlace, selectedWorkerNum, secretWorkers, powerBlocked, attrs,
   } = getCharacterByName(characterName);
 
   return {
     name: characterName,
     desc,
+    pack,
     turnOrder,
     buttonActive,
     buttonText,
