@@ -1,7 +1,9 @@
+import 'dotenv/config';
 import path from 'path';
 import serve from 'koa-static';
 import sslify, { xForwardedProtoResolver as resolver } from 'koa-sslify';
 import { historyApiFallback } from 'koa2-connect-history-api-fallback';
+import * as Sentry from '@sentry/node';
 import { Server, Origins } from 'boardgame.io/server';
 import { DEFAULT_PORT, isProduction } from '../src/config';
 import { SantoriniGame } from '../src/game';
@@ -16,6 +18,15 @@ const server = Server({
     serverURL,
     Origins.LOCALHOST_IN_DEVELOPMENT,
   ],
+});
+
+Sentry.init({ dsn: process.env.SENTRY_DSN });
+
+server.app.on('error', (err, ctx) => {
+  Sentry.withScope((scope) => {
+    scope.addEventProcessor((event) => Sentry.Handlers.parseRequest(event, ctx.request));
+    Sentry.captureException(err);
+  });
 });
 
 if (isProduction) {

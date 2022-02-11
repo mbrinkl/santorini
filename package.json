@@ -9,6 +9,7 @@
   "dependencies": {
     "@react-three/drei": "^8.8.1",
     "@react-three/fiber": "^7.0.26",
+    "@sentry/node": "^6.17.7",
     "@testing-library/dom": "^8.11.3",
     "@testing-library/jest-dom": "^5.16.1",
     "@testing-library/react": "^12.1.2",
@@ -25,6 +26,7 @@
     "axios": "^0.25.0",
     "boardgame.io": "^0.50.0-alpha.1",
     "concurrently": "^7.0.0",
+    "dotenv": "^16.0.0",
     "easy-peasy": "^5.0.4",
     "koa-sslify": "^5.0.0",
     "koa-static": "^5.0.0",
