@@ -171,6 +171,7 @@ export const Indicator = ({ boardPos, height, stage } : {
     case 'build':
       return <BuildIndicator boardPos={boardPos} height={height} />;
     case 'special':
+    case 'setup':
       return <SpecialIndicator boardPos={boardPos} height={height} />;
     default:
       return null;

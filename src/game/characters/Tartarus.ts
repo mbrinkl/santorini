@@ -1,14 +1,9 @@
 import { tryEndGame } from '../winConditions';
 import { Mortal } from './Mortal';
-import { Character, CharacterState } from '../../types/CharacterTypes';
-import { Token } from '../../types/GameTypes';
+import { Character } from '../../types/CharacterTypes';
 import { Board } from '../boardUtil';
 
-interface TartarusAttrs {
-  placedToken: boolean;
-}
-
-export const Tartarus: Character<TartarusAttrs> = {
+export const Tartarus: Character = {
   ...Mortal,
   desc: [
     `Setup: Place your Workers first. After all players' Workers are placed, secretly place your Abyss Token
@@ -17,35 +12,20 @@ export const Tartarus: Character<TartarusAttrs> = {
     Workers cannot win by entering the Abyss.`,
   ],
   pack: 'gf',
-  turnOrder: 1,
-  attrs: {
-    placedToken: false,
-  },
+  hasAfterBoardSetup: true,
+  turnOrder: 0,
 
-  validPlace: (context, charState: CharacterState<TartarusAttrs>) => {
-    const { G } = context;
-    const valids = Mortal.validPlace(context, charState);
+  validSetup: (context, charState) => Mortal.validPlace(context, charState),
 
-    valids.forEach((pos) => {
-      if (G.spaces[pos].tokens.length > 0) {
-        valids.delete(pos);
-      }
+  setup: ({ G, playerID }, charState, pos) => {
+    Board.placeToken(G, pos, {
+      playerID,
+      obstructing: 'none',
+      secret: true,
+      removable: false,
+      color: 'black',
     });
-
-    return valids;
-  },
-
-  place: (context, charState: CharacterState<TartarusAttrs>, pos) => {
-    if (!charState.attrs.placedToken) {
-      const { G, playerID } = context;
-      const token: Token = {
-        playerID, obstructing: 'none', secret: true, removable: false, color: 'black',
-      };
-      Board.placeToken(G, pos, token);
-      charState.attrs.placedToken = true;
-    } else {
-      Mortal.place(context, charState, pos);
-    }
+    return 'end';
   },
 
   tokenEffects: (context, charState, pos) => {

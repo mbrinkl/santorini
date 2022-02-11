@@ -8,6 +8,41 @@
   20  21  22  23  24 | 0,4  1,4  2,4  3,4  4,4
 */
 
+function posToDirection(pos: number): number[] {
+  let x = 0;
+  let y = 0;
+
+  if (pos < 10) {
+    y = -1;
+  } else if (pos > 15) {
+    y = 1;
+  }
+
+  if (pos % 5 === 1) {
+    x = -1;
+  } else if (pos % 5 === 3) {
+    x = 1;
+  }
+
+  return [x, y];
+}
+
+export function getNextPositionInDirection(pos: number, direction: number) : number {
+  let nextPos = -1;
+
+  const [posX, posY] = posToCoord(pos);
+  const [dirX, dirY] = posToDirection(direction);
+
+  const nextPosX = posX + dirX;
+  const nextPosY = posY + dirY;
+
+  if (nextPosX >= 0 && nextPosX <= 4 && nextPosY >= 0 && nextPosY <= 4) {
+    nextPos = coordToPos(nextPosX, nextPosY);
+  }
+
+  return nextPos;
+}
+
 /**
  * Converts an x,y coordinate to a position
  */

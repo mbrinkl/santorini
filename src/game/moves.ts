@@ -1,5 +1,5 @@
 import { Move } from 'boardgame.io';
-import { initCharacter } from '.';
+import { initCharState } from '.';
 import { GameState } from '../types/GameTypes';
 import { getCharacter } from './characters';
 import { checkWinByMove } from './winConditions';
@@ -7,7 +7,7 @@ import { updateValids } from './validity';
 
 export const setChar: Move<GameState> = ({ G, playerID }, name: string) => {
   G.players[playerID].ready = false;
-  G.players[playerID].charState = initCharacter(name);
+  G.players[playerID].charState = initCharState(name);
 };
 
 export const ready: Move<GameState> = ({ G, playerID }, status: boolean) => {
@@ -27,18 +27,26 @@ export const onButtonPressed: Move<GameState> = (context) => {
   updateValids(context, stage);
 };
 
+export const setup: Move<GameState> = (context, pos: number) => {
+  const { G, playerID, events } = context;
+  const { charState } = G.players[playerID];
+  const character = getCharacter(charState);
+
+  const stage = character.setup(context, charState, pos);
+  events.setStage(stage);
+
+  updateValids(context, stage);
+};
+
 export const place: Move<GameState> = (context, pos: number) => {
   const { G, playerID, events } = context;
   const { charState } = G.players[playerID];
   const character = getCharacter(charState);
 
-  character.place(context, charState, pos);
+  const stage = character.place(context, charState, pos);
+  events.setStage(stage);
 
-  if (charState.numWorkersToPlace === 0) {
-    events.setStage('end');
-  }
-
-  updateValids(context, 'place');
+  updateValids(context, stage);
 };
 
 export const select: Move<GameState> = (context, pos: number) => {

@@ -11,6 +11,8 @@ export const Mortal: Character = {
   buttonText: 'No ability',
   buttonActive: false,
   numWorkersToPlace: 2,
+  hasBeforeBoardSetup: false,
+  hasAfterBoardSetup: false,
   selectedWorkerNum: -1,
   secretWorkers: false,
   moveUpHeight: 1,
@@ -23,17 +25,21 @@ export const Mortal: Character = {
 
   onTurnEnd: (context, charState) => {},
 
+  validSetup: (context, charState) => new Set<number>(),
+  setup: (context, charState, pos) => 'end',
+
   validPlace: ({ G, playerID }, charState) => {
     const valids = new Set<number>();
 
     G.spaces.forEach((space) => {
-      if (!Board.isObstructed(G, playerID, space.pos) && charState.numWorkersToPlace > 0) {
+      if (!Board.isObstructed(G, playerID, space.pos)) {
         valids.add(space.pos);
       }
     });
 
     return valids;
   },
+
   place: (context, charState, pos) => {
     const { G, playerID } = context;
 
@@ -46,6 +52,8 @@ export const Mortal: Character = {
     Board.place(context, pos, playerID, charState.workers.length - 1);
 
     charState.numWorkersToPlace -= 1;
+
+    return charState.numWorkersToPlace === 0 ? 'end' : 'place';
   },
 
   validSelect: (context, charState) => {

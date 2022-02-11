@@ -14,6 +14,8 @@ export interface CharacterState<AttrsType = any> {
   turnOrder?: 0 | 1;
   workers: Worker[];
   numWorkersToPlace: number;
+  hasBeforeBoardSetup: boolean;
+  hasAfterBoardSetup: boolean;
   selectedWorkerNum: number;
   secretWorkers: boolean;
   moveUpHeight: number;
@@ -28,8 +30,11 @@ export interface CharacterFunctions {
   onTurnBegin: (context: GameContext, charState: CharacterState) => void,
   onTurnEnd: (context: GameContext, charState: CharacterState) => void,
 
+  validSetup: (context: GameContext, charState: CharacterState) => Set<number>,
+  setup: (context: GameContext, charState: CharacterState, pos: number) => GameStage,
+
   validPlace: (context: GameContext, charState: CharacterState) => Set<number>,
-  place: (context: GameContext, charState: CharacterState, pos: number) => void,
+  place: (context: GameContext, charState: CharacterState, pos: number) => GameStage,
 
   validSelect: (context: GameContext, charState: CharacterState) => Set<number>,
   select: (context: GameContext, charState: CharacterState, pos: number) => void,

@@ -31,6 +31,7 @@ import { Asteria } from './Asteria';
 import { Tartarus } from './Tartarus';
 import { Clio } from './Clio';
 import { Hecate } from './Hecate';
+import { Siren } from './Siren';
 
 export const characterList: string[] = [
   'Random',
@@ -71,7 +72,7 @@ export const characterList: string[] = [
   'Zeus',
 
   // Golden Fleece Gods
-  // "Aeuolus",
+  'Aeolus',
   // "Charybdis",
   'Clio',
   // "Europa & Talus",
@@ -82,7 +83,7 @@ export const characterList: string[] = [
   'Hecate',
   // "Moerae",
   // "Nemesis",
-  // "Siren",
+  'Siren',
   'Tartarus',
   // "Terpsichore",
   'Urania',
@@ -180,6 +181,7 @@ export function getCharacterByName(name: string): Character {
     case 'Clio': character = Clio; break;
     case 'Tartarus': character = Tartarus; break;
     case 'Hecate': character = Hecate; break;
+    case 'Siren': character = Siren; break;
     default: character = Mortal; break;
   }
 

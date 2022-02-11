@@ -11,7 +11,7 @@ import { Indicator } from './Indicators';
 import { WorkerModel } from './WorkerModel';
 import { BoardPosition } from '../../types/BoardTypes';
 import { TextCoords } from './TextCoords';
-import { GenericToken } from './Tokens';
+import { GenericOffBoardToken, GenericToken } from './Tokens';
 
 export const Scene = ({ boardPositions } : {
   boardPositions: BoardPosition[]
@@ -32,7 +32,9 @@ export const Scene = ({ boardPositions } : {
     const { pos } = e.object.userData;
 
     if (G.valids.includes(pos)) {
-      if (phase === 'boardSetup') {
+      if (phase === 'beforeBoardSetup' || phase === 'afterBoardSetup') {
+        moves.setup(pos);
+      } else if (phase === 'boardSetup') {
         moves.place(pos);
       } else {
         switch (stage) {
@@ -68,6 +70,8 @@ export const Scene = ({ boardPositions } : {
       />
 
       <TextCoords boardPositions={boardPositions} />
+
+      <GenericOffBoardToken tokens={G.offBoardTokens} />
 
       <group onPointerDown={onMeshClicked}>
 

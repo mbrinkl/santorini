@@ -1,7 +1,7 @@
 import { Ctx, DefaultPluginAPIs } from 'boardgame.io';
 import { CharacterState } from './CharacterTypes';
 
-export type GameStage = 'place' | 'select' | 'move' | 'build' | 'special' | 'end';
+export type GameStage = 'setup' | 'place' | 'select' | 'move' | 'build' | 'special' | 'end';
 
 export type GameContext = DefaultPluginAPIs & {
   G: GameState,
@@ -21,6 +21,7 @@ export interface GameState {
   spaces: Space[];
   players: Record<string, Player>;
   valids: number[];
+  offBoardTokens: OffBoardToken[];
 }
 
 export interface Space {
@@ -40,4 +41,9 @@ export interface Token {
   secret: boolean,
   removable: boolean,
   color: string, // just distinguish by color for now
+}
+
+export interface OffBoardToken {
+  playerID: string,
+  direction: number,
 }

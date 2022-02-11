@@ -1,5 +1,6 @@
 import { ActivePlayers } from 'boardgame.io/core';
 import { Ctx, Game } from 'boardgame.io';
+import { RandomAPI } from 'boardgame.io/dist/types/src/plugins/random/random';
 import { GAME_ID } from '../config';
 import { CharacterState } from '../types/CharacterTypes';
 import {
@@ -9,15 +10,32 @@ import {
   GameContext, GameState, Player, Space,
 } from '../types/GameTypes';
 import {
-  setChar, ready, place, move, select, build, special, onButtonPressed, endTurn,
+  setChar, ready, place, move, select, build,
+  special, setup, onButtonPressed, endTurn,
 } from './moves';
 import { canReachEndStage, updateValids } from './validity';
 
-export function initCharacter(characterName: string): CharacterState {
+const TURN_ORDER_ONCE = {
+  first: ({ G }) => getFirstPlayer(G),
+  next: ({ G, ctx }) => {
+    if (getFirstPlayer(G) === ctx.playOrderPos) {
+      return (ctx.playOrderPos + 1) % ctx.numPlayers;
+    }
+    return undefined;
+  },
+};
+
+const TURN_ORDER_DEFAULT = {
+  first: ({ G }) => getFirstPlayer(G),
+  next: ({ ctx }) => (ctx.playOrderPos + 1) % ctx.numPlayers,
+};
+
+export function initCharState(characterName: string): CharacterState {
   // Get state properties without character functions
   const {
     desc, pack, turnOrder, buttonActive, buttonText, moveUpHeight, workers,
-    numWorkersToPlace, selectedWorkerNum, secretWorkers, powerBlocked, attrs,
+    hasBeforeBoardSetup, hasAfterBoardSetup, numWorkersToPlace, selectedWorkerNum,
+    secretWorkers, powerBlocked, attrs,
   } = getCharacterByName(characterName);
 
   return {
@@ -28,6 +46,8 @@ export function initCharacter(characterName: string): CharacterState {
     buttonActive,
     buttonText,
     moveUpHeight,
+    hasBeforeBoardSetup,
+    hasAfterBoardSetup,
     workers,
     numWorkersToPlace,
     selectedWorkerNum,
@@ -37,7 +57,7 @@ export function initCharacter(characterName: string): CharacterState {
   };
 }
 
-function initRandomCharacters({ G, random }: GameContext) {
+function initRandomCharacters(G: GameState, random: RandomAPI) {
   // Remove 'Random'
   const listOnlyCharacters = characterList.slice(1);
 
@@ -50,7 +70,7 @@ function initRandomCharacters({ G, random }: GameContext) {
         name !== opponentCharName && !bannedChars.includes(name)
       ));
       const randomCharName = random.Shuffle(possibleChars)[0];
-      player.charState = initCharacter(randomCharName);
+      player.charState = initCharState(randomCharName);
     }
   });
 }
@@ -112,7 +132,7 @@ export const SantoriniGame: Game<GameState> = {
         ID: i.toString(),
         opponentID: ((i + 1) % ctx.numPlayers).toString(),
         ready: false,
-        charState: initCharacter('Random'),
+        charState: initCharState('Random'),
       });
     }
 
@@ -132,6 +152,7 @@ export const SantoriniGame: Game<GameState> = {
       players,
       spaces,
       valids: [],
+      offBoardTokens: [],
     };
 
     return initialState;
@@ -142,7 +163,7 @@ export const SantoriniGame: Game<GameState> = {
   phases: {
     selectCharacters: {
       start: true,
-      next: 'boardSetup',
+      next: 'beforeBoardSetup',
       turn: {
         activePlayers: ActivePlayers.ALL,
       },
@@ -152,28 +173,41 @@ export const SantoriniGame: Game<GameState> = {
       },
       endIf: ({ G }) => Object.values(G.players).every((player) => player.ready),
       onEnd: (context) => {
-        const contextWithPlayerID = getContextWithPlayerID(context);
-        initRandomCharacters(contextWithPlayerID);
+        const { G, random } = context;
+        initRandomCharacters(G, random);
+        Object.values(context.G.players).forEach((player) => {
+          const character = getCharacter(player.charState);
+          character.initialize({ ...context, playerID: player.ID }, player.charState);
+        });
+      },
+    },
+
+    beforeBoardSetup: {
+      next: 'boardSetup',
+      turn: {
+        activePlayers: { currentPlayer: 'setup' },
+        order: TURN_ORDER_ONCE,
+        stages: {
+          setup: { moves: { setup } },
+          end: { moves: { endTurn } },
+        },
+        onBegin: (context) => {
+          const { G, ctx, events } = context;
+          if (!G.players[ctx.playOrderPos].charState.hasBeforeBoardSetup) {
+            events.endTurn();
+          } else {
+            const contextWithPlayerID = getContextWithPlayerID(context);
+            updateValids(contextWithPlayerID, 'setup');
+          }
+        },
       },
     },
 
     boardSetup: {
-      next: 'main',
-      onBegin: (context) => {
-        const contextWithPlayerID = getContextWithPlayerID(context);
-        const { G } = contextWithPlayerID;
-
-        Object.values(G.players).forEach((player) => {
-          const character = getCharacter(player.charState);
-          character.initialize(contextWithPlayerID, player.charState);
-        });
-      },
+      next: 'afterBoardSetup',
       turn: {
         activePlayers: { currentPlayer: 'place' },
-        order: {
-          first: ({ G }) => getFirstPlayer(G),
-          next: ({ ctx }) => (ctx.playOrderPos + 1) % ctx.numPlayers,
-        },
+        order: TURN_ORDER_ONCE,
         stages: {
           place: { moves: { place } },
           end: { moves: { endTurn } },
@@ -182,12 +216,25 @@ export const SantoriniGame: Game<GameState> = {
           const contextWithPlayerID = getContextWithPlayerID(context);
           updateValids(contextWithPlayerID, 'place');
         },
-        onEnd: ({ G, events }) => {
-          if (
-            G.players['0'].charState.numWorkersToPlace === 0
-            && G.players['1'].charState.numWorkersToPlace === 0
-          ) {
-            events.endPhase();
+      },
+    },
+
+    afterBoardSetup: {
+      next: 'main',
+      turn: {
+        activePlayers: { currentPlayer: 'setup' },
+        order: TURN_ORDER_ONCE,
+        stages: {
+          setup: { moves: { setup } },
+          end: { moves: { endTurn } },
+        },
+        onBegin: (context) => {
+          const { G, ctx, events } = context;
+          if (!G.players[ctx.playOrderPos].charState.hasAfterBoardSetup) {
+            events.endTurn();
+          } else {
+            const contextWithPlayerID = getContextWithPlayerID(context);
+            updateValids(contextWithPlayerID, 'setup');
           }
         },
       },
@@ -196,10 +243,7 @@ export const SantoriniGame: Game<GameState> = {
     main: {
       turn: {
         activePlayers: { currentPlayer: 'select' },
-        order: {
-          first: ({ G }) => getFirstPlayer(G),
-          next: ({ ctx }) => (ctx.playOrderPos + 1) % ctx.numPlayers,
-        },
+        order: TURN_ORDER_DEFAULT,
         stages: {
           select: { moves: { select, onButtonPressed } },
           move: { moves: { move, onButtonPressed } },

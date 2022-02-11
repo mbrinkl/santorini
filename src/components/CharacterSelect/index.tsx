@@ -56,7 +56,7 @@ export const CharacterSelect = () : JSX.Element => {
               {player.charState.name === 'Random'
                 ? 'Random'
                 : G.players[player.ID].charState.desc.map((line) => (
-                  <p key="line">
+                  <p key={`char${line.length}`}>
                     {line}
                   </p>
                 ))}

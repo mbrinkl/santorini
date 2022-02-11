@@ -17,7 +17,7 @@ export const Bia: Character = {
     const valids = new Set<number>();
 
     getPerimeterPositions().forEach((pos) => {
-      if (!G.spaces[pos].inhabitant && charState.numWorkersToPlace > 0) {
+      if (!G.spaces[pos].inhabitant) {
         valids.add(pos);
       }
     });

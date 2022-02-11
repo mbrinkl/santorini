@@ -13,7 +13,9 @@ export const HelpText = () : JSX.Element => {
   let hint = '';
 
   if (!ctx.gameover && isActive) {
-    if (stage === 'place') {
+    if (stage === 'setup') {
+      hint = 'Setup';
+    } else if (stage === 'place') {
       hint = `Place ${G.players[ctx.currentPlayer].charState.numWorkersToPlace} workers`;
     } else if (stage === 'select') {
       hint = 'Select a worker';

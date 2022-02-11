@@ -18,7 +18,7 @@ export const PlayerInfo = () : JSX.Element => {
         <h4 className="player-info__character-name">{G.players[0].charState.name}</h4>
         <div className="player-info__description">
           {G.players[0].charState.desc.map((line) => (
-            <p key="line">
+            <p key={`char0${line.length}`}>
               {line}
             </p>
           ))}
@@ -28,7 +28,7 @@ export const PlayerInfo = () : JSX.Element => {
       <div className="player-info__p1-info">
         <div className="player-info__description">
           {G.players[1].charState.desc.map((line) => (
-            <p key="line">
+            <p key={`char1${line.length}`}>
               {line}
             </p>
           ))}

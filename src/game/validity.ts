@@ -149,6 +149,9 @@ export function updateValids(context: GameContext, stage: GameStage) {
     : charState.workers[charState.selectedWorkerNum].pos;
 
   switch (stage) {
+    case 'setup':
+      G.valids = [...character.validSetup(context, charState)];
+      break;
     case 'place':
       G.valids = [...character.validPlace(context, charState)];
       break;
