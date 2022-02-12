@@ -16,8 +16,8 @@ import {
 import { canReachEndStage, updateValids } from './validity';
 
 const TURN_ORDER_ONCE = {
-  first: ({ G }) => getFirstPlayer(G),
-  next: ({ G, ctx }) => {
+  first: ({ G }: Omit<GameContext, 'playerID'>) => getFirstPlayer(G),
+  next: ({ G, ctx }: Omit<GameContext, 'playerID'>) => {
     if (getFirstPlayer(G) === ctx.playOrderPos) {
       return (ctx.playOrderPos + 1) % ctx.numPlayers;
     }
@@ -26,8 +26,8 @@ const TURN_ORDER_ONCE = {
 };
 
 const TURN_ORDER_DEFAULT = {
-  first: ({ G }) => getFirstPlayer(G),
-  next: ({ ctx }) => (ctx.playOrderPos + 1) % ctx.numPlayers,
+  first: ({ G }: Omit<GameContext, 'playerID'>) => getFirstPlayer(G),
+  next: ({ ctx }: Omit<GameContext, 'playerID'>) => (ctx.playOrderPos + 1) % ctx.numPlayers,
 };
 
 export function initCharState(characterName: string): CharacterState {
@@ -120,43 +120,45 @@ function stripSecrets(G: GameState, ctx: Ctx, playerID: string | null) : GameSta
   return strippedState;
 }
 
+const initPlayers = (ctx: Ctx) : Record<string, Player> => {
+  const players: Record<string, Player> = {} as Record<string, Player>;
+  for (let i = 0; i < ctx.numPlayers; i++) {
+    players[i] = ({
+      ID: i.toString(),
+      opponentID: ((i + 1) % ctx.numPlayers).toString(),
+      ready: false,
+      charState: initCharState('Random'),
+    });
+  }
+  return players;
+};
+
+const initBoard = () : Space[] => {
+  const spaces: Space[] = [];
+  for (let i = 0; i < 25; i++) {
+    spaces.push({
+      pos: i,
+      height: 0,
+      inhabitant: undefined,
+      isDomed: false,
+      tokens: [],
+    });
+  }
+  return spaces;
+};
+
 export const SantoriniGame: Game<GameState> = {
   name: GAME_ID,
   minPlayers: 2,
   maxPlayers: 2,
 
-  setup: ({ ctx }) => {
-    const players: Record<string, Player> = {} as Record<string, Player>;
-    for (let i = 0; i < ctx.numPlayers; i++) {
-      players[i] = ({
-        ID: i.toString(),
-        opponentID: ((i + 1) % ctx.numPlayers).toString(),
-        ready: false,
-        charState: initCharState('Random'),
-      });
-    }
-
-    const spaces: Space[] = [];
-    for (let i = 0; i < 25; i++) {
-      spaces.push({
-        pos: i,
-        height: 0,
-        inhabitant: undefined,
-        isDomed: false,
-        tokens: [],
-      });
-    }
-
-    const initialState: GameState = {
-      isClone: false,
-      players,
-      spaces,
-      valids: [],
-      offBoardTokens: [],
-    };
-
-    return initialState;
-  },
+  setup: ({ ctx }) => ({
+    isClone: false,
+    players: initPlayers(ctx),
+    spaces: initBoard(),
+    valids: [],
+    offBoardTokens: [],
+  }),
 
   playerView: ({ G, ctx, playerID }) => stripSecrets(G, ctx, playerID),
 
