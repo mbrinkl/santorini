@@ -107,14 +107,13 @@ function stripSecrets(G: GameState, ctx: Ctx, playerID: string | null) : GameSta
     }
   });
 
-  strippedState.spaces.map((space) => {
+  strippedState.spaces.forEach((space) => {
     const { tokens } = space;
     for (let i = tokens.length - 1; i >= 0; i--) {
       if (tokens[i].secret && tokens[i].playerID !== playerID) {
         tokens.splice(i, 1);
       }
     }
-    return space;
   });
 
   return strippedState;
