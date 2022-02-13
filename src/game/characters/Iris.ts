@@ -9,29 +9,15 @@ export const Iris: Character = {
       other side of it is unoccupied, your worker may move to that space regardless of its level.`],
   pack: 'promo',
 
-  validMove: ({ G, playerID }, charState, fromPos) => {
-    const valids = new Set<number>();
+  validMove: (context, charState, fromPos) => {
+    const { G, playerID } = context;
+    const valids = Mortal.validMove(context, charState, fromPos);
 
     getAdjacentPositions(fromPos).forEach((pos) => {
-      // If the space is in valid range and height and not domed
-      if (
-        !G.spaces[pos].isDomed && !Board.tokenObstructing(G, playerID, pos)
-        && G.spaces[pos].height - G.spaces[fromPos].height <= charState.moveUpHeight
-      ) {
-        // If the space is not inhabited
-        if (!G.spaces[pos].inhabitant) {
-        // Add the space to the valid list
-          valids.add(pos);
-        } else {
-          // Or if the space is inhabited
-          const nextPos = getNextPosition(fromPos, pos);
-
-          if (nextPos !== -1) {
-            if (!G.spaces[nextPos].inhabitant && !G.spaces[nextPos].isDomed) {
-            // Add the space to the valid list
-              valids.add(nextPos);
-            }
-          }
+      if (G.spaces[pos].inhabitant) {
+        const nextPos = getNextPosition(fromPos, pos);
+        if (nextPos !== -1 && !Board.isObstructed(G, playerID, nextPos)) {
+          valids.add(nextPos);
         }
       }
     });
