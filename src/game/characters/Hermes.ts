@@ -1,13 +1,13 @@
 import { getAdjacentPositions } from '../utility';
-import { Character, CharacterState } from '../../types/CharacterTypes';
+import { Character } from '../../types/CharacterTypes';
 import { Mortal } from './Mortal';
 import { Board } from '../boardUtil';
 
-interface HermesAttrs {
+type HermesAttrs = {
   movedUpOrDown: boolean,
   isMoving: boolean,
   canMoveUp: boolean
-}
+};
 
 export const Hermes: Character<HermesAttrs> = {
   ...Mortal,
@@ -22,11 +22,11 @@ export const Hermes: Character<HermesAttrs> = {
     canMoveUp: true,
   },
 
-  onTurnBegin: (context, charState: CharacterState<HermesAttrs>) => {
+  onTurnBegin: (context, charState) => {
     charState.buttonActive = true;
   },
 
-  validMove: ({ G, playerID }, charState: CharacterState<HermesAttrs>, originalPos) => {
+  validMove: ({ G, playerID }, charState, originalPos) => {
     const adjacents: number[] = getAdjacentPositions(originalPos);
     const valids = new Set<number>();
 
@@ -51,7 +51,7 @@ export const Hermes: Character<HermesAttrs> = {
     return valids;
   },
 
-  move: (context, charState: CharacterState<HermesAttrs>, pos) => {
+  move: (context, charState, pos) => {
     const { G, playerID } = context;
     if (G.spaces[pos].height === charState.workers[charState.selectedWorkerNum].height) {
       charState.attrs.canMoveUp = false;
@@ -69,7 +69,7 @@ export const Hermes: Character<HermesAttrs> = {
     Board.place(context, pos, playerID, charState.selectedWorkerNum);
   },
 
-  getStageAfterMove: (context, charState: CharacterState<HermesAttrs>) => {
+  getStageAfterMove: (context, charState) => {
     if (charState.attrs.isMoving && !charState.attrs.movedUpOrDown) {
       return 'move';
     }
@@ -77,7 +77,7 @@ export const Hermes: Character<HermesAttrs> = {
     return 'build';
   },
 
-  validBuild: ({ G, playerID }, charState: CharacterState<HermesAttrs>, originalPos) => {
+  validBuild: ({ G, playerID }, charState, originalPos) => {
     const valids = new Set<number>();
     let adjacents: number[] = [];
 
@@ -101,7 +101,7 @@ export const Hermes: Character<HermesAttrs> = {
     return valids;
   },
 
-  build: ({ G }, charState: CharacterState<HermesAttrs>, pos) => {
+  build: ({ G }, charState, pos) => {
     charState.attrs.isMoving = false;
     charState.attrs.canMoveUp = true;
     charState.attrs.movedUpOrDown = false;
@@ -110,7 +110,7 @@ export const Hermes: Character<HermesAttrs> = {
     return 'end';
   },
 
-  buttonPressed: (context, charState: CharacterState<HermesAttrs>) => {
+  buttonPressed: (context, charState) => {
     if (charState.attrs.isMoving) {
       charState.attrs.isMoving = false;
       charState.buttonText = 'End Move';

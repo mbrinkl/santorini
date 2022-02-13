@@ -1,10 +1,10 @@
-import { Character, CharacterState } from '../../types/CharacterTypes';
+import { Character } from '../../types/CharacterTypes';
 import { Mortal } from './Mortal';
 import { Board } from '../boardUtil';
 
-interface DemeterAttrs {
+type DemeterAttrs = {
   firstBuildPos: number,
-}
+};
 
 export const Demeter: Character<DemeterAttrs> = {
   ...Mortal,
@@ -15,13 +15,13 @@ export const Demeter: Character<DemeterAttrs> = {
     firstBuildPos: -1,
   },
 
-  buttonPressed: (context, charState: CharacterState<DemeterAttrs>) => {
+  buttonPressed: (context, charState) => {
     charState.attrs.firstBuildPos = -1;
     charState.buttonActive = false;
     return 'end';
   },
 
-  validBuild: (context, charState: CharacterState<DemeterAttrs>, fromPos) => {
+  validBuild: (context, charState, fromPos) => {
     const valids = Mortal.validBuild(context, charState, fromPos);
 
     if (charState.attrs.firstBuildPos !== -1) {
@@ -33,7 +33,7 @@ export const Demeter: Character<DemeterAttrs> = {
     return valids;
   },
 
-  build: ({ G }, charState: CharacterState<DemeterAttrs>, pos) => {
+  build: ({ G }, charState, pos) => {
     Board.build(G, pos);
 
     if (charState.attrs.firstBuildPos === -1) {
@@ -45,7 +45,7 @@ export const Demeter: Character<DemeterAttrs> = {
     }
   },
 
-  getStageAfterBuild: (context, charState: CharacterState<DemeterAttrs>) => {
+  getStageAfterBuild: (context, charState) => {
     if (
       charState.attrs.firstBuildPos !== -1
       && Demeter.validBuild(context, charState, charState.attrs.firstBuildPos).size > 0

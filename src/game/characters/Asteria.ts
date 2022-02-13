@@ -1,10 +1,10 @@
 import { Board } from '../boardUtil';
 import { Mortal } from './Mortal';
-import { Character, CharacterState } from '../../types/CharacterTypes';
+import { Character } from '../../types/CharacterTypes';
 
-interface AsteriaAttrs {
+type AsteriaAttrs = {
   movedDown: boolean
-}
+};
 
 export const Asteria: Character<AsteriaAttrs> = {
   ...Mortal,
@@ -16,16 +16,16 @@ export const Asteria: Character<AsteriaAttrs> = {
   },
   buttonText: 'Skip Dome',
 
-  onTurnBegin: (context, charState: CharacterState<AsteriaAttrs>) => {
+  onTurnBegin: (context, charState) => {
     charState.attrs.movedDown = false;
   },
 
-  buttonPressed: (context, charState: CharacterState<AsteriaAttrs>) => {
+  buttonPressed: (context, charState) => {
     charState.buttonActive = false;
     return 'end';
   },
 
-  move: (context, charState: CharacterState<AsteriaAttrs>, pos) => {
+  move: (context, charState, pos) => {
     const { G } = context;
     const movedFromPos = charState.workers[charState.selectedWorkerNum].pos;
     Mortal.move(context, charState, pos);
@@ -34,7 +34,7 @@ export const Asteria: Character<AsteriaAttrs> = {
     }
   },
 
-  getStageAfterBuild: (context, charState: CharacterState<AsteriaAttrs>) => {
+  getStageAfterBuild: (context, charState) => {
     if (charState.attrs.movedDown) {
       charState.buttonActive = true;
       return 'special';
@@ -43,7 +43,7 @@ export const Asteria: Character<AsteriaAttrs> = {
     return 'end';
   },
 
-  validSpecial: ({ G, playerID }, charState: CharacterState<AsteriaAttrs>, fromPos) => {
+  validSpecial: ({ G, playerID }, charState, fromPos) => {
     const valids = new Set<number>();
     G.spaces.forEach((space) => {
       if (!Board.isObstructed(G, playerID, space.pos)) {

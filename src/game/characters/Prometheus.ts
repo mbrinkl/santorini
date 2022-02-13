@@ -1,9 +1,9 @@
-import { Character, CharacterState } from '../../types/CharacterTypes';
+import { Character } from '../../types/CharacterTypes';
 import { Mortal } from './Mortal';
 
-interface PrometheusAttrs {
+type PrometheusAttrs = {
   specialUsed: boolean,
-}
+};
 
 export const Prometheus: Character<PrometheusAttrs> = {
   ...Mortal,
@@ -20,7 +20,7 @@ export const Prometheus: Character<PrometheusAttrs> = {
     Mortal.select(context, charState, pos);
   },
 
-  move: (context, charState: CharacterState<PrometheusAttrs>, pos) => {
+  move: (context, charState, pos) => {
     charState.buttonActive = false;
     charState.attrs.specialUsed = false;
     Mortal.move(context, charState, pos);
@@ -28,7 +28,7 @@ export const Prometheus: Character<PrometheusAttrs> = {
 
   getStageAfterBuild: (context, charState) => (charState.attrs.specialUsed ? 'move' : 'end'),
 
-  buttonPressed: (context, charState: CharacterState<PrometheusAttrs>) => {
+  buttonPressed: (context, charState) => {
     charState.buttonActive = false;
     charState.attrs.specialUsed = true;
     charState.moveUpHeight = 0;

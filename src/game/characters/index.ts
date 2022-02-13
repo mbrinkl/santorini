@@ -72,7 +72,7 @@ export const characterList: string[] = [
   'Zeus',
 
   // Golden Fleece Gods
-  'Aeolus',
+  // 'Aeolus',
   // "Charybdis",
   'Clio',
   // "Europa & Talus",
@@ -146,7 +146,7 @@ export function getCharacter(charState: CharacterState): Character {
 }
 
 export function getCharacterByName(name: string): Character {
-  let character: Character;
+  let character: Character<any>;
 
   switch (name) {
     case 'Mortal': character = Mortal; break;

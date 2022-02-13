@@ -1,18 +1,15 @@
 import { Board } from '../boardUtil';
 import { getCornerPositions, positionsAreAdjacent } from '../utility';
-import { Character, CharacterState } from '../../types/CharacterTypes';
+import { Character } from '../../types/CharacterTypes';
 import { Mortal } from './Mortal';
 import { GameContext } from '../../types/GameTypes';
 
-interface OdysseusAttrs {
+type OdysseusAttrs = {
   specialUsed: boolean,
   workerToMovePos: number
-}
+};
 
-function getOpenCorners(
-  { G, playerID }: GameContext,
-  charState: CharacterState<OdysseusAttrs>,
-): Set<number> {
+function getOpenCorners({ G, playerID }: GameContext): Set<number> {
   const { opponentID } = G.players[playerID];
   const openCorners = new Set<number>();
 
@@ -36,13 +33,13 @@ export const Odysseus: Character<OdysseusAttrs> = {
     workerToMovePos: -1,
   },
 
-  onTurnBegin: (context, charState: CharacterState<OdysseusAttrs>) => {
+  onTurnBegin: (context, charState) => {
     if (!charState.attrs.specialUsed) {
       charState.buttonActive = (Odysseus.validSpecial(context, charState, -1).size > 0);
     }
   },
 
-  buttonPressed: (context, charState: CharacterState<OdysseusAttrs>) => {
+  buttonPressed: (context, charState) => {
     if (!charState.attrs.specialUsed) {
       charState.attrs.specialUsed = true;
       charState.buttonText = 'End';
@@ -54,17 +51,17 @@ export const Odysseus: Character<OdysseusAttrs> = {
     return 'select';
   },
 
-  select: (context, charState: CharacterState<OdysseusAttrs>, pos) => {
+  select: (context, charState, pos) => {
     charState.buttonActive = false;
     Mortal.select(context, charState, pos);
   },
 
-  validSpecial: (context, charState: CharacterState<OdysseusAttrs>, fromPos) => {
+  validSpecial: (context, charState, fromPos) => {
     const { G, playerID } = context;
     const { opponentID } = G.players[playerID];
 
     const valids = new Set<number>();
-    const openCorners = getOpenCorners(context, charState);
+    const openCorners = getOpenCorners(context);
 
     // valid if there are opponent workers adjacent to any of Odysseus's workers
     // and at least one corner space is free
@@ -87,7 +84,7 @@ export const Odysseus: Character<OdysseusAttrs> = {
     return valids;
   },
 
-  special: (context, charState: CharacterState<OdysseusAttrs>, pos) => {
+  special: (context, charState, pos) => {
     const { G, playerID } = context;
     if (charState.attrs.workerToMovePos === -1) {
       charState.attrs.workerToMovePos = pos;
@@ -103,7 +100,7 @@ export const Odysseus: Character<OdysseusAttrs> = {
     }
   },
 
-  getStageAfterSpecial: (context, charState: CharacterState<OdysseusAttrs>) => {
+  getStageAfterSpecial: (context, charState) => {
     if (Odysseus.validSpecial(context, charState, -1).size > 0) {
       return 'special';
     }

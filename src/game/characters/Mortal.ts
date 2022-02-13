@@ -17,7 +17,7 @@ export const Mortal: Character = {
   secretWorkers: false,
   moveUpHeight: 1,
   powerBlocked: false,
-  attrs: null,
+  attrs: {},
 
   initialize: (context, charState) => {},
 

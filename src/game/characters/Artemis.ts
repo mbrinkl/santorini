@@ -1,9 +1,9 @@
-import { Character, CharacterState } from '../../types/CharacterTypes';
+import { Character } from '../../types/CharacterTypes';
 import { Mortal } from './Mortal';
 
-interface ArtemisAttrs {
+type ArtemisAttrs = {
   prevPos: number,
-}
+};
 
 export const Artemis: Character<ArtemisAttrs> = {
   ...Mortal,
@@ -15,13 +15,13 @@ export const Artemis: Character<ArtemisAttrs> = {
     prevPos: -1,
   },
 
-  buttonPressed: (context, charState: CharacterState<ArtemisAttrs>) => {
+  buttonPressed: (context, charState) => {
     charState.buttonActive = false;
     charState.attrs.prevPos = -1;
     return 'build';
   },
 
-  validMove: (context, charState: CharacterState<ArtemisAttrs>, fromPos) => {
+  validMove: (context, charState, fromPos) => {
     const valids = Mortal.validMove(context, charState, fromPos);
 
     if (valids.has(charState.attrs.prevPos)) {
@@ -31,7 +31,7 @@ export const Artemis: Character<ArtemisAttrs> = {
     return valids;
   },
 
-  move: (context, charState: CharacterState<ArtemisAttrs>, pos) => {
+  move: (context, charState, pos) => {
     if (charState.attrs.prevPos === -1) {
       charState.attrs.prevPos = charState.workers[charState.selectedWorkerNum].pos;
     } else {
@@ -40,7 +40,7 @@ export const Artemis: Character<ArtemisAttrs> = {
     Mortal.move(context, charState, pos);
   },
 
-  getStageAfterMove: (context, charState: CharacterState<ArtemisAttrs>) => {
+  getStageAfterMove: (context, charState) => {
     if (charState.attrs.prevPos !== -1) {
       charState.buttonActive = true;
       return 'move';

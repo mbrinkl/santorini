@@ -1,10 +1,10 @@
-import { Character, CharacterState } from '../../types/CharacterTypes';
+import { Character } from '../../types/CharacterTypes';
 import { Mortal } from './Mortal';
 import { Board } from '../boardUtil';
 
-interface AthenaAttrs {
+type AthenaAttrs = {
   movedUp: boolean,
-}
+};
 
 export const Athena: Character<AthenaAttrs> = {
   ...Mortal,
@@ -15,11 +15,11 @@ export const Athena: Character<AthenaAttrs> = {
     movedUp: false,
   },
 
-  onTurnBegin: (context, charState: CharacterState<AthenaAttrs>) => {
+  onTurnBegin: (context, charState) => {
     charState.attrs.movedUp = false;
   },
 
-  move: (context, charState: CharacterState<AthenaAttrs>, pos) => {
+  move: (context, charState, pos) => {
     const { playerID } = context;
     const heightBefore = charState.workers[charState.selectedWorkerNum].height;
 
@@ -31,7 +31,7 @@ export const Athena: Character<AthenaAttrs> = {
     }
   },
 
-  restrictOpponentMove: ({ G }, charState: CharacterState<AthenaAttrs>, oppCharState, fromPos) => {
+  restrictOpponentMove: ({ G }, charState, oppCharState, fromPos) => {
     const validSet = new Set(G.valids);
 
     // Return no restrictions if Athena did not move up last turn

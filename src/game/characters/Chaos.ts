@@ -6,14 +6,14 @@ import { getCharacterByName } from '.';
 type PossibleCharacters = 'Apollo' | 'Artemis' | 'Athena' | 'Atlas' | 'Demeter' | 'Hephaestus' |
 'Hermes' | 'Minotaur' | 'Pan' | 'Prometheus';
 
-interface ChaosAttrs {
+type ChaosAttrs = {
   numDomes: number,
   nextCharacterList: PossibleCharacters[],
   currentCharacter: PossibleCharacters,
-}
+};
 
 function changeEmulatingCharacter(
-  { G, playerID, random }: GameContext,
+  { random }: GameContext,
   charState: CharacterState<ChaosAttrs>,
   numDomes: number,
 ) : void {
@@ -67,24 +67,23 @@ export const Chaos: Character<ChaosAttrs> = {
     currentCharacter: 'Apollo',
   },
 
-  initialize: (context, charState: CharacterState<ChaosAttrs>) => {
+  initialize: (context, charState) => {
     changeEmulatingCharacter(context, charState, 0);
   },
 
-  onTurnBegin: (context, charState: CharacterState<ChaosAttrs>) => {
+  onTurnBegin: (context, charState) => {
     const { G } = context;
     const numDomes: number = G.spaces.filter((space) => space.isDomed === true).length;
 
     if (charState.attrs.numDomes < numDomes) {
       changeEmulatingCharacter(context, charState, numDomes);
-      charState.attrs = charState.attrs as ChaosAttrs;
     }
 
     const character = getCharacterByName(charState.attrs.currentCharacter);
     character.onTurnBegin(context, charState);
   },
 
-  onTurnEnd: (context, charState: CharacterState<ChaosAttrs>) => {
+  onTurnEnd: (context, charState) => {
     const { G } = context;
     const character = getCharacterByName(charState.attrs.currentCharacter);
     character.onTurnEnd(context, charState);
@@ -95,74 +94,69 @@ export const Chaos: Character<ChaosAttrs> = {
       changeEmulatingCharacter(context, charState, numDomes);
     }
   },
-  validSelect: (context, charState: CharacterState<ChaosAttrs>) => (
+  validSelect: (context, charState) => (
     getCharacterByName(charState.attrs.currentCharacter).validSelect(context, charState)
   ),
-  select: (context, charState: CharacterState<ChaosAttrs>, pos) => (
+  select: (context, charState, pos) => (
     getCharacterByName(charState.attrs.currentCharacter).select(context, charState, pos)
   ),
-  getStageAfterSelect: (context, charState: CharacterState<ChaosAttrs>) => (
+  getStageAfterSelect: (context, charState) => (
     getCharacterByName(charState.attrs.currentCharacter).getStageAfterSelect(context, charState)
   ),
-  validMove: (context, charState: CharacterState<ChaosAttrs>, originalPos) => (
+  validMove: (context, charState, originalPos) => (
     getCharacterByName(charState.attrs.currentCharacter).validMove(context, charState, originalPos)
   ),
-  move: (context, charState: CharacterState<ChaosAttrs>, pos) => (
+  move: (context, charState, pos) => (
     getCharacterByName(charState.attrs.currentCharacter).move(context, charState, pos)
   ),
-  restrictOpponentMove: (context, charState: CharacterState<ChaosAttrs>, oppCharState, fromPos) => (
+  restrictOpponentMove: (context, charState, oppCharState, fromPos) => (
     getCharacterByName(charState.attrs.currentCharacter)
       .restrictOpponentMove(context, charState, oppCharState, fromPos)
   ),
 
-  afterOpponentMove: (context, charState: CharacterState<ChaosAttrs>, oppCharState, pos) => (
+  afterOpponentMove: (context, charState, oppCharState, pos) => (
     getCharacterByName(charState.attrs.currentCharacter)
       .afterOpponentMove(context, charState, oppCharState, pos)
   ),
 
-  getStageAfterMove: (context, charState: CharacterState<ChaosAttrs>) => (
+  getStageAfterMove: (context, charState) => (
     getCharacterByName(charState.attrs.currentCharacter).getStageAfterMove(context, charState)
   ),
 
-  validBuild: (context, charState: CharacterState<ChaosAttrs>, originalPos) => (
+  validBuild: (context, charState, originalPos) => (
     getCharacterByName(charState.attrs.currentCharacter).validBuild(context, charState, originalPos)
   ),
-  build: (context, charState: CharacterState<ChaosAttrs>, pos) => (
+  build: (context, charState, pos) => (
     getCharacterByName(charState.attrs.currentCharacter).build(context, charState, pos)
   ),
 
-  restrictOpponentBuild: (
-    context,
-    charState: CharacterState<ChaosAttrs>,
-    oppCharState,
-    fromPos,
-  ) => (
+  restrictOpponentBuild: (context, charState, oppCharState, fromPos) => (
     getCharacterByName(charState.attrs.currentCharacter)
       .restrictOpponentBuild(context, charState, oppCharState, fromPos)
   ),
 
-  afterOpponentBuild: (context, charState: CharacterState<ChaosAttrs>, oppCharState, builtPos) => (
+  afterOpponentBuild: (context, charState, oppCharState, builtPos) => (
     getCharacterByName(charState.attrs.currentCharacter)
       .afterOpponentBuild(context, charState, oppCharState, builtPos)
   ),
 
-  getStageAfterBuild: (context, charState: CharacterState<ChaosAttrs>) => (
+  getStageAfterBuild: (context, charState) => (
     getCharacterByName(charState.attrs.currentCharacter).getStageAfterBuild(context, charState)
   ),
 
-  validSpecial: (context, charState: CharacterState<ChaosAttrs>, fromPos) => (
+  validSpecial: (context, charState, fromPos) => (
     getCharacterByName(charState.attrs.currentCharacter).validSpecial(context, charState, fromPos)
   ),
-  special: (context, charState: CharacterState<ChaosAttrs>, pos) => (
+  special: (context, charState, pos) => (
     getCharacterByName(charState.attrs.currentCharacter).special(context, charState, pos)
   ),
-  getStageAfterSpecial: (context, charState: CharacterState<ChaosAttrs>) => (
+  getStageAfterSpecial: (context, charState) => (
     getCharacterByName(charState.attrs.currentCharacter).getStageAfterSpecial(context, charState)
   ),
-  buttonPressed: (context, charState: CharacterState<ChaosAttrs>) => (
+  buttonPressed: (context, charState) => (
     getCharacterByName(charState.attrs.currentCharacter).buttonPressed(context, charState)
   ),
-  checkWinByMove: (G, charState: CharacterState<ChaosAttrs>, posBefore, posAfter) => (
+  checkWinByMove: (G, charState, posBefore, posAfter) => (
     getCharacterByName(charState.attrs.currentCharacter)
       .checkWinByMove(G, charState, posBefore, posAfter)
   ),

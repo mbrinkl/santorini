@@ -1,10 +1,10 @@
-import { Character, CharacterState } from '../../types/CharacterTypes';
+import { Character } from '../../types/CharacterTypes';
 import { Mortal } from './Mortal';
 import { Board } from '../boardUtil';
 
-interface HephaestusAttrs {
+type HephaestusAttrs = {
   firstBuildPos: number,
-}
+};
 
 export const Hephaestus: Character<HephaestusAttrs> = {
   ...Mortal,
@@ -15,13 +15,13 @@ export const Hephaestus: Character<HephaestusAttrs> = {
     firstBuildPos: -1,
   },
 
-  buttonPressed: (context, charState: CharacterState<HephaestusAttrs>) => {
+  buttonPressed: (context, charState) => {
     charState.attrs.firstBuildPos = -1;
     charState.buttonActive = false;
     return 'end';
   },
 
-  validBuild: (context, charState: CharacterState<HephaestusAttrs>, fromPos) => {
+  validBuild: (context, charState, fromPos) => {
     if (charState.attrs.firstBuildPos === -1) {
       return Mortal.validBuild(context, charState, fromPos);
     }
@@ -36,7 +36,7 @@ export const Hephaestus: Character<HephaestusAttrs> = {
     return valids;
   },
 
-  build: ({ G }, charState: CharacterState<HephaestusAttrs>, pos) => {
+  build: ({ G }, charState, pos) => {
     Board.build(G, pos);
 
     if (charState.attrs.firstBuildPos === -1) {
@@ -48,7 +48,7 @@ export const Hephaestus: Character<HephaestusAttrs> = {
     }
   },
 
-  getStageAfterBuild: (context, charState: CharacterState<HephaestusAttrs>) => {
+  getStageAfterBuild: (context, charState) => {
     if (
       charState.attrs.firstBuildPos !== -1
       && Hephaestus.validBuild(context, charState, charState.attrs.firstBuildPos).size > 0

@@ -1,12 +1,12 @@
 import { Board } from '../boardUtil';
 import { getAdjacentPositions, getNextPositionInDirection } from '../utility';
 import { Mortal } from './Mortal';
-import { Character, CharacterState } from '../../types/CharacterTypes';
+import { Character } from '../../types/CharacterTypes';
 
-interface SirenAttrs {
+type SirenAttrs = {
   altTurn: boolean;
   movedWorkers: number[];
-}
+};
 
 export const Siren: Character<SirenAttrs> = {
   ...Mortal,
@@ -36,14 +36,14 @@ export const Siren: Character<SirenAttrs> = {
     }
   },
 
-  onTurnEnd: (context, charState: CharacterState<SirenAttrs>) => {
+  onTurnEnd: (context, charState) => {
     charState.buttonActive = false;
     charState.buttonText = 'Move Opponent';
     charState.attrs.altTurn = false;
     charState.attrs.movedWorkers = [];
   },
 
-  buttonPressed: (context, charState: CharacterState<SirenAttrs>) => {
+  buttonPressed: (context, charState) => {
     charState.buttonActive = false;
     if (!charState.attrs.altTurn) {
       charState.attrs.altTurn = true;
@@ -58,7 +58,7 @@ export const Siren: Character<SirenAttrs> = {
     Mortal.select(context, charState, pos);
   },
 
-  validBuild: (context, charState: CharacterState<SirenAttrs>, fromPos) => {
+  validBuild: (context, charState, fromPos) => {
     if (charState.attrs.altTurn) {
       const valids = new Set<number>();
 
@@ -76,7 +76,7 @@ export const Siren: Character<SirenAttrs> = {
     return Mortal.validBuild(context, charState, fromPos);
   },
 
-  validSpecial: ({ G, playerID }, charState: CharacterState<SirenAttrs>, fromPos) => {
+  validSpecial: ({ G, playerID }, charState, fromPos) => {
     const valids = new Set<number>();
     const { opponentID } = G.players[playerID];
     const token = G.offBoardTokens.find((t) => t.playerID === playerID);
@@ -99,7 +99,7 @@ export const Siren: Character<SirenAttrs> = {
     return valids;
   },
 
-  special: (context, charState: CharacterState<SirenAttrs>, pos) => {
+  special: (context, charState, pos) => {
     const { G, playerID } = context;
     const token = G.offBoardTokens.find((t) => t.playerID === playerID);
 

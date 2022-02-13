@@ -103,7 +103,7 @@ function stripSecrets(G: GameState, ctx: Ctx, playerID: string | null) : GameSta
         strippedState.spaces[worker.pos].inhabitant = undefined;
       });
       player.charState.workers = [];
-      player.charState.attrs = undefined;
+      player.charState.attrs = {};
     }
   });
 

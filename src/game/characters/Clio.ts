@@ -1,11 +1,11 @@
 import { Mortal } from './Mortal';
-import { Character, CharacterState } from '../../types/CharacterTypes';
+import { Character } from '../../types/CharacterTypes';
 import { Board } from '../boardUtil';
 import { Token } from '../../types/GameTypes';
 
-interface ClioAttrs {
+type ClioAttrs = {
   numTokens: number
-}
+};
 
 export const Clio: Character<ClioAttrs> = {
   ...Mortal,
@@ -19,7 +19,7 @@ export const Clio: Character<ClioAttrs> = {
     numTokens: 3,
   },
 
-  build: (context, charState: CharacterState<ClioAttrs>, pos) => {
+  build: (context, charState, pos) => {
     const { G, playerID } = context;
     Mortal.build(context, charState, pos);
 

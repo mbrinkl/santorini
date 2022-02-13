@@ -4,11 +4,11 @@ import { Character, CharacterState, Worker } from '../../types/CharacterTypes';
 import { getCharacter } from '.';
 import { tryEndTurn } from '../winConditions';
 
-interface HecateAttrs {
+type HecateAttrs = {
   workers: Worker[],
   oppWorkers: Worker[],
   spaces: Space[],
-}
+};
 
 function restore(G: GameState, playerID: string, restoreState: HecateAttrs) {
   const { opponentID } = G.players[playerID];

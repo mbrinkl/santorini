@@ -7,7 +7,7 @@ export interface Worker {
   height: number;
 }
 
-export interface CharacterState<AttrsType = any> {
+export interface CharacterState<T = Record<string, unknown>> {
   name: string;
   desc: string[];
   pack: Pack;
@@ -22,88 +22,92 @@ export interface CharacterState<AttrsType = any> {
   buttonText: string;
   buttonActive: boolean;
   powerBlocked: boolean;
-  attrs: AttrsType;
+  attrs: T;
 }
 
-export interface CharacterFunctions {
-  initialize: (context: GameContext, charState: CharacterState) => void,
-  onTurnBegin: (context: GameContext, charState: CharacterState) => void,
-  onTurnEnd: (context: GameContext, charState: CharacterState) => void,
+export interface CharacterFunctions<T> {
+  initialize: (context: GameContext, charState: CharacterState<T>) => void,
+  onTurnBegin: (context: GameContext, charState: CharacterState<T>) => void,
+  onTurnEnd: (context: GameContext, charState: CharacterState<T>) => void,
 
-  validSetup: (context: GameContext, charState: CharacterState) => Set<number>,
-  setup: (context: GameContext, charState: CharacterState, pos: number) => GameStage,
+  validSetup: (context: GameContext, charState: CharacterState<T>) => Set<number>,
+  setup: (context: GameContext, charState: CharacterState<T>, pos: number) => GameStage,
 
-  validPlace: (context: GameContext, charState: CharacterState) => Set<number>,
-  place: (context: GameContext, charState: CharacterState, pos: number) => GameStage,
+  validPlace: (context: GameContext, charState: CharacterState<T>) => Set<number>,
+  place: (context: GameContext, charState: CharacterState<T>, pos: number) => GameStage,
 
-  validSelect: (context: GameContext, charState: CharacterState) => Set<number>,
-  select: (context: GameContext, charState: CharacterState, pos: number) => void,
-  getStageAfterSelect: (context: GameContext, charState: CharacterState) => GameStage,
+  validSelect: (context: GameContext, charState: CharacterState<T>) => Set<number>,
+  select: (context: GameContext, charState: CharacterState<T>, pos: number) => void,
+  getStageAfterSelect: (context: GameContext, charState: CharacterState<T>) => GameStage,
 
-  validMove: (context: GameContext, charState: CharacterState, fromPos: number) => Set<number>,
+  validMove: (context: GameContext, charState: CharacterState<T>, fromPos: number) => Set<number>,
   restrictOpponentMove: (
     context: GameContext,
-    charState: CharacterState,
+    charState: CharacterState<T>,
     oppCharState: CharacterState,
     fromPos: number,
   ) => Set<number>
-  move: (context: GameContext, charState: CharacterState, pos: number) => void,
+  move: (context: GameContext, charState: CharacterState<T>, pos: number) => void,
   afterOpponentMove: (
     context: GameContext,
-    charState: CharacterState,
+    charState: CharacterState<T>,
     oppCharState: CharacterState,
     movedFromPos: number
   ) => void,
-  getStageAfterMove: (context: GameContext, charState: CharacterState) => GameStage,
+  getStageAfterMove: (context: GameContext, charState: CharacterState<T>) => GameStage,
 
-  validBuild: (context: GameContext, charState: CharacterState, fromPos: number) => Set<number>,
+  validBuild: (context: GameContext, charState: CharacterState<T>, fromPos: number) => Set<number>,
   restrictOpponentBuild: (
     context: GameContext,
-    charState: CharacterState,
+    charState: CharacterState<T>,
     oppCharState: CharacterState,
     fromPos: number,
   ) => Set<number>,
-  build: (context: GameContext, charState: CharacterState, pos: number) => void,
+  build: (context: GameContext, charState: CharacterState<T>, pos: number) => void,
   afterOpponentBuild: (
     context: GameContext,
-    charState: CharacterState,
+    charState: CharacterState<T>,
     oppCharState: CharacterState,
     builtPos: number,
   ) => void,
-  getStageAfterBuild: (context: GameContext, charState: CharacterState) => GameStage,
+  getStageAfterBuild: (context: GameContext, charState: CharacterState<T>) => GameStage,
 
-  validSpecial: (context: GameContext, charState: CharacterState, fromPos: number) => Set<number>,
+  validSpecial: (
+    context: GameContext,
+    charState: CharacterState<T>,
+    fromPos: number
+  ) => Set<number>,
   restrictOpponentSpecial: (
     context: GameContext,
     charState: CharacterState,
     oppCharState: CharacterState,
     fromPos: number,
   ) => Set<number>,
-  special: (context: GameContext, charState: CharacterState, pos: number) => void,
+  special: (context: GameContext, charState: CharacterState<T>, pos: number) => void,
   afterOpponentSpecial: (
     context: GameContext,
-    charState: CharacterState,
+    charState: CharacterState<T>,
     oppCharState: CharacterState,
   ) => void,
-  getStageAfterSpecial: (context: GameContext, charState: CharacterState) => GameStage,
+  getStageAfterSpecial: (context: GameContext, charState: CharacterState<T>) => GameStage,
 
-  buttonPressed: (context: GameContext, charState: CharacterState) => GameStage,
+  buttonPressed: (context: GameContext, charState: CharacterState<T>) => GameStage,
 
-  tokenEffects: (context: GameContext, charState: CharacterState, pos: number) => void;
+  tokenEffects: (context: GameContext, charState: CharacterState<T>, pos: number) => void;
 
   restrictOpponentWin: (
     context: GameContext,
-    charState: CharacterState,
+    charState: CharacterState<T>,
     posBefore: number,
     posAfter: number
   ) => boolean;
 
   checkWinByMove: (
     context: GameContext,
-    charState: CharacterState,
+    charState: CharacterState<T>,
     posBefore: number,
     posAfter: number
   ) => boolean,
 }
 
-export type Character<AttrsType = any> = Omit<CharacterState<AttrsType>, 'name'> & CharacterFunctions;
+export type Character<T = Record<string, unknown>> = Omit<CharacterState<T>, 'name'> & CharacterFunctions<T>;

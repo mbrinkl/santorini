@@ -1,11 +1,11 @@
 import { getAdjacentPositions } from '../utility';
-import { Character, CharacterState } from '../../types/CharacterTypes';
+import { Character } from '../../types/CharacterTypes';
 import { Mortal } from './Mortal';
 import { Board } from '../boardUtil';
 
-interface HeraclesAttrs {
+type HeraclesAttrs = {
   specialUsed: boolean,
-}
+};
 
 export const Heracles: Character<HeraclesAttrs> = {
   ...Mortal,
@@ -16,7 +16,7 @@ export const Heracles: Character<HeraclesAttrs> = {
     specialUsed: false,
   },
 
-  buttonPressed: (context, charState: CharacterState<HeraclesAttrs>) => {
+  buttonPressed: (context, charState) => {
     if (!charState.attrs.specialUsed) {
       charState.attrs.specialUsed = true;
       charState.buttonText = 'Build Nothing';
@@ -28,14 +28,14 @@ export const Heracles: Character<HeraclesAttrs> = {
     return 'end';
   },
 
-  move: (context, charState: CharacterState<HeraclesAttrs>, pos) => {
+  move: (context, charState, pos) => {
     if (!charState.attrs.specialUsed) {
       charState.buttonActive = true;
     }
     return Mortal.move(context, charState, pos);
   },
 
-  build: (context, charState: CharacterState<HeraclesAttrs>, pos) => {
+  build: (context, charState, pos) => {
     charState.buttonActive = false;
     return Mortal.build(context, charState, pos);
   },
@@ -54,7 +54,7 @@ export const Heracles: Character<HeraclesAttrs> = {
     return valids;
   },
 
-  special: ({ G }, charState: CharacterState<HeraclesAttrs>, pos) => {
+  special: ({ G }, charState, pos) => {
     G.spaces[pos].isDomed = true;
   },
 
