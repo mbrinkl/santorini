@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ButtonGroup } from '../ButtonGroup';
 import { ButtonBack } from '../ButtonBack';
@@ -13,22 +13,13 @@ import { createMatch } from '../../api';
 export const CreatePage = () : JSX.Element => {
   const navigate = useNavigate();
   const [needNicknameGameType, setNeedNicknameGameType] = useState<boolean | null>(null);
-  const [matchID, setMatchID] = useState<string | null>(null);
   const nickname = useStoreState((s) => s.nickname);
   const activeRoomPlayer = useStoreState((s) => s.activeRoomPlayer);
-  const joinRoom = useStoreActions((s) => s.joinRoom);
   const leaveRoom = useStoreActions((s) => s.leaveRoom);
-
-  useEffect(() => {
-    if (nickname && matchID) {
-      joinRoom({ matchID, playerID: '0', playerName: nickname });
-      navigate(`/rooms/${matchID}`);
-    }
-  }, [nickname, matchID, joinRoom, navigate]);
 
   async function createRoom(unlisted: boolean) {
     const createdMatchID = await createMatch(2, unlisted);
-    setMatchID(createdMatchID);
+    navigate(`/rooms/${createdMatchID}`);
   }
 
   async function host(unlisted: boolean) {
