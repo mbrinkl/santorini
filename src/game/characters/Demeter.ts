@@ -8,11 +8,15 @@ type DemeterAttrs = {
 
 export const Demeter: Character<DemeterAttrs> = {
   ...Mortal,
-  desc: ['Your Build: Your worker may build one additional time, but not on the same space.'],
-  pack: 'simple',
-  buttonText: 'Skip 2nd Build',
-  attrs: {
-    firstBuildPos: -1,
+
+  data: {
+    ...Mortal.data,
+    desc: ['Your Build: Your worker may build one additional time, but not on the same space.'],
+    pack: 'simple',
+    buttonText: 'Skip 2nd Build',
+    attrs: {
+      firstBuildPos: -1,
+    },
   },
 
   onTurnEnd: (context, charState) => {

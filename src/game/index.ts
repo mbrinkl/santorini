@@ -30,31 +30,9 @@ const TURN_ORDER_DEFAULT = {
   next: ({ ctx }: Omit<GameContext, 'playerID'>) => (ctx.playOrderPos + 1) % ctx.numPlayers,
 };
 
-export function initCharState(characterName: string): CharacterState {
-  // Get state properties without character functions
-  const {
-    desc, pack, turnOrder, buttonActive, buttonText, moveUpHeight, workers,
-    hasBeforeBoardSetup, hasAfterBoardSetup, numWorkersToPlace, selectedWorkerNum,
-    secretWorkers, powerBlocked, attrs,
-  } = getCharacterByName(characterName);
-
-  return {
-    name: characterName,
-    desc,
-    pack,
-    turnOrder,
-    buttonActive,
-    buttonText,
-    moveUpHeight,
-    hasBeforeBoardSetup,
-    hasAfterBoardSetup,
-    workers,
-    numWorkersToPlace,
-    selectedWorkerNum,
-    secretWorkers,
-    powerBlocked,
-    attrs,
-  };
+export function initCharState(name: string): CharacterState {
+  const { data } = getCharacterByName(name);
+  return { name, ...data };
 }
 
 function initRandomCharacters(G: GameState, random: RandomAPI) {

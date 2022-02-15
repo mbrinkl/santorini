@@ -35,12 +35,12 @@ function changeEmulatingCharacter(
   const newCharacterName = charState.attrs.nextCharacterList.shift() || 'Apollo'; // fallback;
   const newCharacter = getCharacterByName(newCharacterName);
 
-  const newDesc = `${newCharacterName} - ${newCharacter.desc}`;
+  const newDesc = `${newCharacterName} - ${newCharacter.data.desc}`;
   charState.desc.splice(1, 1, newDesc);
 
-  charState.buttonActive = newCharacter.buttonActive;
-  charState.buttonText = newCharacter.buttonText;
-  charState.moveUpHeight = newCharacter.moveUpHeight;
+  charState.buttonActive = newCharacter.data.buttonActive;
+  charState.buttonText = newCharacter.data.buttonText;
+  charState.moveUpHeight = newCharacter.data.moveUpHeight;
 
   const updatedAttrs: ChaosAttrs = {
     numDomes,
@@ -50,21 +50,24 @@ function changeEmulatingCharacter(
 
   charState.attrs = {
     ...updatedAttrs,
-    ...newCharacter.attrs,
+    ...newCharacter.data.attrs,
   };
 }
 
 export const Chaos: Character<ChaosAttrs> = {
   ...Mortal,
 
-  desc: [
-    'Any Time: Changes between Simple God Powers after any turn in which at least one dome is built)',
-  ],
-  pack: 'advanced',
-  attrs: {
-    numDomes: 0,
-    nextCharacterList: [],
-    currentCharacter: 'Apollo',
+  data: {
+    ...Mortal.data,
+    desc: [
+      'Any Time: Changes between Simple God Powers after any turn in which at least one dome is built)',
+    ],
+    pack: 'advanced',
+    attrs: {
+      numDomes: 0,
+      nextCharacterList: [],
+      currentCharacter: 'Apollo',
+    },
   },
 
   initialize: (context, charState) => {

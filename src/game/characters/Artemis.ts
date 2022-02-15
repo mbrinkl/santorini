@@ -7,12 +7,16 @@ type ArtemisAttrs = {
 
 export const Artemis: Character<ArtemisAttrs> = {
   ...Mortal,
-  desc: [`Your Move: Your worker may move one additional time, but not back to
-      its initial space.`],
-  pack: 'simple',
-  buttonText: 'End Move',
-  attrs: {
-    prevPos: -1,
+
+  data: {
+    ...Mortal.data,
+    desc: [`Your Move: Your worker may move one additional time, but not back to
+    its initial space.`],
+    pack: 'simple',
+    buttonText: 'End Move',
+    attrs: {
+      prevPos: -1,
+    },
   },
 
   buttonPressed: (context, charState) => {

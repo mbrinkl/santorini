@@ -110,4 +110,7 @@ export interface CharacterFunctions<T> {
   ) => boolean,
 }
 
-export type Character<T = Record<string, unknown>> = Omit<CharacterState<T>, 'name'> & CharacterFunctions<T>;
+export type Character<T = Record<string, unknown>> = CharacterFunctions<T> &
+{
+  data: Omit<CharacterState<T>, 'name'>
+};

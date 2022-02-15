@@ -3,8 +3,12 @@ import { Character } from '../../types/CharacterTypes';
 
 export const Hades: Character = {
   ...Mortal,
-  desc: ['Opponent’s Turn: Opponent Workers cannot move down.'],
-  pack: 'gf',
+
+  data: {
+    ...Mortal.data,
+    desc: ['Opponent’s Turn: Opponent Workers cannot move down.'],
+    pack: 'gf',
+  },
 
   restrictOpponentMove: ({ G }, charState, opponentCharState, fromPos) => {
     const valids = new Set(G.valids);

@@ -8,13 +8,17 @@ type AsteriaAttrs = {
 
 export const Asteria: Character<AsteriaAttrs> = {
   ...Mortal,
-  desc: [`End of Your Turn: If one of your Workers moved down this turn, 
+
+  data: {
+    ...Mortal.data,
+    desc: [`End of Your Turn: If one of your Workers moved down this turn, 
     you may build a dome on any unoccupied space.`],
-  pack: 'promo',
-  attrs: {
-    movedDown: false,
+    pack: 'promo',
+    attrs: {
+      movedDown: false,
+    },
+    buttonText: 'Skip Dome',
   },
-  buttonText: 'Skip Dome',
 
   onTurnBegin: (context, charState) => {
     charState.attrs.movedDown = false;

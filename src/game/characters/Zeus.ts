@@ -3,8 +3,12 @@ import { Mortal } from './Mortal';
 
 export const Zeus: Character = {
   ...Mortal,
-  desc: ['Your Build: Your Worker may build a block under itself.'],
-  pack: 'advanced',
+
+  data: {
+    ...Mortal.data,
+    desc: ['Your Build: Your Worker may build a block under itself.'],
+    pack: 'advanced',
+  },
 
   validBuild: (context, charState, originalPos) => {
     const valids = Mortal.validBuild(context, charState, originalPos);

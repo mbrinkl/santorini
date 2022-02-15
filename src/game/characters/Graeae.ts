@@ -5,12 +5,16 @@ import { Board } from '../boardUtil';
 
 export const Graeae: Character = {
   ...Mortal,
-  desc: [
-    'Setup: When placing your Workers, place 3 of your color.',
-    'Your Build: Build with a Worker that did not Move.',
-  ],
-  pack: 'gf',
-  numWorkersToPlace: 3,
+
+  data: {
+    ...Mortal.data,
+    desc: [
+      'Setup: When placing your Workers, place 3 of your color.',
+      'Your Build: Build with a Worker that did not Move.',
+    ],
+    pack: 'gf',
+    numWorkersToPlace: 3,
+  },
 
   validBuild: ({ G, playerID }, charState, fromPos) => {
     let adjacents: number[] = [];

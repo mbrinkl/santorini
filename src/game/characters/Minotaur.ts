@@ -5,12 +5,15 @@ import { Mortal } from './Mortal';
 import { Board } from '../boardUtil';
 
 export const Minotaur: Character = {
-
   ...Mortal,
-  desc: [`Your Move: Your Worker may move into an opponent Worker’s space, 
+
+  data: {
+    ...Mortal.data,
+    desc: [`Your Move: Your Worker may move into an opponent Worker’s space, 
     if their Worker can be forced one space straight backwards to an 
     unoccupied space at any level.`],
-  pack: 'simple',
+    pack: 'simple',
+  },
 
   validMove: (context, charState, originalPos) => {
     const { G, playerID } = context;

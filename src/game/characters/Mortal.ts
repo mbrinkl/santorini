@@ -5,19 +5,21 @@ import { Board } from '../boardUtil';
 
 export const Mortal: Character = {
 
-  workers: [],
-  desc: ['No ability'],
-  pack: 'none',
-  buttonText: 'No ability',
-  buttonActive: false,
-  numWorkersToPlace: 2,
-  hasBeforeBoardSetup: false,
-  hasAfterBoardSetup: false,
-  selectedWorkerNum: -1,
-  secretWorkers: false,
-  moveUpHeight: 1,
-  powerBlocked: false,
-  attrs: {},
+  data: {
+    workers: [],
+    desc: ['No ability'],
+    pack: 'none',
+    buttonText: 'No ability',
+    buttonActive: false,
+    numWorkersToPlace: 2,
+    hasBeforeBoardSetup: false,
+    hasAfterBoardSetup: false,
+    selectedWorkerNum: -1,
+    secretWorkers: false,
+    moveUpHeight: 1,
+    powerBlocked: false,
+    attrs: {},
+  },
 
   initialize: (context, charState) => {},
 

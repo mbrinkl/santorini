@@ -9,14 +9,18 @@ type ClioAttrs = {
 
 export const Clio: Character<ClioAttrs> = {
   ...Mortal,
-  desc: [
-    'Your Build: Place a Coin Token on each of the first 3 blocks your Workers build.',
-    `Opponent’s Turn: Opponents treat spaces containing your Coin Tokens as if they contain
+
+  data: {
+    ...Mortal.data,
+    desc: [
+      'Your Build: Place a Coin Token on each of the first 3 blocks your Workers build.',
+      `Opponent’s Turn: Opponents treat spaces containing your Coin Tokens as if they contain
     only a dome`,
-  ],
-  pack: 'gf',
-  attrs: {
-    numTokens: 3,
+    ],
+    pack: 'gf',
+    attrs: {
+      numTokens: 3,
+    },
   },
 
   build: (context, charState, pos) => {

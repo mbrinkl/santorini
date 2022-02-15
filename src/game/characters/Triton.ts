@@ -4,11 +4,15 @@ import { posIsPerimeter } from '../utility';
 
 export const Triton: Character = {
   ...Mortal,
-  desc: [
-    'Your Move: Each time your Worker moves into a perimeter space, it may immediately move again.',
-  ],
-  pack: 'advanced',
-  buttonText: 'End Move',
+
+  data: {
+    ...Mortal.data,
+    desc: [
+      'Your Move: Each time your Worker moves into a perimeter space, it may immediately move again.',
+    ],
+    pack: 'advanced',
+    buttonText: 'End Move',
+  },
 
   getStageAfterMove: (context, charState) => {
     const { pos } = charState.workers[charState.selectedWorkerNum];

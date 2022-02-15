@@ -8,11 +8,15 @@ type AthenaAttrs = {
 
 export const Athena: Character<AthenaAttrs> = {
   ...Mortal,
-  desc: [`Opponent's Turn: If one of your workers moved up on your last turn, 
+
+  data: {
+    ...Mortal.data,
+    desc: [`Opponent's Turn: If one of your workers moved up on your last turn, 
         opponent workers cannot move up this turn.`],
-  pack: 'simple',
-  attrs: {
-    movedUp: false,
+    pack: 'simple',
+    attrs: {
+      movedUp: false,
+    },
   },
 
   onTurnBegin: (context, charState) => {

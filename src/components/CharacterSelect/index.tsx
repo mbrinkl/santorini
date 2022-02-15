@@ -22,7 +22,7 @@ export const CharacterSelect = () : JSX.Element => {
       setCharacterList(getSortedCharacters());
     } else {
       const filteredList = getSortedCharacters().filter((char) => (
-        getCharacterByName(char).pack === pack
+        getCharacterByName(char).data.pack === pack
       ));
       setCharacterList(filteredList);
     }

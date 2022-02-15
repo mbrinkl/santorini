@@ -10,17 +10,21 @@ type SirenAttrs = {
 
 export const Siren: Character<SirenAttrs> = {
   ...Mortal,
-  desc: [`Setup: Place the Arrow Token beside the board and orient it in any of the 
+
+  data: {
+    ...Mortal.data,
+    desc: [`Setup: Place the Arrow Token beside the board and orient it in any of the 
     8 directions to indicate the direction of the Siren's Song.`,
-  `Alternative Turn: Force one or more opponent Workers one space in the direction of 
+    `Alternative Turn: Force one or more opponent Workers one space in the direction of 
     the Siren's Song to unoccupied spaces at any level; then build with any of your Workers.`,
-  ],
-  pack: 'gf',
-  buttonText: 'Move Opponent',
-  hasBeforeBoardSetup: true,
-  attrs: {
-    altTurn: false,
-    movedWorkers: [],
+    ],
+    pack: 'gf',
+    buttonText: 'Move Opponent',
+    hasBeforeBoardSetup: true,
+    attrs: {
+      altTurn: false,
+      movedWorkers: [],
+    },
   },
 
   validSetup: () => new Set([6, 7, 8, 11, 13, 16, 17, 18]),

@@ -5,15 +5,19 @@ import { Board } from '../boardUtil';
 
 export const Tartarus: Character = {
   ...Mortal,
-  desc: [
-    `Setup: Place your Workers first. After all players' Workers are placed, secretly place your Abyss Token
+
+  data: {
+    ...Mortal.data,
+    desc: [
+      `Setup: Place your Workers first. After all players' Workers are placed, secretly place your Abyss Token
     on an unoccupied space. This space is the Abyss.`,
-    `Lose Condition: If any player's Worker enters the Abyss, they immediately lose. 
+      `Lose Condition: If any player's Worker enters the Abyss, they immediately lose. 
     Workers cannot win by entering the Abyss.`,
-  ],
-  pack: 'gf',
-  hasAfterBoardSetup: true,
-  turnOrder: 0,
+    ],
+    pack: 'gf',
+    hasAfterBoardSetup: true,
+    turnOrder: 0,
+  },
 
   validSetup: (context, charState) => Mortal.validPlace(context, charState),
 

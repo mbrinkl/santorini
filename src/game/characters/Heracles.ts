@@ -9,11 +9,15 @@ type HeraclesAttrs = {
 
 export const Heracles: Character<HeraclesAttrs> = {
   ...Mortal,
-  desc: ['Instead of Your Build: Once, both your Workers build any number of domes (even zero) at any level'],
-  pack: 'heroes',
-  buttonText: 'Build Domes',
-  attrs: {
-    specialUsed: false,
+
+  data: {
+    ...Mortal.data,
+    desc: ['Instead of Your Build: Once, both your Workers build any number of domes (even zero) at any level'],
+    pack: 'heroes',
+    buttonText: 'Build Domes',
+    attrs: {
+      specialUsed: false,
+    },
   },
 
   buttonPressed: (context, charState) => {
