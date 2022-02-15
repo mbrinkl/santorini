@@ -20,6 +20,7 @@ export const Prometheus: Character<PrometheusAttrs> = {
 
   onTurnEnd: (context, charState) => {
     charState.attrs.specialUsed = false;
+    charState.moveUpHeight = 1;
   },
 
   select: (context, charState, pos) => {

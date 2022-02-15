@@ -6,7 +6,7 @@ import { Board } from '../boardUtil';
 type HermesAttrs = {
   movedUpOrDown: boolean,
   isMoving: boolean,
-  canMoveUp: boolean
+  canMoveUpOrDown: boolean
 };
 
 export const Hermes: Character<HermesAttrs> = {
@@ -22,7 +22,7 @@ export const Hermes: Character<HermesAttrs> = {
     attrs: {
       movedUpOrDown: false,
       isMoving: false,
-      canMoveUp: true,
+      canMoveUpOrDown: true,
     },
   },
 
@@ -33,16 +33,16 @@ export const Hermes: Character<HermesAttrs> = {
   onTurnEnd: (context, charState) => {
     charState.attrs.isMoving = false;
     charState.attrs.movedUpOrDown = false;
-    charState.attrs.canMoveUp = true;
+    charState.attrs.canMoveUpOrDown = true;
   },
 
   validMove: (context, charState, fromPos) => {
     const { G } = context;
     const valids = Mortal.validMove(context, charState, fromPos);
 
-    if (!charState.attrs.canMoveUp) {
+    if (!charState.attrs.canMoveUpOrDown) {
       valids.forEach((pos) => {
-        if (G.spaces[pos].height > G.spaces[fromPos].height) {
+        if (G.spaces[pos].height !== G.spaces[fromPos].height) {
           valids.delete(pos);
         }
       });
@@ -54,7 +54,7 @@ export const Hermes: Character<HermesAttrs> = {
   move: (context, charState, pos) => {
     const { G } = context;
     if (G.spaces[pos].height === charState.workers[charState.selectedWorkerNum].height) {
-      charState.attrs.canMoveUp = false;
+      charState.attrs.canMoveUpOrDown = false;
       charState.attrs.isMoving = true;
       if (charState.workers.length === 2) {
         charState.buttonText = 'Switch Workers';
