@@ -5,6 +5,7 @@ import { useParams } from 'react-router-dom';
 import Tippy from '@tippyjs/react';
 import { LobbyAPI } from 'boardgame.io';
 import classNames from 'classnames';
+import { NotFound } from '../NotFound';
 import { isProduction } from '../../config';
 import { SERVER_URL } from '../../config/client';
 import { SantoriniGame } from '../../game';
@@ -172,10 +173,21 @@ export const GameLobbyPlay = () : JSX.Element => {
 export const GameLobby = () : JSX.Element => {
   const { matchID } = useParams<{ matchID: string }>();
   const [isGameRunning, setGameRunning] = useState(false);
+  const [matchExists, setMatchExists] = useState(true);
 
   useEffect(() => {
     setGameRunning(false);
+
+    if (matchID) {
+      getMatch(matchID).then((match) => {
+        setMatchExists(match !== undefined);
+      });
+    }
   }, [matchID]);
+
+  if (!matchExists) {
+    return <NotFound />;
+  }
 
   return isGameRunning ? (
     <GameLobbyPlay />
