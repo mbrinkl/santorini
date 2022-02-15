@@ -18,18 +18,18 @@ export const GameBoard = (boardProps: BoardProps<GameState>) : JSX.Element => {
       {ctx.phase === 'selectCharacters'
         ? <CharacterSelect />
         : (
-          <div className="container">
-            <div className="chatContainer">
+          <div className="board-container">
+            <div className="board-container__chat">
               <Chat />
             </div>
 
-            <div className="boardContainer">
+            <div className="board-container__player-board">
               <PlayerBoard />
               <PlayerControls />
             </div>
 
             {isMobile() ? <PlayerInfoMobile /> : (
-              <div className="playerInfoContainer">
+              <div className="board-container__player-info">
                 <PlayerInfo />
               </div>
             )}

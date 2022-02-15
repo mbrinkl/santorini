@@ -35,7 +35,7 @@ export const HelpText = () : JSX.Element => {
   }
 
   return (
-    <span className="PlayerBoard__hint">
+    <span className="player-board__hint">
       {hint}
     </span>
   );

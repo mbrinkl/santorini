@@ -1,0 +1,93 @@
+@import "~styles/shared";
+
+.PlayerInfoMobile {
+  position: absolute;
+  width: 100vw;
+  top: 10px;
+
+  h2 {
+    margin: 0;
+  }
+
+  &__P1QuestionMark {
+    font-size: 24px;
+    position: absolute;
+    left: 10px;
+    top: 10px;
+    color: white;
+    background-color: dodgerblue;
+    border-radius: 50%;
+  }
+
+  &__P2QuestionMark {
+    font-size: 24px;
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    color: white;
+    background-color: gray;
+    border-radius: 50%;
+  }
+
+  &__P1Name {
+    position: absolute;
+    color: dodgerblue;
+    left: 40px;
+    font-size: 14px;
+  }
+
+  &__P2Name {
+    position: absolute;
+    color: gray;
+    right: 40px;
+    font-size: 14px;
+    text-align: right;
+  }
+
+  &__Name {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+  
+    div {
+      margin-right: 5px;
+    }
+  }
+}
+
+.MobileOverlay {
+  position: absolute;
+  z-index: 10;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: transparentize($c-black, 0.10);
+  
+  &__p1 {
+    position: absolute;
+    top: 15%;
+    right: 10px;
+    left: 10px;
+    text-align: center;
+    color: dodgerblue;
+  }
+
+  &__mid {
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    left: 10px;
+    text-align: center;
+    color: white;
+  }
+
+  &__p2 {
+    position: absolute;
+    bottom: 15%;
+    right: 10px;
+    left: 10px;
+    text-align: center;
+    color: gray;
+  }
+}

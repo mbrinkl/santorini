@@ -4,6 +4,7 @@ import { playAgain } from '../../api';
 import { useBoardContext } from '../../context/boardContext';
 import { Button, ButtonLink, ImageButton } from '../Button';
 import undoLogo from '../../assets/png/undo.png';
+import './PlayerControls.scss';
 
 export const PlayerControls = () : JSX.Element | null => {
   const {
@@ -57,14 +58,14 @@ export const PlayerControls = () : JSX.Element | null => {
   }
 
   return (
-    <div className="PlayerControls">
+    <div className="player-controls">
 
       {ctx.gameover ? (
         <>
           <ButtonLink
             theme="red"
             to="/"
-            className="PlayerControls__button"
+            className="player-controls__button"
             size="small"
           >
             Exit
@@ -72,7 +73,7 @@ export const PlayerControls = () : JSX.Element | null => {
 
           <Button
             theme="green"
-            className="PlayerControls__button"
+            className="player-controls__button"
             size="small"
             onClick={() => rematch()}
           >
@@ -87,7 +88,7 @@ export const PlayerControls = () : JSX.Element | null => {
               alt="undoLogo"
               theme="red"
               size="small"
-              className="PlayerControls__button"
+              className="player-controls__button"
               disabled={!ctx.numMoves || !isActive}
               onClick={() => undoMove()}
             />
@@ -95,7 +96,7 @@ export const PlayerControls = () : JSX.Element | null => {
             <Button
               theme="blue"
               size="small"
-              className="PlayerControls__button"
+              className="player-controls__button"
               disabled={!G.players[playerID].charState.buttonActive}
               onClick={() => moves.onButtonPressed()}
             >
@@ -105,7 +106,7 @@ export const PlayerControls = () : JSX.Element | null => {
             <Button
               theme="green"
               onClick={() => endTurn()}
-              className="PlayerControls__button"
+              className="player-controls__button"
               size="small"
               disabled={(ctx.activePlayers && ctx.activePlayers[ctx.currentPlayer] !== 'end') || !isActive}
             >

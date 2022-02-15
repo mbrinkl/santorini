@@ -7,6 +7,7 @@ import { useBoardContext, BoardContext } from '../../context/boardContext';
 import { Scene } from '../Three/Scene';
 import { BoardPosition } from '../../types/BoardTypes';
 import { GROUND_PADDING, GROUND_SIZE } from '../../config/board';
+import './PlayerBoard.scss';
 
 export const PlayerBoard = () : JSX.Element => {
   const { isActive, ctx, playerID } = useBoardContext();
@@ -30,15 +31,15 @@ export const PlayerBoard = () : JSX.Element => {
 
   let outlineClass = '';
   if (ctx.gameover) {
-    outlineClass = (ctx.gameover.winner === playerID) ? 'PlayerBoard--winner' : 'PlayerBoard--loser';
+    outlineClass = (ctx.gameover.winner === playerID) ? 'player-board--winner' : 'player-board--loser';
   } else {
-    outlineClass = isActive ? 'PlayerBoard--active' : 'PlayerBoard--waiting';
+    outlineClass = isActive ? 'player-board--active' : 'player-board--waiting';
   }
 
   return (
-    <div className={classNames('PlayerBoard', outlineClass)}>
+    <div className={classNames('player-board', outlineClass)}>
       <HelpText />
-      <div id="canvas">
+      <div className="player-board__canvas">
         <Canvas camera={{ fov: 75 }}>
           <ContextBridge>
             <Scene boardPositions={boardPositions} />
