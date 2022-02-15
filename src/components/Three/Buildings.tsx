@@ -40,7 +40,8 @@ export const Dome = ({ boardPos, height } : {
   return (
     <Sphere
       userData={{ pos: boardPos.pos }}
-      args={[1.5, 16]}
+      args={[1.5, 16, 16, 0, Math.PI]}
+      rotation={[(3 * Math.PI) / 2, 0, 0]}
       position={[boardPos.x, yPosHeightMap[height], boardPos.z]}
     >
       <meshStandardMaterial name="mat" color="blue" />
