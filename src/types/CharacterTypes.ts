@@ -79,7 +79,7 @@ export interface CharacterFunctions<T> {
   ) => Set<number>,
   restrictOpponentSpecial: (
     context: GameContext,
-    charState: CharacterState,
+    charState: CharacterState<T>,
     oppCharState: CharacterState,
     fromPos: number,
   ) => Set<number>,

@@ -33,9 +33,12 @@ export const JoinPage = () : JSX.Element => {
     }
   }
 
-  const filteredMatches = matches.filter((m) => !m.gameover
+  const filteredMatches = matches.filter((m) => (
+    !m.gameover
     && !m.players[1].name
-    && m.createdAt === m.updatedAt);
+    && m.createdAt === m.updatedAt
+  ));
+
   const matchTableBody = filteredMatches.length === 0
     ? (
       <tr className="match-table__row">

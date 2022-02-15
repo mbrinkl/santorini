@@ -26,24 +26,20 @@ export const Hermes: Character<HermesAttrs> = {
     charState.buttonActive = true;
   },
 
-  validMove: ({ G, playerID }, charState, originalPos) => {
-    const adjacents: number[] = getAdjacentPositions(originalPos);
-    const valids = new Set<number>();
+  onTurnEnd: (context, charState) => {
+    charState.attrs.isMoving = false;
+    charState.attrs.movedUpOrDown = false;
+    charState.attrs.canMoveUp = true;
+  },
 
-    if (charState.attrs.canMoveUp) {
-      adjacents.forEach((pos) => {
-        if (!Board.isObstructed(G, playerID, pos)
-          && G.spaces[pos].height - G.spaces[originalPos].height <= charState.moveUpHeight
-        ) {
-          valids.add(pos);
-        }
-      });
-    } else {
-      adjacents.forEach((pos) => {
-        if (!Board.isObstructed(G, playerID, pos)
-          && G.spaces[pos].height === G.spaces[originalPos].height
-        ) {
-          valids.add(pos);
+  validMove: (context, charState, fromPos) => {
+    const { G } = context;
+    const valids = Mortal.validMove(context, charState, fromPos);
+
+    if (!charState.attrs.canMoveUp) {
+      valids.forEach((pos) => {
+        if (G.spaces[pos].height > G.spaces[fromPos].height) {
+          valids.delete(pos);
         }
       });
     }
@@ -52,30 +48,22 @@ export const Hermes: Character<HermesAttrs> = {
   },
 
   move: (context, charState, pos) => {
-    const { G, playerID } = context;
+    const { G } = context;
     if (G.spaces[pos].height === charState.workers[charState.selectedWorkerNum].height) {
       charState.attrs.canMoveUp = false;
       charState.attrs.isMoving = true;
-      charState.buttonText = 'Switch Workers';
+      if (charState.workers.length === 2) {
+        charState.buttonText = 'Switch Workers';
+      }
     } else {
       charState.attrs.movedUpOrDown = true;
       charState.buttonActive = false;
     }
 
-    // free the space that is being moved from
-    Board.free(context, charState.workers[charState.selectedWorkerNum].pos);
-
-    // place the worker on the selected space
-    Board.place(context, pos, playerID, charState.selectedWorkerNum);
+    Mortal.move(context, charState, pos);
   },
 
-  getStageAfterMove: (context, charState) => {
-    if (charState.attrs.isMoving && !charState.attrs.movedUpOrDown) {
-      return 'move';
-    }
-
-    return 'build';
-  },
+  getStageAfterMove: (context, charState) => (charState.attrs.isMoving ? 'move' : 'build'),
 
   validBuild: ({ G, playerID }, charState, originalPos) => {
     const valids = new Set<number>();
@@ -101,31 +89,15 @@ export const Hermes: Character<HermesAttrs> = {
     return valids;
   },
 
-  build: ({ G }, charState, pos) => {
-    charState.attrs.isMoving = false;
-    charState.attrs.canMoveUp = true;
-    charState.attrs.movedUpOrDown = false;
-
-    Board.build(G, pos);
-    return 'end';
-  },
-
   buttonPressed: (context, charState) => {
-    if (charState.attrs.isMoving) {
+    if (charState.attrs.isMoving && charState.workers.length > 1) {
       charState.attrs.isMoving = false;
       charState.buttonText = 'End Move';
-      // change the selected worker
-      if (charState.workers.length > 1) {
-        charState.selectedWorkerNum = (charState.selectedWorkerNum + 1) % 2;
-      }
-    } else {
-      charState.buttonActive = false;
-      if (charState.selectedWorkerNum === -1) {
-        charState.selectedWorkerNum = 0;
-      }
-      return 'build';
+      charState.selectedWorkerNum = (charState.selectedWorkerNum + 1) % 2;
+      return 'move';
     }
 
-    return Mortal.buttonPressed(context, charState);
+    charState.buttonActive = false;
+    return 'build';
   },
 };

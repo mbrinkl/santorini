@@ -15,6 +15,10 @@ export const Hephaestus: Character<HephaestusAttrs> = {
     firstBuildPos: -1,
   },
 
+  onTurnEnd: (context, charState) => {
+    charState.attrs.firstBuildPos = -1;
+  },
+
   buttonPressed: (context, charState) => {
     charState.attrs.firstBuildPos = -1;
     charState.buttonActive = false;

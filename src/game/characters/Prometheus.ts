@@ -14,6 +14,10 @@ export const Prometheus: Character<PrometheusAttrs> = {
     specialUsed: false,
   },
 
+  onTurnEnd: (context, charState) => {
+    charState.attrs.specialUsed = false;
+  },
+
   select: (context, charState, pos) => {
     charState.attrs.specialUsed = false;
     charState.buttonActive = true;

@@ -7,21 +7,23 @@ import { tryEndTurn } from '../winConditions';
 type HecateAttrs = {
   workers: Worker[],
   oppWorkers: Worker[],
+  oppAttrs: Record<string, unknown>,
   spaces: Space[],
 };
 
-function restore(G: GameState, playerID: string, restoreState: HecateAttrs) {
+const restore = (G: GameState, playerID: string, restoreState: HecateAttrs) => {
   const { opponentID } = G.players[playerID];
   G.players[playerID].charState.workers = restoreState.oppWorkers;
+  G.players[playerID].charState.attrs = restoreState.oppAttrs;
   G.players[opponentID].charState.workers = restoreState.workers;
   G.spaces = restoreState.spaces;
-}
+};
 
-function illegalState(
+const illegalState = (
   { G }: GameContext,
   charState: CharacterState,
   oppCharState: CharacterState,
-) : boolean {
+) : boolean => {
   const workerPositions = charState.workers.map(({ pos }) => pos);
   const oppWorkerPositions = oppCharState.workers.map(({ pos }) => pos);
 
@@ -36,7 +38,7 @@ function illegalState(
     || !charState.workers.every((worker) => (
       !G.spaces[worker.pos].isDomed && G.spaces[worker.pos].height === worker.height))
   );
-}
+};
 
 export const Hecate: Character<HecateAttrs> = {
   ...Mortal,
@@ -57,6 +59,7 @@ export const Hecate: Character<HecateAttrs> = {
   attrs: {
     workers: [],
     oppWorkers: [],
+    oppAttrs: {},
     spaces: [],
   },
 
@@ -73,6 +76,7 @@ export const Hecate: Character<HecateAttrs> = {
     charState.attrs = {
       workers: charState.workers,
       oppWorkers: oppCharState.workers,
+      oppAttrs: oppCharState.attrs,
       spaces: G.spaces,
     };
 
@@ -101,6 +105,7 @@ export const Hecate: Character<HecateAttrs> = {
     charState.attrs = {
       workers: charState.workers,
       oppWorkers: oppCharState.workers,
+      oppAttrs: oppCharState.attrs,
       spaces: G.spaces,
     };
 
@@ -129,6 +134,7 @@ export const Hecate: Character<HecateAttrs> = {
     charState.attrs = {
       workers: charState.workers,
       oppWorkers: oppCharState.workers,
+      oppAttrs: oppCharState.attrs,
       spaces: G.spaces,
     };
 

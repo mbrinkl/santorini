@@ -18,8 +18,8 @@ export const CreatePage = () : JSX.Element => {
   const leaveRoom = useStoreActions((s) => s.leaveRoom);
 
   async function createRoom(unlisted: boolean) {
-    const createdMatchID = await createMatch(2, unlisted);
-    navigate(`/rooms/${createdMatchID}`);
+    const matchID = await createMatch(2, unlisted);
+    navigate(`/rooms/${matchID}`);
   }
 
   async function host(unlisted: boolean) {
