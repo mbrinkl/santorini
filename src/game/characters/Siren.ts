@@ -128,6 +128,8 @@ export const Siren: Character<SirenAttrs> = {
       return 'special';
     }
 
+    charState.buttonActive = false;
+    charState.buttonText = 'Move Opponent';
     return 'build';
   },
 };
