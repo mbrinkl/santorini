@@ -32,6 +32,8 @@ import { Tartarus } from './Tartarus';
 import { Clio } from './Clio';
 import { Hecate } from './Hecate';
 import { Siren } from './Siren';
+import { Hestia } from './Hestia';
+import { Poseidon } from './Poseidon';
 
 export const characterList: string[] = [
   'Random',
@@ -60,13 +62,13 @@ export const characterList: string[] = [
   // "Dionysus",
   'Eros',
   // "Hera",
-  // "Hestia",
+  'Hestia',
   // "Hypnus",
   // "Limus",
   // "Medusa",
   // "Morpheus",
   // "Persephone",
-  // "Poseidon",
+  'Poseidon',
   // "Selene",
   'Triton',
   'Zeus',
@@ -182,6 +184,8 @@ export function getCharacterByName(name: string): Character {
     case 'Tartarus': character = Tartarus; break;
     case 'Hecate': character = Hecate; break;
     case 'Siren': character = Siren; break;
+    case 'Hestia': character = Hestia; break;
+    case 'Poseidon': character = Poseidon; break;
     default: character = Mortal; break;
   }
 
