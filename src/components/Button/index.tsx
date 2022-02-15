@@ -1,3 +1,4 @@
+import classNames from 'classnames';
 import React, { ButtonHTMLAttributes, ImgHTMLAttributes } from 'react';
 import { Link, LinkProps } from 'react-router-dom';
 import style from './style.module.scss';
@@ -15,11 +16,12 @@ HTMLButtonElement, ButtonProps & ButtonHTMLAttributes<HTMLButtonElement>
   <button
     ref={ref}
     type="button"
-    className={`
-      ${style.button}
-      ${style[`button--${theme}`]}
-      ${style[`button--size-${size}`]}
-      ${className}`}
+    className={classNames(
+      style.button,
+      style[`button--${theme}`],
+      style[`button--size-${size}`],
+      className,
+    )}
     {...props}
   />
 ));
@@ -32,11 +34,12 @@ export const ButtonLink = ({
   ...props
 }: ButtonProps & LinkProps) : JSX.Element => (
   <Link
-    className={`
-      ${style.button}
-      ${style[`button--${theme}`]}
-      ${style[`button--size-${size}`]}
-      ${className}`}
+    className={classNames(
+      style.button,
+      style[`button--${theme}`],
+      style[`button--size-${size}`],
+      className,
+    )}
     {...props}
   />
 );
@@ -53,11 +56,12 @@ ButtonHTMLAttributes<HTMLButtonElement> &
 ImgHTMLAttributes<HTMLImageElement>) : JSX.Element => (
   <button
     type="button"
-    className={`
-      ${style.button}
-      ${style[`button--${theme}`]}
-      ${style[`button--size-${size}`]}
-      ${className}`}
+    className={classNames(
+      style.button,
+      style[`button--${theme}`],
+      style[`button--size-${size}`],
+      className,
+    )}
     {...props}
   >
     <img style={{ position: 'relative', width: 25, height: 25 }} src={src} alt={alt} />

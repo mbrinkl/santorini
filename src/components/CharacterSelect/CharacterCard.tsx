@@ -1,3 +1,4 @@
+import classNames from 'classnames';
 import { banList } from '../../game/characters';
 import { useBoardContext } from '../../context/boardContext';
 import CheckImg from '../../assets/png/check.png';
@@ -44,11 +45,11 @@ export const CharacterCard = ({ playerID, name } : {
 
   return (
     <div
-      className={
-        `${name}
-        character-card
-        ${isUnselectable() ? 'character-card--grayscale' : 'character-card--selectable'}`
-      }
+      className={classNames(
+        name,
+        'character-card',
+        isUnselectable() ? 'character-card--grayscale' : 'character-card--selectable',
+      )}
       onClick={select}
       onKeyDown={(e) => e.key === 'Enter' && select()}
       role="button"

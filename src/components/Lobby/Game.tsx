@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import Tippy from '@tippyjs/react';
 import { LobbyAPI } from 'boardgame.io';
+import classNames from 'classnames';
 import { isProduction } from '../../config';
 import { SERVER_URL } from '../../config/client';
 import { SantoriniGame } from '../../game';
@@ -113,7 +114,7 @@ export const GameLobbySetup = ({ startGame } : { startGame(): void }) : JSX.Elem
           matchMetadata.players?.map((player) => (player.name ? (
             <div
               key={player.id}
-              className="lobby__player lobby__player--active"
+              className={classNames('lobby__player', 'lobby__player--active')}
             >
               {`${player.name} ${
                 activeRoomPlayer
@@ -126,7 +127,7 @@ export const GameLobbySetup = ({ startGame } : { startGame(): void }) : JSX.Elem
           ) : (
             <div
               key={player.id}
-              className="lobby__player lobby__player--inactive"
+              className={classNames('lobby__player', ' lobby__player--inactive')}
             >
               Waiting for player...
             </div>

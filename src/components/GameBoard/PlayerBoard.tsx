@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Canvas } from '@react-three/fiber';
 import { useContextBridge } from '@react-three/drei';
+import classNames from 'classnames';
 import { HelpText } from './HelpText';
 import { useBoardContext, BoardContext } from '../../context/boardContext';
 import { Scene } from '../Three/Scene';
@@ -27,15 +28,15 @@ export const PlayerBoard = () : JSX.Element => {
     setBoardPositions(positions);
   }, []);
 
-  let outlineClass = 'PlayerBoard';
+  let outlineClass = '';
   if (ctx.gameover) {
-    outlineClass += (ctx.gameover.winner === playerID) ? ' PlayerBoard--winner' : ' PlayerBoard--loser';
+    outlineClass = (ctx.gameover.winner === playerID) ? 'PlayerBoard--winner' : 'PlayerBoard--loser';
   } else {
-    outlineClass += isActive ? ' PlayerBoard--active' : ' PlayerBoard--waiting';
+    outlineClass = isActive ? 'PlayerBoard--active' : 'PlayerBoard--waiting';
   }
 
   return (
-    <div className={outlineClass}>
+    <div className={classNames('PlayerBoard', outlineClass)}>
       <HelpText />
       <div id="canvas">
         <Canvas camera={{ fov: 75 }}>

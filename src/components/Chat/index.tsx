@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import classNames from 'classnames';
 import { useBoardContext } from '../../context/boardContext';
 import { isMobile } from '../../util';
 import { ImageButton } from '../Button';
@@ -46,7 +47,7 @@ export const Chat = () : JSX.Element => {
   return (
     <div className="chat">
       <div className="chat__message-list">
-        <p className="chat__message chat__message--warning">
+        <p className={classNames('chat__message', 'chat__message--warning')}>
           Chat messages are not stored on the server and will only be received
           by connected players. Spectators cannot use the chat.
         </p>

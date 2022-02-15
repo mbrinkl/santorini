@@ -1,5 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import { MouseEvent, useEffect, useState } from 'react';
+import classNames from 'classnames';
 import { LobbyAPI } from 'boardgame.io';
 import { LobbyPage } from './Wrapper';
 import { ButtonBack } from '../ButtonBack';
@@ -47,7 +48,7 @@ export const JoinPage = () : JSX.Element => {
     ) : filteredMatches.map((m) => (
       <tr
         key={m.matchID}
-        className="match-table__row match-table__row--match"
+        className={classNames('match-table__row', 'match-table__row--match')}
         onClick={onTableRowClicked}
       >
         <td>{m.matchID}</td>
