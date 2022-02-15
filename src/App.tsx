@@ -13,6 +13,7 @@ import { initializeStore, useStoreState } from './store';
 import { NICKNAME_STORAGE_KEY, PLAYER_STORAGE_KEY } from './config/client';
 import { StoreModel } from './types/StoreTypes';
 import { Home } from './components/Lobby/Home';
+import { NotFound } from './components/NotFound';
 
 const savedNickname = localStorage.getItem(NICKNAME_STORAGE_KEY);
 const savedPlayer = localStorage.getItem(PLAYER_STORAGE_KEY);
@@ -34,6 +35,7 @@ const App = () => {
         <Route path="/rooms" element={<JoinPage />} />
         <Route path="/rooms/:matchID" element={nickname ? <GameLobby /> : <SetupNickname />} />
         <Route path="/nickname" element={<SetupNickname onSubmit={() => navigate('/')} />} />
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </div>
   );
