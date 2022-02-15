@@ -169,7 +169,12 @@ export const GameLobbyPlay = () : JSX.Element => {
 };
 
 export const GameLobby = () : JSX.Element => {
+  const { matchID } = useParams<{ matchID: string }>();
   const [isGameRunning, setGameRunning] = useState(false);
+
+  useEffect(() => {
+    setGameRunning(false);
+  }, [matchID]);
 
   return isGameRunning ? (
     <GameLobbyPlay />

@@ -1,7 +1,8 @@
 import { useState, useEffect, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { playAgain } from '../../api';
 import { useBoardContext } from '../../context/boardContext';
-import { Button, ImageButton } from '../Button';
+import { Button, ButtonLink, ImageButton } from '../Button';
 import undoLogo from '../../assets/png/undo.png';
 
 export const PlayerControls = () : JSX.Element | null => {
@@ -10,6 +11,7 @@ export const PlayerControls = () : JSX.Element | null => {
     matchID,
   } = useBoardContext();
 
+  const navigate = useNavigate();
   const [counter, setCounter] = useState(3);
   const intervalID: any = useRef(null);
 
@@ -45,12 +47,8 @@ export const PlayerControls = () : JSX.Element | null => {
     if (playerID && credentials) {
       sendChatMessage('wants to rematch...');
       const nextMatchID = await playAgain(matchID, playerID, credentials);
-      window.open(`/rooms/${nextMatchID}`, '_self');
+      navigate(`/rooms/${nextMatchID}`, { state: { isGameRunning: false } });
     }
-  }
-
-  function exit() {
-    window.open('/', '_self');
   }
 
   // No controls for spectators
@@ -63,14 +61,14 @@ export const PlayerControls = () : JSX.Element | null => {
 
       {ctx.gameover ? (
         <>
-          <Button
+          <ButtonLink
             theme="red"
-            onClick={() => exit()}
+            to="/"
             className="PlayerControls__button"
             size="small"
           >
             Exit
-          </Button>
+          </ButtonLink>
 
           <Button
             theme="green"
