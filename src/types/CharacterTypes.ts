@@ -19,6 +19,7 @@ export interface CharacterState<T = Record<string, unknown>> {
   selectedWorkerNum: number;
   secretWorkers: boolean;
   moveUpHeight: number;
+  specialText: string;
   buttonText: string;
   buttonActive: boolean;
   powerBlocked: boolean;

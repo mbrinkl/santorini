@@ -1,4 +1,3 @@
-import { tryEndGame } from '../winConditions';
 import { Character } from '../../types/CharacterTypes';
 import { Mortal } from './Mortal';
 import { Board } from '../boardUtil';
@@ -43,29 +42,7 @@ export const Bia: Character = {
       const worker = opponentCharState.workers.find((w) => w.pos === posToKill);
 
       if (worker) {
-        // Free the space
-        Board.free(context, posToKill);
-
-        // Remove the worker from opponent character's state
-        const index = opponentCharState.workers.indexOf(worker);
-        if (index > -1) {
-          opponentCharState.workers.splice(index, 1);
-        }
-
-        // Check if no workers left and end game if none
-        if (opponentCharState.workers.length === 0) {
-          tryEndGame(context, playerID);
-        } else {
-          // Otherwise, iterate opponent workers and update worker numbers
-          let workerNum = 0;
-          G.players[opponentID].charState.workers.forEach((w) => {
-            G.spaces[w.pos].inhabitant = {
-              playerID: opponentID,
-              workerNum,
-            };
-            workerNum += 1;
-          });
-        }
+        Board.killWorkerAtPos(context, posToKill);
       }
     }
 

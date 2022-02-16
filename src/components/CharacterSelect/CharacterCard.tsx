@@ -46,7 +46,7 @@ export const CharacterCard = ({ playerID, name } : {
   return (
     <div
       className={classNames(
-        name,
+        name.replace(/\s/g, ''),
         'character-card',
         isUnselectable() ? 'character-card--grayscale' : 'character-card--selectable',
       )}
@@ -67,7 +67,7 @@ export const SelectedCharacterCard = ({ name, playerID } : {
   const { G } = useBoardContext();
 
   return (
-    <div className={`${name} character-card`}>
+    <div className={`${name.replace(/\s/g, '')} character-card`}>
       {G.players[playerID].ready
         && (
         <img

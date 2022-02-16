@@ -34,6 +34,7 @@ import { Hecate } from './Hecate';
 import { Siren } from './Siren';
 import { Hestia } from './Hestia';
 import { Poseidon } from './Poseidon';
+import { LernaeanHydra } from './LernaeanHydra';
 
 export const characterList: string[] = [
   'Random',
@@ -102,7 +103,7 @@ export const characterList: string[] = [
   // "Polyphemus",
   // "Theseus",
 
-  // Underworld https://roxley.com/santorini-underworld-promo-cards/
+  // Underworld
   // "Tyche",
   // "Scylla",
   // "Proteus",
@@ -115,6 +116,9 @@ export const characterList: string[] = [
   'Iris',
   // "Nyx",
   'Pegasus',
+
+  // Custom
+  'Lernaean Hydra',
 ];
 
 export const banList: [string, string][] = [
@@ -186,6 +190,7 @@ export function getCharacterByName(name: string): Character {
     case 'Siren': character = Siren; break;
     case 'Hestia': character = Hestia; break;
     case 'Poseidon': character = Poseidon; break;
+    case 'Lernaean Hydra': character = LernaeanHydra; break;
     default: character = Mortal; break;
   }
 

@@ -24,7 +24,7 @@ export const HelpText = () : JSX.Element => {
     } else if (stage === 'build') {
       hint = 'Build';
     } else if (stage === 'special') {
-      hint = 'Special';
+      hint = G.players[ctx.currentPlayer].charState.specialText;
     } else if (stage === 'end') {
       hint = 'End Turn or Undo';
     }

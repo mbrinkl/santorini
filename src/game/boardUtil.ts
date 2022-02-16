@@ -1,5 +1,6 @@
 import { GameContext, GameState, Token } from '../types/GameTypes';
 import { getCharacter } from './characters';
+import { tryEndGame } from './winConditions';
 
 export const Board = {
   place: (
@@ -21,6 +22,35 @@ export const Board = {
 
   free: ({ G }: GameContext, pos: number) => {
     G.spaces[pos].inhabitant = undefined;
+  },
+
+  killWorkerAtPos: (context: GameContext, pos: number) => {
+    const { G } = context;
+    const { inhabitant } = G.spaces[pos];
+
+    if (inhabitant) {
+      const { playerID } = inhabitant;
+      const { charState } = G.players[playerID];
+
+      charState.workers.splice(inhabitant.workerNum, 1);
+
+      // Check if no workers left and end game if none
+      if (charState.workers.length === 0) {
+        tryEndGame(context, G.players[playerID].opponentID);
+      } else {
+      // Otherwise, iterate opponent workers and update worker numbers
+        let workerNum = 0;
+        G.players[playerID].charState.workers.forEach((worker) => {
+          G.spaces[worker.pos].inhabitant = {
+            playerID,
+            workerNum,
+          };
+          workerNum += 1;
+        });
+      }
+    }
+
+    Board.free(context, pos);
   },
 
   isObstructed: (G: GameState, playerID: string, pos: number) => (

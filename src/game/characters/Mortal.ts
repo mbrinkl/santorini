@@ -9,6 +9,7 @@ export const Mortal: Character = {
     workers: [],
     desc: ['No ability'],
     pack: 'none',
+    specialText: 'Special',
     buttonText: 'No ability',
     buttonActive: false,
     numWorkersToPlace: 2,
