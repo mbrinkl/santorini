@@ -59,6 +59,28 @@ export function posToCoord(pos: number): number[] {
   return [x, y];
 }
 
+export function posToReadableCoord(pos: number): string {
+  const [x, y] = posToCoord(pos);
+
+  const xMap = {
+    0: 'A',
+    1: 'B',
+    2: 'C',
+    3: 'D',
+    4: 'E',
+  };
+
+  const yMap = {
+    0: 5,
+    1: 4,
+    2: 3,
+    3: 2,
+    4: 1,
+  };
+
+  return `${xMap[x]}${yMap[y]}`;
+}
+
 /**
   * Given two adjacent positions, get the next position
   * ie. given 0 as fromPos and 6 as toPos, the next position is 12

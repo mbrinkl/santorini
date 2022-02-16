@@ -7,10 +7,23 @@
   align-items: center;
   justify-content: center;
 
-  &__chat {
+  &__log-chat {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
     width: 20%;
-    height: 75%;
+    height: 90%;
     margin: auto;
+  }
+
+  &__log {
+    width: 100%;
+    height: 45%;
+  }
+
+  &__chat {
+    width: 100%;
+    height: 45%;
   }
 
   &__player-board {
@@ -41,7 +54,7 @@
       min-width: 100%;
     }
   
-    &__chat {
+    &__log-chat {
       order: 3;
       min-width: 95%;
       height: 100%;

@@ -7,6 +7,7 @@ import { CharacterSelect } from '../CharacterSelect';
 import { PlayerInfo } from './PlayerInfo';
 import { PlayerInfoMobile } from './PlayerInfoMobile';
 import { Chat } from '../Chat';
+import { MoveLog } from '../MoveLog';
 import { isMobile } from '../../util';
 import './style.scss';
 
@@ -19,8 +20,13 @@ export const GameBoard = (boardProps: BoardProps<GameState>) : JSX.Element => {
         ? <CharacterSelect />
         : (
           <div className="board-container">
-            <div className="board-container__chat">
-              <Chat />
+            <div className="board-container__log-chat">
+              <div className="board-container__chat">
+                <Chat />
+              </div>
+              <div className="board-container__log">
+                <MoveLog />
+              </div>
             </div>
 
             <div className="board-container__player-board">
