@@ -39,7 +39,7 @@ export const MoveLog = () : JSX.Element => {
         const name = matchData?.[playerID].name || `Player ${playerID}`;
         const move = (type === 'onButtonPressed'
           ? 'button pressed'
-          : `${type} ${posToReadableCoord(args[0])}`
+          : `${type} ${posToReadableCoord(args?.[0])}`
         );
 
         return (

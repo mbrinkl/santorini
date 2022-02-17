@@ -30,7 +30,10 @@ export const PlayerBoard = () : JSX.Element => {
   }, []);
 
   let outlineClass = '';
-  if (ctx.gameover) {
+
+  if (!playerID) {
+    outlineClass = 'player-board--spectator';
+  } else if (ctx.gameover) {
     outlineClass = (ctx.gameover.winner === playerID) ? 'player-board--winner' : 'player-board--loser';
   } else {
     outlineClass = isActive ? 'player-board--active' : 'player-board--waiting';

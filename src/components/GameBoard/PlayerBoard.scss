@@ -31,6 +31,10 @@
     box-shadow: 0 0 0 4px rgba($c-green, 0.7);
   }
 
+  &--spectator {
+    box-shadow: 0 0 0 4px rgba($c-blue, 0.7);
+  }
+
   @keyframes victory {
     0% {
       box-shadow: 0 0 0 4px rgba($c-violet, 0.5);
@@ -87,6 +91,10 @@
 
   &--loser &__hint {
     color: $c-red;
+  }
+
+  &--spectator &__hint {
+    color: $c-blue;
   }
 
   @include tablet-max {

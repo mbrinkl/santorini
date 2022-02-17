@@ -1,0 +1,36 @@
+@import "~styles/shared";
+
+.inspector {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.log-form {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: $c-blue;
+
+  &__title {
+    color: $c-white;
+
+    &--error {
+      color: $c-yellow;
+    }
+  }
+
+  &__input {
+    width: 50%;
+    height: 50%;
+    overflow: scroll;
+    border: none;
+    margin: 1em;
+  }
+}

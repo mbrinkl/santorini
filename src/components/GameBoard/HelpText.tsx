@@ -30,8 +30,11 @@ export const HelpText = () : JSX.Element => {
     }
   } else if (!ctx.gameover && !isActive) {
     hint = `${currentPlayerName}'s Turn`;
-  } else {
+  } else if (playerID) {
     hint = ctx.gameover.winner === playerID ? 'You Win!' : 'You Lose';
+  } else {
+    const { winner } = ctx.gameover;
+    hint = `${matchData?.[winner].name || `Player ${winner}`} Wins`;
   }
 
   return (
