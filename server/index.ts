@@ -38,16 +38,16 @@ const server = Server({
   ],
 });
 
-Sentry.init({ dsn: process.env.SENTRY_DSN });
-
-server.app.on('error', (err, ctx) => {
-  Sentry.withScope((scope) => {
-    scope.addEventProcessor((event) => Sentry.Handlers.parseRequest(event, ctx.request));
-    Sentry.captureException(err);
-  });
-});
-
 if (isProduction) {
+  Sentry.init({ dsn: process.env.SENTRY_DSN });
+
+  server.app.on('error', (err, ctx) => {
+    Sentry.withScope((scope) => {
+      scope.addEventProcessor((event) => Sentry.Handlers.parseRequest(event, ctx.request));
+      Sentry.captureException(err);
+    });
+  });
+
   server.app.use(sslify({ resolver }));
 }
 server.app.use(
