@@ -62,7 +62,7 @@ export const PlayerControls = () : JSX.Element | null => {
           className="player-controls__button"
           size="small"
         >
-          Exit
+          Leave
         </ButtonLink>
       </div>
     );
@@ -79,7 +79,7 @@ export const PlayerControls = () : JSX.Element | null => {
             className="player-controls__button"
             size="small"
           >
-            Exit
+            Leave
           </ButtonLink>
 
           <Button

@@ -1,11 +1,12 @@
 import { ChangeEventHandler, useState } from 'react';
 import { ConnectedIndicator } from '../ConnectedIndicator';
-import { Button } from '../Button';
+import { Button, ButtonLink } from '../Button';
 import { getCharacterByName, getSortedCharacters } from '../../game/characters';
 import { useBoardContext } from '../../context/boardContext';
 import { Chat } from '../Chat';
 import './style.scss';
 import { CharacterCard, SelectedCharacterCard } from './CharacterCard';
+import { ButtonGroup } from '../ButtonGroup';
 
 export const CharacterSelect = () : JSX.Element => {
   const {
@@ -31,12 +32,14 @@ export const CharacterSelect = () : JSX.Element => {
   return (
     <div className="char-select">
 
-      <div className="char-select__chat">
-        <Chat />
-      </div>
+      { playerID && (
+        <div className="char-select__chat">
+          <Chat />
+        </div>
+      )}
 
       <div className="char-select__main">
-        <h1>Select a Character</h1>
+        {playerID && <h1>Select a Character</h1>}
 
         {Object.values(G.players).map((player) => (
           <div key={`selectedChar${player.ID}`} className="char-select__player-char">
@@ -64,16 +67,22 @@ export const CharacterSelect = () : JSX.Element => {
           </div>
         ))}
 
-        {playerID && (
-        <Button
-          className="char-select__ready-button"
-          theme={ready ? 'red' : 'green'}
-          onClick={() => { moves.ready(!ready); }}
-        >
-          {ready ? 'Cancel' : 'Ready'}
-        </Button>
-        )}
-
+        <ButtonGroup>
+          {playerID && (
+          <Button
+            theme={ready ? 'yellow' : 'green'}
+            onClick={() => { moves.ready(!ready); }}
+          >
+            {ready ? 'Cancel' : 'Ready'}
+          </Button>
+          )}
+          <ButtonLink
+            theme="red"
+            to="/"
+          >
+            Leave
+          </ButtonLink>
+        </ButtonGroup>
       </div>
 
       <div className="char-select__characters">
