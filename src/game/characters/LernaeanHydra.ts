@@ -13,8 +13,8 @@ export const LernaeanHydra: Character<LernaeanHydraAttrs> = {
   data: {
     ...Mortal.data,
     desc: ['Setup: Place four Workers.',
-      `End of Turn: If any of your workers neighbour each other, force one such worker to an
-        unoccupied space that doesn't. If not possible, remove one.`,
+      `End of Turn: If any of your Workers neighbour each other, force one such Worker
+        to an unoccupied ground space that doesn't. If not possible, remove one.`,
     ],
     numWorkersToPlace: 4,
     pack: 'custom',
@@ -83,7 +83,7 @@ export const LernaeanHydra: Character<LernaeanHydraAttrs> = {
       // Moving the worker
       workerPositions.splice(charState.attrs.movingWorkerNum, 1);
       G.spaces.forEach((space) => {
-        if (!Board.isObstructed(G, playerID, space.pos)) {
+        if (space.height === 0 && !Board.isObstructed(G, playerID, space.pos)) {
           valids.add(space.pos);
         }
       });
