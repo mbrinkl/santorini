@@ -190,7 +190,7 @@ export function updateValids(context: GameContext, stage: GameStage) {
       break;
   }
 
-  if (!G.isClone && ctx.phase === 'main') {
+  if (!G.isClone && ctx.phase === 'main' && stage !== 'end') {
     G.valids = G.valids.filter((pos) => canReachEndStage(context, stage, pos));
   }
 }
