@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { LobbyPage } from './Wrapper';
 import { Logo } from '../Logo';
-import { Button, ButtonLink } from '../Button';
+import { ButtonLink } from '../Button';
 import { ButtonChangeNickname } from '../ButtonChangeNickname';
 import { ButtonBack } from '../ButtonBack';
 import { useStoreActions, useStoreState } from '../../store';
@@ -35,19 +35,16 @@ export const Home = () : JSX.Element => {
 
       <ButtonGroup>
         <ButtonLink theme="green" to="/create">
-          Host
+          Create
         </ButtonLink>
 
         <ButtonLink theme="blue" to="/rooms">
           Join
         </ButtonLink>
 
-        <Button
-          theme="yellow"
-          onClick={() => window.open('http://files.roxley.com/Santorini-Rulebook-Web-2016.08.14.pdf', '_blank')}
-        >
-          Rules
-        </Button>
+        <ButtonLink theme="yellow" to="/watch">
+          Watch
+        </ButtonLink>
       </ButtonGroup>
     </LobbyPage>
   );

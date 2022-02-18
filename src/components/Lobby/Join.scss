@@ -7,6 +7,7 @@
 .match-table {
   border-collapse: collapse;
   width: 75%;
+  margin-bottom: 3em;
 
   &__row {
     line-height: 40px;
@@ -29,15 +30,16 @@
     td {
       text-align: center;
     }
-
-    @include tablet-max {
-      th:last-child, td:last-child {
-        display: none;
-      }
-    }
   }
 
-  @include phone-max {
+  &__caption {
+    font-size: 32px;
+    font-weight: bold;
+    color: white;
+  }
+
+  @include tablet-max {
     margin-top: 4em;
+    width: 100%;
   }
 }

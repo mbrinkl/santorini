@@ -57,3 +57,20 @@ server.app.use(
 server.app.use(serve(root));
 
 server.run(PORT);
+
+const hour = 60 * 60 * 1000;
+const day = 24 * hour;
+// Delete games that have not been updated for 1 day and are not complete
+async function deleteStaleGames() {
+  const dayAgo = Date.now() - day;
+  const staleMatchIDs = await server.db.listMatches({
+    where: {
+      updatedBefore: dayAgo,
+      isGameover: false,
+    },
+  });
+  staleMatchIDs.forEach((matchID) => {
+    server.db.wipe(matchID);
+  });
+}
+setInterval(deleteStaleGames, hour);
