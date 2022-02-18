@@ -63,14 +63,14 @@ export const GameBoard = (boardProps: BoardProps<GameState>) : JSX.Element => {
 
             <div className="board-container__player-board">
               <PlayerBoard />
-              <PlayerControls />
               {ctx.gameover && (
-              <Inspector
-                logs={log}
-                matchID={matchID}
-                setOverrideState={setOverrideState}
-              />
+                <Inspector
+                  logs={log}
+                  matchID={matchID}
+                  setOverrideState={setOverrideState}
+                />
               )}
+              <PlayerControls />
             </div>
 
             {isMobile() ? <PlayerInfoMobile /> : (

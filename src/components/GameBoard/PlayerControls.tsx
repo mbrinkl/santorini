@@ -54,7 +54,18 @@ export const PlayerControls = () : JSX.Element | null => {
 
   // No controls for spectators
   if (!playerID) {
-    return null;
+    return (
+      <div className="player-controls">
+        <ButtonLink
+          theme="red"
+          to="/"
+          className="player-controls__button"
+          size="small"
+        >
+          Exit
+        </ButtonLink>
+      </div>
+    );
   }
 
   return (
