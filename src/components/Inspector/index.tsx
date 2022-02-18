@@ -1,108 +1,107 @@
-import { useEffect, useMemo, useState } from 'react';
-import classNames from 'classnames';
+import { useEffect, useState } from 'react';
 import { Client } from 'boardgame.io/client';
 import { BoardProps } from 'boardgame.io/react';
-import { ClientState, _ClientImpl as ClientImpl } from 'boardgame.io/dist/types/src/client/client';
+import { _ClientImpl as ClientImpl } from 'boardgame.io/dist/types/src/client/client';
+import { LogEntry } from 'boardgame.io';
 import { GameState } from '../../types/GameTypes';
-import { BoardContext } from '../../context/boardContext';
 import { SantoriniGame } from '../../game';
-import { PlayerBoard } from '../GameBoard/PlayerBoard';
-import { Button } from '../Button';
+import { ImageButton } from '../Button';
 import { ButtonGroup } from '../ButtonGroup';
+import { getMatch } from '../../api';
+import RewindImg from '../../assets/png/rewind.png';
+import BackImg from '../../assets/png/back.png';
+import ForwardImg from '../../assets/png/forward.png';
+import FastForwardImg from '../../assets/png/fastforward.png';
 import './style.scss';
 
-export const Inspector = () : JSX.Element => {
-  const [log, setLog] = useState<GameLog | null>(null);
+const getFilteredLogs = (logs: LogEntry[]) : LogEntry[] => {
+  const filteredLogs = logs.filter((l) => (
+    (l.action.type === 'MAKE_MOVE' || l.action.type === 'UNDO')
+  ));
 
-  if (log) {
-    const client = Client({ game: { ...SantoriniGame, seed: log.seed } });
-    return <InspectorBoard client={client} log={log} />;
+  let numUndo = 0;
+  for (let i = filteredLogs.length - 1; i >= 0; i--) {
+    if (filteredLogs[i].action.type === 'UNDO') {
+      numUndo += 1;
+      filteredLogs.splice(i, 1);
+    } else if (numUndo > 0) {
+      numUndo -= 1;
+      filteredLogs.splice(i, 1);
+    }
   }
 
-  return <LogForm setLog={setLog} />;
+  return filteredLogs;
 };
 
-const LogForm = ({ setLog }) : JSX.Element => {
-  const [title, setTitle] = useState('Enter Game Json');
-  const [titleClass, setTitleClass] = useState('log-form__title');
-  const [data, setData] = useState('');
+export const Inspector = ({ matchID, logs, setOverrideState } : {
+  matchID: string,
+  logs: LogEntry[],
+  setOverrideState(value: BoardProps<GameState>): void,
+}) : JSX.Element => {
+  const [client, setClient] = useState<any>(null);
+  const [clientState, setClientState] = useState<any>(null);
+  const [filteredLogs] = useState(getFilteredLogs(logs));
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    try {
-      const log = JSON.parse(data.replace(/\s/g, '')) as GameLog;
-      setLog(log);
-    } catch {
-      setTitle('Invalid');
-      setTitleClass(classNames('log-form__title', 'log-form__title--error'));
-      setTimeout(() => {
-        setTitle('Enter Game Json');
-        setTitleClass('log-form__title');
-      }, 2000);
+  useEffect(() => {
+    if (client && clientState) {
+      setOverrideState({ ...client, ...clientState, isMultiplayer: false });
     }
-  };
+  }, [clientState, client, setOverrideState]);
 
-  return (
-    <form onSubmit={handleSubmit} className="log-form">
-      <h2 className={titleClass}>{title}</h2>
-      <textarea
-        className="log-form__input"
-        value={data}
-        onChange={(e) => setData(e.target.value)}
-      />
-      <Button type="submit">Submit</Button>
-    </form>
-  );
+  useEffect(() => {
+    const test = async () => {
+      const match = await getMatch(matchID);
+      const seed: string = match?.setupData;
+      if (seed) {
+        const cli = Client({ game: { ...SantoriniGame, seed } });
+        executeInitialSetup(cli, filteredLogs);
+        executeLog(cli, filteredLogs);
+        setClient(cli);
+      }
+    };
+
+    test();
+  }, [matchID, filteredLogs]);
+
+  return <Ctrls client={client} setClientState={setClientState} log={filteredLogs} />;
 };
 
-interface GameLogPlayer {
-  number: number,
-  name: string,
-  character: string,
-}
-
-interface GameLogMove {
-  player: number,
-  type: string,
-  arg?: number
-}
-
-interface GameLog {
-  players: [GameLogPlayer, GameLogPlayer],
-  seed: string,
-  moves: GameLogMove[],
-}
-
-export const executeLog = (client: ClientImpl, log: GameLog, to?: number) => {
+/**
+ * Execute every move in the log, or to a given index (not select character moves)
+ */
+export const executeLog = (client: ClientImpl, log: LogEntry[], to?: number) => {
   if (to === undefined) {
-    to = log.moves.length;
+    to = log.length;
   }
   for (let i = 0; i < to; i++) {
-    executeMove(client, log.moves[i]);
+    executeMove(client, log[i]);
   }
 };
 
-const executeMove = (client: ClientImpl, move: GameLogMove) => {
-  const { player, type, arg } = move;
-  client.updatePlayerID(player.toString());
+/**
+ * Execute a move from the log (not select character moves)
+ */
+const executeMove = (client: ClientImpl, log: LogEntry) => {
+  const { type, playerID, args } = log.action.payload;
+  client.updatePlayerID(playerID);
   switch (type) {
     case 'setup':
-      client.moves.setup(arg);
+      client.moves.setup(...args);
       break;
     case 'place':
-      client.moves.place(arg);
+      client.moves.place(...args);
       break;
     case 'select':
-      client.moves.select(arg);
+      client.moves.select(...args);
       break;
     case 'move':
-      client.moves.move(arg);
+      client.moves.move(...args);
       break;
     case 'build':
-      client.moves.build(arg);
+      client.moves.build(...args);
       break;
     case 'special':
-      client.moves.special(arg);
+      client.moves.special(...args);
       break;
     case 'onButtonPress':
       client.moves.onButtonPress();
@@ -115,25 +114,41 @@ const executeMove = (client: ClientImpl, move: GameLogMove) => {
   }
 };
 
-const executeInitialSetup = (client, log) => {
-  client.updatePlayerID('0');
-  client.moves.setChar(log.players.find((p) => p.number === 0)?.character);
-  client.moves.ready(true);
-  client.updatePlayerID('1');
-  client.moves.setChar(log.players.find((p) => p.number === 1)?.character);
-  client.moves.ready(true);
+/**
+ * Execute all the moves in the 'select characters' phase from the log
+ */
+const executeInitialSetup = (client, logs: LogEntry[]) => {
+  for (let i = 0; i < logs.length; i++) {
+    const { type, args, playerID } = logs[i].action.payload;
+    client.updatePlayerID(playerID);
+    switch (type) {
+      case 'setChar':
+        client.moves.setChar(...args);
+        break;
+      case 'ready':
+        client.moves.ready(...args);
+        break;
+      default:
+        break;
+    }
+  }
 };
 
 const Ctrls = ({ client, setClientState, log } :
 {
   client: ClientImpl,
   setClientState: any,
-  log: GameLog
+  log: LogEntry[]
 }) : JSX.Element => {
-  const [moveNumber, setMoveNumber] = useState<number>(-1);
+  const [moveNumber, setMoveNumber] = useState<number>(log.length - 1);
+
+  const firstMoveInd = log.findIndex((l) => (
+    l.action.payload.type === 'setup'
+    || l.action.payload.type === 'place'
+  ));
 
   const bb = () => {
-    setMoveNumber(-1);
+    setMoveNumber(firstMoveInd - 1);
     client.reset();
     executeInitialSetup(client, log);
     client.updatePlayerID('-1');
@@ -141,7 +156,7 @@ const Ctrls = ({ client, setClientState, log } :
   };
 
   const ff = () => {
-    setMoveNumber(log.moves.length - 1);
+    setMoveNumber(log.length - 1);
     client.reset();
     executeInitialSetup(client, log);
     executeLog(client, log);
@@ -151,7 +166,10 @@ const Ctrls = ({ client, setClientState, log } :
 
   const b = () => {
     let prev = moveNumber - 1;
-    if (prev !== -1 && (log.moves[prev].type === 'endTurn' || log.moves[moveNumber].type === 'endTurn')) {
+    if (
+      prev !== -1
+      && (log[prev].action.payload.type === 'endTurn'
+      || log[moveNumber].action.payload.type === 'endTurn')) {
       prev -= 1;
     }
     setMoveNumber(prev);
@@ -165,10 +183,10 @@ const Ctrls = ({ client, setClientState, log } :
   const f = () => {
     const movePlus = moveNumber + 1;
     setMoveNumber(movePlus);
-    if (movePlus !== -1 && movePlus < log.moves.length) {
+    if (movePlus !== -1 && movePlus < log.length) {
       exNextMove(movePlus);
       const movePlusPlus = movePlus + 1;
-      if (movePlusPlus < log.moves.length && log.moves[movePlusPlus].type === 'endTurn') {
+      if (movePlusPlus < log.length && log[movePlusPlus].action.payload.type === 'endTurn') {
         exNextMove(movePlusPlus);
         setMoveNumber(movePlusPlus);
       }
@@ -178,57 +196,41 @@ const Ctrls = ({ client, setClientState, log } :
   };
 
   const exNextMove = (moveNum: number) => {
-    const logAction = log.moves[moveNum];
+    const logAction = log[moveNum];
     executeMove(client, logAction);
   };
 
   return (
     <ButtonGroup>
-      <Button onClick={bb} disabled={moveNumber === -1} theme="red">BB</Button>
-      <Button onClick={b} disabled={moveNumber === -1} theme="red">B</Button>
-      <Button
+      <ImageButton
+        onClick={bb}
+        disabled={moveNumber === firstMoveInd - 1}
+        theme="red"
+        size="small"
+        src={RewindImg}
+      />
+      <ImageButton
+        onClick={b}
+        disabled={moveNumber === firstMoveInd - 1}
+        theme="red"
+        size="small"
+        src={BackImg}
+      />
+
+      <ImageButton
         onClick={f}
-        disabled={moveNumber === log.moves.length - 1}
+        disabled={moveNumber === log.length - 1}
         theme="green"
-      >
-        F
-      </Button>
-      <Button
+        size="small"
+        src={ForwardImg}
+      />
+      <ImageButton
         onClick={ff}
-        disabled={moveNumber === log.moves.length - 1}
+        disabled={moveNumber === log.length - 1}
         theme="green"
-      >
-        FF
-      </Button>
+        size="small"
+        src={FastForwardImg}
+      />
     </ButtonGroup>
-  );
-};
-
-const InspectorBoard = ({ client, log }) : JSX.Element => {
-  const [clientState, setClientState] = useState<ClientState<GameState>>(client.getState());
-
-  useEffect(() => {
-    executeInitialSetup(client, log);
-    setClientState(client.getState());
-  }, [log, client]);
-
-  const boardProps: BoardProps<GameState> = useMemo(() => ({
-    ...client,
-    ...clientState,
-    playerID: undefined,
-    matchData: [
-      { id: 0, name: log.players.find((p) => p.number === 0)?.name },
-      { id: 1, name: log.players.find((p) => p.number === 1)?.name },
-    ],
-    isMultiplayer: false,
-  }), [client, clientState, log.players]);
-
-  return (
-    <div className="inspector">
-      <BoardContext.Provider value={boardProps}>
-        <PlayerBoard />
-      </BoardContext.Provider>
-      <Ctrls client={client} setClientState={setClientState} log={log} />
-    </div>
   );
 };

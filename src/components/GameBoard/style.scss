@@ -10,20 +10,24 @@
   &__log-chat {
     display: flex;
     flex-direction: column;
-    justify-content: space-evenly;
+    justify-content: space-between;
     width: 20%;
-    height: 90%;
+    height: 95%;
     margin: auto;
   }
 
   &__log {
     width: 100%;
-    height: 45%;
+    height: 50%;
+
+    &--spectator {
+      height: 100%;
+    }
   }
 
   &__chat {
     width: 100%;
-    height: 45%;
+    height: 48%;
   }
 
   &__player-board {
