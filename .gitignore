@@ -3,5 +3,4 @@ coverage
 notes
 build
 dist
-.env
 npm-debug.log*
