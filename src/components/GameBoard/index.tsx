@@ -17,17 +17,28 @@ import './style.scss';
 export const GameBoard = (boardProps: BoardProps<GameState>) : JSX.Element => {
   const [overrideState, setOverrideState] = useState<BoardProps<GameState> | null>(null);
   const {
-    ctx, playerID, matchData, chatMessages, sendChatMessage, log, matchID,
+    ctx, playerID, log, matchID,
   } = boardProps;
 
   const modifiedOverrideState: BoardProps<GameState> = useMemo(() => {
     if (overrideState) {
+      const {
+        chatMessages, sendChatMessage, credentials, matchData, isConnected,
+      } = boardProps;
       return {
-        ...overrideState, playerID, matchData, chatMessages, sendChatMessage,
+        ...overrideState,
+        playerID,
+        matchID,
+        matchData,
+        chatMessages,
+        sendChatMessage,
+        credentials,
+        isConnected,
+        isActive: false,
       };
     }
     return boardProps;
-  }, [overrideState, playerID, matchData, chatMessages, sendChatMessage, boardProps]);
+  }, [overrideState, playerID, matchID, boardProps]);
 
   return (
     <BoardContext.Provider value={ctx.gameover ? modifiedOverrideState : boardProps}>

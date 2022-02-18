@@ -48,7 +48,7 @@ export const PlayerControls = () : JSX.Element | null => {
     if (playerID && credentials) {
       sendChatMessage('wants to rematch...');
       const nextMatchID = await playAgain(matchID, playerID, credentials);
-      navigate(`/rooms/${nextMatchID}`, { state: { isGameRunning: false } });
+      navigate(`/rooms/${nextMatchID}`);
     }
   }
 
@@ -60,7 +60,7 @@ export const PlayerControls = () : JSX.Element | null => {
   return (
     <div className="player-controls">
 
-      {ctx.gameover ? (
+      {ctx.gameover || G.isClone ? (
         <>
           <ButtonLink
             theme="red"

@@ -4,7 +4,7 @@ import { BoardProps } from 'boardgame.io/react';
 import { _ClientImpl as ClientImpl } from 'boardgame.io/dist/types/src/client/client';
 import { LogEntry } from 'boardgame.io';
 import { GameState } from '../../types/GameTypes';
-import { SantoriniGame } from '../../game';
+import { initBoard, initPlayers, SantoriniGame } from '../../game';
 import { ImageButton } from '../Button';
 import { ButtonGroup } from '../ButtonGroup';
 import { getMatch } from '../../api';
@@ -53,7 +53,19 @@ export const Inspector = ({ matchID, logs, setOverrideState } : {
       const match = await getMatch(matchID);
       const seed: string = match?.setupData;
       if (seed) {
-        const cli = Client({ game: { ...SantoriniGame, seed } });
+        const cli = Client({
+          game: {
+            ...SantoriniGame,
+            seed,
+            setup: ({ ctx }) => ({
+              isClone: true,
+              players: initPlayers(ctx),
+              spaces: initBoard(),
+              valids: [],
+              offBoardTokens: [],
+            }),
+          },
+        });
         executeInitialSetup(cli, filteredLogs);
         executeLog(cli, filteredLogs);
         setClient(cli);
@@ -69,11 +81,14 @@ export const Inspector = ({ matchID, logs, setOverrideState } : {
 /**
  * Execute every move in the log, or to a given index (not select character moves)
  */
-export const executeLog = (client: ClientImpl, log: LogEntry[], to?: number) => {
+export const executeLog = (client: ClientImpl, log: LogEntry[], from?: number, to?: number) => {
+  if (from === undefined) {
+    from = 0;
+  }
   if (to === undefined) {
     to = log.length;
   }
-  for (let i = 0; i < to; i++) {
+  for (let i = from; i < to; i++) {
     executeMove(client, log[i]);
   }
 };
@@ -151,7 +166,6 @@ const Ctrls = ({ client, setClientState, log } :
     setMoveNumber(firstMoveInd - 1);
     client.reset();
     executeInitialSetup(client, log);
-    client.updatePlayerID('-1');
     setClientState(client.getState());
   };
 
@@ -159,8 +173,7 @@ const Ctrls = ({ client, setClientState, log } :
     setMoveNumber(log.length - 1);
     client.reset();
     executeInitialSetup(client, log);
-    executeLog(client, log);
-    client.updatePlayerID('-1');
+    executeLog(client, log, firstMoveInd);
     setClientState(client.getState());
   };
 
@@ -175,8 +188,7 @@ const Ctrls = ({ client, setClientState, log } :
     setMoveNumber(prev);
     client.reset();
     executeInitialSetup(client, log);
-    executeLog(client, log, prev + 1);
-    client.updatePlayerID('-1');
+    executeLog(client, log, firstMoveInd, prev + 1);
     setClientState(client.getState());
   };
 
@@ -190,7 +202,6 @@ const Ctrls = ({ client, setClientState, log } :
         exNextMove(movePlusPlus);
         setMoveNumber(movePlusPlus);
       }
-      client.updatePlayerID('-1');
       setClientState(client.getState());
     }
   };

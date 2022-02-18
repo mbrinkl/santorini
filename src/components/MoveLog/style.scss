@@ -1,18 +1,12 @@
 @import "~styles/shared";
 
 .move-log {
-
   width: 100%;
   height: 100%;
-
-  &__body {
-    width: 100%;
-    height: 90%;
-    overflow-y: scroll;
-    background-color: white;
-    border: 2px solid $c-dark-gray;
-    border-radius: 10px;
-  }
+  overflow-y: scroll;
+  background-color: white;
+  border: 2px solid $c-dark-gray;
+  border-radius: 10px;
 
   &__item {
     text-transform: uppercase;

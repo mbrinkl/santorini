@@ -36,32 +36,30 @@ export const MoveLog = () : JSX.Element => {
 
   return (
     <div className="move-log">
-      <div className="move-log__body">
-        <p className="move-log__item move-log__item--title">Move Log</p>
-        {doubleFilteredLog.map((l) => {
-          const { type, args, playerID } = l.action.payload;
-          const { turn } = l;
-          if (turn !== lastTurn) {
-            currTurn += 1;
-            lastTurn = turn;
-          }
-          const name = matchData?.[playerID].name || `Player ${playerID}`;
-          const move = (type === 'onButtonPressed'
-            ? 'button pressed'
-            : `${type} ${posToReadableCoord(args?.[0])}`
-          );
+      <p className="move-log__item move-log__item--title">Move Log</p>
+      {doubleFilteredLog.map((l) => {
+        const { type, args, playerID } = l.action.payload;
+        const { turn } = l;
+        if (turn !== lastTurn) {
+          currTurn += 1;
+          lastTurn = turn;
+        }
+        const name = matchData?.[playerID].name || `Player ${playerID}`;
+        const move = (type === 'onButtonPressed'
+          ? 'button pressed'
+          : `${type} ${posToReadableCoord(args?.[0])}`
+        );
 
-          return (
-            <p
-              key={`log${Math.random() * 1000000}`} // kill me
-              className={classNames('move-log__item', `move-log__item--${playerID}`)}
-            >
-              {`${currTurn}. ${move} (${name})`}
-            </p>
-          );
-        })}
-        <div ref={logEndRef} />
-      </div>
+        return (
+          <p
+            key={`log${Math.random() * 1000000}`} // kill me
+            className={classNames('move-log__item', `move-log__item--${playerID}`)}
+          >
+            {`${currTurn}. ${move} (${name})`}
+          </p>
+        );
+      })}
+      <div ref={logEndRef} />
     </div>
   );
 };
