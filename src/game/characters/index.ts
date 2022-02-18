@@ -83,11 +83,11 @@ export const characterList: string[] = [
   'Graeae',
   'Hades',
   'Harpies',
-  'Hecate',
+  // 'Hecate',
   // "Moerae",
   // "Nemesis",
   'Siren',
-  'Tartarus',
+  // 'Tartarus',
   // "Terpsichore",
   'Urania',
 
