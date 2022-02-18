@@ -30,7 +30,7 @@ export const Home = () : JSX.Element => {
   return (
     <LobbyPage>
       <ButtonChangeNickname />
-      { prevGameActive && <ButtonBack to={`/rooms/${activeRoomPlayer?.matchID}`} text="Return to Game" />}
+      { prevGameActive && <ButtonBack to={`/${activeRoomPlayer?.matchID}`} text="Return to Game" />}
       <Logo />
 
       <ButtonGroup>
@@ -38,7 +38,7 @@ export const Home = () : JSX.Element => {
           Create
         </ButtonLink>
 
-        <ButtonLink theme="blue" to="/rooms">
+        <ButtonLink theme="blue" to="/join">
           Join
         </ButtonLink>
 

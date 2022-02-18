@@ -33,10 +33,10 @@ const App = () => {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/create" element={<CreatePage />} />
-        <Route path="/rooms" element={<JoinPage />} />
+        <Route path="/join" element={<JoinPage />} />
         <Route path="/watch" element={<WatchPage />} />
-        <Route path="/rooms/:matchID" element={nickname ? <GameLobby /> : <SetupNickname />} />
         <Route path="/nickname" element={<SetupNickname onSubmit={() => navigate('/')} />} />
+        <Route path="/:matchID" element={nickname ? <GameLobby /> : <SetupNickname />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </div>

@@ -48,7 +48,7 @@ export const PlayerControls = () : JSX.Element | null => {
     if (playerID && credentials) {
       sendChatMessage('wants to rematch...');
       const nextMatchID = await playAgain(matchID, playerID, credentials);
-      navigate(`/rooms/${nextMatchID}`);
+      navigate(`/${nextMatchID}`);
     }
   }
 

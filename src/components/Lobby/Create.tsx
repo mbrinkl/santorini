@@ -19,7 +19,7 @@ export const CreatePage = () : JSX.Element => {
 
   async function createRoom(unlisted: boolean) {
     const matchID = await createMatch(2, unlisted);
-    navigate(`/rooms/${matchID}`);
+    navigate(`/${matchID}`);
   }
 
   async function host(unlisted: boolean) {

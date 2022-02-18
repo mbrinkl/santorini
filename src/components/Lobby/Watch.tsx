@@ -38,7 +38,7 @@ export const WatchPage = () : JSX.Element => {
     const row = (e.target as HTMLTableRowElement).closest('tr');
     const matchID = row?.innerText.substring(0, 11);
     if (matchID) {
-      navigate(`/rooms/${matchID}`);
+      navigate(`/${matchID}`);
     }
   }
 
