@@ -118,8 +118,8 @@ const executeMove = (client: ClientImpl, log: LogEntry) => {
     case 'special':
       client.moves.special(...args);
       break;
-    case 'onButtonPress':
-      client.moves.onButtonPress();
+    case 'onButtonPressed':
+      client.moves.onButtonPressed();
       break;
     case 'endTurn':
       client.moves.endTurn();
