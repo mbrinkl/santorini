@@ -109,6 +109,7 @@ export const LernaeanHydra: Character<LernaeanHydraAttrs> = {
         if (LernaeanHydra.validSpecial(context, charState, -1).size === 0) {
           Board.killWorkerAtPos(context, pos);
           charState.attrs.movingWorkerNum = -1;
+          charState.selectedWorkerNum = -1;
         }
       }
     } else {
