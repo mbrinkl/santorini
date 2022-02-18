@@ -1,4 +1,4 @@
-![Header](https://github.com/mbrinkl/santorini/blob/main/public/header.png)
+![Header](./public/header.png)
 
 ### What is Santorini
 
