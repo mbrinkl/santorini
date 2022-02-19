@@ -22,14 +22,14 @@ export const WatchPage = () : JSX.Element => {
 
         setReviewableMatches(matches.filter((match) => (
           match.gameover
-        )));
+        )).sort((a, b) => b.createdAt - a.createdAt));
       });
     }
 
     pollMatches();
     const intervalID = setInterval(() => {
       pollMatches();
-    }, 5000);
+    }, 10000);
 
     return () => clearInterval(intervalID);
   }, []);
@@ -71,8 +71,13 @@ export const WatchPage = () : JSX.Element => {
         onClick={onTableRowClicked}
       >
         <td>{m.matchID}</td>
-        <td>{m.players[m.gameover.winner].name}</td>
-        <td>{m.players[(Number(m.gameover.winner) + 1) % 2].name}</td>
+        <td>{`${m.players[m.gameover.winner].name} (${m.players[m.gameover.winner].data.character})`}</td>
+        <td>
+          {
+            `${m.players[(Number(m.gameover.winner) + 1) % 2].name} 
+            (${m.players[(Number(m.gameover.winner) + 1) % 2].data.character})`
+          }
+        </td>
       </tr>
     ));
 
@@ -95,6 +100,9 @@ export const WatchPage = () : JSX.Element => {
 
       <table className="match-table">
         <caption className="match-table__caption">Review</caption>
+        <caption className={classNames('match-table__caption', 'match-table__caption--sub')}>
+          ( Completed games will show up here. )
+        </caption>
         <thead>
           <tr className="match-table__row">
             <th>Match ID</th>
