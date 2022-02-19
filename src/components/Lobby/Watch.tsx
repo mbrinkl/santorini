@@ -1,16 +1,13 @@
-import classNames from 'classnames';
 import { LobbyAPI } from 'boardgame.io';
-import { MouseEvent, useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useEffect, useState } from 'react';
 import { LobbyPage } from './Wrapper';
 import { ButtonBack } from '../ButtonBack';
 import { getMatches } from '../../api';
-import './Join.scss';
+import { MatchTable } from '../MatchTable';
 
 export const WatchPage = () : JSX.Element => {
   const [spectatableMatches, setSpectatableMatches] = useState<LobbyAPI.Match[]>([]);
   const [reviewableMatches, setReviewableMatches] = useState<LobbyAPI.Match[]>([]);
-  const navigate = useNavigate();
 
   useEffect(() => {
     function pollMatches() {
@@ -34,86 +31,40 @@ export const WatchPage = () : JSX.Element => {
     return () => clearInterval(intervalID);
   }, []);
 
-  function onTableRowClicked(e: MouseEvent<HTMLTableRowElement>) : void {
-    const row = (e.target as HTMLTableRowElement).closest('tr');
-    const matchID = row?.innerText.substring(0, 11);
-    if (matchID) {
-      navigate(`/${matchID}`);
-    }
-  }
-
-  const spectateTableBody = spectatableMatches.length === 0
-    ? (
-      <tr className="match-table__row">
-        <td colSpan={3}>No Live Games to Spectate</td>
-      </tr>
-    ) : spectatableMatches.map((m) => (
-      <tr
-        key={m.matchID}
-        className={classNames('match-table__row', 'match-table__row--match')}
-        onClick={onTableRowClicked}
-      >
-        <td>{m.matchID}</td>
-        <td>{m.players[0].name}</td>
-        <td>{m.players[1].name}</td>
-      </tr>
-    ));
-
-  const reviewableTableBody = reviewableMatches.length === 0
-    ? (
-      <tr className="match-table__row">
-        <td colSpan={3}>No Games to Review</td>
-      </tr>
-    ) : reviewableMatches.map((m) => (
-      <tr
-        key={m.matchID}
-        className={classNames('match-table__row', 'match-table__row--match')}
-        onClick={onTableRowClicked}
-      >
-        <td>{m.matchID}</td>
-        <td>{`${m.players[m.gameover.winner].name} (${m.players[m.gameover.winner].data?.character})`}</td>
-        <td>
-          {
-            `${m.players[(Number(m.gameover.winner) + 1) % 2].name} 
-            (${m.players[(Number(m.gameover.winner) + 1) % 2].data?.character})`
-          }
-        </td>
-      </tr>
-    ));
-
   return (
     <LobbyPage className="lobby-top">
       <ButtonBack to="/" />
-      <table className="match-table">
-        <caption className="match-table__caption">Spectate</caption>
-        <thead>
-          <tr className="match-table__row">
-            <th>Match ID</th>
-            <th>Player 1</th>
-            <th>Player 2</th>
-          </tr>
-        </thead>
-        <tbody>
-          {spectateTableBody}
-        </tbody>
-      </table>
-
-      <table className="match-table">
-        <caption className="match-table__caption">Review</caption>
-        <caption className={classNames('match-table__caption', 'match-table__caption--sub')}>
-          ( Completed games will show up here. )
-        </caption>
-        <thead>
-          <tr className="match-table__row">
-            <th>Match ID</th>
-            <th>Winner</th>
-            <th>Loser</th>
-          </tr>
-        </thead>
-        <tbody>
-          {reviewableTableBody}
-        </tbody>
-      </table>
+      <MatchTable
+        caption="Spectate"
+        headers={['Player 1', 'Player 2']}
+        noBody="No Live Games to Spectate"
+        body={spectatableMatches.map((match) => (
+          {
+            matchID: match.matchID,
+            data: [
+              match.players[0].name || 'Player 0',
+              match.players[1].name || 'Player 1',
+            ],
+          }
+        ))}
+      />
+      <MatchTable
+        caption="Review"
+        subCaption="( Completed games will show up here. )"
+        headers={['Winner', 'Loser']}
+        noBody="No Games to Review"
+        body={reviewableMatches.map((match) => (
+          {
+            matchID: match.matchID,
+            data: [
+              `${match.players[match.gameover.winner].name} 
+              (${match.players[match.gameover.winner].data?.character})`,
+              `${match.players[(Number(match.gameover.winner) + 1) % 2].name} 
+              (${match.players[(Number(match.gameover.winner) + 1) % 2].data?.character})`,
+            ],
+          }
+        ))}
+      />
     </LobbyPage>
   );
 };

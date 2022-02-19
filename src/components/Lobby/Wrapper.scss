@@ -12,6 +12,10 @@
   flex-direction: column;
 }
 
+.lobby-top {
+  justify-content: start;
+}
+
 .github-link {
   color: $c-white;
   position: fixed;

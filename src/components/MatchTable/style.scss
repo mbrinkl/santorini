@@ -1,9 +1,5 @@
 @import "styles/shared";
 
-.lobby-top {
-  justify-content: start;
-}
-
 .match-table {
   border-collapse: collapse;
   width: 75%;
@@ -15,7 +11,7 @@
     color: $c-white;
 
     &--match:hover {
-      background-color: orange;
+      background-color: $c-orange;
       cursor: pointer;
     }
 
@@ -35,11 +31,13 @@
   &__caption {
     font-size: 32px;
     font-weight: bold;
-    color: white;
+    color: $c-white;
+  }
 
-    &--sub {
-      font-size: 16px;      
-    }
+  &__sub-caption {
+    font-size: 16px;  
+    font-weight: bold;
+    color: $c-white;
   }
 
   @include tablet-max {
