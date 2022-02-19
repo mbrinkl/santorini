@@ -32,7 +32,8 @@ const TURN_ORDER_DEFAULT = {
 
 export function initCharState(name: string): CharacterState {
   const { data } = getCharacterByName(name);
-  return { name, ...data };
+  const deepCopyData = JSON.parse(JSON.stringify(data)) as Omit<CharacterState, 'name'>;
+  return { name, ...deepCopyData };
 }
 
 function initRandomCharacters(G: GameState, random: RandomAPI) {
@@ -154,7 +155,7 @@ export const SantoriniGame: Game<GameState> = {
       onEnd: (context) => {
         const { G, random } = context;
         initRandomCharacters(G, random);
-        Object.values(context.G.players).forEach((player) => {
+        Object.values(G.players).forEach((player) => {
           const character = getCharacter(player.charState);
           character.initialize({ ...context, playerID: player.ID }, player.charState);
         });
