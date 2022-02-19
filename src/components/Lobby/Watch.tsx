@@ -71,11 +71,11 @@ export const WatchPage = () : JSX.Element => {
         onClick={onTableRowClicked}
       >
         <td>{m.matchID}</td>
-        <td>{`${m.players[m.gameover.winner].name} (${m.players[m.gameover.winner].data.character})`}</td>
+        <td>{`${m.players[m.gameover.winner].name} (${m.players[m.gameover.winner].data?.character})`}</td>
         <td>
           {
             `${m.players[(Number(m.gameover.winner) + 1) % 2].name} 
-            (${m.players[(Number(m.gameover.winner) + 1) % 2].data.character})`
+            (${m.players[(Number(m.gameover.winner) + 1) % 2].data?.character})`
           }
         </td>
       </tr>
