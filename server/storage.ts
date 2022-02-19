@@ -12,6 +12,12 @@ export class ExtendedStorageCache extends StorageCache {
         cacheMetadata.setupData = seed;
       }
       await super.setMetadata(matchID, { ...matchData, setupData: seed });
+    } else if (matchData.gameover == null && matchData.setupData != null) {
+      const cacheMetadata = this.cache.metadata.get(matchID);
+      if (cacheMetadata) {
+        cacheMetadata.setupData = null;
+      }
+      await super.setMetadata(matchID, { ...matchData, setupData: null });
     } else {
       await super.setMetadata(...args);
     }
