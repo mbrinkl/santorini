@@ -35,6 +35,7 @@ import { Siren } from './Siren';
 import { Hestia } from './Hestia';
 import { Poseidon } from './Poseidon';
 import { LernaeanHydra } from './LernaeanHydra';
+import { Helios } from './Helios'
 
 export const characterList: string[] = [
   'Random',
@@ -119,6 +120,7 @@ export const characterList: string[] = [
 
   // Custom
   'Lernaean Hydra',
+  'Helios',
 ];
 
 export const banList: [string, string][] = [
@@ -191,6 +193,7 @@ export function getCharacterByName(name: string): Character {
     case 'Hestia': character = Hestia; break;
     case 'Poseidon': character = Poseidon; break;
     case 'Lernaean Hydra': character = LernaeanHydra; break;
+    case 'Helios': character = Helios; break;
     default: character = Mortal; break;
   }
 
