@@ -4,34 +4,26 @@
   width: 100%;
   height: 100%;
   display: flex;
-  align-items: center;
-  background-color: $c-blue;
+  align-items: flex-start;
   text-align: center;
 
-  h1 {
+  &__title {
     color: $c-white;
   }
 
-  &__chat {
-    flex-basis: 0;
-    flex-grow: 1;
-    height: 75%;
-    margin-left: 25px;
-    margin-right: 25px;
-  }
-
   &__main {
-    flex-basis: 0;
+    flex-basis: 55%;
     flex-grow: 1;
     display: flex;
     flex-direction: column;
     height: 100%;
+    overflow-y: hidden;
     align-items: center;
     justify-content: space-evenly;
   }
 
   &__characters {
-    flex-basis: 0;
+    flex-basis: 45%;
     flex-grow: 1;
     display: flex;
     align-content: flex-start;
@@ -46,7 +38,7 @@
     background-color: $c-blue;
     border: none;
     outline: none;
-    color: white;
+    color: $c-white;
   }
 
   &__playerNameDiv {
@@ -84,7 +76,7 @@
   &__characterDescription {
     max-height: 150px;
     width: 70%;
-    color: white;
+    color: $c-white;
     text-align: left;
     overflow-y: auto;
   }
@@ -93,14 +85,6 @@
 @include tablet-max {
   .char-select {
     flex-wrap: wrap;
-    height: 100%;
-
-    &__chat {
-      height: 100%;
-      width: 100%;
-      margin: 0 auto;
-      order: 3;
-    }
 
     &__main {
       order: 1;
@@ -120,7 +104,6 @@
     &__characterDescription {
       width: 50%;
       float: right;
-      color: white;
       text-align: center;
     }
   }

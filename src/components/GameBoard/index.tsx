@@ -42,44 +42,50 @@ export const GameBoard = (boardProps: BoardProps<GameState>) : JSX.Element => {
 
   return (
     <BoardContext.Provider value={ctx.gameover ? modifiedOverrideState : boardProps}>
-      {ctx.phase === 'selectCharacters'
-        ? <CharacterSelect />
-        : (
-          <div className="board-container">
-            <div className="board-container__log-chat">
-              {playerID && (
-                <div className="board-container__chat">
-                  <Chat />
-                </div>
-              )}
-              <div className={classNames(
-                'board-container__log',
-                !playerID && 'board-container__log--spectator',
-              )}
-              >
-                <MoveLog />
-              </div>
-            </div>
 
-            <div className="board-container__player-board">
-              <PlayerBoard />
-              {ctx.gameover && (
+      <div className={classNames('board-container', ctx.phase === 'selectCharacters' && 'board-container--pre-game')}>
+        <div className="board-container__log-chat">
+          {playerID && (
+          <div className="board-container__chat">
+            <Chat />
+          </div>
+          )}
+          {ctx.phase !== 'selectCharacters' && (
+            <div className="board-container__log">
+              <MoveLog />
+            </div>
+          )}
+
+        </div>
+
+        {ctx.phase === 'selectCharacters'
+          ? (
+            <div className="board-container__character-select">
+              <CharacterSelect />
+            </div>
+          )
+          : (
+            <>
+              <div className="board-container__player-board">
+                <PlayerBoard />
+                {ctx.gameover && (
                 <Inspector
                   logs={log}
                   matchID={matchID}
                   setOverrideState={setOverrideState}
                 />
-              )}
-              <PlayerControls />
-            </div>
-
-            {isMobile() ? <PlayerInfoMobile /> : (
-              <div className="board-container__player-info">
-                <PlayerInfo />
+                )}
+                <PlayerControls />
               </div>
-            )}
-          </div>
-        )}
+
+              {isMobile() ? <PlayerInfoMobile /> : (
+                <div className="board-container__player-info">
+                  <PlayerInfo />
+                </div>
+              )}
+            </>
+          )}
+      </div>
     </BoardContext.Provider>
   );
 };

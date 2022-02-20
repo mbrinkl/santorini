@@ -3,7 +3,6 @@ import { ConnectedIndicator } from '../ConnectedIndicator';
 import { Button, ButtonLink } from '../Button';
 import { getCharacterByName, getSortedCharacters } from '../../game/characters';
 import { useBoardContext } from '../../context/boardContext';
-import { Chat } from '../Chat';
 import './style.scss';
 import { CharacterCard, SelectedCharacterCard } from './CharacterCard';
 import { ButtonGroup } from '../ButtonGroup';
@@ -32,14 +31,8 @@ export const CharacterSelect = () : JSX.Element => {
   return (
     <div className="char-select">
 
-      { playerID && (
-        <div className="char-select__chat">
-          <Chat />
-        </div>
-      )}
-
       <div className="char-select__main">
-        {playerID && <h1>Select a Character</h1>}
+        {playerID && <h1 className="char-select__title">Select a Character</h1>}
 
         {Object.values(G.players).map((player) => (
           <div key={`selectedChar${player.ID}`} className="char-select__player-char">
