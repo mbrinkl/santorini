@@ -8,7 +8,6 @@ interface ActiveRoomPlayer {
 
 export interface JoinRoomParams {
   matchID: string;
-  playerID: string;
   playerName: string;
 }
 

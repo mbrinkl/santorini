@@ -17,11 +17,11 @@ export const store: StoreModel = {
     state.activeRoomPlayer = payload;
   }),
   joinRoom: thunk(async (actions, payload, { injections }) => {
-    const playerCredentials = await joinMatch(payload);
+    const [playerID, playerCredentials] = await joinMatch(payload);
     actions.setActiveRoomPlayer({
       matchID: payload.matchID,
+      playerID,
       credential: playerCredentials,
-      playerID: payload.playerID,
     });
   }),
   leaveRoom: thunk(async (actions, payload) => {

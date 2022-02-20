@@ -31,15 +31,16 @@ export async function createMatch(numPlayers: number, unlisted: boolean): Promis
 
 export async function joinMatch({
   matchID,
-  playerID,
   playerName,
-}: JoinRoomParams): Promise<string> {
-  const response = await axios.post<{ playerCredentials: string }>(`/${matchID}/join`, {
-    playerID,
+}: JoinRoomParams): Promise<[string, string]> {
+  const response = await axios.post<{
+    playerCredentials: string,
+    playerID: string,
+  }>(`/${matchID}/join`, {
     playerName,
   });
 
-  return response.data.playerCredentials;
+  return [response.data.playerID, response.data.playerCredentials];
 }
 
 export async function leaveMatch({

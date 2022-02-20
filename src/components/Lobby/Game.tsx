@@ -42,9 +42,9 @@ export const GameLobbySetup = ({ startGame } : { startGame(): void }) : JSX.Elem
   useEffect(() => {
     function pollMatch() {
       if (matchID) {
-        getMatch(matchID).then((m) => {
-          if (m) {
-            setMatchMetadata(m);
+        getMatch(matchID).then((match) => {
+          if (match) {
+            setMatchMetadata(match);
           }
         });
       }
@@ -66,15 +66,11 @@ export const GameLobbySetup = ({ startGame } : { startGame(): void }) : JSX.Elem
   }, [gameRoomFull, startGame]);
 
   useEffect(() => {
-    // find first empty seat ID
-    const emptySeatID = matchMetadata?.players.find((p) => !p.name)?.id;
-    const alreadyJoined = activeRoomPlayer && activeRoomPlayer.matchID === matchID;
-
-    if (!alreadyJoined && emptySeatID !== undefined && nickname && matchID) {
-      joinRoom({ playerID: emptySeatID.toString(), playerName: nickname, matchID });
+    const alreadyJoined = activeRoomPlayer?.matchID === matchID;
+    if (!alreadyJoined && nickname && matchID) {
+      joinRoom({ playerName: nickname, matchID });
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [matchMetadata]);
+  }, [nickname, matchID, activeRoomPlayer, joinRoom]);
 
   return (
     <LobbyPage>
