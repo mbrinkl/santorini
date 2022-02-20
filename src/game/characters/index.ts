@@ -170,7 +170,7 @@ export function getCharacterByName(name: string): Character {
     case 'Prometheus': character = Prometheus; break;
     case 'Bia': character = Bia; break;
     case 'Triton': character = Triton; break;
-    case 'Zeus': character = ;; break;
+    case 'Zeus': character = Zeus; break;
     case 'Graeae': character = Graeae; break;
     case 'Heracles': character = Heracles; break;
     case 'Odysseus': character = Odysseus; break;
