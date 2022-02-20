@@ -7,7 +7,7 @@
   font-size: 16px;
 
   &__message-list {
-    height: 88%;
+    height: 84%;
     background-color: white;
     border-radius: 10px;
     border: 2px solid $c-dark-gray;
@@ -39,21 +39,21 @@
     display: flex;
     justify-content: space-between;
     bottom: 0;
-    height: 3em;
+    height: min(3em, 15%);
     width: 100%;
-    
-    input {
-      height: 100%;
-      width: 75%;
-      padding-left: 5px;
-      border-radius: 10px;
-      border: 2px solid $c-dark-gray;
-      float: left;
-    }
+  }
+
+  &__input {
+    height: 100%;
+    width: 75%;
+    padding-left: 5px;
+    border-radius: 10px;
+    border: 2px solid $c-dark-gray;
+    float: left;
+  }
   
-    &-button {
-      margin-left: 5px;
-      margin-right: 5px;
-    }
+  &__send-button {
+    width: 15%;
+    margin-top: 2px;
   }
 }

@@ -16,6 +16,7 @@ import { LobbyPage } from './Wrapper';
 import { Button } from '../Button';
 import { getMatch } from '../../api';
 import { isMobile, supportsCopying, copyToClipboard } from '../../util';
+import { LoadingPage } from '../LoadingPage';
 import 'tippy.js/dist/tippy.css';
 import './Game.scss';
 
@@ -23,6 +24,7 @@ const GameClient = Client({
   game: SantoriniGame,
   board: GameBoard,
   multiplayer: SocketIO({ server: SERVER_URL }),
+  loading: LoadingPage,
   debug: !isProduction && !isMobile(),
 });
 
@@ -172,26 +174,35 @@ export const GameLobbyPlay = () : JSX.Element => {
 
 export const GameLobby = () : JSX.Element => {
   const { matchID } = useParams<{ matchID: string }>();
-  const [isGameRunning, setGameRunning] = useState(false);
-  const [matchExists, setMatchExists] = useState(true);
+  const [lobbyState, setLobbyState] = useState({
+    loading: true,
+    matchExists: false,
+    gameRunning: false,
+  });
 
   useEffect(() => {
-    setGameRunning(false);
-
     if (matchID) {
       getMatch(matchID).then((match) => {
-        setMatchExists(match !== undefined);
+        setLobbyState({
+          loading: false,
+          matchExists: match !== undefined,
+          gameRunning: match?.players.filter((p) => !p.name).length === 0,
+        });
       });
     }
   }, [matchID]);
 
-  if (!matchExists) {
+  if (lobbyState.loading) {
+    return <LoadingPage />;
+  }
+
+  if (!lobbyState.matchExists) {
     return <NotFound />;
   }
 
-  return isGameRunning ? (
-    <GameLobbyPlay />
-  ) : (
-    <GameLobbySetup startGame={() => setGameRunning(true)} />
-  );
+  if (!lobbyState.gameRunning) {
+    return <GameLobbySetup startGame={() => setLobbyState({ ...lobbyState, gameRunning: true })} />;
+  }
+
+  return <GameLobbyPlay />;
 };

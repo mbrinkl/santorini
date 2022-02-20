@@ -12,25 +12,19 @@
   }
 
   &__log-chat {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    flex-grow: 1;
+    display: grid;
+    grid-auto-rows: minmax(30px, 100%);
+    grid-row-gap: 5px;
     height: 95%;
     flex-grow: 1;
     flex-basis: 25%;
-    margin: auto;
   }
 
   &__log {
-    flex-grow: 1;
-    flex-basis: 0;
     margin: 5px 20px;
   }
 
   &__chat {
-    flex-grow: 1;
-    flex-basis: 0;
     margin: 5px 20px;
   }
 

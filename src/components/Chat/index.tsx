@@ -59,12 +59,20 @@ export const Chat = () : JSX.Element => {
 
       <form className="chat__controls" onSubmit={send}>
         <input
+          className="chat__input"
           ref={inputRef}
           onChange={(e) => setMessage(e.target.value)}
           value={message}
           placeholder="Enter your message..."
         />
-        <ImageButton theme="green" size="small" onClick={send} src={sendIcon} alt="sendIcon" />
+        <ImageButton
+          className="chat__send-button"
+          theme="green"
+          size="small"
+          onClick={send}
+          src={sendIcon}
+          alt="sendIcon"
+        />
       </form>
     </div>
   );
