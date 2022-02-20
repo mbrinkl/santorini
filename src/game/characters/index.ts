@@ -35,7 +35,7 @@ import { Siren } from './Siren';
 import { Hestia } from './Hestia';
 import { Poseidon } from './Poseidon';
 import { LernaeanHydra } from './LernaeanHydra';
-import { Helios } from './Helios'
+import { Helios } from './Helios';
 
 export const characterList: string[] = [
   'Random',
