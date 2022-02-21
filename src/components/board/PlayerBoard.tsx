@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 import { Canvas } from '@react-three/fiber';
 import { useContextBridge } from '@react-three/drei';
 import classNames from 'classnames';
@@ -46,11 +46,13 @@ export const PlayerBoard = (): JSX.Element => {
     <div className={classNames('player-board', outlineClass)}>
       <HelpText />
       <div className="player-board__canvas">
-        <Canvas camera={{ fov: 75 }}>
-          <ContextBridge>
-            <Scene boardPositions={boardPositions} />
-          </ContextBridge>
-        </Canvas>
+        <Suspense fallback={false}>
+          <Canvas camera={{ fov: 75 }}>
+            <ContextBridge>
+              <Scene boardPositions={boardPositions} />
+            </ContextBridge>
+          </Canvas>
+        </Suspense>
       </div>
     </div>
   );
