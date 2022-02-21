@@ -30,7 +30,8 @@
     "plugin:import/recommended",
     "plugin:import/typescript",
     "plugin:react/recommended",
-    "plugin:react-hooks/recommended"
+    "plugin:react-hooks/recommended",
+    "prettier"
   ],
   "rules": {
     "linebreak-style": "off", // windows uses CLRF, heroku uses LF
@@ -45,6 +46,19 @@
     "react/react-in-jsx-scope": "off",
     "react/jsx-props-no-spreading": "off",
     "react/require-default-props": "off",
-    "react/function-component-definition": ["error", { "namedComponents": "arrow-function" }]
+    "react/function-component-definition": [
+      "error",
+      { "namedComponents": "arrow-function" }
+    ],
+    "curly": ["error", "all"],
+    "max-len": ["error", { "code": 80, "ignoreUrls": true }],
+    "no-confusing-arrow": ["error", { "allowParens": false }],
+    "no-mixed-operators": "error",
+    "no-tabs": ["error", { "allowIndentationTabs": true }],
+    "quotes": [
+      "error",
+      "single",
+      { "avoidEscape": true, "allowTemplateLiterals": false }
+    ]
   }
 }
