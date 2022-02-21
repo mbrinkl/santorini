@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import './style.scss';
+import './ButtonBack.scss';
 
 export const ButtonBack = ({
   to,

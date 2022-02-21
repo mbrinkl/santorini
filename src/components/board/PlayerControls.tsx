@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { playAgain } from '../../api';
 import { useBoardContext } from '../../context/boardContext';
-import { Button, ButtonLink, ImageButton } from '../Button';
+import { Button, ButtonLink, ImageButton } from '../common/Button';
 import undoLogo from '../../assets/png/undo.png';
 import './PlayerControls.scss';
 

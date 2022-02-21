@@ -2,10 +2,10 @@ import React, { useState } from 'react';
 import Tippy from '@tippyjs/react';
 import { useStoreState, useStoreActions } from '../../store';
 import { updatePlayer } from '../../api';
-import { ButtonBack } from '../ButtonBack';
-import { Button } from '../Button';
+import { ButtonBack } from '../common/ButtonBack';
+import { Button } from '../common/Button';
 import { LobbyPage } from './Wrapper';
-import { Input } from '../Input';
+import { Input } from '../common/Input';
 import 'tippy.js/dist/tippy.css';
 import './SetupNickname.scss';
 

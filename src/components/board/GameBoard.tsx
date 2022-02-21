@@ -1,18 +1,18 @@
 import classNames from 'classnames';
 import { BoardProps } from 'boardgame.io/react';
 import { useMemo, useState } from 'react';
-import { Inspector } from '../Inspector';
+import { Inspector } from './Inspector';
 import { GameState } from '../../types/GameTypes';
 import { BoardContext } from '../../context/boardContext';
 import { PlayerBoard } from './PlayerBoard';
 import { PlayerControls } from './PlayerControls';
-import { CharacterSelect } from '../CharacterSelect';
+import { CharacterSelect } from './CharacterSelect';
 import { PlayerInfo } from './PlayerInfo';
 import { PlayerInfoMobile } from './PlayerInfoMobile';
-import { Chat } from '../Chat';
-import { MoveLog } from '../MoveLog';
+import { Chat } from './Chat';
+import { MoveLog } from './MoveLog';
 import { isMobile } from '../../util';
-import './style.scss';
+import './GameBoard.scss';
 
 export const GameBoard = (boardProps: BoardProps<GameState>): JSX.Element => {
   const [overrideState, setOverrideState] =

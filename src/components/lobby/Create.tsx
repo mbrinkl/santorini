@@ -1,12 +1,12 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ButtonGroup } from '../ButtonGroup';
-import { ButtonBack } from '../ButtonBack';
+import { ButtonGroup } from '../common/ButtonGroup';
+import { ButtonBack } from '../common/ButtonBack';
 import { SetupNickname } from './SetupNickname';
-import { Logo } from '../Logo';
+import { Logo } from '../common/Logo';
 import { LobbyPage } from './Wrapper';
-import { Button } from '../Button';
-import { ButtonChangeNickname } from '../ButtonChangeNickname';
+import { Button } from '../common/Button';
+import { ButtonChangeNickname } from '../common/ButtonChangeNickname';
 import { useStoreActions, useStoreState } from '../../store';
 import { createMatch } from '../../api';
 

@@ -5,14 +5,14 @@ import { _ClientImpl as ClientImpl } from 'boardgame.io/dist/types/src/client/cl
 import { LogEntry } from 'boardgame.io';
 import { GameState } from '../../types/GameTypes';
 import { initBoard, initPlayers, SantoriniGame } from '../../game';
-import { ImageButton } from '../Button';
-import { ButtonGroup } from '../ButtonGroup';
+import { ImageButton } from '../common/Button';
+import { ButtonGroup } from '../common/ButtonGroup';
 import { getMatch } from '../../api';
 import RewindImg from '../../assets/png/rewind.png';
 import BackImg from '../../assets/png/back.png';
 import ForwardImg from '../../assets/png/forward.png';
 import FastForwardImg from '../../assets/png/fastforward.png';
-import './style.scss';
+import './Inspector.scss';
 
 const getFilteredLogs = (logs: LogEntry[]): LogEntry[] => {
   const filteredLogs = logs.filter(

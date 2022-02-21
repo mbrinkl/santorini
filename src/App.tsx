@@ -5,16 +5,16 @@ import {
   Routes,
   useNavigate,
 } from 'react-router-dom';
-import { CreatePage } from './components/Lobby/Create';
-import { JoinPage } from './components/Lobby/Join';
-import { GameLobby } from './components/Lobby/Game';
-import { SetupNickname } from './components/Lobby/SetupNickname';
+import { CreatePage } from './components/lobby/Create';
+import { JoinPage } from './components/lobby/Join';
+import { GameLobby } from './components/lobby/Game';
+import { SetupNickname } from './components/lobby/SetupNickname';
 import { initializeStore, useStoreState } from './store';
 import { NICKNAME_STORAGE_KEY, PLAYER_STORAGE_KEY } from './config/client';
 import { StoreModel } from './types/StoreTypes';
-import { Home } from './components/Lobby/Home';
-import { NotFound } from './components/NotFound';
-import { WatchPage } from './components/Lobby/Watch';
+import { Home } from './components/lobby/Home';
+import { NotFound } from './components/lobby/NotFound';
+import { WatchPage } from './components/lobby/Watch';
 
 const savedNickname = localStorage.getItem(NICKNAME_STORAGE_KEY);
 const savedPlayer = localStorage.getItem(PLAYER_STORAGE_KEY);

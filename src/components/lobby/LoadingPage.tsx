@@ -1,4 +1,4 @@
-import './style.scss';
+import './LoadingPage.scss';
 
 export const LoadingPage = (): JSX.Element => (
   <div className="loading-page">

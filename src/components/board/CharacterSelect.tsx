@@ -1,11 +1,11 @@
 import { ChangeEventHandler, useState } from 'react';
-import { ConnectedIndicator } from '../ConnectedIndicator';
-import { Button, ButtonLink } from '../Button';
+import { ConnectedIndicator } from './ConnectedIndicator';
+import { Button, ButtonLink } from '../common/Button';
 import { getCharacterByName, getSortedCharacters } from '../../game/characters';
 import { useBoardContext } from '../../context/boardContext';
-import './style.scss';
 import { CharacterCard, SelectedCharacterCard } from './CharacterCard';
-import { ButtonGroup } from '../ButtonGroup';
+import { ButtonGroup } from '../common/ButtonGroup';
+import './CharacterSelect.scss';
 
 export const CharacterSelect = (): JSX.Element => {
   const { G, moves, matchData, playerID } = useBoardContext();

@@ -1,6 +1,6 @@
 import classNames from 'classnames';
 import React, { HTMLAttributes } from 'react';
-import './style.scss';
+import './ButtonGroup.scss';
 
 export const ButtonGroup = ({
   className,

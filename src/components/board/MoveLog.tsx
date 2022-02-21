@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import { useEffect, useRef } from 'react';
 import { posToReadableCoord } from '../../game/utility';
 import { useBoardContext } from '../../context/boardContext';
-import './style.scss';
+import './MoveLog.scss';
 
 export const MoveLog = (): JSX.Element => {
   const { matchData, log } = useBoardContext();

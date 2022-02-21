@@ -1,5 +1,5 @@
 import { useBoardContext } from '../../context/boardContext';
-import { ConnectedIndicator } from '../ConnectedIndicator';
+import { ConnectedIndicator } from './ConnectedIndicator';
 import './PlayerInfo.scss';
 
 export const PlayerInfo = (): JSX.Element => {

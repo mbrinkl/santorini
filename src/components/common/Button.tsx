@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import React, { ButtonHTMLAttributes, ImgHTMLAttributes } from 'react';
 import { Link, LinkProps } from 'react-router-dom';
-import style from './style.module.scss';
+import style from './Button.module.scss';
 
 interface ButtonProps {
   theme?: 'red' | 'yellow' | 'blue' | 'green';

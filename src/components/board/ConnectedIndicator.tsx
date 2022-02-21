@@ -1,6 +1,6 @@
 import classNames from 'classnames';
 import { useBoardContext } from '../../context/boardContext';
-import './style.scss';
+import './ConnectedIndicator.scss';
 
 export const ConnectedIndicator = ({
   playerID,

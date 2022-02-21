@@ -1,12 +1,12 @@
 import { useEffect, useState } from 'react';
 import { LobbyPage } from './Wrapper';
-import { Logo } from '../Logo';
-import { ButtonLink } from '../Button';
-import { ButtonChangeNickname } from '../ButtonChangeNickname';
-import { ButtonBack } from '../ButtonBack';
+import { Logo } from '../common/Logo';
+import { ButtonLink } from '../common/Button';
+import { ButtonChangeNickname } from '../common/ButtonChangeNickname';
+import { ButtonBack } from '../common/ButtonBack';
 import { useStoreActions, useStoreState } from '../../store';
 import { getMatch } from '../../api';
-import { ButtonGroup } from '../ButtonGroup';
+import { ButtonGroup } from '../common/ButtonGroup';
 
 export const Home = (): JSX.Element => {
   const [prevGameActive, setPrevGameActive] = useState(false);

@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react';
 import { LobbyAPI } from 'boardgame.io';
 import { LobbyPage } from './Wrapper';
-import { ButtonBack } from '../ButtonBack';
+import { ButtonBack } from '../common/ButtonBack';
 import { getMatches } from '../../api';
-import { MatchTable } from '../MatchTable';
+import { MatchTable } from '../common/MatchTable';
 
 export const JoinPage = (): JSX.Element => {
   const [joinableMatches, setJoinableMatches] = useState<LobbyAPI.Match[]>([]);

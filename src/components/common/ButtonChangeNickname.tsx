@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import { useStoreState } from '../../store';
-import './style.scss';
+import './ButtonChangeNickname.scss';
 
 export const ButtonChangeNickname = (): JSX.Element => {
   const nickname = useStoreState((s) => s.nickname);

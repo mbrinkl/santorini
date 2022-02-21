@@ -1,9 +1,9 @@
 import { LobbyAPI } from 'boardgame.io';
 import { useEffect, useState } from 'react';
 import { LobbyPage } from './Wrapper';
-import { ButtonBack } from '../ButtonBack';
+import { ButtonBack } from '../common/ButtonBack';
 import { getMatches } from '../../api';
-import { MatchTable } from '../MatchTable';
+import { MatchTable } from '../common/MatchTable';
 
 export const WatchPage = (): JSX.Element => {
   const [spectatableMatches, setSpectatableMatches] = useState<

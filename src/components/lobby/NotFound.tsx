@@ -1,6 +1,6 @@
-import { ButtonLink } from '../Button';
-import { LobbyPage } from '../Lobby/Wrapper';
-import './style.scss';
+import { ButtonLink } from '../common/Button';
+import { LobbyPage } from './Wrapper';
+import './NotFound.scss';
 
 export const NotFound = (): JSX.Element => (
   <LobbyPage>

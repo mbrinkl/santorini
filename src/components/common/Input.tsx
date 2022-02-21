@@ -1,6 +1,6 @@
 import classNames from 'classnames';
 import { InputHTMLAttributes } from 'react';
-import style from './style.module.scss';
+import style from './Input.module.scss';
 
 export const Input = ({
   type = 'text',
