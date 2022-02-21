@@ -4,7 +4,7 @@ import { useContextBridge } from '@react-three/drei';
 import classNames from 'classnames';
 import { HelpText } from './HelpText';
 import { useBoardContext, BoardContext } from '../../context/boardContext';
-import { Scene } from '../ThreeTemo/Scene';
+import { Scene } from '../three/Scene';
 import { BoardPosition } from '../../types/BoardTypes';
 import { GROUND_PADDING, GROUND_SIZE } from '../../config/board';
 import './PlayerBoard.scss';
