@@ -1,4 +1,4 @@
-@import "~styles/shared";
+@import '~styles/shared';
 
 .PlayerInfoMobile {
   position: absolute;
@@ -48,7 +48,7 @@
     display: flex;
     flex-direction: row;
     justify-content: center;
-  
+
     div {
       margin-right: 5px;
     }
@@ -62,8 +62,8 @@
   bottom: 0;
   left: 0;
   right: 0;
-  background: transparentize($c-black, 0.10);
-  
+  background: transparentize($c-black, 0.1);
+
   &__p1 {
     position: absolute;
     top: 15%;

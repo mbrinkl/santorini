@@ -5,10 +5,10 @@ import { getCharacter } from '.';
 import { tryEndTurn } from '../winConditions';
 
 type HecateAttrs = {
-  workers: Worker[],
-  oppWorkers: Worker[],
-  oppAttrs: Record<string, unknown>,
-  spaces: Space[],
+  workers: Worker[];
+  oppWorkers: Worker[];
+  oppAttrs: Record<string, unknown>;
+  spaces: Space[];
 };
 
 const restore = (G: GameState, playerID: string, restoreState: HecateAttrs) => {
@@ -23,20 +23,23 @@ const illegalState = (
   { G }: GameContext,
   charState: CharacterState,
   oppCharState: CharacterState,
-) : boolean => {
+): boolean => {
   const workerPositions = charState.workers.map(({ pos }) => pos);
   const oppWorkerPositions = oppCharState.workers.map(({ pos }) => pos);
 
   return (
     // An opponent worker is in the same position as Hecate's worker
-    workerPositions.filter((positions) => oppWorkerPositions.includes(positions)).length > 0
-
+    workerPositions.filter((positions) =>
+      oppWorkerPositions.includes(positions),
+    ).length > 0 ||
     // Two of Hecate's workers are on the same space
-    || new Set(workerPositions).size !== workerPositions.length
-
+    new Set(workerPositions).size !== workerPositions.length ||
     // Illegal build was made on one of Hecate's workers
-    || !charState.workers.every((worker) => (
-      !G.spaces[worker.pos].isDomed && G.spaces[worker.pos].height === worker.height))
+    !charState.workers.every(
+      (worker) =>
+        !G.spaces[worker.pos].isDomed &&
+        G.spaces[worker.pos].height === worker.height,
+    )
   );
 };
 
@@ -66,12 +69,7 @@ export const Hecate: Character<HecateAttrs> = {
     },
   },
 
-  restrictOpponentMove: (
-    context,
-    charState,
-    oppCharState,
-    fromPos,
-  ) => {
+  restrictOpponentMove: (context, charState, oppCharState, fromPos) => {
     // strip inhabitant data, then put it back after calc
     const { G, playerID } = context;
     const { opponentID } = G.players[playerID]; // refers to Hecate...
@@ -89,18 +87,16 @@ export const Hecate: Character<HecateAttrs> = {
     const oppCharacter = getCharacter(oppCharState);
     const valids = oppCharacter.validMove(context, oppCharState, fromPos);
     charState.workers.forEach((worker, index) => {
-      G.spaces[worker.pos].inhabitant = { playerID: opponentID, workerNum: index };
+      G.spaces[worker.pos].inhabitant = {
+        playerID: opponentID,
+        workerNum: index,
+      };
     });
 
     return valids;
   },
 
-  restrictOpponentBuild: (
-    context,
-    charState,
-    oppCharState,
-    fromPos,
-  ) => {
+  restrictOpponentBuild: (context, charState, oppCharState, fromPos) => {
     // strip inhabitant data, then put it back after calc
     const { G, playerID } = context;
     const { opponentID } = G.players[playerID]; // refers to Hecate...
@@ -118,18 +114,16 @@ export const Hecate: Character<HecateAttrs> = {
     const oppCharacter = getCharacter(oppCharState);
     const valids = oppCharacter.validBuild(context, oppCharState, fromPos);
     charState.workers.forEach((worker, index) => {
-      G.spaces[worker.pos].inhabitant = { playerID: opponentID, workerNum: index };
+      G.spaces[worker.pos].inhabitant = {
+        playerID: opponentID,
+        workerNum: index,
+      };
     });
 
     return valids;
   },
 
-  restrictOpponentSpecial: (
-    context,
-    charState,
-    oppCharState,
-    fromPos,
-  ) => {
+  restrictOpponentSpecial: (context, charState, oppCharState, fromPos) => {
     // strip inhabitant data, then put it back after calc
     const { G, playerID } = context;
     const { opponentID } = G.players[playerID]; // refers to Hecate...
@@ -147,7 +141,10 @@ export const Hecate: Character<HecateAttrs> = {
     const oppCharacter = getCharacter(oppCharState);
     const valids = oppCharacter.validSpecial(context, oppCharState, fromPos);
     charState.workers.forEach((worker, index) => {
-      G.spaces[worker.pos].inhabitant = { playerID: opponentID, workerNum: index };
+      G.spaces[worker.pos].inhabitant = {
+        playerID: opponentID,
+        workerNum: index,
+      };
     });
 
     return valids;

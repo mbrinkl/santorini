@@ -1,11 +1,10 @@
 import { useBoardContext } from '../../context/boardContext';
 
-export const HelpText = () : JSX.Element => {
-  const {
-    G, isActive, ctx, matchData, playerID,
-  } = useBoardContext();
+export const HelpText = (): JSX.Element => {
+  const { G, isActive, ctx, matchData, playerID } = useBoardContext();
 
-  const stage: string | null = (ctx.activePlayers && ctx.activePlayers[ctx.currentPlayer]) || null;
+  const stage: string | null =
+    (ctx.activePlayers && ctx.activePlayers[ctx.currentPlayer]) || null;
   const currentPlayerName: string | undefined = matchData?.find(
     (p) => String(p.id) === ctx.currentPlayer,
   )?.name;
@@ -16,7 +15,9 @@ export const HelpText = () : JSX.Element => {
     if (stage === 'setup') {
       hint = 'Setup';
     } else if (stage === 'place') {
-      hint = `Place ${G.players[ctx.currentPlayer].charState.numWorkersToPlace} workers`;
+      hint = `Place ${
+        G.players[ctx.currentPlayer].charState.numWorkersToPlace
+      } workers`;
     } else if (stage === 'select') {
       hint = 'Select a worker';
     } else if (stage === 'move') {
@@ -37,9 +38,5 @@ export const HelpText = () : JSX.Element => {
     hint = `${matchData?.[winner].name || `Player ${winner}`} Wins`;
   }
 
-  return (
-    <span className="player-board__hint">
-      {hint}
-    </span>
-  );
+  return <span className="player-board__hint">{hint}</span>;
 };

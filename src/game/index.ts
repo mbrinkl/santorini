@@ -4,14 +4,23 @@ import { RandomAPI } from 'boardgame.io/dist/types/src/plugins/random/random';
 import { GAME_ID } from '../config';
 import { CharacterState } from '../types/CharacterTypes';
 import {
-  banList, characterList, getCharacter, getCharacterByName,
+  banList,
+  characterList,
+  getCharacter,
+  getCharacterByName,
 } from './characters';
+import { GameContext, GameState, Player, Space } from '../types/GameTypes';
 import {
-  GameContext, GameState, Player, Space,
-} from '../types/GameTypes';
-import {
-  setChar, ready, place, move, select, build,
-  special, setup, onButtonPressed, endTurn,
+  setChar,
+  ready,
+  place,
+  move,
+  select,
+  build,
+  special,
+  setup,
+  onButtonPressed,
+  endTurn,
 } from './moves';
 import { canReachEndStage, updateValids } from './validity';
 
@@ -27,12 +36,16 @@ const TURN_ORDER_ONCE = {
 
 const TURN_ORDER_DEFAULT = {
   first: ({ G }: Omit<GameContext, 'playerID'>) => getFirstPlayer(G),
-  next: ({ ctx }: Omit<GameContext, 'playerID'>) => (ctx.playOrderPos + 1) % ctx.numPlayers,
+  next: ({ ctx }: Omit<GameContext, 'playerID'>) =>
+    (ctx.playOrderPos + 1) % ctx.numPlayers,
 };
 
 export function initCharState(name: string): CharacterState {
   const { data } = getCharacterByName(name);
-  const deepCopyData = JSON.parse(JSON.stringify(data)) as Omit<CharacterState, 'name'>;
+  const deepCopyData = JSON.parse(JSON.stringify(data)) as Omit<
+    CharacterState,
+    'name'
+  >;
   return { name, ...deepCopyData };
 }
 
@@ -43,11 +56,15 @@ function initRandomCharacters(G: GameState, random: RandomAPI) {
   Object.values(G.players).forEach((player) => {
     if (player.charState.name === 'Random') {
       const opponentCharName = G.players[player.opponentID].charState.name;
-      const bannedPairs = banList.filter((ban) => ban.includes(opponentCharName));
-      const bannedChars = bannedPairs.flat().filter((charName) => charName !== opponentCharName);
-      const possibleChars = listOnlyCharacters.filter((name) => (
-        name !== opponentCharName && !bannedChars.includes(name)
-      ));
+      const bannedPairs = banList.filter((ban) =>
+        ban.includes(opponentCharName),
+      );
+      const bannedChars = bannedPairs
+        .flat()
+        .filter((charName) => charName !== opponentCharName);
+      const possibleChars = listOnlyCharacters.filter(
+        (name) => name !== opponentCharName && !bannedChars.includes(name),
+      );
       const randomCharName = random.Shuffle(possibleChars)[0];
       player.charState = initCharState(randomCharName);
     }
@@ -55,7 +72,10 @@ function initRandomCharacters(G: GameState, random: RandomAPI) {
 }
 
 function getFirstPlayer(G: GameState): number {
-  if (G.players['0'].charState.turnOrder === 1 || G.players['1'].charState.turnOrder === 0) {
+  if (
+    G.players['0'].charState.turnOrder === 1 ||
+    G.players['1'].charState.turnOrder === 0
+  ) {
     return 1;
   }
 
@@ -63,13 +83,19 @@ function getFirstPlayer(G: GameState): number {
 }
 
 // Uses ctx.currentPlayer as the game context's playerID
-function getContextWithPlayerID(context: Omit<GameContext, 'playerID'>): GameContext {
+function getContextWithPlayerID(
+  context: Omit<GameContext, 'playerID'>,
+): GameContext {
   const { ctx } = context;
   const playerID = ctx.currentPlayer;
   return { ...context, playerID };
 }
 
-function stripSecrets(G: GameState, ctx: Ctx, playerID: string | null) : GameState {
+function stripSecrets(
+  G: GameState,
+  ctx: Ctx,
+  playerID: string | null,
+): GameState {
   if (ctx.gameover) {
     return G;
   }
@@ -98,20 +124,20 @@ function stripSecrets(G: GameState, ctx: Ctx, playerID: string | null) : GameSta
   return strippedState;
 }
 
-export const initPlayers = (ctx: Ctx) : Record<string, Player> => {
+export const initPlayers = (ctx: Ctx): Record<string, Player> => {
   const players: Record<string, Player> = {} as Record<string, Player>;
   for (let i = 0; i < ctx.numPlayers; i++) {
-    players[i] = ({
+    players[i] = {
       ID: i.toString(),
       opponentID: ((i + 1) % ctx.numPlayers).toString(),
       ready: false,
       charState: initCharState('Random'),
-    });
+    };
   }
   return players;
 };
 
-export const initBoard = () : Space[] => {
+export const initBoard = (): Space[] => {
   const spaces: Space[] = [];
   for (let i = 0; i < 25; i++) {
     spaces.push({
@@ -151,13 +177,17 @@ export const SantoriniGame: Game<GameState> = {
         setChar,
         ready,
       },
-      endIf: ({ G }) => Object.values(G.players).every((player) => player.ready),
+      endIf: ({ G }) =>
+        Object.values(G.players).every((player) => player.ready),
       onEnd: (context) => {
         const { G, random } = context;
         initRandomCharacters(G, random);
         Object.values(G.players).forEach((player) => {
           const character = getCharacter(player.charState);
-          character.initialize({ ...context, playerID: player.ID }, player.charState);
+          character.initialize(
+            { ...context, playerID: player.ID },
+            player.charState,
+          );
         });
       },
     },
@@ -245,7 +275,12 @@ export const SantoriniGame: Game<GameState> = {
           if (G.valids.length === 0) {
             // First check if there is a possible route to the end stage through the
             // buttonPressed move event
-            if (!(charState.buttonActive && canReachEndStage(contextWithPlayerID, 'buttonPress', -1))) {
+            if (
+              !(
+                charState.buttonActive &&
+                canReachEndStage(contextWithPlayerID, 'buttonPress', -1)
+              )
+            ) {
               // If not, that player loses
               events.endGame({
                 winner: G.players[playerID].opponentID,

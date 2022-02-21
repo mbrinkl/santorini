@@ -3,7 +3,7 @@ import { Mortal } from './Mortal';
 import { Board } from '../boardUtil';
 
 type AthenaAttrs = {
-  movedUp: boolean,
+  movedUp: boolean;
 };
 
 export const Athena: Character<AthenaAttrs> = {
@@ -11,8 +11,10 @@ export const Athena: Character<AthenaAttrs> = {
 
   data: {
     ...Mortal.data,
-    desc: [`Opponent's Turn: If one of your workers moved up on your last turn, 
-        opponent workers cannot move up this turn.`],
+    desc: [
+      `Opponent's Turn: If one of your workers moved up on your last turn, 
+        opponent workers cannot move up this turn.`,
+    ],
     pack: 'simple',
     attrs: {
       movedUp: false,

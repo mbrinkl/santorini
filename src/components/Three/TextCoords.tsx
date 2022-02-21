@@ -2,8 +2,10 @@ import { Text } from '@react-three/drei';
 import { BoardPosition } from '../../types/BoardTypes';
 import { GROUND_SIZE } from '../../config/board';
 
-export const TextCoords = ({ boardPositions } : {
-  boardPositions: BoardPosition[]
+export const TextCoords = ({
+  boardPositions,
+}: {
+  boardPositions: BoardPosition[];
 }): JSX.Element => {
   const coords: [number, string][] = [
     [0, '5'],

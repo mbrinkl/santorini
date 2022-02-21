@@ -5,8 +5,8 @@ import { Mortal } from './Mortal';
 import { GameContext } from '../../types/GameTypes';
 
 type OdysseusAttrs = {
-  specialUsed: boolean,
-  workerToMovePos: number
+  specialUsed: boolean;
+  workerToMovePos: number;
 };
 
 function getOpenCorners({ G, playerID }: GameContext): Set<number> {
@@ -27,8 +27,10 @@ export const Odysseus: Character<OdysseusAttrs> = {
 
   data: {
     ...Mortal.data,
-    desc: [`Start of Your Turn: Once, force to unoccupied corner spaces any 
-    number of opponent Workers that neighbor your Workers.`],
+    desc: [
+      `Start of Your Turn: Once, force to unoccupied corner spaces any 
+    number of opponent Workers that neighbor your Workers.`,
+    ],
     pack: 'heroes',
     buttonText: 'Move Opponent',
     attrs: {
@@ -39,7 +41,8 @@ export const Odysseus: Character<OdysseusAttrs> = {
 
   onTurnBegin: (context, charState) => {
     if (!charState.attrs.specialUsed) {
-      charState.buttonActive = (Odysseus.validSpecial(context, charState, -1).size > 0);
+      charState.buttonActive =
+        Odysseus.validSpecial(context, charState, -1).size > 0;
     }
   },
 
@@ -97,7 +100,12 @@ export const Odysseus: Character<OdysseusAttrs> = {
       const { inhabitant } = G.spaces[charState.attrs.workerToMovePos];
       if (inhabitant) {
         Board.free(context, charState.attrs.workerToMovePos);
-        Board.place(context, pos, G.players[playerID].opponentID, inhabitant.workerNum);
+        Board.place(
+          context,
+          pos,
+          G.players[playerID].opponentID,
+          inhabitant.workerNum,
+        );
       }
       charState.attrs.workerToMovePos = -1;
       charState.buttonActive = true;

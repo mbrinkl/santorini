@@ -1,5 +1,5 @@
-@import "variables";
-@import "~normalize.css";
+@import 'variables';
+@import '~normalize.css';
 
 *,
 *::before,
@@ -7,14 +7,18 @@
   box-sizing: border-box;
 }
 
-html, body, #root, .App, .App>div {
+html,
+body,
+#root,
+.App,
+.App > div {
   height: 100%;
   overflow-x: hidden;
 }
 
 body {
   margin: 0;
-  font-family: "Rubik", sans-serif;
+  font-family: 'Rubik', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   background: $c-gray;

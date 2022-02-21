@@ -4,41 +4,47 @@ import { OffBoardToken, Token } from '../../types/GameTypes';
 import { BoardPosition } from '../../types/BoardTypes';
 import { GROUND_SIZE } from '../../config/board';
 
-export const GenericToken = ({ boardPos, height, tokens } : {
-  boardPos: BoardPosition,
-  height: number,
-  tokens: Token[],
+export const GenericToken = ({
+  boardPos,
+  height,
+  tokens,
+}: {
+  boardPos: BoardPosition;
+  height: number;
+  tokens: Token[];
 }): JSX.Element => {
   const { x, z } = boardPos;
   // Assuming only two tokens per position is possible right now
   const yPosHeightMap = [0, 3, 5, 7, 7];
   const tokenArgs: Vector3 = tokens.length === 1 ? [2, 1, 2] : [1, 1, 1];
-  const token0Pos: Vector3 = tokens.length === 1 ? [x, yPosHeightMap[height], z]
-    : [x - 1, yPosHeightMap[height], z - 1];
+  const token0Pos: Vector3 =
+    tokens.length === 1
+      ? [x, yPosHeightMap[height], z]
+      : [x - 1, yPosHeightMap[height], z - 1];
   const token1Pos: Vector3 = [x + 1, yPosHeightMap[height], z + 1];
 
   return (
     <>
-      {
-        tokens.map((token, index) => (
-          <RoundedBox
-            key={`token${token.color}`}
-            userData={{ pos: boardPos.pos }}
-            args={tokenArgs}
-            position={index === 0 ? token0Pos : token1Pos}
-            radius={0.05}
-            smoothness={4}
-          >
-            <meshStandardMaterial name="mat" color={token.color} />
-          </RoundedBox>
-        ))
-      }
+      {tokens.map((token, index) => (
+        <RoundedBox
+          key={`token${token.color}`}
+          userData={{ pos: boardPos.pos }}
+          args={tokenArgs}
+          position={index === 0 ? token0Pos : token1Pos}
+          radius={0.05}
+          smoothness={4}
+        >
+          <meshStandardMaterial name="mat" color={token.color} />
+        </RoundedBox>
+      ))}
     </>
   );
 };
 
-export const GenericOffBoardToken = ({ tokens } : {
-  tokens: OffBoardToken[],
+export const GenericOffBoardToken = ({
+  tokens,
+}: {
+  tokens: OffBoardToken[];
 }): JSX.Element => {
   const x = 3.5 * GROUND_SIZE;
   const z = -GROUND_SIZE;
@@ -56,30 +62,21 @@ export const GenericOffBoardToken = ({ tokens } : {
 
   return (
     <>
-      {
-        tokens.map((token, index) => (
-          <group
-            key={`token${token.playerID}`}
-            position={[x, 0, z + (index * 2 * GROUND_SIZE)]}
-            rotation={[(Math.PI / 2), 0, Math.PI + mapping[token.direction]]}
-          >
-            <Cone
-              args={[1, 2]}
-              rotation={[0, 0, 0]}
-              position={[0, 1, 0]}
-            >
-              <meshStandardMaterial name="mat" color="blue" />
-            </Cone>
+      {tokens.map((token, index) => (
+        <group
+          key={`token${token.playerID}`}
+          position={[x, 0, z + index * 2 * GROUND_SIZE]}
+          rotation={[Math.PI / 2, 0, Math.PI + mapping[token.direction]]}
+        >
+          <Cone args={[1, 2]} rotation={[0, 0, 0]} position={[0, 1, 0]}>
+            <meshStandardMaterial name="mat" color="blue" />
+          </Cone>
 
-            <Cylinder
-              args={[0.5, 0.5, 2]}
-              position={[0, -1, 0]}
-            >
-              <meshStandardMaterial name="mat" color="blue" />
-            </Cylinder>
-          </group>
-        ))
-      }
+          <Cylinder args={[0.5, 0.5, 2]} position={[0, -1, 0]}>
+            <meshStandardMaterial name="mat" color="blue" />
+          </Cylinder>
+        </group>
+      ))}
     </>
   );
 };

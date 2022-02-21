@@ -17,8 +17,10 @@ export const Helios: Character = {
 
   data: {
     ...Mortal.data,
-    desc: ['Win Restriction: Opponents Workers cannot win by moving when they move into one of the 9 central spaces.',
-      'Win Condition: You also win if there is a dome in the center space at the end of your turn.'],
+    desc: [
+      'Win Restriction: Opponents Workers cannot win by moving when they move into one of the 9 central spaces.',
+      'Win Condition: You also win if there is a dome in the center space at the end of your turn.',
+    ],
     pack: 'custom',
   },
 

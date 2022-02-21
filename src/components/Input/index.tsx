@@ -6,7 +6,7 @@ export const Input = ({
   type = 'text',
   className,
   ...props
-} : InputHTMLAttributes<HTMLInputElement>) : JSX.Element => (
+}: InputHTMLAttributes<HTMLInputElement>): JSX.Element => (
   <input
     className={classNames(style.input, className)}
     type={type}

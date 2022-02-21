@@ -14,10 +14,10 @@ import ForwardImg from '../../assets/png/forward.png';
 import FastForwardImg from '../../assets/png/fastforward.png';
 import './style.scss';
 
-const getFilteredLogs = (logs: LogEntry[]) : LogEntry[] => {
-  const filteredLogs = logs.filter((l) => (
-    (l.action.type === 'MAKE_MOVE' || l.action.type === 'UNDO')
-  ));
+const getFilteredLogs = (logs: LogEntry[]): LogEntry[] => {
+  const filteredLogs = logs.filter(
+    (l) => l.action.type === 'MAKE_MOVE' || l.action.type === 'UNDO',
+  );
 
   let numUndo = 0;
   for (let i = filteredLogs.length - 1; i >= 0; i--) {
@@ -33,11 +33,15 @@ const getFilteredLogs = (logs: LogEntry[]) : LogEntry[] => {
   return filteredLogs;
 };
 
-export const Inspector = ({ matchID, logs, setOverrideState } : {
-  matchID: string,
-  logs: LogEntry[],
-  setOverrideState(value: BoardProps<GameState>): void,
-}) : JSX.Element => {
+export const Inspector = ({
+  matchID,
+  logs,
+  setOverrideState,
+}: {
+  matchID: string;
+  logs: LogEntry[];
+  setOverrideState(value: BoardProps<GameState>): void;
+}): JSX.Element => {
   const [client, setClient] = useState<any>(null);
   const [clientState, setClientState] = useState<any>(null);
   const [filteredLogs] = useState(getFilteredLogs(logs));
@@ -75,13 +79,20 @@ export const Inspector = ({ matchID, logs, setOverrideState } : {
     test();
   }, [matchID, filteredLogs]);
 
-  return <Ctrls client={client} setClientState={setClientState} log={filteredLogs} />;
+  return (
+    <Ctrls client={client} setClientState={setClientState} log={filteredLogs} />
+  );
 };
 
 /**
  * Execute every move in the log, or to a given index (not select character moves)
  */
-export const executeLog = (client: ClientImpl, log: LogEntry[], from?: number, to?: number) => {
+export const executeLog = (
+  client: ClientImpl,
+  log: LogEntry[],
+  from?: number,
+  to?: number,
+) => {
   if (from === undefined) {
     from = 0;
   }
@@ -149,18 +160,21 @@ const executeInitialSetup = (client, logs: LogEntry[]) => {
   }
 };
 
-const Ctrls = ({ client, setClientState, log } :
-{
-  client: ClientImpl,
-  setClientState: any,
-  log: LogEntry[]
-}) : JSX.Element => {
+const Ctrls = ({
+  client,
+  setClientState,
+  log,
+}: {
+  client: ClientImpl;
+  setClientState: any;
+  log: LogEntry[];
+}): JSX.Element => {
   const [moveNumber, setMoveNumber] = useState<number>(log.length - 1);
 
-  const firstMoveInd = log.findIndex((l) => (
-    l.action.payload.type === 'setup'
-    || l.action.payload.type === 'place'
-  ));
+  const firstMoveInd = log.findIndex(
+    (l) =>
+      l.action.payload.type === 'setup' || l.action.payload.type === 'place',
+  );
 
   const bb = () => {
     setMoveNumber(firstMoveInd - 1);
@@ -180,9 +194,10 @@ const Ctrls = ({ client, setClientState, log } :
   const b = () => {
     let prev = moveNumber - 1;
     if (
-      prev !== -1
-      && (log[prev].action.payload.type === 'endTurn'
-      || log[moveNumber].action.payload.type === 'endTurn')) {
+      prev !== -1 &&
+      (log[prev].action.payload.type === 'endTurn' ||
+        log[moveNumber].action.payload.type === 'endTurn')
+    ) {
       prev -= 1;
     }
     setMoveNumber(prev);
@@ -198,7 +213,10 @@ const Ctrls = ({ client, setClientState, log } :
     if (movePlus !== -1 && movePlus < log.length) {
       exNextMove(movePlus);
       const movePlusPlus = movePlus + 1;
-      if (movePlusPlus < log.length && log[movePlusPlus].action.payload.type === 'endTurn') {
+      if (
+        movePlusPlus < log.length &&
+        log[movePlusPlus].action.payload.type === 'endTurn'
+      ) {
         exNextMove(movePlusPlus);
         setMoveNumber(movePlusPlus);
       }

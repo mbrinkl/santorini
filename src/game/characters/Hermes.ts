@@ -4,9 +4,9 @@ import { Mortal } from './Mortal';
 import { Board } from '../boardUtil';
 
 type HermesAttrs = {
-  movedUpOrDown: boolean,
-  isMoving: boolean,
-  canMoveUpOrDown: boolean
+  movedUpOrDown: boolean;
+  isMoving: boolean;
+  canMoveUpOrDown: boolean;
 };
 
 export const Hermes: Character<HermesAttrs> = {
@@ -15,8 +15,10 @@ export const Hermes: Character<HermesAttrs> = {
   data: {
     ...Mortal.data,
 
-    desc: [`Your Turn: If your Workers do not move up or down, they may 
-    each move any number of times (even zero), and then either builds`],
+    desc: [
+      `Your Turn: If your Workers do not move up or down, they may 
+    each move any number of times (even zero), and then either builds`,
+    ],
     pack: 'simple',
     buttonText: 'End Move',
     attrs: {
@@ -53,7 +55,10 @@ export const Hermes: Character<HermesAttrs> = {
 
   move: (context, charState, pos) => {
     const { G } = context;
-    if (G.spaces[pos].height === charState.workers[charState.selectedWorkerNum].height) {
+    if (
+      G.spaces[pos].height ===
+      charState.workers[charState.selectedWorkerNum].height
+    ) {
       charState.attrs.canMoveUpOrDown = false;
       charState.attrs.isMoving = true;
       if (charState.workers.length === 2) {
@@ -67,7 +72,8 @@ export const Hermes: Character<HermesAttrs> = {
     Mortal.move(context, charState, pos);
   },
 
-  getStageAfterMove: (context, charState) => (charState.attrs.isMoving ? 'move' : 'build'),
+  getStageAfterMove: (context, charState) =>
+    charState.attrs.isMoving ? 'move' : 'build',
 
   validBuild: ({ G, playerID }, charState, originalPos) => {
     const valids = new Set<number>();
@@ -80,7 +86,9 @@ export const Hermes: Character<HermesAttrs> = {
       // special build, within range of either worker
       for (let i = 0; i < charState.workers.length; i++) {
         // add on the adjacent positions of each worker
-        adjacents = adjacents.concat(getAdjacentPositions(charState.workers[i].pos));
+        adjacents = adjacents.concat(
+          getAdjacentPositions(charState.workers[i].pos),
+        );
       }
     }
 

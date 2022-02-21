@@ -35,8 +35,14 @@ const App = () => {
         <Route path="/create" element={<CreatePage />} />
         <Route path="/join" element={<JoinPage />} />
         <Route path="/watch" element={<WatchPage />} />
-        <Route path="/nickname" element={<SetupNickname onSubmit={() => navigate('/')} />} />
-        <Route path="/:matchID" element={nickname ? <GameLobby /> : <SetupNickname />} />
+        <Route
+          path="/nickname"
+          element={<SetupNickname onSubmit={() => navigate('/')} />}
+        />
+        <Route
+          path="/:matchID"
+          element={nickname ? <GameLobby /> : <SetupNickname />}
+        />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </div>

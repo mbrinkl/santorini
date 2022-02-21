@@ -3,7 +3,7 @@ import { Mortal } from './Mortal';
 import { Board } from '../boardUtil';
 
 type DemeterAttrs = {
-  firstBuildPos: number,
+  firstBuildPos: number;
 };
 
 export const Demeter: Character<DemeterAttrs> = {
@@ -11,7 +11,9 @@ export const Demeter: Character<DemeterAttrs> = {
 
   data: {
     ...Mortal.data,
-    desc: ['Your Build: Your worker may build one additional time, but not on the same space.'],
+    desc: [
+      'Your Build: Your worker may build one additional time, but not on the same space.',
+    ],
     pack: 'simple',
     buttonText: 'Skip 2nd Build',
     attrs: {
@@ -55,8 +57,9 @@ export const Demeter: Character<DemeterAttrs> = {
 
   getStageAfterBuild: (context, charState) => {
     if (
-      charState.attrs.firstBuildPos !== -1
-      && Demeter.validBuild(context, charState, charState.attrs.firstBuildPos).size > 0
+      charState.attrs.firstBuildPos !== -1 &&
+      Demeter.validBuild(context, charState, charState.attrs.firstBuildPos)
+        .size > 0
     ) {
       return 'build';
     }

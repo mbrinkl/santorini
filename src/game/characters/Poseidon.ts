@@ -11,7 +11,9 @@ export const Poseidon: Character<PoseidonAttrs> = {
 
   data: {
     ...Mortal.data,
-    desc: ['End of Your Turn: If your unmoved Worker is on the ground level, it may build up to three times.'],
+    desc: [
+      'End of Your Turn: If your unmoved Worker is on the ground level, it may build up to three times.',
+    ],
     pack: 'advanced',
     buttonText: 'Stop Building',
     attrs: {
@@ -35,8 +37,8 @@ export const Poseidon: Character<PoseidonAttrs> = {
   getStageAfterBuild: (context, charState) => {
     if (!charState.attrs.unmovedIsBuilding) {
       if (
-        charState.workers.length === 2
-        && charState.workers[(charState.selectedWorkerNum + 1) % 2].height === 0
+        charState.workers.length === 2 &&
+        charState.workers[(charState.selectedWorkerNum + 1) % 2].height === 0
       ) {
         charState.attrs.unmovedIsBuilding = true;
 
@@ -54,8 +56,8 @@ export const Poseidon: Character<PoseidonAttrs> = {
     } else {
       charState.attrs.numUnmovedBuilds += 1;
       if (
-        charState.attrs.numUnmovedBuilds < 3
-        && Poseidon.validBuild(
+        charState.attrs.numUnmovedBuilds < 3 &&
+        Poseidon.validBuild(
           context,
           charState,
           charState.workers[charState.selectedWorkerNum].pos,

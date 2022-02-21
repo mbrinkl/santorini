@@ -8,8 +8,10 @@ export const Maenads: Character = {
 
   data: {
     ...Mortal.data,
-    desc: [`End of your turn: If your workers neighbour an opponent’s worker on opposite sides, 
-    that opponent loses the game.`],
+    desc: [
+      `End of your turn: If your workers neighbour an opponent’s worker on opposite sides, 
+    that opponent loses the game.`,
+    ],
     pack: 'promo',
   },
 

@@ -6,9 +6,16 @@ import { Button, ButtonLink, ImageButton } from '../Button';
 import undoLogo from '../../assets/png/undo.png';
 import './PlayerControls.scss';
 
-export const PlayerControls = () : JSX.Element | null => {
+export const PlayerControls = (): JSX.Element | null => {
   const {
-    playerID, G, isActive, moves, ctx, undo, sendChatMessage, credentials,
+    playerID,
+    G,
+    isActive,
+    moves,
+    ctx,
+    undo,
+    sendChatMessage,
+    credentials,
     matchID,
   } = useBoardContext();
 
@@ -18,7 +25,11 @@ export const PlayerControls = () : JSX.Element | null => {
 
   useEffect(() => {
     intervalID.current = setInterval(() => {
-      if ((ctx.activePlayers && ctx.activePlayers[ctx.currentPlayer] === 'end') && isActive) {
+      if (
+        ctx.activePlayers &&
+        ctx.activePlayers[ctx.currentPlayer] === 'end' &&
+        isActive
+      ) {
         if (counter > 0) {
           setCounter(counter - 1);
         } else {
@@ -70,7 +81,6 @@ export const PlayerControls = () : JSX.Element | null => {
 
   return (
     <div className="player-controls">
-
       {ctx.gameover || G.isClone ? (
         <>
           <ButtonLink
@@ -91,42 +101,43 @@ export const PlayerControls = () : JSX.Element | null => {
             Rematch
           </Button>
         </>
-      )
-        : (
-          <>
-            <ImageButton
-              src={undoLogo}
-              alt="undoLogo"
-              theme="red"
-              size="small"
-              className="player-controls__button"
-              disabled={!ctx.numMoves || !isActive}
-              onClick={() => undoMove()}
-            />
+      ) : (
+        <>
+          <ImageButton
+            src={undoLogo}
+            alt="undoLogo"
+            theme="red"
+            size="small"
+            className="player-controls__button"
+            disabled={!ctx.numMoves || !isActive}
+            onClick={() => undoMove()}
+          />
 
-            <Button
-              theme="blue"
-              size="small"
-              className="player-controls__button"
-              disabled={!G.players[playerID].charState.buttonActive}
-              onClick={() => moves.onButtonPressed()}
-            >
-              {G.players[playerID].charState.buttonText}
-            </Button>
+          <Button
+            theme="blue"
+            size="small"
+            className="player-controls__button"
+            disabled={!G.players[playerID].charState.buttonActive}
+            onClick={() => moves.onButtonPressed()}
+          >
+            {G.players[playerID].charState.buttonText}
+          </Button>
 
-            <Button
-              theme="green"
-              onClick={() => endTurn()}
-              className="player-controls__button"
-              size="small"
-              disabled={(ctx.activePlayers && ctx.activePlayers[ctx.currentPlayer] !== 'end') || !isActive}
-            >
-              (
-              {counter}
-              ) End Turn
-            </Button>
-          </>
-        )}
+          <Button
+            theme="green"
+            onClick={() => endTurn()}
+            className="player-controls__button"
+            size="small"
+            disabled={
+              (ctx.activePlayers &&
+                ctx.activePlayers[ctx.currentPlayer] !== 'end') ||
+              !isActive
+            }
+          >
+            ({counter}) End Turn
+          </Button>
+        </>
+      )}
     </div>
   );
 };

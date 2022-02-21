@@ -1,4 +1,4 @@
-@import "~styles/shared";
+@import '~styles/shared';
 
 .lobby-page {
   position: relative;
@@ -23,7 +23,7 @@
   right: 0px;
   width: 75px;
 
-  &:hover{
+  &:hover {
     opacity: 0.7;
   }
 }

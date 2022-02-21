@@ -3,7 +3,7 @@ import { Mortal } from './Mortal';
 import { Board } from '../boardUtil';
 
 type HephaestusAttrs = {
-  firstBuildPos: number,
+  firstBuildPos: number;
 };
 
 export const Hephaestus: Character<HephaestusAttrs> = {
@@ -11,7 +11,9 @@ export const Hephaestus: Character<HephaestusAttrs> = {
 
   data: {
     ...Mortal.data,
-    desc: ['Your Build: Your Worker may build one additional block (not dome) on top of your first block.'],
+    desc: [
+      'Your Build: Your Worker may build one additional block (not dome) on top of your first block.',
+    ],
     pack: 'simple',
     buttonText: 'Skip 2nd Build',
     attrs: {
@@ -58,8 +60,9 @@ export const Hephaestus: Character<HephaestusAttrs> = {
 
   getStageAfterBuild: (context, charState) => {
     if (
-      charState.attrs.firstBuildPos !== -1
-      && Hephaestus.validBuild(context, charState, charState.attrs.firstBuildPos).size > 0
+      charState.attrs.firstBuildPos !== -1 &&
+      Hephaestus.validBuild(context, charState, charState.attrs.firstBuildPos)
+        .size > 0
     ) {
       return 'build';
     }

@@ -34,10 +34,12 @@ export class ExtendedStorageCache extends StorageCache {
         players: {
           ...metadata.players,
           0: {
-            ...metadata.players[0], data: { character: state.G.players[0].charState.name },
+            ...metadata.players[0],
+            data: { character: state.G.players[0].charState.name },
           },
           1: {
-            ...metadata.players[1], data: { character: state.G.players[1].charState.name },
+            ...metadata.players[1],
+            data: { character: state.G.players[1].charState.name },
           },
         },
       });

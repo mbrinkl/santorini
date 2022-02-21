@@ -1,4 +1,4 @@
-@import "~styles/shared";
+@import '~styles/shared';
 
 .char-select {
   width: 100%;
@@ -43,7 +43,7 @@
 
   &__playerNameDiv {
     display: flex;
-  
+
     div {
       margin-right: 5px;
     }
@@ -100,7 +100,7 @@
       width: 50%;
       float: left;
     }
-  
+
     &__characterDescription {
       width: 50%;
       float: right;

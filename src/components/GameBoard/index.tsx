@@ -14,16 +14,19 @@ import { MoveLog } from '../MoveLog';
 import { isMobile } from '../../util';
 import './style.scss';
 
-export const GameBoard = (boardProps: BoardProps<GameState>) : JSX.Element => {
-  const [overrideState, setOverrideState] = useState<BoardProps<GameState> | null>(null);
-  const {
-    ctx, playerID, log, matchID,
-  } = boardProps;
+export const GameBoard = (boardProps: BoardProps<GameState>): JSX.Element => {
+  const [overrideState, setOverrideState] =
+    useState<BoardProps<GameState> | null>(null);
+  const { ctx, playerID, log, matchID } = boardProps;
 
   const modifiedOverrideState: BoardProps<GameState> = useMemo(() => {
     if (overrideState) {
       const {
-        chatMessages, sendChatMessage, credentials, matchData, isConnected,
+        chatMessages,
+        sendChatMessage,
+        credentials,
+        matchData,
+        isConnected,
       } = boardProps;
       return {
         ...overrideState,
@@ -41,50 +44,55 @@ export const GameBoard = (boardProps: BoardProps<GameState>) : JSX.Element => {
   }, [overrideState, playerID, matchID, boardProps]);
 
   return (
-    <BoardContext.Provider value={ctx.gameover ? modifiedOverrideState : boardProps}>
-
-      <div className={classNames('board-container', ctx.phase === 'selectCharacters' && 'board-container--pre-game')}>
+    <BoardContext.Provider
+      value={ctx.gameover ? modifiedOverrideState : boardProps}
+    >
+      <div
+        className={classNames(
+          'board-container',
+          ctx.phase === 'selectCharacters' && 'board-container--pre-game',
+        )}
+      >
         <div className="board-container__log-chat">
           {playerID && (
-          <div className="board-container__chat">
-            <Chat />
-          </div>
+            <div className="board-container__chat">
+              <Chat />
+            </div>
           )}
           {ctx.phase !== 'selectCharacters' && (
             <div className="board-container__log">
               <MoveLog />
             </div>
           )}
-
         </div>
 
-        {ctx.phase === 'selectCharacters'
-          ? (
-            <div className="board-container__character-select">
-              <CharacterSelect />
-            </div>
-          )
-          : (
-            <>
-              <div className="board-container__player-board">
-                <PlayerBoard />
-                {ctx.gameover && (
+        {ctx.phase === 'selectCharacters' ? (
+          <div className="board-container__character-select">
+            <CharacterSelect />
+          </div>
+        ) : (
+          <>
+            <div className="board-container__player-board">
+              <PlayerBoard />
+              {ctx.gameover && (
                 <Inspector
                   logs={log}
                   matchID={matchID}
                   setOverrideState={setOverrideState}
                 />
-                )}
-                <PlayerControls />
-              </div>
-
-              {isMobile() ? <PlayerInfoMobile /> : (
-                <div className="board-container__player-info">
-                  <PlayerInfo />
-                </div>
               )}
-            </>
-          )}
+              <PlayerControls />
+            </div>
+
+            {isMobile() ? (
+              <PlayerInfoMobile />
+            ) : (
+              <div className="board-container__player-info">
+                <PlayerInfo />
+              </div>
+            )}
+          </>
+        )}
       </div>
     </BoardContext.Provider>
   );

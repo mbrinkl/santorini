@@ -157,44 +157,120 @@ export function getCharacterByName(name: string): Character {
   let character: Character<any>;
 
   switch (name) {
-    case 'Mortal': character = Mortal; break;
-    case 'Apollo': character = Apollo; break;
-    case 'Artemis': character = Artemis; break;
-    case 'Athena': character = Athena; break;
-    case 'Atlas': character = Atlas; break;
-    case 'Demeter': character = Demeter; break;
-    case 'Hephaestus': character = Hephaestus; break;
-    case 'Hermes': character = Hermes; break;
-    case 'Minotaur': character = Minotaur; break;
-    case 'Pan': character = Pan; break;
-    case 'Prometheus': character = Prometheus; break;
-    case 'Bia': character = Bia; break;
-    case 'Triton': character = Triton; break;
-    case 'Zeus': character = Zeus; break;
-    case 'Graeae': character = Graeae; break;
-    case 'Heracles': character = Heracles; break;
-    case 'Odysseus': character = Odysseus; break;
-    case 'Iris': character = Iris; break;
-    case 'Pegasus': character = Pegasus; break;
-    case 'Eros': character = Eros; break;
-    case 'Chaos': character = Chaos; break;
-    case 'Chronus': character = Chronus; break;
-    case 'Harpies': character = Harpies; break;
-    case 'Urania': character = Urania; break;
-    case 'Charon': character = Charon; break;
-    case 'Ares': character = Ares; break;
-    case 'Asteria': character = Asteria; break;
-    case 'Maenads': character = Maenads; break;
-    case 'Hades': character = Hades; break;
-    case 'Clio': character = Clio; break;
-    case 'Tartarus': character = Tartarus; break;
-    case 'Hecate': character = Hecate; break;
-    case 'Siren': character = Siren; break;
-    case 'Hestia': character = Hestia; break;
-    case 'Poseidon': character = Poseidon; break;
-    case 'Lernaean Hydra': character = LernaeanHydra; break;
-    case 'Helios': character = Helios; break;
-    default: character = Mortal; break;
+    case 'Mortal':
+      character = Mortal;
+      break;
+    case 'Apollo':
+      character = Apollo;
+      break;
+    case 'Artemis':
+      character = Artemis;
+      break;
+    case 'Athena':
+      character = Athena;
+      break;
+    case 'Atlas':
+      character = Atlas;
+      break;
+    case 'Demeter':
+      character = Demeter;
+      break;
+    case 'Hephaestus':
+      character = Hephaestus;
+      break;
+    case 'Hermes':
+      character = Hermes;
+      break;
+    case 'Minotaur':
+      character = Minotaur;
+      break;
+    case 'Pan':
+      character = Pan;
+      break;
+    case 'Prometheus':
+      character = Prometheus;
+      break;
+    case 'Bia':
+      character = Bia;
+      break;
+    case 'Triton':
+      character = Triton;
+      break;
+    case 'Zeus':
+      character = Zeus;
+      break;
+    case 'Graeae':
+      character = Graeae;
+      break;
+    case 'Heracles':
+      character = Heracles;
+      break;
+    case 'Odysseus':
+      character = Odysseus;
+      break;
+    case 'Iris':
+      character = Iris;
+      break;
+    case 'Pegasus':
+      character = Pegasus;
+      break;
+    case 'Eros':
+      character = Eros;
+      break;
+    case 'Chaos':
+      character = Chaos;
+      break;
+    case 'Chronus':
+      character = Chronus;
+      break;
+    case 'Harpies':
+      character = Harpies;
+      break;
+    case 'Urania':
+      character = Urania;
+      break;
+    case 'Charon':
+      character = Charon;
+      break;
+    case 'Ares':
+      character = Ares;
+      break;
+    case 'Asteria':
+      character = Asteria;
+      break;
+    case 'Maenads':
+      character = Maenads;
+      break;
+    case 'Hades':
+      character = Hades;
+      break;
+    case 'Clio':
+      character = Clio;
+      break;
+    case 'Tartarus':
+      character = Tartarus;
+      break;
+    case 'Hecate':
+      character = Hecate;
+      break;
+    case 'Siren':
+      character = Siren;
+      break;
+    case 'Hestia':
+      character = Hestia;
+      break;
+    case 'Poseidon':
+      character = Poseidon;
+      break;
+    case 'Lernaean Hydra':
+      character = LernaeanHydra;
+      break;
+    case 'Helios':
+      character = Helios;
+      break;
+    default:
+      character = Mortal;
+      break;
   }
 
   return character;

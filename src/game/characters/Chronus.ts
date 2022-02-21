@@ -4,8 +4,9 @@ import { Character } from '../../types/CharacterTypes';
 import { Mortal } from './Mortal';
 
 function checkWinCondition(context: GameContext, chronusPlayerID: string) {
-  const numCompleteTowers = context.G.spaces.filter((space) => (
-    space.isDomed === true && space.height >= 3)).length;
+  const numCompleteTowers = context.G.spaces.filter(
+    (space) => space.isDomed === true && space.height >= 3,
+  ).length;
 
   if (numCompleteTowers >= 5) {
     tryEndGame(context, chronusPlayerID);
@@ -17,7 +18,9 @@ export const Chronus: Character = {
 
   data: {
     ...Mortal.data,
-    desc: ['Win Condition: You also win when there are at least five Complete Towers on the board.'],
+    desc: [
+      'Win Condition: You also win when there are at least five Complete Towers on the board.',
+    ],
     pack: 'advanced',
   },
 

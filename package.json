@@ -57,7 +57,8 @@
     "server": "ts-node-dev --no-notify ./server/index.ts",
     "server:prod": "ts-node -T ./server/index.ts",
     "lint": "eslint . --ext .ts,.tsx",
-    "lint:fix": "eslint . --ext .ts,.tsx --fix"
+    "lint:fix": "eslint . --ext .ts,.tsx --fix",
+    "prettier": "prettier --write **/*.*"
   },
   "browserslist": {
     "production": [

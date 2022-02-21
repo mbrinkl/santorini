@@ -1,4 +1,4 @@
-@import "~styles/shared";
+@import '~styles/shared';
 
 .lobby {
   &__title {
@@ -55,7 +55,7 @@
 
     &::after {
       display: block;
-      content: "";
+      content: '';
       width: 100%;
       height: 5px;
       margin-top: 6px;
@@ -90,16 +90,16 @@
       width: 100%;
       text-align: center;
     }
-  
+
     &__link-box {
       overflow: scroll;
     }
-  
+
     &__link-buttons {
       display: flex;
       justify-content: center;
       padding-top: 10px;
       margin: 0 auto;
-    } 
+    }
   }
 }

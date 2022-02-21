@@ -14,7 +14,7 @@ export interface JoinRoomParams {
 export interface LeaveRoomParams {
   matchID: string;
   playerID: string;
-  credentials: string,
+  credentials: string;
 }
 
 export interface StoreModel {

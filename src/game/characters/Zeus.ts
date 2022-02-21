@@ -26,5 +26,4 @@ export const Zeus: Character = {
     }
     Mortal.build(context, charState, pos);
   },
-
 };

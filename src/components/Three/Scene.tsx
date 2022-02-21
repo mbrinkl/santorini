@@ -4,58 +4,59 @@ import { OrbitControls } from '@react-three/drei';
 import { GameStage } from '../../types/GameTypes';
 import { useBoardContext } from '../../context/boardContext';
 import { Ground } from './Ground';
-import {
-  BuildingBase, BuildingMid, BuildingTop, Dome,
-} from './Buildings';
+import { BuildingBase, BuildingMid, BuildingTop, Dome } from './Buildings';
 import { Indicator } from './Indicators';
 import { WorkerModel } from './WorkerModel';
 import { BoardPosition } from '../../types/BoardTypes';
 import { TextCoords } from './TextCoords';
 import { GenericOffBoardToken, GenericToken } from './Tokens';
 
-export const Scene = ({ boardPositions } : {
-  boardPositions: BoardPosition[]
+export const Scene = ({
+  boardPositions,
+}: {
+  boardPositions: BoardPosition[];
 }): JSX.Element => {
-  const {
-    G, ctx, moves, isActive,
-  } = useBoardContext();
+  const { G, ctx, moves, isActive } = useBoardContext();
 
-  const onMeshClicked = useCallback((e: ThreeEvent<PointerEvent>) => {
-    e.stopPropagation();
+  const onMeshClicked = useCallback(
+    (e: ThreeEvent<PointerEvent>) => {
+      e.stopPropagation();
 
-    if (!isActive) {
-      return;
-    }
+      if (!isActive) {
+        return;
+      }
 
-    const { phase } = ctx;
-    const stage = ctx.activePlayers?.[ctx.currentPlayer];
-    const { pos } = e.object.userData;
+      const { phase } = ctx;
+      const stage = ctx.activePlayers?.[ctx.currentPlayer];
+      const { pos } = e.object.userData;
 
-    if (G.valids.includes(pos)) {
-      if (phase === 'beforeBoardSetup' || phase === 'afterBoardSetup') {
-        moves.setup(pos);
-      } else if (phase === 'boardSetup') {
-        moves.place(pos);
-      } else {
-        switch (stage) {
-          case 'select':
-            moves.select(pos);
-            break;
-          case 'move':
-            moves.move(pos);
-            break;
-          case 'build':
-            moves.build(pos);
-            break;
-          case 'special':
-            moves.special(pos);
-            break;
-          default:
-            break;
+      if (G.valids.includes(pos)) {
+        if (phase === 'beforeBoardSetup' || phase === 'afterBoardSetup') {
+          moves.setup(pos);
+        } else if (phase === 'boardSetup') {
+          moves.place(pos);
+        } else {
+          switch (stage) {
+            case 'select':
+              moves.select(pos);
+              break;
+            case 'move':
+              moves.move(pos);
+              break;
+            case 'build':
+              moves.build(pos);
+              break;
+            case 'special':
+              moves.special(pos);
+              break;
+            default:
+              break;
+          }
         }
       }
-    }
-  }, [G, ctx, moves, isActive]);
+    },
+    [G, ctx, moves, isActive],
+  );
 
   return (
     <>
@@ -74,31 +75,49 @@ export const Scene = ({ boardPositions } : {
       <GenericOffBoardToken tokens={G.offBoardTokens} />
 
       <group onPointerDown={onMeshClicked}>
-
         {G.spaces.map((space) => (
           <>
-            <Ground key={`ground${space.pos}`} boardPos={boardPositions[space.pos]} />
-            {space.height >= 1
-              && <BuildingBase key={`buildingBase${space.pos}`} boardPos={boardPositions[space.pos]} />}
-            {space.height >= 2
-              && <BuildingMid key={`buildingMid${space.pos}`} boardPos={boardPositions[space.pos]} />}
-            {space.height >= 3
-              && <BuildingTop key={`buildingTop${space.pos}`} boardPos={boardPositions[space.pos]} />}
-            {space.isDomed
-              && <Dome key={`dome${space.pos}`} boardPos={boardPositions[space.pos]} height={space.height} />}
-            {space.tokens.length > 0 // TODO: individual tokens
-              && (
+            <Ground
+              key={`ground${space.pos}`}
+              boardPos={boardPositions[space.pos]}
+            />
+            {space.height >= 1 && (
+              <BuildingBase
+                key={`buildingBase${space.pos}`}
+                boardPos={boardPositions[space.pos]}
+              />
+            )}
+            {space.height >= 2 && (
+              <BuildingMid
+                key={`buildingMid${space.pos}`}
+                boardPos={boardPositions[space.pos]}
+              />
+            )}
+            {space.height >= 3 && (
+              <BuildingTop
+                key={`buildingTop${space.pos}`}
+                boardPos={boardPositions[space.pos]}
+              />
+            )}
+            {space.isDomed && (
+              <Dome
+                key={`dome${space.pos}`}
+                boardPos={boardPositions[space.pos]}
+                height={space.height}
+              />
+            )}
+            {space.tokens.length > 0 && ( // TODO: individual tokens
               <GenericToken
                 key={`token${space.pos}`}
                 boardPos={boardPositions[space.pos]}
                 height={space.height}
                 tokens={space.tokens}
               />
-              )}
+            )}
           </>
         ))}
 
-        {Object.values(G.players).map((player) => (
+        {Object.values(G.players).map((player) =>
           player.charState.workers.map((worker) => (
             <WorkerModel
               key={`workerModel${player.ID}${worker.pos}`}
@@ -106,17 +125,22 @@ export const Scene = ({ boardPositions } : {
               height={worker.height}
               color={player.ID === '0' ? 'dodgerblue' : 'grey'}
             />
-          ))
-        ))}
+          )),
+        )}
 
-        {isActive && !ctx.gameover && G.valids.map((pos) => (
-          <Indicator
-            key={`Indicator${pos}`}
-            boardPos={boardPositions[pos]}
-            height={G.spaces[pos].height}
-            stage={(ctx.activePlayers && ctx.activePlayers[ctx.currentPlayer]) as GameStage}
-          />
-        ))}
+        {isActive &&
+          !ctx.gameover &&
+          G.valids.map((pos) => (
+            <Indicator
+              key={`Indicator${pos}`}
+              boardPos={boardPositions[pos]}
+              height={G.spaces[pos].height}
+              stage={
+                (ctx.activePlayers &&
+                  ctx.activePlayers[ctx.currentPlayer]) as GameStage
+              }
+            />
+          ))}
       </group>
     </>
   );

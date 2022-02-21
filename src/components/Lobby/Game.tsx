@@ -28,15 +28,22 @@ const GameClient = Client({
   debug: !isProduction && !isMobile(),
 });
 
-export const GameLobbySetup = ({ startGame } : { startGame(): void }) : JSX.Element => {
+export const GameLobbySetup = ({
+  startGame,
+}: {
+  startGame(): void;
+}): JSX.Element => {
   const { matchID } = useParams<{ matchID: string }>();
-  const [matchMetadata, setMatchMetadata] = useState<LobbyAPI.Match | null>(null);
+  const [matchMetadata, setMatchMetadata] = useState<LobbyAPI.Match | null>(
+    null,
+  );
   const [tooltipVisible, setTooltipVisible] = useState(false);
   const nickname = useStoreState((s) => s.nickname);
   const activeRoomPlayer = useStoreState((s) => s.activeRoomPlayer);
   const joinRoom = useStoreActions((s) => s.joinRoom);
 
-  const gameRoomFull = matchMetadata?.players.filter((p) => !p.name).length === 0;
+  const gameRoomFull =
+    matchMetadata?.players.filter((p) => !p.name).length === 0;
 
   // poll api to load match data
   useEffect(() => {
@@ -76,7 +83,9 @@ export const GameLobbySetup = ({ startGame } : { startGame(): void }) : JSX.Elem
     <LobbyPage>
       <ButtonBack to="/" />
 
-      <div className="lobby__title">{matchMetadata?.unlisted ? 'Private Game' : 'Public Game'}</div>
+      <div className="lobby__title">
+        {matchMetadata?.unlisted ? 'Private Game' : 'Public Game'}
+      </div>
       <div className="lobby__subtitle">
         Send a link to someone to invite them to your game.
         <br />
@@ -105,32 +114,36 @@ export const GameLobbySetup = ({ startGame } : { startGame(): void }) : JSX.Elem
             </div>
           </Tippy>
         )}
-
       </div>
 
       <div className="lobby__players">
         {matchMetadata ? (
-          matchMetadata.players?.map((player) => (player.name ? (
-            <div
-              key={player.id}
-              className={classNames('lobby__player', 'lobby__player--active')}
-            >
-              {`${player.name} ${
-                activeRoomPlayer
-                && activeRoomPlayer.matchID === matchID
-                && activeRoomPlayer.playerID === player.id.toString()
-                  ? '(You)'
-                  : ''
-              }`}
-            </div>
-          ) : (
-            <div
-              key={player.id}
-              className={classNames('lobby__player', ' lobby__player--inactive')}
-            >
-              Waiting for player...
-            </div>
-          )))
+          matchMetadata.players?.map((player) =>
+            player.name ? (
+              <div
+                key={player.id}
+                className={classNames('lobby__player', 'lobby__player--active')}
+              >
+                {`${player.name} ${
+                  activeRoomPlayer &&
+                  activeRoomPlayer.matchID === matchID &&
+                  activeRoomPlayer.playerID === player.id.toString()
+                    ? '(You)'
+                    : ''
+                }`}
+              </div>
+            ) : (
+              <div
+                key={player.id}
+                className={classNames(
+                  'lobby__player',
+                  ' lobby__player--inactive',
+                )}
+              >
+                Waiting for player...
+              </div>
+            ),
+          )
         ) : (
           <p>Loading...</p>
         )}
@@ -147,7 +160,7 @@ export const GameLobbySetup = ({ startGame } : { startGame(): void }) : JSX.Elem
   );
 };
 
-export const GameLobbyPlay = () : JSX.Element => {
+export const GameLobbyPlay = (): JSX.Element => {
   const { matchID } = useParams<{ matchID: string }>();
   const activeRoomPlayer = useStoreState((s) => s.activeRoomPlayer);
 
@@ -163,12 +176,10 @@ export const GameLobbyPlay = () : JSX.Element => {
   }
 
   // Join as a spectator
-  return (
-    <GameClient matchID={matchID} />
-  );
+  return <GameClient matchID={matchID} />;
 };
 
-export const GameLobby = () : JSX.Element => {
+export const GameLobby = (): JSX.Element => {
   const { matchID } = useParams<{ matchID: string }>();
   const [lobbyState, setLobbyState] = useState({
     loading: true,
@@ -197,7 +208,11 @@ export const GameLobby = () : JSX.Element => {
   }
 
   if (!lobbyState.gameRunning) {
-    return <GameLobbySetup startGame={() => setLobbyState({ ...lobbyState, gameRunning: true })} />;
+    return (
+      <GameLobbySetup
+        startGame={() => setLobbyState({ ...lobbyState, gameRunning: true })}
+      />
+    );
   }
 
   return <GameLobbyPlay />;

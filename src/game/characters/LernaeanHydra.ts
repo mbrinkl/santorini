@@ -12,7 +12,8 @@ export const LernaeanHydra: Character<LernaeanHydraAttrs> = {
 
   data: {
     ...Mortal.data,
-    desc: ['Setup: Place four Workers.',
+    desc: [
+      'Setup: Place four Workers.',
       `End of Turn: If any of your Workers neighbour each other, force one such Worker
         to an unoccupied ground space that doesn't. If not possible, remove one.`,
     ],
@@ -88,11 +89,11 @@ export const LernaeanHydra: Character<LernaeanHydraAttrs> = {
         }
       });
       workerPositions.forEach((pos) => {
-        getAdjacentPositions(pos).forEach(((adj) => {
+        getAdjacentPositions(pos).forEach((adj) => {
           if (valids.has(adj)) {
             valids.delete(adj);
           }
-        }));
+        });
       });
     }
 
@@ -113,7 +114,10 @@ export const LernaeanHydra: Character<LernaeanHydraAttrs> = {
         }
       }
     } else {
-      Board.free(context, charState.workers[charState.attrs.movingWorkerNum].pos);
+      Board.free(
+        context,
+        charState.workers[charState.attrs.movingWorkerNum].pos,
+      );
       Board.place(context, pos, playerID, charState.attrs.movingWorkerNum);
       charState.attrs.movingWorkerNum = -1;
     }

@@ -12,30 +12,31 @@ import { ExtendedStorageCache } from './storage';
 
 const root = path.join(__dirname, '../build');
 const PORT = Number(process.env.PORT || DEFAULT_PORT);
-const serverURL = isProduction ? 'https://santorini.herokuapp.com/' : 'http://192.168.0.140:3000';
+const serverURL = isProduction
+  ? 'https://santorini.herokuapp.com/'
+  : 'http://192.168.0.140:3000';
 
 const server = Server({
   games: [SantoriniGame],
-  db: new ExtendedStorageCache(new PostgresStore({
-    database: process.env.DB,
-    username: process.env.DB_USER,
-    password: process.env.DB_PASS,
-    host: process.env.DB_HOST,
-    logging: false,
-    ...(isProduction && {
-      dialect: 'postgres',
-      dialectOptions: {
-        ssl: {
-          require: true,
-          rejectUnauthorized: false,
+  db: new ExtendedStorageCache(
+    new PostgresStore({
+      database: process.env.DB,
+      username: process.env.DB_USER,
+      password: process.env.DB_PASS,
+      host: process.env.DB_HOST,
+      logging: false,
+      ...(isProduction && {
+        dialect: 'postgres',
+        dialectOptions: {
+          ssl: {
+            require: true,
+            rejectUnauthorized: false,
+          },
         },
-      },
+      }),
     }),
-  })),
-  origins: [
-    serverURL,
-    Origins.LOCALHOST_IN_DEVELOPMENT,
-  ],
+  ),
+  origins: [serverURL, Origins.LOCALHOST_IN_DEVELOPMENT],
 });
 
 if (isProduction) {
@@ -43,7 +44,9 @@ if (isProduction) {
 
   server.app.on('error', (err, ctx) => {
     Sentry.withScope((scope) => {
-      scope.addEventProcessor((event) => Sentry.Handlers.parseRequest(event, ctx.request));
+      scope.addEventProcessor((event) =>
+        Sentry.Handlers.parseRequest(event, ctx.request),
+      );
       Sentry.captureException(err);
     });
   });

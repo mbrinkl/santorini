@@ -73,7 +73,12 @@ export const move: Move<GameState> = (context, pos: number) => {
   const movedFromPos = charState.workers[charState.selectedWorkerNum].pos;
 
   character.move(context, charState, pos);
-  opponentCharacter.afterOpponentMove(context, opponentCharState, charState, movedFromPos);
+  opponentCharacter.afterOpponentMove(
+    context,
+    opponentCharState,
+    charState,
+    movedFromPos,
+  );
 
   // Check to see if the player was forced off of the intended pos
   if (charState.workers[charState.selectedWorkerNum].pos === pos) {
@@ -95,7 +100,12 @@ export const build: Move<GameState> = (context, pos: number) => {
   const opponentCharacter = getCharacter(opponentCharState);
 
   character.build(context, charState, pos);
-  opponentCharacter.afterOpponentBuild(context, opponentCharState, charState, pos);
+  opponentCharacter.afterOpponentBuild(
+    context,
+    opponentCharState,
+    charState,
+    pos,
+  );
   const stage = character.getStageAfterBuild(context, charState);
   events.setStage(stage);
 

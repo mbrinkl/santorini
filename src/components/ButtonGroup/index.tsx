@@ -2,7 +2,10 @@ import classNames from 'classnames';
 import React, { HTMLAttributes } from 'react';
 import './style.scss';
 
-export const ButtonGroup = ({ className, children } : HTMLAttributes<HTMLDivElement>) => (
+export const ButtonGroup = ({
+  className,
+  children,
+}: HTMLAttributes<HTMLDivElement>) => (
   <div className={classNames(className, 'buttonGroup')}>
     {React.Children.map(children, (child) => {
       if (React.isValidElement(child)) {

@@ -2,12 +2,12 @@ import { GameContext, GameStage } from '../types/GameTypes';
 import { getCharacter } from './characters';
 
 interface PossibleMove {
-  type: GameStage | 'buttonPress',
-  pos: number,
+  type: GameStage | 'buttonPress';
+  pos: number;
   prevs: {
-    type: GameStage | 'buttonPress',
-    pos: number
-  }[]
+    type: GameStage | 'buttonPress';
+    pos: number;
+  }[];
 }
 
 function getSpawnedMoves(
@@ -48,8 +48,15 @@ function getSpawnedMoves(
           prevMove.pos,
         );
         stage = character.getStageAfterMove(cloneContext, charState);
-        if (charState.workers[charState.selectedWorkerNum].pos === prevMove.pos) {
-          win ||= character.checkWinByMove(cloneContext, charState, movedFromPos, prevMove.pos);
+        if (
+          charState.workers[charState.selectedWorkerNum].pos === prevMove.pos
+        ) {
+          win ||= character.checkWinByMove(
+            cloneContext,
+            charState,
+            movedFromPos,
+            prevMove.pos,
+          );
         }
         updateValids(cloneContext, stage);
         break;
@@ -66,7 +73,11 @@ function getSpawnedMoves(
         break;
       case 'special':
         character.special(cloneContext, charState, prevMove.pos);
-        opponentCharacter.afterOpponentSpecial(cloneContext, opponentCharState, charState);
+        opponentCharacter.afterOpponentSpecial(
+          cloneContext,
+          opponentCharState,
+          charState,
+        );
         stage = character.getStageAfterSpecial(cloneContext, charState);
         updateValids(cloneContext, stage);
         break;
@@ -105,8 +116,10 @@ export function canReachEndStage(
   context: GameContext,
   stage: GameStage | 'buttonPress',
   fromPos: number,
-) : boolean {
-  const possibleMoveStack: PossibleMove[] = [{ type: stage, pos: fromPos, prevs: [] }];
+): boolean {
+  const possibleMoveStack: PossibleMove[] = [
+    { type: stage, pos: fromPos, prevs: [] },
+  ];
   const checkedMoves: PossibleMove[] = [];
 
   while (possibleMoveStack.length > 0) {
@@ -122,7 +135,9 @@ export function canReachEndStage(
           possibleMoveStack.push(newMove);
         });
       } else if (
-        !checkedMoves.find((c) => c.type === possibleMove.type && c.pos === possibleMove.pos)
+        !checkedMoves.find(
+          (c) => c.type === possibleMove.type && c.pos === possibleMove.pos,
+        )
       ) {
         // If we have not checked this type and position, add it to the checked list
         checkedMoves.push(possibleMove);
@@ -145,8 +160,10 @@ export function updateValids(context: GameContext, stage: GameStage) {
   const character = getCharacter(charState);
   const opponentCharState = G.players[opponentID].charState;
   const opponentCharacter = getCharacter(opponentCharState);
-  const selecedWorkerPos = charState.selectedWorkerNum === -1 ? -1
-    : charState.workers[charState.selectedWorkerNum].pos;
+  const selecedWorkerPos =
+    charState.selectedWorkerNum === -1
+      ? -1
+      : charState.workers[charState.selectedWorkerNum].pos;
 
   switch (stage) {
     case 'setup':
@@ -160,30 +177,40 @@ export function updateValids(context: GameContext, stage: GameStage) {
       break;
     case 'move':
       G.valids = [...character.validMove(context, charState, selecedWorkerPos)];
-      G.valids = [...opponentCharacter.restrictOpponentMove(
-        context,
-        opponentCharState,
-        charState,
-        selecedWorkerPos,
-      )];
+      G.valids = [
+        ...opponentCharacter.restrictOpponentMove(
+          context,
+          opponentCharState,
+          charState,
+          selecedWorkerPos,
+        ),
+      ];
       break;
     case 'build':
-      G.valids = [...character.validBuild(context, charState, selecedWorkerPos)];
-      G.valids = [...opponentCharacter.restrictOpponentBuild(
-        context,
-        opponentCharState,
-        charState,
-        selecedWorkerPos,
-      )];
+      G.valids = [
+        ...character.validBuild(context, charState, selecedWorkerPos),
+      ];
+      G.valids = [
+        ...opponentCharacter.restrictOpponentBuild(
+          context,
+          opponentCharState,
+          charState,
+          selecedWorkerPos,
+        ),
+      ];
       break;
     case 'special':
-      G.valids = [...character.validSpecial(context, charState, selecedWorkerPos)];
-      G.valids = [...opponentCharacter.restrictOpponentSpecial(
-        context,
-        opponentCharState,
-        charState,
-        selecedWorkerPos,
-      )];
+      G.valids = [
+        ...character.validSpecial(context, charState, selecedWorkerPos),
+      ];
+      G.valids = [
+        ...opponentCharacter.restrictOpponentSpecial(
+          context,
+          opponentCharState,
+          charState,
+          selecedWorkerPos,
+        ),
+      ];
       break;
     default:
       G.valids = [];

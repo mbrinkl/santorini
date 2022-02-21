@@ -6,7 +6,9 @@ import { GAME_ID } from '../config';
 
 axios.defaults.baseURL = `${SERVER_URL}/games/${GAME_ID}`;
 
-export async function getMatch(matchID: string): Promise<LobbyAPI.Match | undefined> {
+export async function getMatch(
+  matchID: string,
+): Promise<LobbyAPI.Match | undefined> {
   try {
     const response = await axios.get<LobbyAPI.Match>(`/${matchID}`);
     return response.data;
@@ -20,7 +22,10 @@ export async function getMatches(): Promise<LobbyAPI.Match[]> {
   return response.data.matches;
 }
 
-export async function createMatch(numPlayers: number, unlisted: boolean): Promise<string> {
+export async function createMatch(
+  numPlayers: number,
+  unlisted: boolean,
+): Promise<string> {
   const response = await axios.post<{ matchID: string }>('/create', {
     numPlayers,
     unlisted,
@@ -34,8 +39,8 @@ export async function joinMatch({
   playerName,
 }: JoinRoomParams): Promise<[string, string]> {
   const response = await axios.post<{
-    playerCredentials: string,
-    playerID: string,
+    playerCredentials: string;
+    playerID: string;
   }>(`/${matchID}/join`, {
     playerName,
   });
@@ -53,10 +58,8 @@ export async function leaveMatch({
       playerID,
       credentials,
     });
-  // eslint-disable-next-line no-empty
-  } catch {
-
-  }
+    // eslint-disable-next-line no-empty
+  } catch {}
 }
 
 export async function updatePlayer(
@@ -71,10 +74,8 @@ export async function updatePlayer(
       credentials,
       newName,
     });
-  // eslint-disable-next-line no-empty
-  } catch {
-
-  }
+    // eslint-disable-next-line no-empty
+  } catch {}
 }
 
 export async function playAgain(
@@ -82,9 +83,12 @@ export async function playAgain(
   playerID: string,
   credentials: string,
 ): Promise<string> {
-  const response = await axios.post<{ nextMatchID: string }>(`/${matchID}/playAgain`, {
-    playerID,
-    credentials,
-  });
+  const response = await axios.post<{ nextMatchID: string }>(
+    `/${matchID}/playAgain`,
+    {
+      playerID,
+      credentials,
+    },
+  );
   return response.data.nextMatchID;
 }

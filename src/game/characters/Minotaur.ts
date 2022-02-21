@@ -9,9 +9,11 @@ export const Minotaur: Character = {
 
   data: {
     ...Mortal.data,
-    desc: [`Your Move: Your Worker may move into an opponent Worker’s space, 
+    desc: [
+      `Your Move: Your Worker may move into an opponent Worker’s space, 
     if their Worker can be forced one space straight backwards to an 
-    unoccupied space at any level.`],
+    unoccupied space at any level.`,
+    ],
     pack: 'simple',
   },
 
@@ -24,8 +26,10 @@ export const Minotaur: Character = {
 
     adjacents.forEach((pos) => {
       if (
-        !G.spaces[pos].isDomed && !Board.tokenObstructing(G, playerID, pos)
-        && G.spaces[pos].height - G.spaces[originalPos].height <= charState.moveUpHeight
+        !G.spaces[pos].isDomed &&
+        !Board.tokenObstructing(G, playerID, pos) &&
+        G.spaces[pos].height - G.spaces[originalPos].height <=
+          charState.moveUpHeight
       ) {
         if (!G.spaces[pos].inhabitant) {
           valids.add(pos);
@@ -33,7 +37,9 @@ export const Minotaur: Character = {
           const posToPush = getNextPosition(originalPos, pos);
           const opponent = G.players[opponentID];
           const oppContext: GameContext = { ...context, playerID: opponentID };
-          if (Mortal.validMove(oppContext, opponent.charState, pos).has(posToPush)) {
+          if (
+            Mortal.validMove(oppContext, opponent.charState, pos).has(posToPush)
+          ) {
             valids.add(pos);
           }
         }
@@ -45,11 +51,19 @@ export const Minotaur: Character = {
 
   move: (context, charState, pos) => {
     const { G, playerID } = context;
-    const posToPush = getNextPosition(charState.workers[charState.selectedWorkerNum].pos, pos);
+    const posToPush = getNextPosition(
+      charState.workers[charState.selectedWorkerNum].pos,
+      pos,
+    );
     const { inhabitant } = G.spaces[pos];
 
     if (inhabitant) {
-      Board.place(context, posToPush, inhabitant.playerID, inhabitant.workerNum);
+      Board.place(
+        context,
+        posToPush,
+        inhabitant.playerID,
+        inhabitant.workerNum,
+      );
     }
 
     Board.free(context, charState.workers[charState.selectedWorkerNum].pos);

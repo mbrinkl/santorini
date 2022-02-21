@@ -4,17 +4,21 @@ import { posToReadableCoord } from '../../game/utility';
 import { useBoardContext } from '../../context/boardContext';
 import './style.scss';
 
-export const MoveLog = () : JSX.Element => {
+export const MoveLog = (): JSX.Element => {
   const { matchData, log } = useBoardContext();
   const logEndRef: any = useRef(null);
 
   useEffect(() => {
-    logEndRef.current?.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'start' });
+    logEndRef.current?.scrollIntoView({
+      behavior: 'smooth',
+      block: 'nearest',
+      inline: 'start',
+    });
   }, [log]);
 
-  const filteredLog = log.filter((l) => (
-    (l.action.type === 'MAKE_MOVE' || l.action.type === 'UNDO')
-  ));
+  const filteredLog = log.filter(
+    (l) => l.action.type === 'MAKE_MOVE' || l.action.type === 'UNDO',
+  );
 
   let numUndo = 0;
   for (let i = filteredLog.length - 1; i >= 0; i--) {
@@ -27,9 +31,10 @@ export const MoveLog = () : JSX.Element => {
     }
   }
 
-  const doubleFilteredLog = filteredLog.filter((l) => (
-    (l.phase !== 'selectCharacters' && l.action.payload.type !== 'endTurn')
-  ));
+  const doubleFilteredLog = filteredLog.filter(
+    (l) =>
+      l.phase !== 'selectCharacters' && l.action.payload.type !== 'endTurn',
+  );
 
   let currTurn = 0;
   let lastTurn = 0;
@@ -45,15 +50,18 @@ export const MoveLog = () : JSX.Element => {
           lastTurn = turn;
         }
         const name = matchData?.[playerID].name || `Player ${playerID}`;
-        const move = (type === 'onButtonPressed'
-          ? 'button pressed'
-          : `${type} ${posToReadableCoord(args?.[0])}`
-        );
+        const move =
+          type === 'onButtonPressed'
+            ? 'button pressed'
+            : `${type} ${posToReadableCoord(args?.[0])}`;
 
         return (
           <p
             key={`log${Math.random() * 1000000}`} // kill me
-            className={classNames('move-log__item', `move-log__item--${playerID}`)}
+            className={classNames(
+              'move-log__item',
+              `move-log__item--${playerID}`,
+            )}
           >
             {`${currTurn}. ${move} (${name})`}
           </p>

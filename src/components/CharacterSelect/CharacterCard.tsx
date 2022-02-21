@@ -4,10 +4,13 @@ import { useBoardContext } from '../../context/boardContext';
 import CheckImg from '../../assets/png/check.png';
 import './CharacterCard.scss';
 
-export const CharacterCard = ({ playerID, name } : {
-  playerID: string | null,
-  name: string,
-}) : JSX.Element => {
+export const CharacterCard = ({
+  playerID,
+  name,
+}: {
+  playerID: string | null;
+  name: string;
+}): JSX.Element => {
   const { G, moves } = useBoardContext();
   const takenCharacters: string[] = [];
 
@@ -22,7 +25,11 @@ export const CharacterCard = ({ playerID, name } : {
 
     const { opponentID } = G.players[playerID];
     const opponentCharName = G.players[opponentID].charState.name;
-    if (banList.filter((ban) => ban.includes(name) && ban.includes(opponentCharName)).length > 0) {
+    if (
+      banList.filter(
+        (ban) => ban.includes(name) && ban.includes(opponentCharName),
+      ).length > 0
+    ) {
       return true;
     }
 
@@ -48,7 +55,9 @@ export const CharacterCard = ({ playerID, name } : {
       className={classNames(
         name.replace(/\s/g, ''),
         'character-card',
-        isUnselectable() ? 'character-card--grayscale' : 'character-card--selectable',
+        isUnselectable()
+          ? 'character-card--grayscale'
+          : 'character-card--selectable',
       )}
       onClick={select}
       onKeyDown={(e) => e.key === 'Enter' && select()}
@@ -60,22 +69,20 @@ export const CharacterCard = ({ playerID, name } : {
   );
 };
 
-export const SelectedCharacterCard = ({ name, playerID } : {
+export const SelectedCharacterCard = ({
+  name,
+  playerID,
+}: {
   name: string;
   playerID: string;
-}) : JSX.Element => {
+}): JSX.Element => {
   const { G } = useBoardContext();
 
   return (
     <div className={`${name.replace(/\s/g, '')} character-card`}>
-      {G.players[playerID].ready
-        && (
-        <img
-          className="character-card--ready"
-          alt="ready"
-          src={CheckImg}
-        />
-        )}
+      {G.players[playerID].ready && (
+        <img className="character-card--ready" alt="ready" src={CheckImg} />
+      )}
       <span>{name}</span>
     </div>
   );

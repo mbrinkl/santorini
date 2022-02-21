@@ -4,7 +4,7 @@ import { Mortal } from './Mortal';
 import { Board } from '../boardUtil';
 
 type HeraclesAttrs = {
-  specialUsed: boolean,
+  specialUsed: boolean;
 };
 
 export const Heracles: Character<HeraclesAttrs> = {
@@ -12,7 +12,9 @@ export const Heracles: Character<HeraclesAttrs> = {
 
   data: {
     ...Mortal.data,
-    desc: ['Instead of Your Build: Once, both your Workers build any number of domes (even zero) at any level'],
+    desc: [
+      'Instead of Your Build: Once, both your Workers build any number of domes (even zero) at any level',
+    ],
     pack: 'heroes',
     buttonText: 'Build Domes',
     attrs: {

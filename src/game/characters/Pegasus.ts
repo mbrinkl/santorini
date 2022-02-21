@@ -13,7 +13,6 @@ export const Pegasus: Character = {
     moveUpHeight: 3,
   },
 
-  checkWinByMove: ({ G }, charState, posBefore, posAfter) => (
-    G.spaces[posBefore].height === 2 && G.spaces[posAfter].height === 3
-  ),
+  checkWinByMove: ({ G }, charState, posBefore, posAfter) =>
+    G.spaces[posBefore].height === 2 && G.spaces[posAfter].height === 3,
 };

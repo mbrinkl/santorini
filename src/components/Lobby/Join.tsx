@@ -5,16 +5,20 @@ import { ButtonBack } from '../ButtonBack';
 import { getMatches } from '../../api';
 import { MatchTable } from '../MatchTable';
 
-export const JoinPage = () : JSX.Element => {
+export const JoinPage = (): JSX.Element => {
   const [joinableMatches, setJoinableMatches] = useState<LobbyAPI.Match[]>([]);
 
   useEffect(() => {
     function pollMatches() {
       getMatches().then((matches) => {
-        setJoinableMatches(matches.filter((match) => (
-          !match.gameover
-          && !match.players[1].name
-          && match.createdAt === match.updatedAt)));
+        setJoinableMatches(
+          matches.filter(
+            (match) =>
+              !match.gameover &&
+              !match.players[1].name &&
+              match.createdAt === match.updatedAt,
+          ),
+        );
       });
     }
 
@@ -32,15 +36,13 @@ export const JoinPage = () : JSX.Element => {
       <MatchTable
         headers={['Creator', 'Created At']}
         noBody="No Public Games Available"
-        body={joinableMatches.map((match) => (
-          {
-            matchID: match.matchID,
-            data: [
-              match.players[0].name || 'Player 0',
-              new Date(match.createdAt).toLocaleString(),
-            ],
-          }
-        ))}
+        body={joinableMatches.map((match) => ({
+          matchID: match.matchID,
+          data: [
+            match.players[0].name || 'Player 0',
+            new Date(match.createdAt).toLocaleString(),
+          ],
+        }))}
       />
     </LobbyPage>
   );

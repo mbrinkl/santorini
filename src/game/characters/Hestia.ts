@@ -3,7 +3,7 @@ import { Mortal } from './Mortal';
 import { Character } from '../../types/CharacterTypes';
 
 type HestiaAttrs = {
-  numBuilds: number,
+  numBuilds: number;
 };
 
 export const Hestia: Character<HestiaAttrs> = {
@@ -11,7 +11,9 @@ export const Hestia: Character<HestiaAttrs> = {
 
   data: {
     ...Mortal.data,
-    desc: ['Your Build: Your Worker may build one additional time, but this cannot be on a perimeter space.'],
+    desc: [
+      'Your Build: Your Worker may build one additional time, but this cannot be on a perimeter space.',
+    ],
     pack: 'simple',
     buttonText: 'Stop Building',
     attrs: {
@@ -39,8 +41,8 @@ export const Hestia: Character<HestiaAttrs> = {
   getStageAfterBuild: (context, charState) => {
     charState.attrs.numBuilds += 1;
     if (
-      charState.attrs.numBuilds === 1
-      && Hestia.validBuild(
+      charState.attrs.numBuilds === 1 &&
+      Hestia.validBuild(
         context,
         charState,
         charState.workers[charState.selectedWorkerNum].pos,

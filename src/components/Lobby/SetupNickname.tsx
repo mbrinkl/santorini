@@ -9,7 +9,11 @@ import { Input } from '../Input';
 import 'tippy.js/dist/tippy.css';
 import './SetupNickname.scss';
 
-export const SetupNickname = ({ onSubmit } : { onSubmit?: () => void }) : JSX.Element => {
+export const SetupNickname = ({
+  onSubmit,
+}: {
+  onSubmit?: () => void;
+}): JSX.Element => {
   const initialNickname = useStoreState((s) => s.nickname);
   const persistNickname = useStoreActions((s) => s.setNickname);
   const [nickname, setNickname] = useState(initialNickname || '');
@@ -45,9 +49,7 @@ export const SetupNickname = ({ onSubmit } : { onSubmit?: () => void }) : JSX.El
     <LobbyPage>
       <ButtonBack to="/" />
 
-      <h3 className="setup-nickname__title">
-        Set your nickname
-      </h3>
+      <h3 className="setup-nickname__title">Set your nickname</h3>
 
       <form onSubmit={handleSubmit} className="setup-nickname__form">
         <Input
@@ -64,14 +66,10 @@ export const SetupNickname = ({ onSubmit } : { onSubmit?: () => void }) : JSX.El
           offset={[0, 12]}
           content={<p>Nickname cannot be empty.</p>}
         >
-          <Button
-            theme="blue"
-            type="submit"
-          >
+          <Button theme="blue" type="submit">
             Save
           </Button>
         </Tippy>
-
       </form>
     </LobbyPage>
   );

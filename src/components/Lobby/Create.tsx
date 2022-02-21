@@ -10,9 +10,11 @@ import { ButtonChangeNickname } from '../ButtonChangeNickname';
 import { useStoreActions, useStoreState } from '../../store';
 import { createMatch } from '../../api';
 
-export const CreatePage = () : JSX.Element => {
+export const CreatePage = (): JSX.Element => {
   const navigate = useNavigate();
-  const [needNicknameGameType, setNeedNicknameGameType] = useState<boolean | null>(null);
+  const [needNicknameGameType, setNeedNicknameGameType] = useState<
+    boolean | null
+  >(null);
   const nickname = useStoreState((s) => s.nickname);
   const activeRoomPlayer = useStoreState((s) => s.activeRoomPlayer);
   const leaveRoom = useStoreActions((s) => s.leaveRoom);
@@ -38,24 +40,22 @@ export const CreatePage = () : JSX.Element => {
     }
   }
 
-  return (
-    needNicknameGameType !== null
-      ? <SetupNickname onSubmit={() => createRoom(needNicknameGameType)} />
-      : (
-        <LobbyPage>
-          <ButtonBack to="/" />
-          <Logo />
-          <ButtonChangeNickname />
-          <ButtonGroup>
-            <Button theme="green" onClick={() => host(false)}>
-              Public
-            </Button>
+  return needNicknameGameType !== null ? (
+    <SetupNickname onSubmit={() => createRoom(needNicknameGameType)} />
+  ) : (
+    <LobbyPage>
+      <ButtonBack to="/" />
+      <Logo />
+      <ButtonChangeNickname />
+      <ButtonGroup>
+        <Button theme="green" onClick={() => host(false)}>
+          Public
+        </Button>
 
-            <Button theme="blue" onClick={() => host(true)}>
-              Private
-            </Button>
-          </ButtonGroup>
-        </LobbyPage>
-      )
+        <Button theme="blue" onClick={() => host(true)}>
+          Private
+        </Button>
+      </ButtonGroup>
+    </LobbyPage>
   );
 };

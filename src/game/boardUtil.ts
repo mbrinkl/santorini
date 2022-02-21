@@ -38,7 +38,7 @@ export const Board = {
       if (charState.workers.length === 0) {
         tryEndGame(context, G.players[playerID].opponentID);
       } else {
-      // Otherwise, iterate opponent workers and update worker numbers
+        // Otherwise, iterate opponent workers and update worker numbers
         let workerNum = 0;
         G.players[playerID].charState.workers.forEach((worker) => {
           G.spaces[worker.pos].inhabitant = {
@@ -53,22 +53,25 @@ export const Board = {
     Board.free(context, pos);
   },
 
-  isObstructed: (G: GameState, playerID: string, pos: number) => (
-    G.spaces[pos].isDomed
-    || G.spaces[pos].inhabitant
-    || Board.tokenObstructing(G, playerID, pos)
-  ),
+  isObstructed: (G: GameState, playerID: string, pos: number) =>
+    G.spaces[pos].isDomed ||
+    G.spaces[pos].inhabitant ||
+    Board.tokenObstructing(G, playerID, pos),
 
-  tokenObstructing: (G: GameState, playerID: string, pos: number) => (
-    G.spaces[pos].tokens.some((token) => (
-      token.obstructing === 'all'
-      || (token.obstructing === 'opponent' && token.playerID !== playerID)
-    ))
-  ),
+  tokenObstructing: (G: GameState, playerID: string, pos: number) =>
+    G.spaces[pos].tokens.some(
+      (token) =>
+        token.obstructing === 'all' ||
+        (token.obstructing === 'opponent' && token.playerID !== playerID),
+    ),
 
   build: (G: GameState, pos: number) => {
-    if (G.spaces[pos].height < 4) G.spaces[pos].height += 1;
-    if (G.spaces[pos].height === 4) G.spaces[pos].isDomed = true;
+    if (G.spaces[pos].height < 4) {
+      G.spaces[pos].height += 1;
+    }
+    if (G.spaces[pos].height === 4) {
+      G.spaces[pos].isDomed = true;
+    }
   },
 
   placeToken: (G: GameState, pos: number, token: Token) => {
@@ -76,9 +79,9 @@ export const Board = {
   },
 
   removeTokens: (G: GameState, pos: number) => {
-    G.spaces[pos].tokens = G.spaces[pos].tokens.filter((token) => (
-      !token.removable
-    ));
+    G.spaces[pos].tokens = G.spaces[pos].tokens.filter(
+      (token) => !token.removable,
+    );
   },
 
   tokenEffects: (context: GameContext, pos: number) => {

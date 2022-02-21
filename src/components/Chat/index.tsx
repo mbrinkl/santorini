@@ -6,12 +6,17 @@ import { ImageButton } from '../Button';
 import sendIcon from '../../assets/png/send.png';
 import './style.scss';
 
-export const ChatMessage = ({ sender, message } : {
-  sender: string,
-  message: string
-}) : JSX.Element => {
+export const ChatMessage = ({
+  sender,
+  message,
+}: {
+  sender: string;
+  message: string;
+}): JSX.Element => {
   const { playerID, matchData } = useBoardContext();
-  const senderName = (matchData?.[sender].name || `Player ${sender}`) + (playerID === sender ? ' (you)' : '');
+  const senderName =
+    (matchData?.[sender].name || `Player ${sender}`) +
+    (playerID === sender ? ' (you)' : '');
 
   return (
     <p className="chat__message">
@@ -21,14 +26,18 @@ export const ChatMessage = ({ sender, message } : {
   );
 };
 
-export const Chat = () : JSX.Element => {
+export const Chat = (): JSX.Element => {
   const { chatMessages, sendChatMessage } = useBoardContext();
   const [message, setMessage] = useState('');
   const messagesEndRef: any = useRef(null);
   const inputRef: any = useRef(null);
 
   useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'start' });
+    messagesEndRef.current?.scrollIntoView({
+      behavior: 'smooth',
+      block: 'nearest',
+      inline: 'start',
+    });
   }, [chatMessages]);
 
   const send = (e) => {

@@ -8,8 +8,10 @@ export const Apollo: Character = {
 
   data: {
     ...Mortal.data,
-    desc: [`Your Move : Your worker may move into an opponent worker's space by 
-      forcing their worker to the space you just vacated.`],
+    desc: [
+      `Your Move : Your worker may move into an opponent worker's space by 
+      forcing their worker to the space you just vacated.`,
+    ],
     pack: 'simple',
   },
 
@@ -18,8 +20,10 @@ export const Apollo: Character = {
 
     getAdjacentPositions(fromPos).forEach((pos) => {
       if (
-        !G.spaces[pos].isDomed && !Board.tokenObstructing(G, playerID, pos)
-        && G.spaces[pos].height - G.spaces[fromPos].height <= charState.moveUpHeight
+        !G.spaces[pos].isDomed &&
+        !Board.tokenObstructing(G, playerID, pos) &&
+        G.spaces[pos].height - G.spaces[fromPos].height <=
+          charState.moveUpHeight
       ) {
         if (!G.spaces[pos].inhabitant) {
           valids.add(pos);
@@ -39,7 +43,12 @@ export const Apollo: Character = {
 
     // if switching spaces with another worker
     if (inhabitant) {
-      Board.place(context, originalPos, inhabitant.playerID, inhabitant.workerNum);
+      Board.place(
+        context,
+        originalPos,
+        inhabitant.playerID,
+        inhabitant.workerNum,
+      );
     } else {
       Board.free(context, originalPos);
     }

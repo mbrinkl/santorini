@@ -1,4 +1,4 @@
-@import "~styles/shared";
+@import '~styles/shared';
 
 .board-container {
   height: 100%;
@@ -55,16 +55,16 @@
 
   @include tablet-max {
     flex-wrap: wrap;
-  
+
     &__player-info {
       order: 1;
     }
-  
+
     &__player-board {
       order: 2;
       min-width: 100%;
     }
-  
+
     &__character-select {
       order: 1;
     }

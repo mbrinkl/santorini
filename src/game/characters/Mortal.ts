@@ -4,7 +4,6 @@ import { getAdjacentPositions } from '../utility';
 import { Board } from '../boardUtil';
 
 export const Mortal: Character = {
-
   data: {
     workers: [],
     desc: ['No ability'],
@@ -90,8 +89,9 @@ export const Mortal: Character = {
 
     getAdjacentPositions(fromPos).forEach((pos) => {
       if (
-        !Board.isObstructed(G, playerID, pos)
-        && G.spaces[pos].height - G.spaces[fromPos].height <= charState.moveUpHeight
+        !Board.isObstructed(G, playerID, pos) &&
+        G.spaces[pos].height - G.spaces[fromPos].height <=
+          charState.moveUpHeight
       ) {
         valids.add(pos);
       }
@@ -100,7 +100,8 @@ export const Mortal: Character = {
     return valids;
   },
 
-  restrictOpponentMove: ({ G }, charState, oppCharState, fromPos) => new Set(G.valids),
+  restrictOpponentMove: ({ G }, charState, oppCharState, fromPos) =>
+    new Set(G.valids),
 
   move: (context, charState, pos) => {
     Board.free(context, charState.workers[charState.selectedWorkerNum].pos);
@@ -123,7 +124,8 @@ export const Mortal: Character = {
     return valids;
   },
 
-  restrictOpponentBuild: ({ G }, charState, oppCharState, fromPos) => new Set(G.valids),
+  restrictOpponentBuild: ({ G }, charState, oppCharState, fromPos) =>
+    new Set(G.valids),
 
   build: ({ G }, charState, pos) => {
     Board.build(G, pos);
@@ -134,20 +136,19 @@ export const Mortal: Character = {
   getStageAfterBuild: (context, charState) => 'end',
 
   validSpecial: (context, charState, fromPos) => new Set<number>(),
-  restrictOpponentSpecial: ({ G }, charState, oppCharState, fromPos) => new Set(G.valids),
+  restrictOpponentSpecial: ({ G }, charState, oppCharState, fromPos) =>
+    new Set(G.valids),
   special: (context, charState, pos) => {},
   afterOpponentSpecial: () => {},
   getStageAfterSpecial: (context, charStates) => 'end',
 
-  buttonPressed: ({ ctx }, charState) => (
-    (ctx.activePlayers && ctx.activePlayers[ctx.currentPlayer]) as GameStage
-  ),
+  buttonPressed: ({ ctx }, charState) =>
+    (ctx.activePlayers && ctx.activePlayers[ctx.currentPlayer]) as GameStage,
 
   tokenEffects: (context, charState, pos) => {},
 
   restrictOpponentWin: (context, charState, posBefore, posAfter) => false,
 
-  checkWinByMove: ({ G }, charState, posBefore, posAfter) => (
-    G.spaces[posBefore].height < 3 && G.spaces[posAfter].height === 3
-  ),
+  checkWinByMove: ({ G }, charState, posBefore, posAfter) =>
+    G.spaces[posBefore].height < 3 && G.spaces[posAfter].height === 3,
 };

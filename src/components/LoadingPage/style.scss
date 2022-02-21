@@ -1,4 +1,4 @@
-@import "~styles/shared";
+@import '~styles/shared';
 
 $spinner-color: $c-green !default;
 $spinner-accent: $c-light-green !default;
@@ -6,15 +6,15 @@ $spinner-size: 60px !default;
 $speed: 1s;
 
 @mixin display-box($size) {
-	width: $size;
-	height: $size;
-	display: inline-block;
-	box-sizing: border-box;
+  width: $size;
+  height: $size;
+  display: inline-block;
+  box-sizing: border-box;
 }
 
 .spinner {
-	@include display-box($spinner-size);
-	position: relative;
+  @include display-box($spinner-size);
+  position: relative;
 }
 
 .loading-page {
@@ -26,45 +26,61 @@ $speed: 1s;
   background-color: $c-blue;
 }
 
-.spinner.balls{
-	animation: balls-animate $speed linear infinite;
+.spinner.balls {
+  animation: balls-animate $speed linear infinite;
 
-	&::before {
-		border-radius: 50%;
-		content: " ";
-		@include display-box($spinner-size / 2);
-		background-color: $spinner-color;
-		position: absolute;
-		top: 0;
-		left: 0;
-		animation: balls-animate-before $speed ease-in-out infinite;
-	}
+  &::before {
+    border-radius: 50%;
+    content: ' ';
+    @include display-box($spinner-size / 2);
+    background-color: $spinner-color;
+    position: absolute;
+    top: 0;
+    left: 0;
+    animation: balls-animate-before $speed ease-in-out infinite;
+  }
 
-	&::after {
-		border-radius: 50%;
-		content: " ";
-		@include display-box($spinner-size / 2);
-		background-color: $spinner-accent;
-		position: absolute;
-		bottom: 0;
-		right: 0;
-		animation: balls-animate-after $speed ease-in-out infinite;
-	}
+  &::after {
+    border-radius: 50%;
+    content: ' ';
+    @include display-box($spinner-size / 2);
+    background-color: $spinner-accent;
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    animation: balls-animate-after $speed ease-in-out infinite;
+  }
 }
 
-@keyframes balls-animate{
-	0% { transform: rotate(0deg); }
-	100% { transform: rotate(360deg); }
+@keyframes balls-animate {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
-@keyframes balls-animate-before{
-	0% { transform: translate(-5px, -5px); }
-	50% { transform: translate(0px, 0px); }
-	100% { transform: translate(-5px, -5px); }
+@keyframes balls-animate-before {
+  0% {
+    transform: translate(-5px, -5px);
+  }
+  50% {
+    transform: translate(0px, 0px);
+  }
+  100% {
+    transform: translate(-5px, -5px);
+  }
 }
 
-@keyframes balls-animate-after{
-	0% { transform: translate(5px, 5px); }
-	50% { transform: translate(0px, 0px); }
-	100% { transform: translate(5px, 5px); }
+@keyframes balls-animate-after {
+  0% {
+    transform: translate(5px, 5px);
+  }
+  50% {
+    transform: translate(0px, 0px);
+  }
+  100% {
+    transform: translate(5px, 5px);
+  }
 }

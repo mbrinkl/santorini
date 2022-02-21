@@ -2,7 +2,7 @@ import { Character } from '../../types/CharacterTypes';
 import { Mortal } from './Mortal';
 
 type ArtemisAttrs = {
-  prevPos: number,
+  prevPos: number;
 };
 
 export const Artemis: Character<ArtemisAttrs> = {
@@ -10,8 +10,10 @@ export const Artemis: Character<ArtemisAttrs> = {
 
   data: {
     ...Mortal.data,
-    desc: [`Your Move: Your worker may move one additional time, but not back to
-    its initial space.`],
+    desc: [
+      `Your Move: Your worker may move one additional time, but not back to
+    its initial space.`,
+    ],
     pack: 'simple',
     buttonText: 'End Move',
     attrs: {
@@ -37,7 +39,8 @@ export const Artemis: Character<ArtemisAttrs> = {
 
   move: (context, charState, pos) => {
     if (charState.attrs.prevPos === -1) {
-      charState.attrs.prevPos = charState.workers[charState.selectedWorkerNum].pos;
+      charState.attrs.prevPos =
+        charState.workers[charState.selectedWorkerNum].pos;
     } else {
       charState.attrs.prevPos = -1;
     }

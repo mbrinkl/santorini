@@ -2,7 +2,7 @@ import { Character } from '../../types/CharacterTypes';
 import { Mortal } from './Mortal';
 
 type PrometheusAttrs = {
-  specialUsed: boolean,
+  specialUsed: boolean;
 };
 
 export const Prometheus: Character<PrometheusAttrs> = {
@@ -10,7 +10,9 @@ export const Prometheus: Character<PrometheusAttrs> = {
 
   data: {
     ...Mortal.data,
-    desc: ['Your Turn: If your Worker does not move up, it may build both before and after moving.'],
+    desc: [
+      'Your Turn: If your Worker does not move up, it may build both before and after moving.',
+    ],
     pack: 'simple',
     buttonText: 'Bulid Before Move',
     attrs: {
@@ -35,7 +37,8 @@ export const Prometheus: Character<PrometheusAttrs> = {
     Mortal.move(context, charState, pos);
   },
 
-  getStageAfterBuild: (context, charState) => (charState.attrs.specialUsed ? 'move' : 'end'),
+  getStageAfterBuild: (context, charState) =>
+    charState.attrs.specialUsed ? 'move' : 'end',
 
   buttonPressed: (context, charState) => {
     charState.buttonActive = false;

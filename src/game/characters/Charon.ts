@@ -8,8 +8,10 @@ export const Charon: Character = {
 
   data: {
     ...Mortal.data,
-    desc: [`Your Move: Before your Worker moves, you may force a neighboring opponent Worker
-    to the space directly on the other side of your Worker, if that space is unoccupied.`],
+    desc: [
+      `Your Move: Before your Worker moves, you may force a neighboring opponent Worker
+    to the space directly on the other side of your Worker, if that space is unoccupied.`,
+    ],
     pack: 'advanced',
     buttonText: 'Move Opponent',
   },
@@ -21,11 +23,13 @@ export const Charon: Character = {
 
   select: (context, charState: CharacterState, pos) => {
     Mortal.select(context, charState, pos);
-    if (Charon.validSpecial(
-      context,
-      charState,
-      charState.workers[charState.selectedWorkerNum].pos,
-    ).size > 0) {
+    if (
+      Charon.validSpecial(
+        context,
+        charState,
+        charState.workers[charState.selectedWorkerNum].pos,
+      ).size > 0
+    ) {
       charState.buttonActive = true;
     }
   },
@@ -42,9 +46,9 @@ export const Charon: Character = {
     getAdjacentPositions(fromPos).forEach((pos) => {
       const oppositeAdjacentPos = getNextPosition(pos, fromPos);
       if (
-        G.spaces[pos].inhabitant?.playerID === opponentID
-        && oppositeAdjacentPos !== -1
-        && !Board.isObstructed(G, opponentID, oppositeAdjacentPos)
+        G.spaces[pos].inhabitant?.playerID === opponentID &&
+        oppositeAdjacentPos !== -1 &&
+        !Board.isObstructed(G, opponentID, oppositeAdjacentPos)
       ) {
         valids.add(pos);
       }
@@ -60,7 +64,12 @@ export const Charon: Character = {
     const oppositeAdjacentPos = getNextPosition(pos, workerPos);
     if (inhabitant) {
       Board.free(context, pos);
-      Board.place(context, oppositeAdjacentPos, inhabitant.playerID, inhabitant.workerNum);
+      Board.place(
+        context,
+        oppositeAdjacentPos,
+        inhabitant.playerID,
+        inhabitant.workerNum,
+      );
     }
   },
 

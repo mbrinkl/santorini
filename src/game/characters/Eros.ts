@@ -1,4 +1,8 @@
-import { getAdjacentPositions, getOppositePerimeterPositions, posIsPerimeter } from '../utility';
+import {
+  getAdjacentPositions,
+  getOppositePerimeterPositions,
+  posIsPerimeter,
+} from '../utility';
 import { Character } from '../../types/CharacterTypes';
 import { Mortal } from './Mortal';
 
@@ -21,7 +25,11 @@ export const Eros: Character = {
       if (!space.inhabitant && posIsPerimeter(space.pos)) {
         if (charState.numWorkersToPlace === 2) {
           valids.add(space.pos);
-        } else if (getOppositePerimeterPositions(charState.workers[0].pos).includes(space.pos)) {
+        } else if (
+          getOppositePerimeterPositions(charState.workers[0].pos).includes(
+            space.pos,
+          )
+        ) {
           valids.add(space.pos);
         }
       }
@@ -34,11 +42,13 @@ export const Eros: Character = {
 
     if (charState.workers.length === 2) {
       const selectedWorker = charState.workers[charState.selectedWorkerNum];
-      const otherWorker = charState.workers[(charState.selectedWorkerNum + 1) % 2];
+      const otherWorker =
+        charState.workers[(charState.selectedWorkerNum + 1) % 2];
       return (
-        normalWin
-        || (getAdjacentPositions(selectedWorker.pos).includes(otherWorker.pos)
-        && selectedWorker.height === 1 && otherWorker.height === 1)
+        normalWin ||
+        (getAdjacentPositions(selectedWorker.pos).includes(otherWorker.pos) &&
+          selectedWorker.height === 1 &&
+          otherWorker.height === 1)
       );
     }
 

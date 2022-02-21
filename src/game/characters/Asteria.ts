@@ -3,7 +3,7 @@ import { Mortal } from './Mortal';
 import { Character } from '../../types/CharacterTypes';
 
 type AsteriaAttrs = {
-  movedDown: boolean
+  movedDown: boolean;
 };
 
 export const Asteria: Character<AsteriaAttrs> = {
@@ -11,8 +11,10 @@ export const Asteria: Character<AsteriaAttrs> = {
 
   data: {
     ...Mortal.data,
-    desc: [`End of Your Turn: If one of your Workers moved down this turn, 
-    you may build a dome on any unoccupied space.`],
+    desc: [
+      `End of Your Turn: If one of your Workers moved down this turn, 
+    you may build a dome on any unoccupied space.`,
+    ],
     pack: 'promo',
     attrs: {
       movedDown: false,

@@ -23,7 +23,9 @@ export const Graeae: Character = {
     for (let i = 0; i < charState.workers.length; i++) {
       if (i !== charState.selectedWorkerNum) {
         // add on the adjacent positions of each worker
-        adjacents = adjacents.concat(getAdjacentPositions(charState.workers[i].pos));
+        adjacents = adjacents.concat(
+          getAdjacentPositions(charState.workers[i].pos),
+        );
       }
     }
 

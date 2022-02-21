@@ -6,12 +6,13 @@ export const Pan: Character = {
 
   data: {
     ...Mortal.data,
-    desc: ['Win Condition: You also win if your Worker moves down two or more levels.'],
+    desc: [
+      'Win Condition: You also win if your Worker moves down two or more levels.',
+    ],
     pack: 'simple',
   },
 
-  checkWinByMove: ({ G }, charState, posBefore, posAfter) => (
-    (G.spaces[posBefore].height < 3 && G.spaces[posAfter].height === 3)
-    || ((G.spaces[posBefore].height - G.spaces[posAfter].height) > 1)
-  ),
+  checkWinByMove: ({ G }, charState, posBefore, posAfter) =>
+    (G.spaces[posBefore].height < 3 && G.spaces[posAfter].height === 3) ||
+    G.spaces[posBefore].height - G.spaces[posAfter].height > 1,
 };

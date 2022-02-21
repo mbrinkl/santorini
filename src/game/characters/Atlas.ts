@@ -21,7 +21,8 @@ export const Atlas: Character = {
     Mortal.build(context, charState, pos);
   },
 
-  validSpecial: (context, charState, fromPos) => Mortal.validBuild(context, charState, fromPos),
+  validSpecial: (context, charState, fromPos) =>
+    Mortal.validBuild(context, charState, fromPos),
 
   special: ({ G }, charState, pos) => {
     G.spaces[pos].isDomed = true;

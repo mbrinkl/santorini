@@ -9,10 +9,9 @@ interface ButtonProps {
 }
 
 export const Button = React.forwardRef<
-HTMLButtonElement, ButtonProps & ButtonHTMLAttributes<HTMLButtonElement>
->(({
-  className, theme = 'blue', size = 'medium', ...props
-}, ref) => (
+  HTMLButtonElement,
+  ButtonProps & ButtonHTMLAttributes<HTMLButtonElement>
+>(({ className, theme = 'blue', size = 'medium', ...props }, ref) => (
   <button
     ref={ref}
     type="button"
@@ -32,7 +31,7 @@ export const ButtonLink = ({
   theme = 'blue',
   size = 'medium',
   ...props
-}: ButtonProps & LinkProps) : JSX.Element => (
+}: ButtonProps & LinkProps): JSX.Element => (
   <Link
     className={classNames(
       style.button,
@@ -51,9 +50,9 @@ export const ImageButton = ({
   src,
   alt,
   ...props
-} : ButtonProps &
-ButtonHTMLAttributes<HTMLButtonElement> &
-ImgHTMLAttributes<HTMLImageElement>) : JSX.Element => (
+}: ButtonProps &
+  ButtonHTMLAttributes<HTMLButtonElement> &
+  ImgHTMLAttributes<HTMLImageElement>): JSX.Element => (
   <button
     type="button"
     className={classNames(
@@ -64,7 +63,11 @@ ImgHTMLAttributes<HTMLImageElement>) : JSX.Element => (
     )}
     {...props}
   >
-    <img style={{ position: 'relative', width: 25, height: 25 }} src={src} alt={alt} />
+    <img
+      style={{ position: 'relative', width: 25, height: 25 }}
+      src={src}
+      alt={alt}
+    />
   </button>
 );
 ImageButton.displayName = 'ImageButton';

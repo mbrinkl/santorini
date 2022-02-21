@@ -27,7 +27,10 @@ function posToDirection(pos: number): number[] {
   return [x, y];
 }
 
-export function getNextPositionInDirection(pos: number, direction: number) : number {
+export function getNextPositionInDirection(
+  pos: number,
+  direction: number,
+): number {
   let nextPos = -1;
 
   const [posX, posY] = posToCoord(pos);
@@ -47,7 +50,7 @@ export function getNextPositionInDirection(pos: number, direction: number) : num
  * Converts an x,y coordinate to a position
  */
 export function coordToPos(x: number, y: number): number {
-  return (y * 5) + x;
+  return y * 5 + x;
 }
 
 /**
@@ -82,9 +85,9 @@ export function posToReadableCoord(pos: number): string {
 }
 
 /**
-  * Given two adjacent positions, get the next position
-  * ie. given 0 as fromPos and 6 as toPos, the next position is 12
-  */
+ * Given two adjacent positions, get the next position
+ * ie. given 0 as fromPos and 6 as toPos, the next position is 12
+ */
 export function getNextPosition(fromPos: number, toPos: number): number {
   let nextPos = -1;
 
@@ -99,8 +102,10 @@ export function getNextPosition(fromPos: number, toPos: number): number {
   let dirY = fromY - toY;
 
   // Account for board wrapping moves
-  if (dirX === 4) dirX = -1; else if (dirX === -4) dirX = 1;
-  if (dirY === 4) dirY = -1; else if (dirY === -4) dirY = 1;
+  if (dirX === 4) dirX = -1;
+  else if (dirX === -4) dirX = 1;
+  if (dirY === 4) dirY = -1;
+  else if (dirY === -4) dirY = 1;
 
   const nextPosX = toX - dirX;
   const nextPosY = toY - dirY;
@@ -113,8 +118,8 @@ export function getNextPosition(fromPos: number, toPos: number): number {
 }
 
 /**
-  * Given a position, get all adjacent positions
-  */
+ * Given a position, get all adjacent positions
+ */
 export function getAdjacentPositions(pos: number): number[] {
   const adjacents: number[] = [];
   const [x, y] = posToCoord(pos);
@@ -136,9 +141,9 @@ export function getAdjacentPositions(pos: number): number[] {
 }
 
 /**
-  * Given a position, get all adjacent positions, treating opposite edges
-  * and corners as if they are adjacent (Urania)
-  */
+ * Given a position, get all adjacent positions, treating opposite edges
+ * and corners as if they are adjacent (Urania)
+ */
 export function getWrappedAdjacents(pos: number): number[] {
   const adjacents: number[] = [];
   const [x, y] = posToCoord(pos);
@@ -168,15 +173,15 @@ export function positionsAreAdjacent(pos1: number, pos2: number): boolean {
 }
 
 /**
-  * Get a list of perimeter positions
-  */
+ * Get a list of perimeter positions
+ */
 export function getPerimeterPositions(): number[] {
   return [0, 1, 2, 3, 4, 5, 9, 10, 14, 15, 19, 20, 21, 22, 23, 24];
 }
 
 /**
-  * Check if a position is in the perimeter
-  */
+ * Check if a position is in the perimeter
+ */
 export function posIsPerimeter(pos: number): boolean {
   return getPerimeterPositions().includes(pos);
 }
@@ -189,9 +194,9 @@ export function getCornerPositions(): number[] {
 }
 
 /**
-  * Given a perimeter position, get a list of perimeter positions on the
-  * opposite side of the board
-  */
+ * Given a perimeter position, get a list of perimeter positions on the
+ * opposite side of the board
+ */
 export function getOppositePerimeterPositions(pos: number): number[] {
   let oppositePerimeter: number[] = [];
 

@@ -13,9 +13,10 @@ export const Siren: Character<SirenAttrs> = {
 
   data: {
     ...Mortal.data,
-    desc: [`Setup: Place the Arrow Token beside the board and orient it in any of the 
+    desc: [
+      `Setup: Place the Arrow Token beside the board and orient it in any of the 
     8 directions to indicate the direction of the Siren's Song.`,
-    `Alternative Turn: Force one or more opponent Workers one space in the direction of 
+      `Alternative Turn: Force one or more opponent Workers one space in the direction of 
     the Siren's Song to unoccupied spaces at any level; then build with any of your Workers.`,
     ],
     pack: 'gf',
@@ -90,10 +91,10 @@ export const Siren: Character<SirenAttrs> = {
         const nextPos = getNextPositionInDirection(worker.pos, token.direction);
         const { inhabitant } = G.spaces[worker.pos];
         if (
-          nextPos !== -1
-          && !Board.isObstructed(G, playerID, nextPos)
-          && inhabitant
-          && !charState.attrs.movedWorkers.includes(inhabitant.workerNum)
+          nextPos !== -1 &&
+          !Board.isObstructed(G, playerID, nextPos) &&
+          inhabitant &&
+          !charState.attrs.movedWorkers.includes(inhabitant.workerNum)
         ) {
           valids.add(worker.pos);
         }

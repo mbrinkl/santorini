@@ -1,11 +1,15 @@
 import { Sphere } from '@react-three/drei';
 import { BoardPosition } from '../../types/BoardTypes';
 
-export const WorkerModel = ({ boardPos, height, color } : {
-  boardPos: BoardPosition,
-  height: number,
-  color: string
-}) : JSX.Element => {
+export const WorkerModel = ({
+  boardPos,
+  height,
+  color,
+}: {
+  boardPos: BoardPosition;
+  height: number;
+  color: string;
+}): JSX.Element => {
   const yPosHeightMap = [1, 4, 6, 8];
 
   return (

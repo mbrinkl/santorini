@@ -8,8 +8,10 @@ export const Urania: Character = {
 
   data: {
     ...Mortal.data,
-    desc: [`Your Turn: When your Worker moves or builds, treat opposite edges and corners as if they are
-    adjacent so that every space has 8 neighbors.`],
+    desc: [
+      `Your Turn: When your Worker moves or builds, treat opposite edges and corners as if they are
+    adjacent so that every space has 8 neighbors.`,
+    ],
     pack: 'gf',
   },
 
@@ -18,8 +20,9 @@ export const Urania: Character = {
 
     getWrappedAdjacents(originalPos).forEach((pos) => {
       if (
-        !Board.isObstructed(G, playerID, pos)
-        && G.spaces[pos].height - G.spaces[originalPos].height <= charState.moveUpHeight
+        !Board.isObstructed(G, playerID, pos) &&
+        G.spaces[pos].height - G.spaces[originalPos].height <=
+          charState.moveUpHeight
       ) {
         valids.add(pos);
       }

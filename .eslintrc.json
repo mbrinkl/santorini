@@ -34,7 +34,6 @@
     "prettier"
   ],
   "rules": {
-    "linebreak-style": "off", // windows uses CLRF, heroku uses LF
     "no-plusplus": ["error", { "allowForLoopAfterthoughts": true }],
     "no-param-reassign": "off",
     "import/no-cycle": "off",
@@ -52,7 +51,6 @@
     ],
     "curly": ["error", "all"],
     "max-len": ["error", { "code": 80, "ignoreUrls": true }],
-    "no-confusing-arrow": ["error", { "allowParens": false }],
     "no-mixed-operators": "error",
     "no-tabs": ["error", { "allowIndentationTabs": true }],
     "quotes": [
