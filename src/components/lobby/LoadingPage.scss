@@ -32,7 +32,7 @@ $speed: 1s;
   &::before {
     border-radius: 50%;
     content: ' ';
-    @include display-box($spinner-size / 2);
+    @include display-box(calc($spinner-size / 2));
     background-color: $spinner-color;
     position: absolute;
     top: 0;
@@ -43,7 +43,7 @@ $speed: 1s;
   &::after {
     border-radius: 50%;
     content: ' ';
-    @include display-box($spinner-size / 2);
+    @include display-box(calc($spinner-size / 2));
     background-color: $spinner-accent;
     position: absolute;
     bottom: 0;
