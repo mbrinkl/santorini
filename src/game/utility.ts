@@ -200,7 +200,8 @@ export function getCornerPositions(): number[] {
 export function getOppositePerimeterPositions(pos: number): number[] {
   let oppositePerimeter: number[] = [];
 
-  // pos can be in two perimeter cases if it is a corner, so update the list twice
+  // pos can be in two perimeter cases if it is a corner,
+  // so update the list twice
   if ([0, 1, 2, 3, 4].includes(pos)) {
     oppositePerimeter = oppositePerimeter.concat([20, 21, 22, 23, 24]);
   }

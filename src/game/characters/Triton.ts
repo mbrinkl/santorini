@@ -8,7 +8,8 @@ export const Triton: Character = {
   data: {
     ...Mortal.data,
     desc: [
-      'Your Move: Each time your Worker moves into a perimeter space, it may immediately move again.',
+      `Your Move: Each time your Worker moves into a perimeter space, 
+        it may immediately move again.`,
     ],
     pack: 'advanced',
     buttonText: 'End Move',

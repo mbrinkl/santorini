@@ -9,8 +9,9 @@ export const Charon: Character = {
   data: {
     ...Mortal.data,
     desc: [
-      `Your Move: Before your Worker moves, you may force a neighboring opponent Worker
-    to the space directly on the other side of your Worker, if that space is unoccupied.`,
+      `Your Move: Before your Worker moves, you may force a neighboring 
+      opponent Worker to the space directly on the other side of your
+      Worker, if that space is unoccupied.`,
     ],
     pack: 'advanced',
     buttonText: 'Move Opponent',

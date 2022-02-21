@@ -7,7 +7,8 @@ export const Pegasus: Character = {
   data: {
     ...Mortal.data,
     desc: [
-      'Your Move: Your Worker may move up more than one level, but cannot win the game by doing so.',
+      `Your Move: Your Worker may move up more than one level, 
+        but cannot win the game by doing so.`,
     ],
     pack: 'promo',
     moveUpHeight: 3,

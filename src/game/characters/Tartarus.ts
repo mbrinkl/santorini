@@ -9,10 +9,11 @@ export const Tartarus: Character = {
   data: {
     ...Mortal.data,
     desc: [
-      `Setup: Place your Workers first. After all players' Workers are placed, secretly place your Abyss Token
-    on an unoccupied space. This space is the Abyss.`,
-      `Lose Condition: If any player's Worker enters the Abyss, they immediately lose. 
-    Workers cannot win by entering the Abyss.`,
+      `Setup: Place your Workers first. After all players' Workers are placed, 
+        secretly place your Abyss Token on an unoccupied space. 
+        This space is the Abyss.`,
+      `Lose Condition: If any player's Worker enters the Abyss, 
+        they immediately lose. Workers cannot win by entering the Abyss.`,
     ],
     pack: 'gf',
     hasAfterBoardSetup: true,

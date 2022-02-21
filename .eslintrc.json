@@ -49,8 +49,14 @@
       "error",
       { "namedComponents": "arrow-function" }
     ],
-    "curly": ["error", "all"],
-    "max-len": ["error", { "code": 80, "ignoreUrls": true }],
+    "max-len": [
+      "error",
+      {
+        "code": 80,
+        "ignoreUrls": true,
+        "ignorePattern": "^import\\s.+\\sfrom\\s.+;$"
+      }
+    ],
     "no-mixed-operators": "error",
     "no-tabs": ["error", { "allowIndentationTabs": true }],
     "quotes": [

@@ -19,7 +19,8 @@ export const Chronus: Character = {
   data: {
     ...Mortal.data,
     desc: [
-      'Win Condition: You also win when there are at least five Complete Towers on the board.',
+      `Win Condition: You also win when there are at least five Complete 
+      Towers on the board.`,
     ],
     pack: 'advanced',
   },

@@ -85,7 +85,8 @@ export const Inspector = ({
 };
 
 /**
- * Execute every move in the log, or to a given index (not select character moves)
+ * Execute every move in the log, or to a given index
+ * (not select character moves)
  */
 export const executeLog = (
   client: ClientImpl,

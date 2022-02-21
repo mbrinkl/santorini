@@ -12,7 +12,8 @@ export const Hephaestus: Character<HephaestusAttrs> = {
   data: {
     ...Mortal.data,
     desc: [
-      'Your Build: Your Worker may build one additional block (not dome) on top of your first block.',
+      `Your Build: Your Worker may build one additional block 
+        (not dome) on top of your first block.`,
     ],
     pack: 'simple',
     buttonText: 'Skip 2nd Build',

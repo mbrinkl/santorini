@@ -14,10 +14,11 @@ export const Siren: Character<SirenAttrs> = {
   data: {
     ...Mortal.data,
     desc: [
-      `Setup: Place the Arrow Token beside the board and orient it in any of the 
-    8 directions to indicate the direction of the Siren's Song.`,
-      `Alternative Turn: Force one or more opponent Workers one space in the direction of 
-    the Siren's Song to unoccupied spaces at any level; then build with any of your Workers.`,
+      `Setup: Place the Arrow Token beside the board and orient it in 
+        any of the 8 directions to indicate the direction of the Siren's Song.`,
+      `Alternative Turn: Force one or more opponent Workers one space in the
+        direction of the Siren's Song to unoccupied spaces at any level; 
+        then build with any of your Workers.`,
     ],
     pack: 'gf',
     buttonText: 'Move Opponent',

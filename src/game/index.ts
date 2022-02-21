@@ -273,8 +273,8 @@ export const SantoriniGame: Game<GameState> = {
 
           // If there are no valid moves for the current player
           if (G.valids.length === 0) {
-            // First check if there is a possible route to the end stage through the
-            // buttonPressed move event
+            // First check if there is a possible route to the end
+            // stage through the buttonPressed move event
             if (
               !(
                 charState.buttonActive &&

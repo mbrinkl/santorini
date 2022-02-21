@@ -14,8 +14,9 @@ export const LernaeanHydra: Character<LernaeanHydraAttrs> = {
     ...Mortal.data,
     desc: [
       'Setup: Place four Workers.',
-      `End of Turn: If any of your Workers neighbour each other, force one such Worker
-        to an unoccupied ground space that doesn't. If not possible, remove one.`,
+      `End of Turn: If any of your Workers neighbour each other, 
+        force one such Worker to an unoccupied ground space that
+        doesn't. If not possible, remove one.`,
     ],
     numWorkersToPlace: 4,
     pack: 'custom',

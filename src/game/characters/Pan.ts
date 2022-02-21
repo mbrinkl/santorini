@@ -7,7 +7,8 @@ export const Pan: Character = {
   data: {
     ...Mortal.data,
     desc: [
-      'Win Condition: You also win if your Worker moves down two or more levels.',
+      `Win Condition: You also win if your Worker moves down 
+        two or more levels.`,
     ],
     pack: 'simple',
   },

@@ -12,7 +12,8 @@ export const Poseidon: Character<PoseidonAttrs> = {
   data: {
     ...Mortal.data,
     desc: [
-      'End of Your Turn: If your unmoved Worker is on the ground level, it may build up to three times.',
+      `End of Your Turn: If your unmoved Worker is on the ground level, 
+        it may build up to three times.`,
     ],
     pack: 'advanced',
     buttonText: 'Stop Building',

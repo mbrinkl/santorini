@@ -9,8 +9,9 @@ export const Ares: Character = {
   data: {
     ...Mortal.data,
     desc: [
-      `End of Your Turn: You may remove an unoccupied block (not dome) neighboring your
-    unmoved Worker. You also remove any Tokens on the block.`,
+      `End of Your Turn: You may remove an unoccupied block (not dome) 
+      neighboring your unmoved Worker. You also remove any Tokens on 
+      the block.`,
     ],
     pack: 'advanced',
     buttonText: 'Skip Remove',

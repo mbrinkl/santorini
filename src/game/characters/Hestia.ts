@@ -12,7 +12,8 @@ export const Hestia: Character<HestiaAttrs> = {
   data: {
     ...Mortal.data,
     desc: [
-      'Your Build: Your Worker may build one additional time, but this cannot be on a perimeter space.',
+      `Your Build: Your Worker may build one additional time, 
+        but this cannot be on a perimeter space.`,
     ],
     pack: 'simple',
     buttonText: 'Stop Building',

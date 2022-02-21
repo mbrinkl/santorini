@@ -12,7 +12,8 @@ export const Demeter: Character<DemeterAttrs> = {
   data: {
     ...Mortal.data,
     desc: [
-      'Your Build: Your worker may build one additional time, but not on the same space.',
+      `Your Build: Your worker may build one additional time, 
+      but not on the same space.`,
     ],
     pack: 'simple',
     buttonText: 'Skip 2nd Build',

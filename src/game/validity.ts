@@ -28,8 +28,8 @@ function getSpawnedMoves(
 
   let stage: GameStage | undefined;
   let movedFromPos = -1;
-  let win = false; // Not checking for a definite winning possibility, just an alternative to
-  // reaching the 'end' stage
+  let win = false; // Not checking for a definite winning possibility,
+  // just an alternative to reaching the 'end' stage
 
   prevs.forEach((prevMove) => {
     switch (prevMove.type) {
@@ -90,8 +90,8 @@ function getSpawnedMoves(
     }
   });
 
-  // Push to possibleMoves in this specific order so that 'end' will be popped first
-  // if available, then buttonPress, then normal valids
+  // Push to possibleMoves in this specific order so that 'end' will be popped
+  // first if available, then buttonPress, then normal valids
   // Assumes no endless loop of button presses
   G.valids.forEach((valid) => {
     possibleMoves.push({ type: stage as GameStage, pos: valid, prevs });
@@ -139,7 +139,8 @@ export function canReachEndStage(
           (c) => c.type === possibleMove.type && c.pos === possibleMove.pos,
         )
       ) {
-        // If we have not checked this type and position, add it to the checked list
+        // If we have not checked this type and position,
+        // add it to the checked list
         checkedMoves.push(possibleMove);
 
         // Get the moves spawned from this possible move

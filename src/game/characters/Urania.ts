@@ -9,8 +9,8 @@ export const Urania: Character = {
   data: {
     ...Mortal.data,
     desc: [
-      `Your Turn: When your Worker moves or builds, treat opposite edges and corners as if they are
-    adjacent so that every space has 8 neighbors.`,
+      `Your Turn: When your Worker moves or builds, treat opposite edges and 
+      corners as if they are adjacent so that every space has 8 neighbors.`,
     ],
     pack: 'gf',
   },
