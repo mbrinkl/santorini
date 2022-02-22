@@ -1,4 +1,4 @@
-import { useCallback } from 'react';
+import React, { useCallback } from 'react';
 import { ThreeEvent } from '@react-three/fiber';
 import { OrbitControls } from '@react-three/drei';
 import { GameStage } from '../../types/GameTypes';
@@ -76,51 +76,37 @@ export const Scene = ({
 
       <group onPointerDown={onMeshClicked}>
         {G.spaces.map((space) => (
-          <>
-            <Ground
-              key={`ground${space.pos}`}
-              boardPos={boardPositions[space.pos]}
-            />
+          <React.Fragment key={space.pos}>
+            <Ground boardPos={boardPositions[space.pos]} />
             {space.height >= 1 && (
-              <BuildingBase
-                key={`buildingBase${space.pos}`}
-                boardPos={boardPositions[space.pos]}
-              />
+              <BuildingBase boardPos={boardPositions[space.pos]} />
             )}
             {space.height >= 2 && (
-              <BuildingMid
-                key={`buildingMid${space.pos}`}
-                boardPos={boardPositions[space.pos]}
-              />
+              <BuildingMid boardPos={boardPositions[space.pos]} />
             )}
             {space.height >= 3 && (
-              <BuildingTop
-                key={`buildingTop${space.pos}`}
-                boardPos={boardPositions[space.pos]}
-              />
+              <BuildingTop boardPos={boardPositions[space.pos]} />
             )}
             {space.isDomed && (
               <Dome
-                key={`dome${space.pos}`}
                 boardPos={boardPositions[space.pos]}
                 height={space.height}
               />
             )}
             {space.tokens.length > 0 && ( // TODO: individual tokens
               <GenericToken
-                key={`token${space.pos}`}
                 boardPos={boardPositions[space.pos]}
                 height={space.height}
                 tokens={space.tokens}
               />
             )}
-          </>
+          </React.Fragment>
         ))}
 
         {Object.values(G.players).map((player) =>
           player.charState.workers.map((worker) => (
             <WorkerModel
-              key={`workerModel${player.ID}${worker.pos}`}
+              key={`${player.ID}${worker.pos}`}
               boardPos={boardPositions[worker.pos]}
               height={worker.height}
               color={player.ID === '0' ? 'dodgerblue' : 'grey'}
@@ -132,7 +118,7 @@ export const Scene = ({
           !ctx.gameover &&
           G.valids.map((pos) => (
             <Indicator
-              key={`Indicator${pos}`}
+              key={pos}
               boardPos={boardPositions[pos]}
               height={G.spaces[pos].height}
               stage={
