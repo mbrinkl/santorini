@@ -33,6 +33,12 @@ const getFilteredLogs = (logs: LogEntry[]): LogEntry[] => {
   return filteredLogs;
 };
 
+interface SetupData {
+  seed: string;
+  player0char: string;
+  player1char: string;
+}
+
 export const Inspector = ({
   matchID,
   logs,
@@ -45,15 +51,26 @@ export const Inspector = ({
   const [client, setClient] = useState<any>(null);
   const [clientState, setClientState] = useState<any>(null);
   const [filteredLogs] = useState(getFilteredLogs(logs));
-  const [seed, setSeed] = useState<string | null>(null);
+  const [setupData, setSetupData] = useState<SetupData>();
 
-  // poll api to load match data
+  // Load match metadata which is set at gameover
+  // Call in setinterval in case the metadata is not set by the time
+  // this component loads
   useEffect(() => {
     const intervalID = setInterval(() => {
       if (matchID) {
         getMatch(matchID).then((match) => {
-          if (match?.setupData != null) {
-            setSeed(match.setupData);
+          if (
+            match &&
+            match.setupData != null &&
+            match.players[0].data?.character != null &&
+            match.players[1].data?.character != null
+          ) {
+            setSetupData({
+              seed: match.setupData,
+              player0char: match.players[0].data.character,
+              player1char: match.players[1].data.character,
+            });
             clearInterval(intervalID);
           }
         });
@@ -63,6 +80,7 @@ export const Inspector = ({
     return () => clearInterval(intervalID);
   }, [matchID]);
 
+  // Override the client board props whenever the clientState is set
   useEffect(() => {
     if (client && clientState) {
       setOverrideState({ ...client, ...clientState, isMultiplayer: false });
@@ -70,13 +88,12 @@ export const Inspector = ({
   }, [clientState, client, setOverrideState]);
 
   useEffect(() => {
-    const test = async () => {
-      if (seed) {
-        console.log('SEED', seed);
+    const initializeClient = async () => {
+      if (setupData) {
         const cli = Client({
           game: {
             ...SantoriniGame,
-            seed,
+            seed: setupData.seed,
             setup: ({ ctx }) => ({
               isClone: true,
               players: initPlayers(ctx),
@@ -86,18 +103,27 @@ export const Inspector = ({
             }),
           },
         });
-        executeInitialSetup(cli, filteredLogs);
+        executeInitialSetup(cli, setupData.player0char, setupData.player1char);
         executeLog(cli, filteredLogs);
         setClient(cli);
       }
     };
 
-    test();
-  }, [seed, filteredLogs]);
+    initializeClient();
+  }, [setupData, filteredLogs]);
 
-  return (
-    <Ctrls client={client} setClientState={setClientState} log={filteredLogs} />
-  );
+  if (setupData && client) {
+    return (
+      <Ctrls
+        client={client}
+        setClientState={setClientState}
+        log={filteredLogs}
+        setupData={setupData}
+      />
+    );
+  }
+
+  return <div />;
 };
 
 /**
@@ -160,31 +186,29 @@ const executeMove = (client: ClientImpl, log: LogEntry) => {
 /**
  * Execute all the moves in the 'select characters' phase from the log
  */
-const executeInitialSetup = (client, logs: LogEntry[]) => {
-  for (let i = 0; i < logs.length; i++) {
-    const { type, args, playerID } = logs[i].action.payload;
-    client.updatePlayerID(playerID);
-    switch (type) {
-      case 'setChar':
-        client.moves.setChar(...args);
-        break;
-      case 'ready':
-        client.moves.ready(...args);
-        break;
-      default:
-        break;
-    }
-  }
+const executeInitialSetup = (
+  client,
+  p0charName: string,
+  p1charName: string,
+) => {
+  client.updatePlayerID('0');
+  client.moves.setChar(p0charName);
+  client.moves.ready(true);
+  client.updatePlayerID('1');
+  client.moves.setChar(p1charName);
+  client.moves.ready(true);
 };
 
 const Ctrls = ({
   client,
   setClientState,
   log,
+  setupData,
 }: {
   client: ClientImpl;
   setClientState: any;
   log: LogEntry[];
+  setupData: SetupData;
 }): JSX.Element => {
   const [moveNumber, setMoveNumber] = useState<number>(log.length - 1);
 
@@ -196,14 +220,14 @@ const Ctrls = ({
   const bb = () => {
     setMoveNumber(firstMoveInd - 1);
     client.reset();
-    executeInitialSetup(client, log);
+    executeInitialSetup(client, setupData.player0char, setupData.player1char);
     setClientState(client.getState());
   };
 
   const ff = () => {
     setMoveNumber(log.length - 1);
     client.reset();
-    executeInitialSetup(client, log);
+    executeInitialSetup(client, setupData.player0char, setupData.player1char);
     executeLog(client, log, firstMoveInd);
     setClientState(client.getState());
   };
@@ -219,7 +243,7 @@ const Ctrls = ({
     }
     setMoveNumber(prev);
     client.reset();
-    executeInitialSetup(client, log);
+    executeInitialSetup(client, setupData.player0char, setupData.player1char);
     executeLog(client, log, firstMoveInd, prev + 1);
     setClientState(client.getState());
   };
