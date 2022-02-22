@@ -16,7 +16,7 @@ function getSpawnedMoves(
 ): PossibleMove[] {
   const cloneContext = JSON.parse(JSON.stringify(context)) as GameContext;
   const { G, playerID } = cloneContext;
-  G.isClone = true;
+  G.isDummy = true;
   const { charState, opponentID } = G.players[playerID];
   const opponentCharState = G.players[opponentID].charState;
   const character = getCharacter(charState);
@@ -218,7 +218,7 @@ export function updateValids(context: GameContext, stage: GameStage) {
       break;
   }
 
-  if (!G.isClone && ctx.phase === 'main' && stage !== 'end') {
+  if (!G.isDummy && ctx.phase === 'main' && stage !== 'end') {
     G.valids = G.valids.filter((pos) => canReachEndStage(context, stage, pos));
   }
 }

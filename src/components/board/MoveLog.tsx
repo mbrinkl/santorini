@@ -17,7 +17,8 @@ export const MoveLog = (): JSX.Element => {
   }, [log]);
 
   const filteredLog = log.filter(
-    (l) => l.action.type === 'MAKE_MOVE' || l.action.type === 'UNDO',
+    (logEntry) =>
+      logEntry.action.type === 'MAKE_MOVE' || logEntry.action.type === 'UNDO',
   );
 
   let numUndo = 0;
@@ -32,8 +33,9 @@ export const MoveLog = (): JSX.Element => {
   }
 
   const doubleFilteredLog = filteredLog.filter(
-    (l) =>
-      l.phase !== 'selectCharacters' && l.action.payload.type !== 'endTurn',
+    (logEntry) =>
+      logEntry.phase !== 'selectCharacters' &&
+      logEntry.action.payload.type !== 'endTurn',
   );
 
   let currTurn = 0;
@@ -42,9 +44,9 @@ export const MoveLog = (): JSX.Element => {
   return (
     <div className="move-log">
       <p className="move-log__item move-log__item--title">Move Log</p>
-      {doubleFilteredLog.map((l) => {
-        const { type, args, playerID } = l.action.payload;
-        const { turn } = l;
+      {doubleFilteredLog.map((logEntry) => {
+        const { type, args, playerID } = logEntry.action.payload;
+        const { turn, _stateID: id } = logEntry;
         if (turn !== lastTurn) {
           currTurn += 1;
           lastTurn = turn;
@@ -57,7 +59,7 @@ export const MoveLog = (): JSX.Element => {
 
         return (
           <p
-            key={`log${Math.random() * 1000000}`} // kill me
+            key={id}
             className={classNames(
               'move-log__item',
               `move-log__item--${playerID}`,

@@ -37,7 +37,7 @@ export function checkWinByMove(
  */
 export function tryEndTurn(context: GameContext) {
   const { G, events } = context;
-  if (!G.isClone) {
+  if (!G.isDummy) {
     events.endTurn();
   }
 }
@@ -47,7 +47,7 @@ export function tryEndTurn(context: GameContext) {
  */
 export function tryEndGame(context: GameContext, winner: string) {
   const { G, events } = context;
-  if (!G.isClone) {
+  if (!G.isDummy) {
     events.endGame({
       winner,
     });

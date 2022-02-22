@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import { BoardProps } from 'boardgame.io/react';
 import { useMemo, useState } from 'react';
-import { Inspector } from './Inspector';
+import { InspectorControls } from './Inspector';
 import { GameState } from '../../types/GameTypes';
 import { BoardContext } from '../../context/boardContext';
 import { PlayerBoard } from './PlayerBoard';
@@ -75,8 +75,8 @@ export const GameBoard = (boardProps: BoardProps<GameState>): JSX.Element => {
             <div className="board-container__player-board">
               <PlayerBoard />
               {ctx.gameover && (
-                <Inspector
-                  logs={log}
+                <InspectorControls
+                  unfilteredLog={log}
                   matchID={matchID}
                   setOverrideState={setOverrideState}
                 />

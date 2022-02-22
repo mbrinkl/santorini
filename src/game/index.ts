@@ -157,11 +157,11 @@ export const SantoriniGame: Game<GameState> = {
   maxPlayers: 2,
 
   setup: ({ ctx }) => ({
-    isClone: false,
     players: initPlayers(ctx),
     spaces: initBoard(),
     valids: [],
     offBoardTokens: [],
+    isDummy: false,
   }),
 
   playerView: ({ G, ctx, playerID }) => stripSecrets(G, ctx, playerID),

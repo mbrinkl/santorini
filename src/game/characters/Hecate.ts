@@ -152,7 +152,7 @@ export const Hecate: Character<HecateAttrs> = {
 
   afterOpponentMove: (context, charState, oppCharState, movedFromPos) => {
     if (illegalState(context, charState, oppCharState)) {
-      if (!context.G.isClone) {
+      if (!context.G.isDummy) {
         restore(context.G, context.playerID, charState.attrs);
         oppCharState.buttonActive = false;
         tryEndTurn(context);
@@ -162,7 +162,7 @@ export const Hecate: Character<HecateAttrs> = {
 
   afterOpponentBuild: (context, charState, oppCharState, builtPos) => {
     if (illegalState(context, charState, oppCharState)) {
-      if (!context.G.isClone) {
+      if (!context.G.isDummy) {
         restore(context.G, context.playerID, charState.attrs);
         oppCharState.buttonActive = false;
         tryEndTurn(context);
@@ -172,7 +172,7 @@ export const Hecate: Character<HecateAttrs> = {
 
   afterOpponentSpecial: (context, charState, oppCharState) => {
     if (illegalState(context, charState, oppCharState)) {
-      if (!context.G.isClone) {
+      if (!context.G.isDummy) {
         restore(context.G, context.playerID, charState.attrs);
         oppCharState.buttonActive = false;
         tryEndTurn(context);

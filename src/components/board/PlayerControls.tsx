@@ -81,7 +81,7 @@ export const PlayerControls = (): JSX.Element | null => {
 
   return (
     <div className="player-controls">
-      {ctx.gameover || G.isClone ? (
+      {ctx.gameover || G.isDummy ? (
         <>
           <ButtonLink
             theme="red"

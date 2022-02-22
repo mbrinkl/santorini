@@ -54,7 +54,7 @@
       {
         "code": 80,
         "ignoreUrls": true,
-        "ignorePattern": "^import\\s.+\\sfrom\\s.+;$"
+        "ignorePattern": "^import\\s.+\\sfrom\\s.+;$||/eslint-disable-next-line/"
       }
     ],
     "no-mixed-operators": "error",

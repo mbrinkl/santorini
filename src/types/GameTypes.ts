@@ -24,11 +24,11 @@ export interface Player {
 }
 
 export interface GameState {
-  isClone: boolean;
   spaces: Space[];
   players: Record<string, Player>;
   valids: number[];
   offBoardTokens: OffBoardToken[];
+  isDummy: boolean;
 }
 
 export interface Space {
