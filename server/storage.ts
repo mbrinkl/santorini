@@ -3,11 +3,8 @@ import { StorageCache } from '@boardgame.io/storage-cache';
 export class ExtendedStorageCache extends StorageCache {
   async setMetadata(...args: Parameters<StorageCache['setMetadata']>) {
     const [matchID, matchData] = args;
+
     if (matchData.gameover == null && matchData.setupData != null) {
-      const cacheMetadata = this.cache.metadata.get(matchID);
-      if (cacheMetadata) {
-        cacheMetadata.setupData = null;
-      }
       await super.setMetadata(matchID, { ...matchData, setupData: null });
     } else {
       await super.setMetadata(...args);
@@ -24,10 +21,6 @@ export class ExtendedStorageCache extends StorageCache {
         metadata: true,
       });
       const seed = state.plugins.random.data.seed as string;
-      const cacheMetadata = this.cache.metadata.get(matchID);
-      if (cacheMetadata) {
-        cacheMetadata.setupData = seed;
-      }
       await super.setMetadata(matchID, {
         ...metadata,
         setupData: seed,

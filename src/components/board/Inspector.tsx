@@ -45,6 +45,23 @@ export const Inspector = ({
   const [client, setClient] = useState<any>(null);
   const [clientState, setClientState] = useState<any>(null);
   const [filteredLogs] = useState(getFilteredLogs(logs));
+  const [seed, setSeed] = useState<string | null>(null);
+
+  // poll api to load match data
+  useEffect(() => {
+    const intervalID = setInterval(() => {
+      if (matchID) {
+        getMatch(matchID).then((match) => {
+          if (match?.setupData != null) {
+            setSeed(match.setupData);
+            clearInterval(intervalID);
+          }
+        });
+      }
+    }, 500);
+
+    return () => clearInterval(intervalID);
+  }, [matchID]);
 
   useEffect(() => {
     if (client && clientState) {
@@ -54,9 +71,8 @@ export const Inspector = ({
 
   useEffect(() => {
     const test = async () => {
-      const match = await getMatch(matchID);
-      const seed: string = match?.setupData;
       if (seed) {
+        console.log('SEED', seed);
         const cli = Client({
           game: {
             ...SantoriniGame,
@@ -77,7 +93,7 @@ export const Inspector = ({
     };
 
     test();
-  }, [matchID, filteredLogs]);
+  }, [seed, filteredLogs]);
 
   return (
     <Ctrls client={client} setClientState={setClientState} log={filteredLogs} />
