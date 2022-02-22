@@ -14,7 +14,7 @@ export const Home = (): JSX.Element => {
   const setActiveRoomPlayer = useStoreActions((s) => s.setActiveRoomPlayer);
 
   useEffect(() => {
-    async function isPrevGameActive(): Promise<void> {
+    const isPrevGameActive = async () => {
       if (activeRoomPlayer) {
         const matchData = await getMatch(activeRoomPlayer.matchID);
         if (matchData && !matchData.gameover) {
@@ -23,7 +23,7 @@ export const Home = (): JSX.Element => {
           setActiveRoomPlayer(null);
         }
       }
-    }
+    };
     isPrevGameActive();
   }, [activeRoomPlayer, setActiveRoomPlayer]);
 

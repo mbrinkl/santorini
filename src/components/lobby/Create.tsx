@@ -29,7 +29,7 @@ export const CreatePage = (): JSX.Element => {
       await leaveRoom({
         matchID: activeRoomPlayer.matchID,
         playerID: activeRoomPlayer.playerID,
-        credentials: activeRoomPlayer.credential,
+        credentials: activeRoomPlayer.credentials,
       });
     }
 

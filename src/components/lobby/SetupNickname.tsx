@@ -25,7 +25,7 @@ export const SetupNickname = ({
       await updatePlayer(
         activeRoomPlayer.matchID,
         activeRoomPlayer.playerID.toString(),
-        activeRoomPlayer.credential,
+        activeRoomPlayer.credentials,
         nickname,
       );
     }

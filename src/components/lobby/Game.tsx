@@ -34,9 +34,7 @@ export const GameLobbySetup = ({
   startGame(): void;
 }): JSX.Element => {
   const { matchID } = useParams<{ matchID: string }>();
-  const [matchMetadata, setMatchMetadata] = useState<LobbyAPI.Match | null>(
-    null,
-  );
+  const [matchMetadata, setMatchMetadata] = useState<LobbyAPI.Match>();
   const [tooltipVisible, setTooltipVisible] = useState(false);
   const nickname = useStoreState((s) => s.nickname);
   const activeRoomPlayer = useStoreState((s) => s.activeRoomPlayer);
@@ -169,8 +167,8 @@ export const GameLobbyPlay = (): JSX.Element => {
     return (
       <GameClient
         matchID={matchID}
-        playerID={String(activeRoomPlayer?.playerID)}
-        credentials={activeRoomPlayer?.credential}
+        playerID={String(activeRoomPlayer.playerID)}
+        credentials={activeRoomPlayer.credentials}
       />
     );
   }

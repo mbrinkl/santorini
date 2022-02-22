@@ -3,7 +3,7 @@ import { Action, Thunk } from 'easy-peasy';
 interface ActiveRoomPlayer {
   matchID: string;
   playerID: string;
-  credential: string;
+  credentials: string;
 }
 
 export interface JoinRoomParams {
