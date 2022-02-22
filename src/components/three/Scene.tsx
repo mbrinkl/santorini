@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useMemo } from 'react';
 import { ThreeEvent } from '@react-three/fiber';
 import { OrbitControls } from '@react-three/drei';
 import { GameStage } from '../../types/GameTypes';
@@ -10,13 +10,26 @@ import { WorkerModel } from './WorkerModel';
 import { BoardPosition } from '../../types/BoardTypes';
 import { TextCoords } from './TextCoords';
 import { GenericOffBoardToken, GenericToken } from './Tokens';
+import { GROUND_PADDING, GROUND_SIZE } from '../../config/board';
 
-export const Scene = ({
-  boardPositions,
-}: {
-  boardPositions: BoardPosition[];
-}): JSX.Element => {
+export const Scene = (): JSX.Element => {
   const { G, ctx, moves, isActive } = useBoardContext();
+
+  const boardPositions = useMemo(() => {
+    const positions: BoardPosition[] = [];
+
+    for (let i = -2; i < 3; i++) {
+      for (let j = -2; j < 3; j++) {
+        positions.push({
+          pos: positions.length,
+          z: GROUND_PADDING + GROUND_PADDING * i + GROUND_SIZE * i,
+          x: GROUND_PADDING + GROUND_PADDING * j + GROUND_SIZE * j,
+        });
+      }
+    }
+
+    return positions;
+  }, []);
 
   const onMeshClicked = useCallback(
     (e: ThreeEvent<PointerEvent>) => {

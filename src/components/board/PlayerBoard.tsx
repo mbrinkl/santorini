@@ -1,33 +1,15 @@
-import { useState, useEffect, Suspense } from 'react';
+import { Suspense } from 'react';
 import { Canvas } from '@react-three/fiber';
 import { useContextBridge } from '@react-three/drei';
 import classNames from 'classnames';
 import { HelpText } from './HelpText';
 import { useBoardContext, BoardContext } from '../../context/boardContext';
 import { Scene } from '../three/Scene';
-import { BoardPosition } from '../../types/BoardTypes';
-import { GROUND_PADDING, GROUND_SIZE } from '../../config/board';
 import './PlayerBoard.scss';
 
 export const PlayerBoard = (): JSX.Element => {
   const { isActive, ctx, playerID } = useBoardContext();
   const ContextBridge = useContextBridge(BoardContext);
-  const [boardPositions, setBoardPositions] = useState<BoardPosition[]>([]);
-
-  useEffect(() => {
-    const positions: BoardPosition[] = [];
-
-    for (let i = -2; i < 3; i++) {
-      for (let j = -2; j < 3; j++) {
-        positions.push({
-          pos: positions.length,
-          z: GROUND_PADDING + GROUND_PADDING * i + GROUND_SIZE * i,
-          x: GROUND_PADDING + GROUND_PADDING * j + GROUND_SIZE * j,
-        });
-      }
-    }
-    setBoardPositions(positions);
-  }, []);
 
   let outlineClass = '';
 
@@ -46,10 +28,10 @@ export const PlayerBoard = (): JSX.Element => {
     <div className={classNames('player-board', outlineClass)}>
       <HelpText />
       <div className="player-board__canvas">
-        <Suspense fallback={false}>
+        <Suspense fallback={null}>
           <Canvas camera={{ fov: 75 }}>
             <ContextBridge>
-              <Scene boardPositions={boardPositions} />
+              <Scene />
             </ContextBridge>
           </Canvas>
         </Suspense>
