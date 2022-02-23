@@ -1,4 +1,4 @@
-import { tryEndGame } from '../winConditions';
+import { tryEndGame } from '../gameUtil';
 import { Mortal } from './Mortal';
 import { Character } from '../../types/CharacterTypes';
 import { Board } from '../boardUtil';

@@ -1,7 +1,7 @@
 import { Mortal } from './Mortal';
 import { Character } from '../../types/CharacterTypes';
 import { Board } from '../boardUtil';
-import { getNextPosition } from '../utility';
+import { getNextPosition } from '../posUtil';
 
 export const Harpies: Character = {
   ...Mortal,

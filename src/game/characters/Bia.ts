@@ -1,7 +1,7 @@
 import { Character } from '../../types/CharacterTypes';
 import { Mortal } from './Mortal';
 import { Board } from '../boardUtil';
-import { getNextPosition, getPerimeterPositions } from '../utility';
+import { getNextPosition, getPerimeterPositions } from '../posUtil';
 
 export const Bia: Character = {
   ...Mortal,

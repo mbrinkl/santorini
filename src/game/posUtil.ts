@@ -1,50 +1,13 @@
 /*
   Board reffered to as a 5x5 grid of positions or x,y coordinates:
+  To the player, they are displayed as (A-E),(1-5) coordinates
 
-   0   1   2   3   4 | 0,0  1,0  2,0  3,0  4,0
-   5   6   7   8   9 | 0,1  1,1  2,1  3,1  4,1
-  10  11  12  13  14 | 0,2  1,2  2,2  3,2  4,2
-  15  16  17  18  19 | 0,3  1,3  2,3  3,3  4,3
-  20  21  22  23  24 | 0,4  1,4  2,4  3,4  4,4
+   0   1   2   3   4 | 0,0  1,0  2,0  3,0  4,0 | A5  B5  C5  D5  E5
+   5   6   7   8   9 | 0,1  1,1  2,1  3,1  4,1 | A4  B4  C4  D4  E4
+  10  11  12  13  14 | 0,2  1,2  2,2  3,2  4,2 | A3  B3  C3  D3  E3
+  15  16  17  18  19 | 0,3  1,3  2,3  3,3  4,3 | A2  B2  C2  D2  E2
+  20  21  22  23  24 | 0,4  1,4  2,4  3,4  4,4 | A1  B1  C1  D1  E1
 */
-
-function posToDirection(pos: number): number[] {
-  let x = 0;
-  let y = 0;
-
-  if (pos < 10) {
-    y = -1;
-  } else if (pos > 15) {
-    y = 1;
-  }
-
-  if (pos % 5 === 1) {
-    x = -1;
-  } else if (pos % 5 === 3) {
-    x = 1;
-  }
-
-  return [x, y];
-}
-
-export function getNextPositionInDirection(
-  pos: number,
-  direction: number,
-): number {
-  let nextPos = -1;
-
-  const [posX, posY] = posToCoord(pos);
-  const [dirX, dirY] = posToDirection(direction);
-
-  const nextPosX = posX + dirX;
-  const nextPosY = posY + dirY;
-
-  if (nextPosX >= 0 && nextPosX <= 4 && nextPosY >= 0 && nextPosY <= 4) {
-    nextPos = coordToPos(nextPosX, nextPosY);
-  }
-
-  return nextPos;
-}
 
 /**
  * Converts an x,y coordinate to a position
@@ -62,6 +25,9 @@ export function posToCoord(pos: number): number[] {
   return [x, y];
 }
 
+/**
+ * Converts a position to a player's view coordinate
+ */
 export function posToReadableCoord(pos: number): string {
   const [x, y] = posToCoord(pos);
 
@@ -82,6 +48,56 @@ export function posToReadableCoord(pos: number): string {
   };
 
   return `${xMap[x]}${yMap[y]}`;
+}
+
+/**
+ * Converts a position to a direction, mapped as:
+ *
+ *  NW  N  NE      6   7   8
+ *   W      E  => 11      13
+ *  SW  S  SE     16  17  18
+ */
+export function posToDirection(pos: number): number[] {
+  let x = 0;
+  let y = 0;
+
+  if (pos < 10) {
+    y = -1;
+  } else if (pos > 15) {
+    y = 1;
+  }
+
+  if (pos % 5 === 1) {
+    x = -1;
+  } else if (pos % 5 === 3) {
+    x = 1;
+  }
+
+  return [x, y];
+}
+
+/**
+ * Given a position and a direction (described in posToDirection),
+ * return the next position in that direction
+ * ie. given 0 as pos and 18 as direction, 6 is the next pos
+ */
+export function getNextPositionInDirection(
+  pos: number,
+  direction: number,
+): number {
+  let nextPos = -1;
+
+  const [posX, posY] = posToCoord(pos);
+  const [dirX, dirY] = posToDirection(direction);
+
+  const nextPosX = posX + dirX;
+  const nextPosY = posY + dirY;
+
+  if (nextPosX >= 0 && nextPosX <= 4 && nextPosY >= 0 && nextPosY <= 4) {
+    nextPos = coordToPos(nextPosX, nextPosY);
+  }
+
+  return nextPos;
 }
 
 /**
@@ -187,7 +203,7 @@ export function posIsPerimeter(pos: number): boolean {
 }
 
 /**
- *
+ * Get a list of corner positions
  */
 export function getCornerPositions(): number[] {
   return [0, 4, 20, 24];

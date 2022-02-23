@@ -1,6 +1,6 @@
 import { Character } from '../../types/CharacterTypes';
 import { Mortal } from './Mortal';
-import { getAdjacentPositions } from '../utility';
+import { getAdjacentPositions } from '../posUtil';
 import { Board } from '../boardUtil';
 
 export const Graeae: Character = {

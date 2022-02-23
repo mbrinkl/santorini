@@ -1,3 +1,18 @@
+/**
+ * Adding a new character:
+ *  1. Create the character file in this directory
+ *  2. In this file:
+ *    a. Import the character
+ *    b. Add the character name to the characterList
+ *    c. In getCharacterByName, add a switch case using the same name
+ *        as step (b.)
+ *    d. Add any banned matchups in the banList
+ *  3. Add a character image to src/assets/png/characterImages
+ *  4. In src/components/board/CharacterCard.scss, add a class linked
+ *        to the image added in step (3.). Use the name of the
+ *        character from (2b.) without spaces as the class name.
+ */
+
 import { Mortal } from './Mortal';
 import { Apollo } from './Apollo';
 import { Artemis } from './Artemis';
@@ -123,6 +138,9 @@ export const characterList: string[] = [
   'Helios',
 ];
 
+/**
+ * Banned matchups
+ */
 export const banList: [string, string][] = [
   ['Graeae', 'Nemesis'],
   ['Harpies', 'Hermes'],
@@ -139,12 +157,17 @@ export const banList: [string, string][] = [
   ['Hecate', 'Circe'],
 ];
 
-// Returns the character list sorted alphabetically, with 'random'
-// and 'mortal' at the start
+/**
+ * Returns the character list sorted alphabetically, with 'random'
+ * and 'mortal' at the start
+ */
 export function getSortedCharacters(): string[] {
   return ['Random', 'Mortal'].concat(characterList.slice(2).sort());
 }
 
+/**
+ * Get a character by character state
+ */
 export function getCharacter(charState: CharacterState): Character {
   if (charState.powerBlocked) {
     return Mortal;
@@ -153,6 +176,9 @@ export function getCharacter(charState: CharacterState): Character {
   return getCharacterByName(charState.name);
 }
 
+/**
+ * Get a character by character name
+ */
 export function getCharacterByName(name: string): Character {
   let character: Character<any>;
 

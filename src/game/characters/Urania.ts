@@ -1,4 +1,4 @@
-import { getWrappedAdjacents } from '../utility';
+import { getWrappedAdjacents } from '../posUtil';
 import { Character } from '../../types/CharacterTypes';
 import { Mortal } from './Mortal';
 import { Board } from '../boardUtil';

@@ -2,7 +2,7 @@ import { Move } from 'boardgame.io';
 import { initCharState } from '.';
 import { GameState } from '../types/GameTypes';
 import { getCharacter } from './characters';
-import { checkWinByMove } from './winConditions';
+import { checkWinByMove } from './gameUtil';
 import { updateValids } from './validity';
 
 export const setChar: Move<GameState> = ({ G, playerID }, name: string) => {

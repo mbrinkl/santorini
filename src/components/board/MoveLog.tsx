@@ -1,6 +1,6 @@
 import classNames from 'classnames';
 import { useEffect, useRef } from 'react';
-import { posToReadableCoord } from '../../game/utility';
+import { posToReadableCoord } from '../../game/posUtil';
 import { useBoardContext } from '../../context/boardContext';
 import './MoveLog.scss';
 

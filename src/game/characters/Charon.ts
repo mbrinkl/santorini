@@ -1,4 +1,4 @@
-import { getAdjacentPositions, getNextPosition } from '../utility';
+import { getAdjacentPositions, getNextPosition } from '../posUtil';
 import { Board } from '../boardUtil';
 import { Mortal } from './Mortal';
 import { Character, CharacterState } from '../../types/CharacterTypes';

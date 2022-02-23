@@ -1,5 +1,5 @@
-import { getNextPosition } from '../utility';
-import { tryEndGame } from '../winConditions';
+import { getNextPosition } from '../posUtil';
+import { tryEndGame } from '../gameUtil';
 import { Mortal } from './Mortal';
 import { Character } from '../../types/CharacterTypes';
 

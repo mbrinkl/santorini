@@ -2,7 +2,7 @@ import { GameContext, GameState, Space } from '../../types/GameTypes';
 import { Mortal } from './Mortal';
 import { Character, CharacterState, Worker } from '../../types/CharacterTypes';
 import { getCharacter } from '.';
-import { tryEndTurn } from '../winConditions';
+import { tryEndTurn } from '../gameUtil';
 
 type HecateAttrs = {
   workers: Worker[];
