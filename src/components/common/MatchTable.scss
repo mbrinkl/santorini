@@ -1,14 +1,22 @@
 @import 'styles/shared';
 
 .match-table {
-  border-collapse: collapse;
   width: 75%;
   margin-bottom: 3em;
 
+  &__table {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed;
+  }
+
   &__row {
     line-height: 40px;
-    border-bottom: 1px solid $c-white;
     color: $c-white;
+
+    &--match {
+      border-bottom: 1px solid $c-white;
+    }
 
     &--match:hover {
       background-color: $c-orange;
@@ -19,13 +27,14 @@
       border-bottom: none;
     }
 
-    th {
-      width: 33%;
-    }
-
     td {
       text-align: center;
     }
+  }
+
+  &__filters {
+    color: white;
+    text-align: center;
   }
 
   &__caption {
@@ -38,6 +47,12 @@
     font-size: 16px;
     font-weight: bold;
     color: $c-white;
+    margin-bottom: 1em;
+  }
+
+  &__pagination {
+    color: white;
+    margin-top: 10px;
   }
 
   @include tablet-max {

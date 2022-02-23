@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { LobbyAPI } from 'boardgame.io';
 import { LobbyPage } from './Wrapper';
 import { ButtonBack } from '../common/ButtonBack';
@@ -30,19 +30,37 @@ export const JoinPage = (): JSX.Element => {
     return () => clearInterval(intervalID);
   }, []);
 
+  const columns = useMemo(
+    () => [
+      {
+        Header: 'Creator',
+        accessor: 'creator' as const,
+      },
+      {
+        Header: 'Created At',
+        accessor: 'createdAt' as const,
+      },
+    ],
+    [],
+  );
+
+  const data = useMemo(
+    () =>
+      joinableMatches.map((match) => ({
+        matchID: match.matchID,
+        creator: match.players[0].name || 'Player 0',
+        createdAt: new Date(match.createdAt).toLocaleString(),
+      })),
+    [joinableMatches],
+  );
+
   return (
     <LobbyPage className="lobby-top">
       <ButtonBack to="/" />
       <MatchTable
-        headers={['Creator', 'Created At']}
-        noBody="No Public Games Available"
-        body={joinableMatches.map((match) => ({
-          matchID: match.matchID,
-          data: [
-            match.players[0].name || 'Player 0',
-            new Date(match.createdAt).toLocaleString(),
-          ],
-        }))}
+        columns={columns}
+        data={data}
+        noDataMessage="No Public Games Available"
       />
     </LobbyPage>
   );
