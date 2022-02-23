@@ -31,7 +31,11 @@ interface Props<T extends RequiredProps> {
   ) => Row<T>[];
 }
 
-const GlobalFilter = ({ setGlobalFilter }) => {
+const GlobalFilter = ({
+  setGlobalFilter,
+}: {
+  setGlobalFilter: (value: string | undefined) => void;
+}) => {
   // const count = preGlobalFilteredRows.length;
   const [character, setCharacter] = useState('');
   const [player, setPlayer] = useState('');

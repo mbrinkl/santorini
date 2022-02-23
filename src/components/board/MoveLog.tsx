@@ -6,7 +6,7 @@ import './MoveLog.scss';
 
 export const MoveLog = (): JSX.Element => {
   const { matchData, log } = useBoardContext();
-  const logEndRef: any = useRef(null);
+  const logEndRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     logEndRef.current?.scrollIntoView({

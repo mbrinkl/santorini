@@ -166,20 +166,10 @@ export function getSortedCharacters(): string[] {
 }
 
 /**
- * Get a character by character state
- */
-export function getCharacter(charState: CharacterState): Character {
-  if (charState.powerBlocked) {
-    return Mortal;
-  }
-
-  return getCharacterByName(charState.name);
-}
-
-/**
  * Get a character by character name
  */
 export function getCharacterByName(name: string): Character {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   let character: Character<any>;
 
   switch (name) {
@@ -300,4 +290,15 @@ export function getCharacterByName(name: string): Character {
   }
 
   return character;
+}
+
+/**
+ * Get a character by character state
+ */
+export function getCharacter(charState: CharacterState): Character {
+  if (charState.powerBlocked) {
+    return Mortal;
+  }
+
+  return getCharacterByName(charState.name);
 }

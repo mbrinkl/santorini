@@ -4,6 +4,7 @@ import { Link, LinkProps } from 'react-router-dom';
 import style from './Button.module.scss';
 
 interface ButtonProps {
+  className?: string;
   theme?: 'red' | 'yellow' | 'blue' | 'green';
   size?: 'small' | 'medium';
 }

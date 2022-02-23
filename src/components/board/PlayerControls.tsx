@@ -21,7 +21,14 @@ export const PlayerControls = (): JSX.Element | null => {
 
   const navigate = useNavigate();
   const [counter, setCounter] = useState(3);
-  const intervalID: any = useRef(null);
+  const intervalID = useRef<ReturnType<typeof setInterval> | null>(null);
+
+  const resetEndTurnTimer = () => {
+    if (intervalID.current) {
+      clearInterval(intervalID.current);
+    }
+    setCounter(3);
+  };
 
   useEffect(() => {
     intervalID.current = setInterval(() => {
@@ -33,25 +40,24 @@ export const PlayerControls = (): JSX.Element | null => {
         if (counter > 0) {
           setCounter(counter - 1);
         } else {
-          clearInterval(intervalID.current);
-          setCounter(3);
+          resetEndTurnTimer();
           moves.endTurn();
         }
       }
     }, 1000);
 
-    return () => clearInterval(intervalID.current);
+    return () => {
+      if (intervalID.current) clearInterval(intervalID.current);
+    };
   }, [counter, intervalID, moves, isActive, ctx]);
 
   function undoMove() {
-    clearInterval(intervalID.current);
-    setCounter(3);
+    resetEndTurnTimer();
     undo();
   }
 
   function endTurn() {
-    clearInterval(intervalID.current);
-    setCounter(3);
+    resetEndTurnTimer();
     moves.endTurn();
   }
 

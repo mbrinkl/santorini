@@ -29,8 +29,8 @@ export const ChatMessage = ({
 export const Chat = (): JSX.Element => {
   const { chatMessages, sendChatMessage } = useBoardContext();
   const [message, setMessage] = useState('');
-  const messagesEndRef: any = useRef(null);
-  const inputRef: any = useRef(null);
+  const messagesEndRef = useRef<HTMLDivElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({
@@ -44,7 +44,7 @@ export const Chat = (): JSX.Element => {
     e.preventDefault();
 
     if (isMobile()) {
-      inputRef.current.blur();
+      inputRef.current?.blur();
     }
 
     if (message !== '') {
