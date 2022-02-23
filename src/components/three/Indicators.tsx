@@ -2,8 +2,8 @@ import { useRef } from 'react';
 import { Box, Cone, Cylinder, Ring } from '@react-three/drei';
 import { useFrame } from '@react-three/fiber';
 import { Mesh } from 'three';
-import { BoardPosition } from '../../types/BoardTypes';
-import { GameStage } from '../../types/GameTypes';
+import { BoardPosition } from '../../types/boardTypesTemp';
+import { GameStage } from '../../types/gameTypesTemp';
 
 export const PlaceIndicator = ({
   boardPos,

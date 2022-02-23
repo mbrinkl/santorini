@@ -1,7 +1,7 @@
 import { Board } from '../boardUtil';
 import { getAdjacentPositions, getNextPositionInDirection } from '../posUtil';
 import { Mortal } from './Mortal';
-import { Character } from '../../types/CharacterTypes';
+import { Character } from '../../types/characterTypesTemp';
 
 type SirenAttrs = {
   altTurn: boolean;

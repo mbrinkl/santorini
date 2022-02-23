@@ -1,5 +1,5 @@
 import { Mortal } from './Mortal';
-import { Character } from '../../types/CharacterTypes';
+import { Character } from '../../types/characterTypesTemp';
 
 export const Pan: Character = {
   ...Mortal,

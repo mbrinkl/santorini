@@ -1,4 +1,4 @@
-import { GameContext, GameState, Token } from '../types/GameTypes';
+import { GameContext, GameState, Token } from '../types/gameTypesTemp';
 import { getCharacter } from './characters';
 import { tryEndGame } from './gameUtil';
 

@@ -11,7 +11,7 @@ import { GameLobby } from './components/lobby/Game';
 import { SetupNickname } from './components/lobby/SetupNickname';
 import { initializeStore, useStoreState } from './store';
 import { NICKNAME_STORAGE_KEY, PLAYER_STORAGE_KEY } from './config/client';
-import { StoreModel } from './types/StoreTypes';
+import { StoreModel } from './types/storeTypesTemp';
 import { Home } from './components/lobby/Home';
 import { NotFound } from './components/lobby/NotFound';
 import { WatchPage } from './components/lobby/Watch';

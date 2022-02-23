@@ -1,4 +1,4 @@
-import { GameContext } from '../types/GameTypes';
+import { GameContext } from '../types/gameTypesTemp';
 import { getCharacter } from './characters';
 
 /**

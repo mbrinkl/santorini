@@ -1,5 +1,5 @@
 import { Plane } from '@react-three/drei';
-import { BoardPosition } from '../../types/BoardTypes';
+import { BoardPosition } from '../../types/boardTypesTemp';
 import { GROUND_SIZE } from '../../config/board';
 
 export const Ground = ({

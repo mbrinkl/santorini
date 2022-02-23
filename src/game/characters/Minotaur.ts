@@ -1,6 +1,6 @@
-import { GameContext } from '../../types/GameTypes';
+import { GameContext } from '../../types/gameTypesTemp';
 import { getAdjacentPositions, getNextPosition } from '../posUtil';
-import { Character } from '../../types/CharacterTypes';
+import { Character } from '../../types/characterTypesTemp';
 import { Mortal } from './Mortal';
 import { Board } from '../boardUtil';
 

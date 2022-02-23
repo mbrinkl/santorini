@@ -3,7 +3,7 @@ import {
   getOppositePerimeterPositions,
   posIsPerimeter,
 } from '../posUtil';
-import { Character } from '../../types/CharacterTypes';
+import { Character } from '../../types/characterTypesTemp';
 import { Mortal } from './Mortal';
 
 export const Eros: Character = {

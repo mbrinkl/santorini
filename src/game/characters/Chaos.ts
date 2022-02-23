@@ -1,6 +1,6 @@
 import { Mortal } from './Mortal';
-import { GameContext } from '../../types/GameTypes';
-import { Character, CharacterState } from '../../types/CharacterTypes';
+import { GameContext } from '../../types/gameTypesTemp';
+import { Character, CharacterState } from '../../types/characterTypesTemp';
 import { getCharacterByName } from '.';
 
 type PossibleCharacters =

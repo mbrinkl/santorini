@@ -1,6 +1,6 @@
 import { Move } from 'boardgame.io';
 import { initCharState } from '.';
-import { GameState } from '../types/GameTypes';
+import { GameState } from '../types/gameTypesTemp';
 import { getCharacter } from './characters';
 import { checkWinByMove } from './gameUtil';
 import { updateValids } from './validity';

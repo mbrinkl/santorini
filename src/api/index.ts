@@ -1,6 +1,6 @@
 import { LobbyAPI } from 'boardgame.io';
 import axios from 'axios';
-import { JoinRoomParams, LeaveRoomParams } from '../types/StoreTypes';
+import { JoinRoomParams, LeaveRoomParams } from '../types/storeTypesTemp';
 import { SERVER_URL } from '../config/client';
 import { GAME_ID } from '../config';
 

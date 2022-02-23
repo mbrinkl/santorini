@@ -1,6 +1,10 @@
-import { GameContext, GameState, Space } from '../../types/GameTypes';
+import { GameContext, GameState, Space } from '../../types/gameTypesTemp';
 import { Mortal } from './Mortal';
-import { Character, CharacterState, Worker } from '../../types/CharacterTypes';
+import {
+  Character,
+  CharacterState,
+  Worker,
+} from '../../types/characterTypesTemp';
 import { getCharacter } from '.';
 import { tryEndTurn } from '../gameUtil';
 

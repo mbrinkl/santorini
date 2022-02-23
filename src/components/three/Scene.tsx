@@ -1,13 +1,13 @@
 import React, { useCallback, useMemo } from 'react';
 import { ThreeEvent } from '@react-three/fiber';
 import { OrbitControls } from '@react-three/drei';
-import { GameStage } from '../../types/GameTypes';
+import { GameStage } from '../../types/gameTypesTemp';
 import { useBoardContext } from '../../context/boardContext';
 import { Ground } from './Ground';
 import { BuildingBase, BuildingMid, BuildingTop, Dome } from './Buildings';
 import { Indicator } from './Indicators';
 import { WorkerModel } from './WorkerModel';
-import { BoardPosition } from '../../types/BoardTypes';
+import { BoardPosition } from '../../types/boardTypesTemp';
 import { TextCoords } from './TextCoords';
 import { GenericOffBoardToken, GenericToken } from './Tokens';
 import { GROUND_PADDING, GROUND_SIZE } from '../../config/board';

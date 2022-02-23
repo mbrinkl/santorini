@@ -1,5 +1,5 @@
 import { action, thunk } from 'easy-peasy';
-import { StoreModel } from '../types/StoreTypes';
+import { StoreModel } from '../types/storeTypesTemp';
 import { NICKNAME_STORAGE_KEY, PLAYER_STORAGE_KEY } from '../config/client';
 import { joinMatch, leaveMatch } from '../api';
 

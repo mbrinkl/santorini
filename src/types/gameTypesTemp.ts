@@ -1,5 +1,5 @@
 import { Ctx, DefaultPluginAPIs } from 'boardgame.io';
-import { CharacterState } from './CharacterTypes';
+import { CharacterState } from './characterTypesTemp';
 
 export type GameStage =
   | 'setup'

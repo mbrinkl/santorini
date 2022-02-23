@@ -34,7 +34,7 @@ import { Iris } from './Iris';
 import { Pegasus } from './Pegasus';
 import { Eros } from './Eros';
 import { Chaos } from './Chaos';
-import { Character, CharacterState } from '../../types/CharacterTypes';
+import { Character, CharacterState } from '../../types/characterTypesTemp';
 import { Chronus } from './Chronus';
 import { Harpies } from './Harpies';
 import { Urania } from './Urania';

@@ -1,4 +1,4 @@
-import { GameContext, GameStage } from './GameTypes';
+import { GameContext, GameStage } from './gameTypesTemp';
 
 export type Pack =
   | 'none'

@@ -1,5 +1,5 @@
-import { GameStage } from '../../types/GameTypes';
-import { Character, Worker } from '../../types/CharacterTypes';
+import { GameStage } from '../../types/gameTypesTemp';
+import { Character, Worker } from '../../types/characterTypesTemp';
 import { getAdjacentPositions } from '../posUtil';
 import { Board } from '../boardUtil';
 

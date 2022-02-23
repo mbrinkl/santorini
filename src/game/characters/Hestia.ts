@@ -1,6 +1,6 @@
 import { posIsPerimeter } from '../posUtil';
 import { Mortal } from './Mortal';
-import { Character } from '../../types/CharacterTypes';
+import { Character } from '../../types/characterTypesTemp';
 
 type HestiaAttrs = {
   numBuilds: number;

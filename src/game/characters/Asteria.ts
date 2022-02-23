@@ -1,6 +1,6 @@
 import { Board } from '../boardUtil';
 import { Mortal } from './Mortal';
-import { Character } from '../../types/CharacterTypes';
+import { Character } from '../../types/characterTypesTemp';
 
 type AsteriaAttrs = {
   movedDown: boolean;
