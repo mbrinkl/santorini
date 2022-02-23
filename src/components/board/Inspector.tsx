@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { Client } from 'boardgame.io/client';
 import { BoardProps } from 'boardgame.io/react';
 import {
@@ -8,13 +8,9 @@ import {
 import { LogEntry } from 'boardgame.io';
 import { GameState } from '../../types/gameTypes';
 import { SantoriniGame } from '../../game';
-import { ImageButton } from '../common/Button';
+import { Button } from '../common/Button';
 import { ButtonGroup } from '../common/ButtonGroup';
 import { getMatch } from '../../api';
-import RewindImg from '../../assets/png/rewind.png';
-import BackImg from '../../assets/png/back.png';
-import ForwardImg from '../../assets/png/forward.png';
-import FastForwardImg from '../../assets/png/fastforward.png';
 import './Inspector.scss';
 
 interface SetupData {
@@ -138,11 +134,85 @@ export const InspectorControls = ({
     ),
   );
 
+  const rewind = () => {
+    if (!client || !setupData) return;
+    setMoveNumber(firstMoveInd - 1);
+    client.reset();
+    executeInitialSetup(client, setupData.player0char, setupData.player1char);
+    setClientState(client.getState());
+  };
+
+  const fastForward = () => {
+    if (!client || !setupData) return;
+    setMoveNumber(log.length - 1);
+    client.reset();
+    executeInitialSetup(client, setupData.player0char, setupData.player1char);
+    executeLog(client, log, firstMoveInd);
+    setClientState(client.getState());
+  };
+
+  const back = useCallback(() => {
+    if (!client || !setupData || moveNumber <= firstMoveInd - 1) return;
+
+    let prevMoveNumber = moveNumber - 1;
+    if (
+      log[prevMoveNumber].action.payload.type === 'endTurn' ||
+      log[moveNumber].action.payload.type === 'endTurn'
+    ) {
+      prevMoveNumber -= 1;
+    }
+    setMoveNumber(prevMoveNumber);
+    client.reset();
+    executeInitialSetup(client, setupData.player0char, setupData.player1char);
+    executeLog(client, log, firstMoveInd, prevMoveNumber + 1);
+    setClientState(client.getState());
+  }, [client, setupData, firstMoveInd, log, moveNumber]);
+
+  const forward = useCallback(() => {
+    if (!client || !setupData || moveNumber >= log.length - 1) return;
+
+    let nextMoveNumber = moveNumber + 1;
+    executeMove(client, log[nextMoveNumber]);
+    if (
+      log[nextMoveNumber].action.payload.type === 'endTurn' ||
+      (nextMoveNumber + 1 < log.length &&
+        log[nextMoveNumber + 1].action.payload.type === 'endTurn')
+    ) {
+      nextMoveNumber += 1;
+      executeMove(client, log[nextMoveNumber]);
+    }
+    setMoveNumber(nextMoveNumber);
+    setClientState(client.getState());
+  }, [client, setupData, log, moveNumber]);
+
+  const keyPressHandler = useCallback(
+    (event) => {
+      if (event.keyCode === 37) {
+        // Left arrow
+        back();
+      } else if (event.keyCode === 39) {
+        // Right arrow
+        forward();
+      }
+    },
+    [back, forward],
+  );
+
+  useEffect(() => {
+    document.addEventListener('keydown', keyPressHandler, false);
+
+    return () => {
+      document.removeEventListener('keydown', keyPressHandler, false);
+    };
+  }, [keyPressHandler]);
+
   // Load match metadata which is set at gameover
   // Call in setinterval in case the metadata is not set by the time
   // this component loads
   useEffect(() => {
-    const intervalID = setInterval(() => {
+    let intervalID: ReturnType<typeof setTimeout> | null = null;
+
+    const pollMatch = () => {
       if (matchID) {
         getMatch(matchID).then((match) => {
           if (
@@ -156,13 +226,20 @@ export const InspectorControls = ({
               player0char: match.players[0].data.character,
               player1char: match.players[1].data.character,
             });
-            clearInterval(intervalID);
+          } else {
+            intervalID = setTimeout(() => {
+              pollMatch();
+            }, 500);
           }
         });
       }
-    }, 500);
+    };
 
-    return () => clearInterval(intervalID);
+    pollMatch();
+
+    return () => {
+      if (intervalID) clearInterval(intervalID);
+    };
   }, [matchID]);
 
   // Override the client board props whenever the clientState is set
@@ -199,81 +276,42 @@ export const InspectorControls = ({
     return <div />;
   }
 
-  const rewind = () => {
-    setMoveNumber(firstMoveInd - 1);
-    client.reset();
-    executeInitialSetup(client, setupData.player0char, setupData.player1char);
-    setClientState(client.getState());
-  };
-
-  const fastForward = () => {
-    setMoveNumber(log.length - 1);
-    client.reset();
-    executeInitialSetup(client, setupData.player0char, setupData.player1char);
-    executeLog(client, log, firstMoveInd);
-    setClientState(client.getState());
-  };
-
-  const back = () => {
-    let prevMoveNumber = moveNumber - 1;
-    if (
-      log[prevMoveNumber].action.payload.type === 'endTurn' ||
-      log[moveNumber].action.payload.type === 'endTurn'
-    ) {
-      prevMoveNumber -= 1;
-    }
-    setMoveNumber(prevMoveNumber);
-    client.reset();
-    executeInitialSetup(client, setupData.player0char, setupData.player1char);
-    executeLog(client, log, firstMoveInd, prevMoveNumber + 1);
-    setClientState(client.getState());
-  };
-
-  const forward = () => {
-    let nextMoveNumber = moveNumber + 1;
-    executeMove(client, log[nextMoveNumber]);
-    if (
-      log[nextMoveNumber].action.payload.type === 'endTurn' ||
-      (nextMoveNumber + 1 < log.length &&
-        log[nextMoveNumber + 1].action.payload.type === 'endTurn')
-    ) {
-      nextMoveNumber += 1;
-      executeMove(client, log[nextMoveNumber]);
-    }
-    setMoveNumber(nextMoveNumber);
-    setClientState(client.getState());
-  };
-
   return (
     <ButtonGroup>
-      <ImageButton
+      <Button
         onClick={rewind}
-        disabled={moveNumber === firstMoveInd - 1}
+        disabled={moveNumber <= firstMoveInd - 1}
         theme="red"
         size="small"
-        src={RewindImg}
-      />
-      <ImageButton
+      >
+        {'<<'}
+      </Button>
+      <Button
         onClick={back}
-        disabled={moveNumber === firstMoveInd - 1}
+        disabled={moveNumber <= firstMoveInd - 1}
         theme="red"
         size="small"
-        src={BackImg}
-      />
-      <ImageButton
+      >
+        {'<'}
+      </Button>
+
+      <Button
         onClick={forward}
-        disabled={moveNumber === log.length - 1}
+        disabled={moveNumber >= log.length - 1}
         theme="green"
         size="small"
-        src={ForwardImg}
-      />
-      <ImageButton
+      >
+        {'>'}
+      </Button>
+
+      <Button
         onClick={fastForward}
-        disabled={moveNumber === log.length - 1}
+        disabled={moveNumber >= log.length - 1}
         theme="green"
         size="small"
-        src={FastForwardImg}
-      />
+      >
+        {'>>'}
+      </Button>
     </ButtonGroup>
   );
 };
