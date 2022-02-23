@@ -1,5 +1,5 @@
 import { getAdjacentPositions } from '../posUtil';
-import { Character } from '../../types/characterTypesTemp';
+import { Character } from '../../types/characterTypes';
 import { Mortal } from './Mortal';
 import { Board } from '../boardUtil';
 

@@ -1,4 +1,4 @@
-import { GameContext, GameStage } from '../types/gameTypesTemp';
+import { GameContext, GameStage } from '../types/gameTypes';
 import { getCharacter } from './characters';
 
 interface PossibleMove {

@@ -1,5 +1,5 @@
 import { Mortal } from './Mortal';
-import { Character } from '../../types/characterTypesTemp';
+import { Character } from '../../types/characterTypes';
 
 export const Pegasus: Character = {
   ...Mortal,

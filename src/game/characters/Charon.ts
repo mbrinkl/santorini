@@ -1,7 +1,7 @@
 import { getAdjacentPositions, getNextPosition } from '../posUtil';
 import { Board } from '../boardUtil';
 import { Mortal } from './Mortal';
-import { Character, CharacterState } from '../../types/characterTypesTemp';
+import { Character, CharacterState } from '../../types/characterTypes';
 
 export const Charon: Character = {
   ...Mortal,

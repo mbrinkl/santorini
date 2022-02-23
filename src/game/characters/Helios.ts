@@ -1,6 +1,6 @@
 import { tryEndGame } from '../gameUtil';
-import { GameContext } from '../../types/gameTypesTemp';
-import { Character } from '../../types/characterTypesTemp';
+import { GameContext } from '../../types/gameTypes';
+import { Character } from '../../types/characterTypes';
 import { Mortal } from './Mortal';
 import { posIsPerimeter } from '../posUtil';
 

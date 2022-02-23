@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import { BoardProps } from 'boardgame.io/react';
 import { useMemo, useState } from 'react';
 import { InspectorControls } from './Inspector';
-import { GameState } from '../../types/gameTypesTemp';
+import { GameState } from '../../types/gameTypes';
 import { BoardContext } from '../../context/boardContext';
 import { PlayerBoard } from './PlayerBoard';
 import { PlayerControls } from './PlayerControls';

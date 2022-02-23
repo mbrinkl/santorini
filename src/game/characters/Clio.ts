@@ -1,7 +1,7 @@
 import { Mortal } from './Mortal';
-import { Character } from '../../types/characterTypesTemp';
+import { Character } from '../../types/characterTypes';
 import { Board } from '../boardUtil';
-import { Token } from '../../types/gameTypesTemp';
+import { Token } from '../../types/gameTypes';
 
 type ClioAttrs = {
   numTokens: number;

@@ -1,7 +1,7 @@
 import { getNextPosition } from '../posUtil';
 import { tryEndGame } from '../gameUtil';
 import { Mortal } from './Mortal';
-import { Character } from '../../types/characterTypesTemp';
+import { Character } from '../../types/characterTypes';
 
 export const Maenads: Character = {
   ...Mortal,

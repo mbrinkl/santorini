@@ -1,7 +1,7 @@
 import { Cone, Cylinder, RoundedBox } from '@react-three/drei';
 import { Vector3 } from '@react-three/fiber';
-import { OffBoardToken, Token } from '../../types/gameTypesTemp';
-import { BoardPosition } from '../../types/boardTypesTemp';
+import { OffBoardToken, Token } from '../../types/gameTypes';
+import { BoardPosition } from '../../types/boardTypes';
 import { GROUND_SIZE } from '../../config/board';
 
 export const GenericToken = ({

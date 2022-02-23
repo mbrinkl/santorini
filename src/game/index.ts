@@ -2,14 +2,14 @@ import { ActivePlayers } from 'boardgame.io/core';
 import { Ctx, Game } from 'boardgame.io';
 import { RandomAPI } from 'boardgame.io/dist/types/src/plugins/random/random';
 import { GAME_ID } from '../config';
-import { CharacterState } from '../types/characterTypesTemp';
+import { CharacterState } from '../types/characterTypes';
 import {
   banList,
   characterList,
   getCharacter,
   getCharacterByName,
 } from './characters';
-import { GameContext, GameState, Player, Space } from '../types/gameTypesTemp';
+import { GameContext, GameState, Player, Space } from '../types/gameTypes';
 import {
   setChar,
   ready,

@@ -6,7 +6,7 @@ import {
   _ClientImpl as ClientImpl,
 } from 'boardgame.io/dist/types/src/client/client';
 import { LogEntry } from 'boardgame.io';
-import { GameState } from '../../types/gameTypesTemp';
+import { GameState } from '../../types/gameTypes';
 import { SantoriniGame } from '../../game';
 import { ImageButton } from '../common/Button';
 import { ButtonGroup } from '../common/ButtonGroup';
