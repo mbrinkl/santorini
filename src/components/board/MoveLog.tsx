@@ -6,14 +6,12 @@ import './MoveLog.scss';
 
 export const MoveLog = (): JSX.Element => {
   const { matchData, log } = useBoardContext();
-  const logEndRef = useRef<HTMLDivElement>(null);
+  const logRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    logEndRef.current?.scrollIntoView({
-      behavior: 'smooth',
-      block: 'nearest',
-      inline: 'start',
-    });
+    if (logRef.current) {
+      logRef.current.scrollTop = logRef.current.scrollHeight;
+    }
   }, [log]);
 
   const filteredLog = log.filter(
@@ -42,7 +40,7 @@ export const MoveLog = (): JSX.Element => {
   let lastTurn = 0;
 
   return (
-    <div className="move-log">
+    <div className="move-log" ref={logRef}>
       <p className="move-log__item move-log__item--title">Move Log</p>
       {doubleFilteredLog.map((logEntry) => {
         const { type, args, playerID } = logEntry.action.payload;
@@ -69,7 +67,6 @@ export const MoveLog = (): JSX.Element => {
           </p>
         );
       })}
-      <div ref={logEndRef} />
     </div>
   );
 };

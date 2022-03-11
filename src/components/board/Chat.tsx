@@ -29,15 +29,13 @@ export const ChatMessage = ({
 export const Chat = (): JSX.Element => {
   const { chatMessages, sendChatMessage } = useBoardContext();
   const [message, setMessage] = useState('');
-  const messagesEndRef = useRef<HTMLDivElement>(null);
+  const messagesRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({
-      behavior: 'smooth',
-      block: 'nearest',
-      inline: 'start',
-    });
+    if (messagesRef.current) {
+      messagesRef.current.scrollTop = messagesRef.current.scrollHeight;
+    }
   }, [chatMessages]);
 
   const send = (e) => {
@@ -55,7 +53,7 @@ export const Chat = (): JSX.Element => {
 
   return (
     <div className="chat">
-      <div className="chat__message-list">
+      <div className="chat__message-list" ref={messagesRef}>
         <p className={classNames('chat__message', 'chat__message--warning')}>
           Chat messages are not stored on the server and will only be received
           by connected players. Spectators cannot use the chat.
@@ -63,7 +61,6 @@ export const Chat = (): JSX.Element => {
         {chatMessages.map((msg) => (
           <ChatMessage key={msg.id} sender={msg.sender} message={msg.payload} />
         ))}
-        <div ref={messagesEndRef} />
       </div>
 
       <form className="chat__controls" onSubmit={send}>
