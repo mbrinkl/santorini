@@ -167,7 +167,7 @@ export const WatchPage = (): JSX.Element => {
       />
       <MatchTable
         caption="Review"
-        subCaption="( Completed games will show up here. )"
+        subCaption="( Completed public games will show up here. )"
         columns={reviewColumns}
         data={reviewData}
         noDataMessage="No Games to Review"
