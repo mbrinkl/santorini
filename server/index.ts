@@ -17,11 +17,7 @@ const serverURL = isProduction
 const server = Server({
   games: [SantoriniGame],
   db: new ExtendedStorageCache(
-    new PostgresStore({
-      database: process.env.DB,
-      username: process.env.DB_USER,
-      password: process.env.DB_PASS,
-      host: process.env.DB_HOST,
+    new PostgresStore(String(process.env.CONNECTION_STRING), {
       logging: false,
     }),
   ),
