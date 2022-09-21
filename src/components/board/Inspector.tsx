@@ -46,15 +46,9 @@ const getFilteredLog = (log: LogEntry[]): LogEntry[] => {
 export const executeLog = (
   client: ClientImpl<GameState>,
   log: LogEntry[],
-  from?: number,
-  to?: number,
+  from = 0,
+  to = log.length,
 ) => {
-  if (from === undefined) {
-    from = 0;
-  }
-  if (to === undefined) {
-    to = log.length;
-  }
   for (let i = from; i < to; i++) {
     executeMove(client, log[i]);
   }

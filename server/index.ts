@@ -7,12 +7,7 @@ import { PostgresStore } from 'bgio-postgres';
 import { DEFAULT_PORT, isProduction } from '../src/config';
 import { SantoriniGame } from '../src/game';
 import { ExtendedStorageCache } from './storage';
-
-const root = path.join(__dirname, '../build');
-const PORT = Number(process.env.PORT || DEFAULT_PORT);
-const serverURL = isProduction
-  ? process.env.RENDER_EXTERNAL_URL
-  : 'http://192.168.0.140:3000';
+import { setupServerJobs } from './jobs';
 
 const server = Server({
   games: [SantoriniGame],
@@ -30,7 +25,7 @@ const server = Server({
       }),
     }),
   ),
-  origins: [serverURL, Origins.LOCALHOST_IN_DEVELOPMENT],
+  origins: [process.env.RENDER_EXTERNAL_URL, Origins.LOCALHOST_IN_DEVELOPMENT],
 });
 
 server.app.use(
@@ -39,23 +34,8 @@ server.app.use(
     whiteList: ['/games', '/.well-known'],
   }),
 );
-server.app.use(serve(root));
+server.app.use(serve(path.join(__dirname, '../build')));
 
-server.run(PORT);
+server.run(Number(process.env.PORT || DEFAULT_PORT));
 
-const hour = 60 * 60 * 1000;
-const day = 24 * hour;
-// Delete games that have not been updated for 1 day and are not complete
-async function deleteStaleGames() {
-  const dayAgo = Date.now() - day;
-  const staleMatchIDs = await server.db.listMatches({
-    where: {
-      updatedBefore: dayAgo,
-      isGameover: false,
-    },
-  });
-  staleMatchIDs.forEach((matchID) => {
-    server.db.wipe(matchID);
-  });
-}
-setInterval(deleteStaleGames, hour);
+setupServerJobs(server.db);
