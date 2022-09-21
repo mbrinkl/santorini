@@ -13,8 +13,8 @@ import { SantoriniGame } from '../src/game';
 const root = path.join(__dirname, '../build');
 const PORT = Number(process.env.PORT || DEFAULT_PORT);
 const serverURL = isProduction
-? 'https://santorini.herokuapp.com/'
-: 'http://192.168.0.140:3000';
+  ? 'https://santorini.onrender.com/'
+  : 'http://192.168.0.140:3000';
 
 const server = Server({
   games: [SantoriniGame],
