@@ -27,7 +27,7 @@
     "@types/three": "^0.137.0",
     "axios": "^0.27.2",
     "bgio-postgres": "^1.0.13",
-    "boardgame.io": "^0.50.0-alpha.1",
+    "boardgame.io": "^0.50.0-alpha.2",
     "classnames": "^2.3.2",
     "concurrently": "^7.4.0",
     "dotenv": "^16.0.2",
