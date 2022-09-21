@@ -19,15 +19,6 @@ const server = Server({
   db: new ExtendedStorageCache(
     new PostgresStore(String(process.env.CONNECTION_STRING), {
       logging: false,
-      ...(isProduction && {
-        dialect: 'postgres',
-        dialectOptions: {
-          ssl: {
-            require: true,
-            rejectUnauthorized: false,
-          },
-        },
-      }),
     }),
   ),
   origins: [serverURL, Origins.LOCALHOST_IN_DEVELOPMENT],
