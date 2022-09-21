@@ -43,6 +43,7 @@
     "react/react-in-jsx-scope": "off",
     "react/jsx-props-no-spreading": "off",
     "react/require-default-props": "off",
+    "react/no-unknown-property": "off",
     "react/function-component-definition": [
       "error",
       { "namedComponents": "arrow-function" }

@@ -9,9 +9,16 @@ export const ButtonGroup = ({
   <div className={classNames(className, 'buttonGroup')}>
     {React.Children.map(children, (child) => {
       if (React.isValidElement(child)) {
-        return React.cloneElement(child, {
-          className: classNames(child.props.className, 'buttonGroup__button'),
-        });
+        const childClassName = classNames(
+          child.props.className,
+          'buttonGroup__button',
+        );
+
+        const childProps = {
+          className: childClassName,
+        };
+
+        return React.cloneElement(child, childProps);
       }
       return child;
     })}
