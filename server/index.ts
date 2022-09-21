@@ -11,7 +11,7 @@ import { ExtendedStorageCache } from './storage';
 const root = path.join(__dirname, '../build');
 const PORT = Number(process.env.PORT || DEFAULT_PORT);
 const serverURL = isProduction
-  ? 'https://santorini.onrender.com/'
+  ? process.env.RENDER_EXTERNAL_URL
   : 'http://192.168.0.140:3000';
 
 const server = Server({
