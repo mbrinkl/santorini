@@ -10,7 +10,7 @@
   "dependencies": {
     "@boardgame.io/storage-cache": "^0.5.0",
     "@react-three/drei": "^8.10.6",
-    "@react-three/fiber": "^7.0.26",
+    "@react-three/fiber": "^8.8.1",
     "@testing-library/dom": "^8.18.1",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
