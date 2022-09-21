@@ -1,9 +1,7 @@
 import 'dotenv/config';
 import path from 'path';
 import serve from 'koa-static';
-import sslify, { xForwardedProtoResolver as resolver } from 'koa-sslify';
 import { historyApiFallback } from 'koa2-connect-history-api-fallback';
-import * as Sentry from '@sentry/node';
 import { Server, Origins } from 'boardgame.io/server';
 import { PostgresStore } from 'bgio-postgres';
 import { DEFAULT_PORT, isProduction } from '../src/config';
@@ -13,17 +11,13 @@ import { ExtendedStorageCache } from './storage';
 const root = path.join(__dirname, '../build');
 const PORT = Number(process.env.PORT || DEFAULT_PORT);
 const serverURL = isProduction
-  ? 'https://santorini.herokuapp.com/'
+  ? process.env.RENDER_EXTERNAL_URL
   : 'http://192.168.0.140:3000';
 
 const server = Server({
   games: [SantoriniGame],
   db: new ExtendedStorageCache(
-    new PostgresStore({
-      database: process.env.DB,
-      username: process.env.DB_USER,
-      password: process.env.DB_PASS,
-      host: process.env.DB_HOST,
+    new PostgresStore(String(process.env.CONNECTION_STRING), {
       logging: false,
       ...(isProduction && {
         dialect: 'postgres',
@@ -39,20 +33,6 @@ const server = Server({
   origins: [serverURL, Origins.LOCALHOST_IN_DEVELOPMENT],
 });
 
-if (isProduction) {
-  Sentry.init({ dsn: process.env.SENTRY_DSN });
-
-  server.app.on('error', (err, ctx) => {
-    Sentry.withScope((scope) => {
-      scope.addEventProcessor((event) =>
-        Sentry.Handlers.parseRequest(event, ctx.request),
-      );
-      Sentry.captureException(err);
-    });
-  });
-
-  server.app.use(sslify({ resolver }));
-}
 server.app.use(
   historyApiFallback({
     index: 'index.html',
