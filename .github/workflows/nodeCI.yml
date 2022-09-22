@@ -43,7 +43,7 @@ jobs:
         run: npm ci -- legacy-peer-deps # TODO: remove if bgio ever updates move and hook signature
 
       - name: Build
-        run: npm build
+        run: npm run build
 
       - name: Test
         run: npm test --passWithNoTests
