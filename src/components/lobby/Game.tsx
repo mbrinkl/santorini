@@ -6,7 +6,6 @@ import Tippy from '@tippyjs/react';
 import { LobbyAPI } from 'boardgame.io';
 import classNames from 'classnames';
 import { NotFound } from './NotFound';
-import { isProduction } from '../../config';
 import { SERVER_URL } from '../../config/client';
 import { SantoriniGame } from '../../game';
 import { useStoreActions, useStoreState } from '../../store';
@@ -15,7 +14,6 @@ import { ButtonBack } from '../common/ButtonBack';
 import { LobbyPage } from './Wrapper';
 import { Button } from '../common/Button';
 import { getMatch } from '../../api';
-import { isMobile, supportsCopying, copyToClipboard } from '../../util';
 import { LoadingPage } from './LoadingPage';
 import 'tippy.js/dist/tippy.css';
 import './Game.scss';
@@ -25,7 +23,6 @@ const GameClient = Client({
   board: GameBoard,
   multiplayer: SocketIO({ server: SERVER_URL }),
   loading: LoadingPage,
-  debug: !isProduction && !isMobile(),
 });
 
 export const GameLobbySetup = ({
@@ -92,7 +89,7 @@ export const GameLobbySetup = ({
       <div className="lobby__link">
         <div className="lobby__link-box">{window.location.href}</div>
 
-        {supportsCopying && (
+        {navigator.clipboard && (
           <Tippy
             visible={tooltipVisible}
             offset={[0, 12]}
@@ -102,7 +99,7 @@ export const GameLobbySetup = ({
               <Button
                 theme="blue"
                 onClick={() => {
-                  copyToClipboard(window.location.href);
+                  navigator.clipboard.writeText(window.location.href);
                   setTooltipVisible(true);
                   setTimeout(() => setTooltipVisible(false), 1500);
                 }}
