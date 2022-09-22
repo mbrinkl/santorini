@@ -40,7 +40,7 @@ jobs:
         run: npm list
 
       - name: Install dependencies
-      - run: npm ci -- legacy-peer-deps # TODO: remove if bgio ever updates move and hook signature
+        run: npm ci -- legacy-peer-deps # TODO: remove if bgio ever updates move and hook signature
 
       - name: Build
         run: npm build
