@@ -15,7 +15,7 @@ export const ChatMessage = ({
 }): JSX.Element => {
   const { playerID, matchData } = useBoardContext();
   const senderName =
-    (matchData?.[sender].name || `Player ${sender}`) +
+    (matchData?.[Number(sender)].name || `Player ${sender}`) +
     (playerID === sender ? ' (you)' : '');
 
   return (
@@ -38,7 +38,7 @@ export const Chat = (): JSX.Element => {
     }
   }, [chatMessages]);
 
-  const send = (e) => {
+  const send = (e: React.FormEvent) => {
     e.preventDefault();
 
     if (isMobile()) {

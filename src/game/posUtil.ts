@@ -31,21 +31,8 @@ export function posToCoord(pos: number): number[] {
 export function posToReadableCoord(pos: number): string {
   const [x, y] = posToCoord(pos);
 
-  const xMap = {
-    0: 'A',
-    1: 'B',
-    2: 'C',
-    3: 'D',
-    4: 'E',
-  };
-
-  const yMap = {
-    0: 5,
-    1: 4,
-    2: 3,
-    3: 2,
-    4: 1,
-  };
+  const xMap = ['A', 'B', 'C', 'D', 'E'];
+  const yMap = [5, 4, 3, 2, 1];
 
   return `${xMap[x]}${yMap[y]}`;
 }

@@ -10,7 +10,7 @@ export const ConnectedIndicator = ({
   const { matchData } = useBoardContext();
 
   if (matchData) {
-    const { isConnected } = matchData[playerID];
+    const { isConnected } = matchData[Number(playerID)];
     const status = isConnected ? 'Connected' : 'Disconnected';
     return (
       <div

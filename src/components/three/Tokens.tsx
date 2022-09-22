@@ -49,7 +49,7 @@ export const GenericOffBoardToken = ({
   const x = 3.5 * GROUND_SIZE;
   const z = -GROUND_SIZE;
 
-  const mapping = {
+  const mapping: Record<number, number> = {
     6: 7 * (Math.PI / 4),
     7: 0,
     8: Math.PI / 4,

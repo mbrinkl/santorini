@@ -49,7 +49,7 @@ export const MoveLog = (): JSX.Element => {
           currTurn += 1;
           lastTurn = turn;
         }
-        const name = matchData?.[playerID].name || `Player ${playerID}`;
+        const name = matchData?.[Number(playerID)].name || `Player ${playerID}`;
         const move =
           type === 'onButtonPressed'
             ? 'button pressed'
