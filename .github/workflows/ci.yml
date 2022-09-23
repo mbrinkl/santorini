@@ -56,3 +56,5 @@ jobs:
     steps:
       - name: Automerge
         uses: fastify/github-action-merge-dependabot@v3.0.0
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
