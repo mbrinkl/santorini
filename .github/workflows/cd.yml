@@ -12,10 +12,6 @@ jobs:
     needs: pre-cd
     runs-on: ubuntu-latest
 
-    permissions:
-      pull-requests: write
-      contents: write
-
     steps:
       - name: Deploy to Render
         uses: fjogeleit/http-request-action@v1
