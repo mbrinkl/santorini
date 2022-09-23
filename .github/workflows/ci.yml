@@ -54,4 +54,5 @@ jobs:
       contents: write
 
     steps:
-      - uses: fastify/github-action-merge-dependabot@v3.0.0
+      - name: Automerge
+        uses: fastify/github-action-merge-dependabot@v3.0.0
