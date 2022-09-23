@@ -5,7 +5,7 @@ on:
     branches: [main]
 
 jobs:
-  build:
+  pre-cd:
     uses: ./.github/workflows/build.yml
 
   deploy:

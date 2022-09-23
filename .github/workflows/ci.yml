@@ -5,8 +5,8 @@ on:
     branches: [main]
 
 jobs:
-  build:
-    uses: ./.github/workflows/workflow-2.yml
+  pre-ci:
+    uses: ./.github/workflows/build.yml
 
   automerge:
     needs: build
