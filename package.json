@@ -1,11 +1,11 @@
 {
-  "name": "@santorini/client",
+  "name": "santorini",
   "version": "0.1.0",
   "private": true,
   "license": "MIT",
   "engines": {
-    "node": ">=16.13.0",
-    "npm": ">=8.1.0"
+    "node": ">=16 <17",
+    "npm": ">=8"
   },
   "dependencies": {
     "@boardgame.io/storage-cache": "^0.5.0",
