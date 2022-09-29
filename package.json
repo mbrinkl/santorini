@@ -30,7 +30,7 @@
     "boardgame.io": "^0.50.0-alpha.2",
     "classnames": "^2.3.2",
     "concurrently": "^7.4.0",
-    "dotenv": "^16.0.2",
+    "dotenv": "^16.0.3",
     "easy-peasy": "^5.1.0",
     "koa-sslify": "^5.0.0",
     "koa-static": "^5.0.0",
