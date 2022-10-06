@@ -16,7 +16,7 @@
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^14.4.3",
     "@tippyjs/react": "^4.2.6",
-    "@types/jest": "^29.1.1",
+    "@types/jest": "^29.1.2",
     "@types/koa-sslify": "^4.0.3",
     "@types/koa-static": "^4.0.2",
     "@types/node": "^18.8.3",
