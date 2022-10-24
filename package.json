@@ -29,7 +29,7 @@
     "bgio-postgres": "^1.0.15",
     "boardgame.io": "^0.50.0",
     "classnames": "^2.3.2",
-    "concurrently": "^7.4.0",
+    "concurrently": "^7.5.0",
     "dotenv": "^16.0.3",
     "easy-peasy": "^5.1.0",
     "koa-sslify": "^5.0.0",
