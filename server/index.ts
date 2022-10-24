@@ -25,7 +25,10 @@ const server = Server({
       }),
     }),
   ),
-  origins: [process.env.RENDER_EXTERNAL_URL, Origins.LOCALHOST_IN_DEVELOPMENT],
+  origins: [
+    process.env.RENDER_EXTERNAL_URL || '',
+    Origins.LOCALHOST_IN_DEVELOPMENT,
+  ],
 });
 
 server.app.use(
