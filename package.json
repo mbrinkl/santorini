@@ -50,7 +50,7 @@
     "@testing-library/user-event": "^14.4.3",
     "@types/jest": "^29.2.0",
     "@types/koa-static": "^4.0.2",
-    "@types/node": "^18.11.4",
+    "@types/node": "^18.11.7",
     "@types/react": "^17.0.50",
     "@types/react-dom": "^17.0.17",
     "@types/react-router-dom": "^5.3.3",
