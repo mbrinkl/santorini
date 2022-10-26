@@ -180,7 +180,8 @@ export const InspectorControls = ({
   }, [client, setupData, log, moveNumber]);
 
   const keyPressHandler = useCallback(
-    (event) => {
+    // eslint-disable-next-line
+    (event: any) => {
       if (event.keyCode === 37) {
         // Left arrow
         back();

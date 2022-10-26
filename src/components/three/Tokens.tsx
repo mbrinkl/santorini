@@ -16,7 +16,6 @@ export const GenericToken = ({
   const { x, z } = boardPos;
   // Assuming only two tokens per position is possible right now
   const yPosHeightMap = [0, 3, 5, 7, 7];
-  const tokenArgs: Vector3 = tokens.length === 1 ? [2, 1, 2] : [1, 1, 1];
   const token0Pos: Vector3 =
     tokens.length === 1
       ? [x, yPosHeightMap[height], z]
@@ -29,7 +28,7 @@ export const GenericToken = ({
         <RoundedBox
           key={`token${token.color}`}
           userData={{ pos: boardPos.pos }}
-          args={tokenArgs}
+          args={tokens.length === 1 ? [2, 1, 2] : [1, 1, 1]}
           position={index === 0 ? token0Pos : token1Pos}
           radius={0.05}
           smoothness={4}
