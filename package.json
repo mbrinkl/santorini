@@ -38,6 +38,7 @@
     "react-redux": "^8.0.4",
     "react-router-dom": "^6.4.2",
     "react-table": "^7.8.0",
+    "regenerator-runtime": "^0.13.10",
     "sass": "^1.55.0",
     "three": "^0.146.0",
     "tippy.js": "^6.3.7",
