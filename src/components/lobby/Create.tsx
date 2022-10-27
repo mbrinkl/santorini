@@ -7,17 +7,18 @@ import { Logo } from '../common/Logo';
 import { LobbyPage } from './Wrapper';
 import { Button } from '../common/Button';
 import { ButtonChangeNickname } from '../common/ButtonChangeNickname';
-import { useStoreActions, useStoreState } from '../../store';
+import { useAppDispatch, useAppSelector } from '../../store';
 import { createMatch } from '../../api';
+import { leaveMatchThunk } from '../../store/user';
 
 export const CreatePage = (): JSX.Element => {
   const navigate = useNavigate();
   const [needNicknameGameType, setNeedNicknameGameType] = useState<
     boolean | null
   >(null);
-  const nickname = useStoreState((s) => s.nickname);
-  const activeRoomPlayer = useStoreState((s) => s.activeRoomPlayer);
-  const leaveRoom = useStoreActions((s) => s.leaveRoom);
+  const nickname = useAppSelector((s) => s.user.nickname);
+  const activeRoomPlayer = useAppSelector((s) => s.user.activeRoomPlayer);
+  const dispatch = useAppDispatch();
 
   async function createRoom(unlisted: boolean) {
     const matchID = await createMatch(2, unlisted);
@@ -26,11 +27,13 @@ export const CreatePage = (): JSX.Element => {
 
   async function host(unlisted: boolean) {
     if (activeRoomPlayer) {
-      await leaveRoom({
-        matchID: activeRoomPlayer.matchID,
-        playerID: activeRoomPlayer.playerID,
-        credentials: activeRoomPlayer.credentials,
-      });
+      await dispatch(
+        leaveMatchThunk({
+          matchID: activeRoomPlayer.matchID,
+          playerID: activeRoomPlayer.playerID,
+          credentials: activeRoomPlayer.credentials,
+        }),
+      );
     }
 
     if (!nickname) {

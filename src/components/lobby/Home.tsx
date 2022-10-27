@@ -4,14 +4,15 @@ import { Logo } from '../common/Logo';
 import { ButtonLink } from '../common/Button';
 import { ButtonChangeNickname } from '../common/ButtonChangeNickname';
 import { ButtonBack } from '../common/ButtonBack';
-import { useStoreActions, useStoreState } from '../../store';
+import { useAppDispatch, useAppSelector } from '../../store';
 import { getMatch } from '../../api';
 import { ButtonGroup } from '../common/ButtonGroup';
+import { userSlice } from '../../store/user';
 
 export const Home = (): JSX.Element => {
   const [prevGameActive, setPrevGameActive] = useState(false);
-  const activeRoomPlayer = useStoreState((s) => s.activeRoomPlayer);
-  const setActiveRoomPlayer = useStoreActions((s) => s.setActiveRoomPlayer);
+  const activeRoomPlayer = useAppSelector((s) => s.user.activeRoomPlayer);
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     const isPrevGameActive = async () => {
@@ -20,12 +21,12 @@ export const Home = (): JSX.Element => {
         if (matchData && !matchData.gameover) {
           setPrevGameActive(true);
         } else {
-          setActiveRoomPlayer(null);
+          dispatch(userSlice.actions.setActiveRoomPlayer(null));
         }
       }
     };
     isPrevGameActive();
-  }, [activeRoomPlayer, setActiveRoomPlayer]);
+  }, [activeRoomPlayer, dispatch]);
 
   return (
     <LobbyPage>

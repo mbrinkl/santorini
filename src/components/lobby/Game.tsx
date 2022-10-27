@@ -8,13 +8,14 @@ import classNames from 'classnames';
 import { NotFound } from './NotFound';
 import { SERVER_URL } from '../../config/client';
 import { SantoriniGame } from '../../game';
-import { useStoreActions, useStoreState } from '../../store';
+import { useAppDispatch, useAppSelector } from '../../store';
 import { GameBoard } from '../board/GameBoard';
 import { ButtonBack } from '../common/ButtonBack';
 import { LobbyPage } from './Wrapper';
 import { Button } from '../common/Button';
 import { getMatch } from '../../api';
 import { LoadingPage } from './LoadingPage';
+import { joinMatchThunk } from '../../store/user';
 import 'tippy.js/dist/tippy.css';
 import './Game.scss';
 
@@ -33,9 +34,9 @@ export const GameLobbySetup = ({
   const { matchID } = useParams<{ matchID: string }>();
   const [matchMetadata, setMatchMetadata] = useState<LobbyAPI.Match>();
   const [tooltipVisible, setTooltipVisible] = useState(false);
-  const nickname = useStoreState((s) => s.nickname);
-  const activeRoomPlayer = useStoreState((s) => s.activeRoomPlayer);
-  const joinRoom = useStoreActions((s) => s.joinRoom);
+  const nickname = useAppSelector((s) => s.user.nickname);
+  const activeRoomPlayer = useAppSelector((s) => s.user.activeRoomPlayer);
+  const dispatch = useAppDispatch();
 
   const gameRoomFull =
     matchMetadata?.players.filter((p) => !p.name).length === 0;
@@ -70,9 +71,9 @@ export const GameLobbySetup = ({
   useEffect(() => {
     const alreadyJoined = activeRoomPlayer?.matchID === matchID;
     if (!alreadyJoined && nickname && matchID) {
-      joinRoom({ playerName: nickname, matchID });
+      dispatch(joinMatchThunk({ playerName: nickname, matchID }));
     }
-  }, [nickname, matchID, activeRoomPlayer, joinRoom]);
+  }, [nickname, matchID, activeRoomPlayer, dispatch]);
 
   return (
     <LobbyPage>
@@ -157,7 +158,7 @@ export const GameLobbySetup = ({
 
 export const GameLobbyPlay = (): JSX.Element => {
   const { matchID } = useParams<{ matchID: string }>();
-  const activeRoomPlayer = useStoreState((s) => s.activeRoomPlayer);
+  const activeRoomPlayer = useAppSelector((s) => s.user.activeRoomPlayer);
 
   // Join as a player if the active room player data is set for this match id
   if (matchID && activeRoomPlayer?.matchID === matchID) {

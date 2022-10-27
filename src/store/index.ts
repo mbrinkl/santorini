@@ -1,14 +1,16 @@
-import { createStore, createTypedHooks } from 'easy-peasy';
-import { store } from './store';
-import { StoreModel } from '../types/storeTypes';
+import { configureStore } from '@reduxjs/toolkit';
+import { useDispatch, useSelector, TypedUseSelectorHook } from 'react-redux';
+import { userSlice } from './user';
 
-const typedHooks = createTypedHooks<StoreModel>();
+export const store = configureStore({
+  reducer: {
+    user: userSlice.reducer,
+  },
+  devTools: process.env.NODE_ENV !== 'production',
+});
 
-export const { useStoreActions } = typedHooks;
-export const { useStoreDispatch } = typedHooks;
-export const { useStoreState } = typedHooks;
+export type RootState = ReturnType<typeof store.getState>;
+export type AppDispatch = typeof store.dispatch;
 
-export const initializeStore = (initialState: StoreModel) =>
-  createStore(store, {
-    initialState,
-  });
+export const useAppDispatch: () => AppDispatch = useDispatch;
+export const useAppSelector: TypedUseSelectorHook<RootState> = useSelector;

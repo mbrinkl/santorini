@@ -1,31 +1,21 @@
-import { StoreProvider } from 'easy-peasy';
 import {
   BrowserRouter as Router,
   Route,
   Routes,
   useNavigate,
 } from 'react-router-dom';
+import { Provider } from 'react-redux';
 import { CreatePage } from './components/lobby/Create';
 import { JoinPage } from './components/lobby/Join';
 import { GameLobby } from './components/lobby/Game';
 import { SetupNickname } from './components/lobby/SetupNickname';
-import { initializeStore, useStoreState } from './store';
-import { NICKNAME_STORAGE_KEY, PLAYER_STORAGE_KEY } from './config/client';
-import { StoreModel } from './types/storeTypes';
+import { store, useAppSelector } from './store';
 import { Home } from './components/lobby/Home';
 import { NotFound } from './components/lobby/NotFound';
 import { WatchPage } from './components/lobby/Watch';
 
-const savedNickname = localStorage.getItem(NICKNAME_STORAGE_KEY);
-const savedPlayer = localStorage.getItem(PLAYER_STORAGE_KEY);
-
-const store = initializeStore({
-  nickname: savedNickname || null,
-  activeRoomPlayer: savedPlayer ? JSON.parse(savedPlayer) : null,
-} as StoreModel);
-
 const App = () => {
-  const nickname = useStoreState((s) => s.nickname);
+  const nickname = useAppSelector((s) => s.user.nickname);
   const navigate = useNavigate();
 
   return (
@@ -50,11 +40,11 @@ const App = () => {
 };
 
 const AppRoot = () => (
-  <StoreProvider store={store}>
+  <Provider store={store}>
     <Router>
       <App />
     </Router>
-  </StoreProvider>
+  </Provider>
 );
 
 export default AppRoot;

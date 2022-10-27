@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 import Tippy from '@tippyjs/react';
-import { useStoreState, useStoreActions } from '../../store';
+import { useAppSelector, useAppDispatch } from '../../store';
 import { updatePlayer } from '../../api';
 import { ButtonBack } from '../common/ButtonBack';
 import { Button } from '../common/Button';
 import { LobbyPage } from './Wrapper';
 import { Input } from '../common/Input';
+import { userSlice } from '../../store/user';
 import 'tippy.js/dist/tippy.css';
 import './SetupNickname.scss';
 
@@ -14,11 +15,11 @@ export const SetupNickname = ({
 }: {
   onSubmit?: () => void;
 }): JSX.Element => {
-  const initialNickname = useStoreState((s) => s.nickname);
-  const persistNickname = useStoreActions((s) => s.setNickname);
+  const initialNickname = useAppSelector((s) => s.user.nickname);
   const [nickname, setNickname] = useState(initialNickname || '');
   const [tooltipVisible, setTooltipVisible] = useState(false);
-  const activeRoomPlayer = useStoreState((s) => s.activeRoomPlayer);
+  const activeRoomPlayer = useAppSelector((s) => s.user.activeRoomPlayer);
+  const dispatch = useAppDispatch();
 
   const asyncUpdatePlayer = async () => {
     if (activeRoomPlayer) {
@@ -34,7 +35,7 @@ export const SetupNickname = ({
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (nickname.length > 0) {
-      persistNickname(nickname);
+      dispatch(userSlice.actions.setNickname(nickname));
       onSubmit?.();
 
       // update player name if they are in a game
