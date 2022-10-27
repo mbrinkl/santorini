@@ -5,15 +5,10 @@
       "version": "detect"
     }
   },
-  "overrides": [
-    {
-      "files": ["./**/*.ts", "./**/*.tsx"],
-      "parserOptions": {
-        "project": ["./tsconfig.json"]
-      }
-    }
-  ],
   "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "project": ["./tsconfig.json"]
+  },
   "plugins": [
     "@typescript-eslint",
     "import",
@@ -37,6 +32,10 @@
     "no-plusplus": ["error", { "allowForLoopAfterthoughts": true }],
     "no-param-reassign": "off",
     "import/no-cycle": "off",
+    "import/no-extraneous-dependencies": [
+      "error",
+      { "devDependencies": ["vite.config.ts"] }
+    ],
     "import/prefer-default-export": "off",
     "@typescript-eslint/no-use-before-define": "off",
     "@typescript-eslint/no-unused-vars": "off",
