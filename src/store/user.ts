@@ -11,7 +11,6 @@ import { RootState } from '.';
 interface State {
   nickname: string | null;
   activeRoomPlayer: ActiveRoomPlayer | null;
-  isJoining: boolean;
   currentJoiningRequestID?: string;
 }
 
@@ -20,7 +19,6 @@ const localRoomData = localStorage.getItem(PLAYER_STORAGE_KEY);
 const initialState: State = {
   nickname: localStorage.getItem(NICKNAME_STORAGE_KEY),
   activeRoomPlayer: localRoomData && JSON.parse(localRoomData),
-  isJoining: false,
   currentJoiningRequestID: undefined,
 };
 
@@ -32,10 +30,10 @@ export const joinMatchThunk = createAsyncThunk<
   }
 >('user/joinMatch', async (params, { getState, requestId }) => {
   const {
-    user: { isJoining, currentJoiningRequestID },
+    user: { currentJoiningRequestID },
   } = getState();
 
-  if (isJoining && requestId !== currentJoiningRequestID) {
+  if (requestId !== currentJoiningRequestID) {
     return null;
   }
 
@@ -86,19 +84,19 @@ export const userSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(joinMatchThunk.pending, (state, action) => {
-        if (!state.isJoining) {
-          state.isJoining = true;
+        if (!state.currentJoiningRequestID) {
           state.currentJoiningRequestID = action.meta.requestId;
         }
       })
       .addCase(joinMatchThunk.fulfilled, (state, action) => {
-        state.isJoining = false;
-        state.currentJoiningRequestID = undefined;
-        state.activeRoomPlayer = action.payload;
-        localStorage.setItem(
-          PLAYER_STORAGE_KEY,
-          JSON.stringify(action.payload),
-        );
+        if (state.currentJoiningRequestID === action.meta.requestId) {
+          state.currentJoiningRequestID = undefined;
+          state.activeRoomPlayer = action.payload;
+          localStorage.setItem(
+            PLAYER_STORAGE_KEY,
+            JSON.stringify(action.payload),
+          );
+        }
       })
       .addCase(leaveMatchThunk.fulfilled, (state) => {
         state.activeRoomPlayer = null;
