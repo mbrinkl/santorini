@@ -1,117 +1,35 @@
 import classNames from 'classnames';
-import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
-  Column,
-  IdType,
-  Row,
-  useGlobalFilter,
-  usePagination,
-  useSortBy,
-  useTable,
-  useAsyncDebounce,
-} from 'react-table';
-import { getSortedCharacters } from '../../game/characters';
+  flexRender,
+  getCoreRowModel,
+  useReactTable,
+  getFilteredRowModel,
+  getPaginationRowModel,
+} from '@tanstack/react-table';
 import './MatchTable.scss';
+import { RequiredRowProps, TableProps } from '../../types/tables';
 
-interface RequiredProps {
-  matchID: string;
-}
-
-interface Props<T extends RequiredProps> {
-  columns: Column<T>[];
-  data: T[];
-  noDataMessage: string;
-  caption?: string;
-  subCaption?: string;
-  globalFilterFunction?: (
-    rows: Row<T>[],
-    ids: IdType<T>[],
-    query: string,
-  ) => Row<T>[];
-}
-
-const GlobalFilter = ({
-  setGlobalFilter,
-}: {
-  setGlobalFilter: (value: string | undefined) => void;
-}) => {
-  // const count = preGlobalFilteredRows.length;
-  const [character, setCharacter] = useState('');
-  const [player, setPlayer] = useState('');
-
-  const debouncedFilterUpdate = useAsyncDebounce((value) => {
-    setGlobalFilter(value || undefined);
-  }, 200);
-
-  useEffect(() => {
-    const value = `!char${character}!player${player}`;
-    debouncedFilterUpdate(value);
-  }, [character, player, debouncedFilterUpdate]);
-
-  return (
-    <span className="match-table__filters">
-      {'Character: '}
-      <select onChange={(e) => setCharacter(e.target.value)}>
-        <option />
-        {getSortedCharacters()
-          .slice(1)
-          .map((charName) => (
-            <option key={charName}>{charName}</option>
-          ))}
-      </select>
-      {'    Player Name: '}
-      <input
-        value={player}
-        onChange={(e) => {
-          setPlayer(e.target.value);
-        }}
-        style={{
-          fontSize: '1.1rem',
-          border: '0',
-        }}
-      />
-    </span>
-  );
-};
-
-export const MatchTable = <T extends RequiredProps>({
+export const MatchTable = <T extends RequiredRowProps>({
   columns,
   data,
   noDataMessage,
   caption,
   subCaption,
-  globalFilterFunction,
-}: Props<T>): JSX.Element => {
+}: TableProps<T>): JSX.Element => {
   const navigate = useNavigate();
 
-  const {
-    getTableProps,
-    getTableBodyProps,
-    headerGroups,
-    visibleColumns,
-    page,
-    prepareRow,
-    canPreviousPage,
-    canNextPage,
-    pageOptions,
-    pageCount,
-    gotoPage,
-    nextPage,
-    previousPage,
-    setPageSize,
-    setGlobalFilter,
-    state: { pageIndex, pageSize },
-  } = useTable<T>(
-    { columns, data, globalFilter: globalFilterFunction },
-    useGlobalFilter,
-    useSortBy,
-    usePagination,
-  );
+  const table = useReactTable({
+    data,
+    columns,
+    getCoreRowModel: getCoreRowModel(),
+    getFilteredRowModel: getFilteredRowModel(),
+    getPaginationRowModel: getPaginationRowModel(),
+  });
 
   return (
     <div className="match-table">
-      <table className="match-table__table" {...getTableProps()}>
+      <table className="match-table__table">
         {caption && (
           <caption className="match-table__caption">{caption}</caption>
         )}
@@ -119,147 +37,106 @@ export const MatchTable = <T extends RequiredProps>({
           <caption className="match-table__sub-caption">{subCaption}</caption>
         )}
         <thead>
-          <tr>
-            <th colSpan={visibleColumns.length}>
-              {globalFilterFunction && (
-                <GlobalFilter setGlobalFilter={setGlobalFilter} />
-              )}
-            </th>
-          </tr>
-          {
-            // Loop over the header rows
-            headerGroups.map((headerGroup) => (
-              // Apply the header row props
-              // eslint-disable-next-line react/jsx-key
-              <tr
-                className="match-table__row"
-                {...headerGroup.getHeaderGroupProps()}
-              >
-                {
-                  // Loop over the headers in each row
-                  headerGroup.headers.map((column) => (
-                    // Apply the header cell props
-                    // eslint-disable-next-line react/jsx-key
-                    <th
-                      {...column.getHeaderProps(column.getSortByToggleProps())}
-                    >
-                      {
-                        // Render the header
-                        column.render('Header')
-                      }
-                      <span>
-                        {/* eslint-disable-next-line */}
-                        {column.isSorted
-                          ? column.isSortedDesc
-                            ? ' 🔽'
-                            : ' 🔼'
-                          : ''}
-                      </span>
-                    </th>
-                  ))
-                }
-              </tr>
-            ))
-          }
+          {table.getHeaderGroups().map((headerGroup) => (
+            <tr key={headerGroup.id} className="match-table__row">
+              {headerGroup.headers.map((header) => (
+                <th key={header.id} colSpan={header.colSpan}>
+                  {header.isPlaceholder
+                    ? null
+                    : flexRender(
+                        header.column.columnDef.header,
+                        header.getContext(),
+                      )}
+                </th>
+              ))}
+            </tr>
+          ))}
         </thead>
 
-        <tbody {...getTableBodyProps()}>
-          {page.length === 0 ? (
+        <tbody>
+          {data.length === 0 ? (
             <tr className="match-table__row">
-              <td colSpan={visibleColumns.length}>{noDataMessage}</td>
+              <td colSpan={table.getVisibleLeafColumns().length}>
+                {noDataMessage}
+              </td>
             </tr>
           ) : (
-            // Loop over the table rows
-            page.map((row) => {
-              // Prepare the row for display
-              prepareRow(row);
-              return (
-                // Apply the row props
-                // eslint-disable-next-line react/jsx-key
-                <tr
-                  className={classNames(
-                    'match-table__row',
-                    'match-table__row--match',
-                  )}
-                  {...row.getRowProps()}
-                  onClick={() => navigate(`/${row.original.matchID}`)}
-                >
-                  {
-                    // Loop over the rows cells
-                    row.cells.map((cell) => (
-                      // Apply the cell props
-                      // eslint-disable-next-line react/jsx-key
-                      <td {...cell.getCellProps()}>
-                        {
-                          // Render the cell contents
-                          cell.render('Cell')
-                        }
-                      </td>
-                    ))
-                  }
-                </tr>
-              );
-            })
+            table.getRowModel().rows.map((row) => (
+              <tr
+                key={row.id}
+                onClick={() => navigate(`/${row.original.matchID}`)}
+                className={classNames(
+                  'match-table__row',
+                  'match-table__row--match',
+                )}
+              >
+                {row.getVisibleCells().map((cell) => (
+                  <td key={cell.id}>
+                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                  </td>
+                ))}
+              </tr>
+            ))
           )}
         </tbody>
       </table>
-      {pageOptions.length > 1 && (
+      {table.getPageCount() > 1 && (
         <div className="match-table__pagination">
           <button
             type="button"
-            onClick={() => gotoPage(0)}
-            disabled={!canPreviousPage}
+            onClick={() => table.setPageIndex(0)}
+            disabled={!table.getCanPreviousPage()}
           >
             {'<<'}
           </button>
           <button
             type="button"
-            onClick={() => previousPage()}
-            disabled={!canPreviousPage}
+            onClick={() => table.previousPage()}
+            disabled={!table.getCanPreviousPage()}
           >
             {'<'}
           </button>
           <button
             type="button"
-            onClick={() => nextPage()}
-            disabled={!canNextPage}
+            onClick={() => table.nextPage()}
+            disabled={!table.getCanNextPage()}
           >
             {'>'}
           </button>
           <button
             type="button"
-            onClick={() => gotoPage(pageCount - 1)}
-            disabled={!canNextPage}
+            onClick={() => table.setPageIndex(table.getPageCount() - 1)}
+            disabled={!table.getCanNextPage()}
           >
             {'>>'}
-          </button>{' '}
+          </button>
           <span>
             Page{' '}
             <strong>
-              {pageIndex + 1} of {pageOptions.length}
-            </strong>{' '}
+              {table.getState().pagination.pageIndex + 1} of{' '}
+              {table.getPageCount()}
+            </strong>
           </span>
           <span>
-            | Go to page:{' '}
+            | Go to page:
             <input
               type="number"
-              defaultValue={pageIndex + 1}
+              defaultValue={table.getState().pagination.pageIndex + 1}
               onChange={(e) => {
-                const newPage = e.target.value ? Number(e.target.value) - 1 : 0;
-                gotoPage(newPage);
+                const page = e.target.value ? Number(e.target.value) - 1 : 0;
+                table.setPageIndex(page);
               }}
-              style={{ width: '100px' }}
             />
-          </span>{' '}
+          </span>
           <select
-            value={pageSize}
+            value={table.getState().pagination.pageSize}
             onChange={(e) => {
-              setPageSize(Number(e.target.value));
+              table.setPageSize(Number(e.target.value));
             }}
           >
-            {[10, 20, 30, 40, 50].map((size) => (
-              <option key={size} value={size}>
-                Show {size}
+            {[10, 20, 30, 40, 50].map((pageSize) => (
+              <option key={pageSize} value={pageSize}>
+                Show {pageSize}
               </option>
             ))}
           </select>

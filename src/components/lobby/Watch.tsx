@@ -1,20 +1,15 @@
 import { LobbyAPI } from 'boardgame.io';
-import { useCallback, useEffect, useMemo, useState } from 'react';
-import { IdType, Row } from 'react-table';
+import { useEffect, useMemo, useState } from 'react';
+import { ColumnDef, createColumnHelper } from '@tanstack/react-table';
 import { LobbyPage } from './Wrapper';
 import { ButtonBack } from '../common/ButtonBack';
 import { getMatches } from '../../api';
 import { MatchTable } from '../common/MatchTable';
-
-interface ReviewableMatch {
-  matchID: string;
-  winnerName: string;
-  winnerCharacter: string;
-  loserName: string;
-  loserCharacter: string;
-}
+import { ReviewTableRow, SpectateTableRow } from '../../types/tables';
 
 export const WatchPage = (): JSX.Element => {
+  const spectateColumnHelper = createColumnHelper<SpectateTableRow>();
+  const reviewColumnHelper = createColumnHelper<ReviewTableRow>();
   const [spectatableMatches, setSpectatableMatches] = useState<
     LobbyAPI.Match[]
   >([]);
@@ -54,63 +49,69 @@ export const WatchPage = (): JSX.Element => {
 
   const spectateColumns = useMemo(
     () => [
-      {
-        Header: 'Player 1',
-        accessor: 'player0' as const,
-      },
-      {
-        Header: 'Player 2',
-        accessor: 'player1' as const,
-      },
+      spectateColumnHelper.accessor((c) => c.player0, {
+        cell: (info) => info.getValue(),
+        header: 'Player 1',
+      }),
+      spectateColumnHelper.accessor((c) => c.player1, {
+        cell: (info) => info.getValue(),
+        header: 'Player 2',
+      }),
     ],
-    [],
+    [spectateColumnHelper],
   );
 
   const spectateData = useMemo(
     () =>
-      spectatableMatches.map((match) => ({
-        matchID: match.matchID,
-        player0: match.players[0].name || 'Player 1',
-        player1: match.players[1].name || 'Player 2',
-      })),
+      spectatableMatches.map(
+        (match): SpectateTableRow => ({
+          matchID: match.matchID,
+          player0: match.players[0].name || 'Player 1',
+          player1: match.players[1].name || 'Player 2',
+        }),
+      ),
     [spectatableMatches],
   );
 
   const reviewColumns = useMemo(
     () => [
-      {
-        Header: 'Winner',
+      reviewColumnHelper.group({
+        header: 'Winner',
         columns: [
-          {
-            Header: 'Name',
-            accessor: 'winnerName' as const,
-          },
-          {
-            Header: 'Played',
-            accessor: 'winnerCharacter' as const,
-          },
+          reviewColumnHelper.accessor((c) => c.winnerName, {
+            cell: (info) => info.getValue(),
+            header: 'Name',
+            id: 'Name-Winner',
+          }),
+          reviewColumnHelper.accessor((c) => c.winnerCharacter, {
+            cell: (info) => info.getValue(),
+            header: 'Played',
+            id: 'Played-Winner',
+          }),
         ],
-      },
-      {
-        Header: 'Loser',
+      }),
+      reviewColumnHelper.group({
+        header: 'Loser',
         columns: [
-          {
-            Header: 'Name',
-            accessor: 'loserName' as const,
-          },
-          {
-            Header: 'Played',
-            accessor: 'loserCharacter' as const,
-          },
+          reviewColumnHelper.accessor((c) => c.loserName, {
+            cell: (info) => info.getValue(),
+            header: 'Name',
+            id: 'Name-Loser',
+          }),
+          reviewColumnHelper.accessor((c) => c.loserCharacter, {
+            cell: (info) => info.getValue(),
+            header: 'Played',
+            id: 'Played-Loser',
+          }),
         ],
-      },
+      }),
     ],
-    [],
+    [reviewColumnHelper],
   );
 
   const reviewData = useMemo(
     () =>
-      reviewableMatches.map((match) => {
+      reviewableMatches.map((match): ReviewTableRow => {
         const winner = Number(match.gameover.winner);
         const loser = (winner + 1) % 2;
         return {
@@ -124,44 +125,12 @@ export const WatchPage = (): JSX.Element => {
     [reviewableMatches],
   );
 
-  const reviewGlobalFilter = useCallback(
-    // This is Typescript if you're using JS remove the types (e.g. :string)
-    (
-      rows: Row<ReviewableMatch>[],
-      ids: IdType<ReviewableMatch>[],
-      query: string,
-    ) => {
-      const charIndex = query.indexOf('!char');
-      const playerIndex = query.indexOf('!player');
-
-      const charQuery = query
-        .substring(charIndex + 5, playerIndex)
-        .toLocaleLowerCase();
-      const playerQuery = query.substring(playerIndex + 7).toLocaleLowerCase();
-
-      return rows.filter(
-        (row) =>
-          (charQuery.length === 0 ||
-            row.values.winnerCharacter
-              .toLocaleLowerCase()
-              .includes(charQuery) ||
-            row.values.loserCharacter
-              .toLocaleLowerCase()
-              .includes(charQuery)) &&
-          (playerQuery.length === 0 ||
-            row.values.winnerName.toLocaleLowerCase().includes(playerQuery) ||
-            row.values.loserName.toLocaleLowerCase().includes(playerQuery)),
-      );
-    },
-    [],
-  );
-
   return (
     <LobbyPage className="lobby-top">
       <ButtonBack to="/" />
       <MatchTable
         caption="Spectate"
-        columns={spectateColumns}
+        columns={spectateColumns as ColumnDef<SpectateTableRow, unknown>[]}
         data={spectateData}
         noDataMessage="No Live Games to Spectate"
       />
@@ -171,7 +140,6 @@ export const WatchPage = (): JSX.Element => {
         columns={reviewColumns}
         data={reviewData}
         noDataMessage="No Games to Review"
-        globalFilterFunction={reviewGlobalFilter}
       />
     </LobbyPage>
   );
