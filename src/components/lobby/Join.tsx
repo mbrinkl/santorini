@@ -1,11 +1,14 @@
 import { useEffect, useMemo, useState } from 'react';
 import { LobbyAPI } from 'boardgame.io';
+import { ColumnDef, createColumnHelper } from '@tanstack/react-table';
 import { LobbyPage } from './Wrapper';
 import { ButtonBack } from '../common/ButtonBack';
 import { getMatches } from '../../api';
 import { MatchTable } from '../common/MatchTable';
+import { JoinTableRow } from '../../types/tables';
 
 export const JoinPage = (): JSX.Element => {
+  const columnHelper = createColumnHelper<JoinTableRow>();
   const [joinableMatches, setJoinableMatches] = useState<LobbyAPI.Match[]>([]);
 
   useEffect(() => {
@@ -32,25 +35,25 @@ export const JoinPage = (): JSX.Element => {
 
   const columns = useMemo(
     () => [
-      {
-        Header: 'Creator',
-        accessor: 'creator' as const,
-      },
-      {
-        Header: 'Created At',
-        accessor: 'createdAt' as const,
-      },
+      columnHelper.accessor((c) => c.creator, {
+        header: 'Creator',
+      }),
+      columnHelper.accessor((c) => c.createdAt, {
+        header: 'Created At',
+      }),
     ],
-    [],
+    [columnHelper],
   );
 
   const data = useMemo(
     () =>
-      joinableMatches.map((match) => ({
-        matchID: match.matchID,
-        creator: match.players[0].name || 'Player 0',
-        createdAt: new Date(match.createdAt).toLocaleString(),
-      })),
+      joinableMatches.map(
+        (match): JoinTableRow => ({
+          matchID: match.matchID,
+          creator: match.players[0].name || 'Player 0',
+          createdAt: new Date(match.createdAt).toLocaleString(),
+        }),
+      ),
     [joinableMatches],
   );
 
@@ -58,7 +61,7 @@ export const JoinPage = (): JSX.Element => {
     <LobbyPage className="lobby-top">
       <ButtonBack to="/" />
       <MatchTable
-        columns={columns}
+        columns={columns as ColumnDef<JoinTableRow, unknown>[]}
         data={data}
         noDataMessage="No Public Games Available"
       />

@@ -16,6 +16,11 @@ export interface ReviewTableRow extends RequiredRowProps {
   loserCharacter: string;
 }
 
+export interface JoinTableRow extends RequiredRowProps {
+  creator: string;
+  createdAt: string;
+}
+
 export interface TableProps<T extends RequiredRowProps> {
   columns: ColumnDef<T>[];
   data: T[];
