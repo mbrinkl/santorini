@@ -3,7 +3,7 @@ import { LobbyAPI } from 'boardgame.io';
 import { ColumnDef, createColumnHelper } from '@tanstack/react-table';
 import { LobbyPage } from './Wrapper';
 import { ButtonBack } from '../common/ButtonBack';
-import { getMatches } from '../../api';
+import { useGetMatchesQuery } from '../../api';
 import { MatchTable } from '../common/MatchTable';
 import { JoinTableRow } from '../../types/tables';
 
@@ -11,27 +11,22 @@ export const JoinPage = (): JSX.Element => {
   const columnHelper = createColumnHelper<JoinTableRow>();
   const [joinableMatches, setJoinableMatches] = useState<LobbyAPI.Match[]>([]);
 
+  const { data: matches } = useGetMatchesQuery(undefined, {
+    pollingInterval: 5000,
+  });
+
   useEffect(() => {
-    function pollMatches() {
-      getMatches().then((matches) => {
-        setJoinableMatches(
-          matches.filter(
-            (match) =>
-              !match.gameover &&
-              !match.players[1].name &&
-              match.createdAt === match.updatedAt,
-          ),
-        );
-      });
+    if (matches) {
+      setJoinableMatches(
+        matches.filter(
+          (match) =>
+            !match.gameover &&
+            !match.players[1].name &&
+            match.createdAt === match.updatedAt,
+        ),
+      );
     }
-
-    pollMatches();
-    const intervalID = setInterval(() => {
-      pollMatches();
-    }, 5000);
-
-    return () => clearInterval(intervalID);
-  }, []);
+  }, [matches]);
 
   const columns = useMemo(
     () => [

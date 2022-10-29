@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { playAgain } from '../../api';
+import { usePlayAgainMutation } from '../../api';
 import { useBoardContext } from '../../context/boardContext';
 import { Button, ButtonLink, ImageButton } from '../common/Button';
 import undoLogo from '../../assets/png/undo.png';
@@ -22,6 +22,7 @@ export const PlayerControls = (): JSX.Element | null => {
   const navigate = useNavigate();
   const [counter, setCounter] = useState(3);
   const intervalID = useRef<ReturnType<typeof setInterval> | null>(null);
+  const [playAgain] = usePlayAgainMutation();
 
   const resetEndTurnTimer = () => {
     if (intervalID.current) {
@@ -64,8 +65,9 @@ export const PlayerControls = (): JSX.Element | null => {
   async function rematch() {
     if (playerID && credentials) {
       sendChatMessage('wants to rematch...');
-      const nextMatchID = await playAgain(matchID, playerID, credentials);
-      navigate(`/${nextMatchID}`);
+      playAgain({ matchID, playerID, credentials })
+        .unwrap()
+        .then((nextMatchID) => navigate(`/${nextMatchID}`));
     }
   }
 

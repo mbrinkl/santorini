@@ -17,7 +17,8 @@
     "server:prod": "ts-node -T ./server/index.ts",
     "lint": "eslint . --ext .ts,.tsx",
     "lint:fix": "eslint . --ext .ts,.tsx --fix",
-    "prettier": "prettier --write"
+    "prettier": "prettier --write",
+    "tsc": "tsc --noEmit --watch"
   },
   "dependencies": {
     "@boardgame.io/storage-cache": "^0.5.0",

@@ -3,21 +3,21 @@ import { Client } from 'boardgame.io/react';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import Tippy from '@tippyjs/react';
-import { LobbyAPI } from 'boardgame.io';
 import classNames from 'classnames';
+import { skipToken } from '@reduxjs/toolkit/dist/query';
 import { NotFound } from './NotFound';
 import { SERVER_URL } from '../../config/client';
 import { SantoriniGame } from '../../game';
-import { useAppDispatch, useAppSelector } from '../../store';
+import { useAppSelector } from '../../store';
 import { GameBoard } from '../board/GameBoard';
 import { ButtonBack } from '../common/ButtonBack';
 import { LobbyPage } from './Wrapper';
 import { Button } from '../common/Button';
-import { getMatch } from '../../api';
+import { useGetMatchQuery, useJoinMatchQuery } from '../../api';
 import { LoadingPage } from './LoadingPage';
-import { joinMatchThunk } from '../../store/user';
 import 'tippy.js/dist/tippy.css';
 import './Game.scss';
+import { JoinRoomParams } from '../../types/storeTypes';
 
 const GameClient = Client({
   game: SantoriniGame,
@@ -32,48 +32,40 @@ export const GameLobbySetup = ({
   startGame(): void;
 }): JSX.Element => {
   const { matchID } = useParams<{ matchID: string }>();
-  const [matchMetadata, setMatchMetadata] = useState<LobbyAPI.Match>();
   const [tooltipVisible, setTooltipVisible] = useState(false);
   const nickname = useAppSelector((s) => s.user.nickname);
   const activeRoomPlayer = useAppSelector((s) => s.user.activeRoomPlayer);
-  const dispatch = useAppDispatch();
+
+  const joinMatchParams: JoinRoomParams | typeof skipToken =
+    nickname && matchID && activeRoomPlayer?.matchID !== matchID
+      ? { matchID, playerName: nickname }
+      : skipToken;
+
+  // join match on entering the lobby
+  useJoinMatchQuery(joinMatchParams);
+
+  // poll for match data to see if more players have joined
+  const { data: matchMetadata } = useGetMatchQuery(matchID ?? skipToken, {
+    pollingInterval: 500,
+  });
 
   const gameRoomFull =
     matchMetadata?.players.filter((p) => !p.name).length === 0;
 
-  // poll api to load match data
-  useEffect(() => {
-    function pollMatch() {
-      if (matchID) {
-        getMatch(matchID).then((match) => {
-          if (match) {
-            setMatchMetadata(match);
-          }
-        });
-      }
-    }
-
-    pollMatch();
-    const intervalID = setInterval(() => {
-      pollMatch();
-    }, 500);
-
-    return () => clearInterval(intervalID);
-  }, [matchID]);
-
   // if game room is full, start the game
   useEffect(() => {
-    if (gameRoomFull) {
-      setTimeout(() => startGame(), 2000);
-    }
-  }, [gameRoomFull, startGame]);
+    let timeout: NodeJS.Timeout;
 
-  useEffect(() => {
-    const alreadyJoined = activeRoomPlayer?.matchID === matchID;
-    if (!alreadyJoined && nickname && matchID) {
-      dispatch(joinMatchThunk({ playerName: nickname, matchID }));
+    if (gameRoomFull) {
+      timeout = setTimeout(() => startGame(), 2000);
     }
-  }, [nickname, matchID, activeRoomPlayer, dispatch]);
+
+    return () => {
+      if (timeout) {
+        clearTimeout(timeout);
+      }
+    };
+  }, [gameRoomFull, startGame]);
 
   return (
     <LobbyPage>
@@ -183,17 +175,17 @@ export const GameLobby = (): JSX.Element => {
     gameRunning: false,
   });
 
+  const { data: matchMetadata } = useGetMatchQuery(matchID ?? skipToken, {
+    skip: lobbyState.matchExists,
+  });
+
   useEffect(() => {
-    if (matchID) {
-      getMatch(matchID).then((match) => {
-        setLobbyState({
-          loading: false,
-          matchExists: match !== undefined,
-          gameRunning: match?.players.filter((p) => !p.name).length === 0,
-        });
-      });
-    }
-  }, [matchID]);
+    setLobbyState({
+      loading: false,
+      matchExists: matchMetadata !== undefined,
+      gameRunning: matchMetadata?.players.filter((p) => !p.name).length === 0,
+    });
+  }, [matchMetadata, matchID]);
 
   if (lobbyState.loading) {
     return <LoadingPage />;

@@ -1,11 +1,12 @@
 import { useEffect, useState } from 'react';
+import { skipToken } from '@reduxjs/toolkit/dist/query';
 import { LobbyPage } from './Wrapper';
 import { Logo } from '../common/Logo';
 import { ButtonLink } from '../common/Button';
 import { ButtonChangeNickname } from '../common/ButtonChangeNickname';
 import { ButtonBack } from '../common/ButtonBack';
 import { useAppDispatch, useAppSelector } from '../../store';
-import { getMatch } from '../../api';
+import { useGetMatchQuery } from '../../api';
 import { ButtonGroup } from '../common/ButtonGroup';
 import { userSlice } from '../../store/user';
 
@@ -13,20 +14,17 @@ export const Home = (): JSX.Element => {
   const [prevGameActive, setPrevGameActive] = useState(false);
   const activeRoomPlayer = useAppSelector((s) => s.user.activeRoomPlayer);
   const dispatch = useAppDispatch();
+  const { data: currentMatch } = useGetMatchQuery(
+    activeRoomPlayer?.matchID ?? skipToken,
+  );
 
   useEffect(() => {
-    const isPrevGameActive = async () => {
-      if (activeRoomPlayer) {
-        const matchData = await getMatch(activeRoomPlayer.matchID);
-        if (matchData && !matchData.gameover) {
-          setPrevGameActive(true);
-        } else {
-          dispatch(userSlice.actions.setActiveRoomPlayer(null));
-        }
-      }
-    };
-    isPrevGameActive();
-  }, [activeRoomPlayer, dispatch]);
+    if (currentMatch && !currentMatch.gameover) {
+      setPrevGameActive(true);
+    } else {
+      dispatch(userSlice.actions.setActiveRoomPlayer(null));
+    }
+  }, [currentMatch, dispatch]);
 
   return (
     <LobbyPage>

@@ -1,17 +1,11 @@
-import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { NICKNAME_STORAGE_KEY, PLAYER_STORAGE_KEY } from '../config/client';
-import { joinMatch, leaveMatch } from '../api';
-import {
-  ActiveRoomPlayer,
-  JoinRoomParams,
-  LeaveRoomParams,
-} from '../types/storeTypes';
-import { RootState } from '.';
+import { api } from '../api';
+import { ActiveRoomPlayer } from '../types/storeTypes';
 
 interface State {
   nickname: string | null;
   activeRoomPlayer: ActiveRoomPlayer | null;
-  currentJoiningRequestID?: string;
 }
 
 const localRoomData = localStorage.getItem(PLAYER_STORAGE_KEY);
@@ -19,38 +13,7 @@ const localRoomData = localStorage.getItem(PLAYER_STORAGE_KEY);
 const initialState: State = {
   nickname: localStorage.getItem(NICKNAME_STORAGE_KEY),
   activeRoomPlayer: localRoomData && JSON.parse(localRoomData),
-  currentJoiningRequestID: undefined,
 };
-
-export const joinMatchThunk = createAsyncThunk<
-  ActiveRoomPlayer | null,
-  JoinRoomParams,
-  {
-    state: RootState;
-  }
->('user/joinMatch', async (params, { getState, requestId }) => {
-  const {
-    user: { currentJoiningRequestID },
-  } = getState();
-
-  if (requestId !== currentJoiningRequestID) {
-    return null;
-  }
-
-  const [playerID, credentials] = await joinMatch(params);
-  return {
-    matchID: params.matchID,
-    playerID,
-    credentials,
-  };
-});
-
-export const leaveMatchThunk = createAsyncThunk<void, LeaveRoomParams>(
-  'user/leaveMatch',
-  async (params) => {
-    await leaveMatch(params);
-  },
-);
 
 export const userSlice = createSlice({
   name: 'user',
@@ -83,22 +46,19 @@ export const userSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      .addCase(joinMatchThunk.pending, (state, action) => {
-        if (!state.currentJoiningRequestID) {
-          state.currentJoiningRequestID = action.meta.requestId;
-        }
+      .addMatcher(api.endpoints.joinMatch.matchFulfilled, (state, action) => {
+        const activeRoomPlayer: ActiveRoomPlayer = {
+          matchID: action.meta.arg.originalArgs.matchID,
+          playerID: action.payload.playerID,
+          credentials: action.payload.playerCredentials,
+        };
+        state.activeRoomPlayer = activeRoomPlayer;
+        localStorage.setItem(
+          PLAYER_STORAGE_KEY,
+          JSON.stringify(activeRoomPlayer),
+        );
       })
-      .addCase(joinMatchThunk.fulfilled, (state, action) => {
-        if (state.currentJoiningRequestID === action.meta.requestId) {
-          state.currentJoiningRequestID = undefined;
-          state.activeRoomPlayer = action.payload;
-          localStorage.setItem(
-            PLAYER_STORAGE_KEY,
-            JSON.stringify(action.payload),
-          );
-        }
-      })
-      .addCase(leaveMatchThunk.fulfilled, (state) => {
+      .addMatcher(api.endpoints.leaveMatch.matchFulfilled, (state) => {
         state.activeRoomPlayer = null;
         localStorage.removeItem(PLAYER_STORAGE_KEY);
       });

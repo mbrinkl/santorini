@@ -10,7 +10,7 @@ import { GameState } from '../../types/gameTypes';
 import { SantoriniGame } from '../../game';
 import { Button } from '../common/Button';
 import { ButtonGroup } from '../common/ButtonGroup';
-import { getMatch } from '../../api';
+import { useGetMatchQuery } from '../../api';
 import './Inspector.scss';
 
 interface SetupData {
@@ -128,6 +128,13 @@ export const InspectorControls = ({
     ),
   );
 
+  // Load match metadata which is set at gameover
+  // Poll in case the metadata is not set by the time this component loads
+  const { data: matchMetadata } = useGetMatchQuery(matchID, {
+    pollingInterval: 500,
+    skip: setupData != null,
+  });
+
   const rewind = () => {
     if (!client || !setupData) return;
     setMoveNumber(firstMoveInd - 1);
@@ -201,41 +208,20 @@ export const InspectorControls = ({
     };
   }, [keyPressHandler]);
 
-  // Load match metadata which is set at gameover
-  // Call in setinterval in case the metadata is not set by the time
-  // this component loads
   useEffect(() => {
-    let intervalID: ReturnType<typeof setTimeout> | null = null;
-
-    const pollMatch = () => {
-      if (matchID) {
-        getMatch(matchID).then((match) => {
-          if (
-            match &&
-            match.setupData != null &&
-            match.players[0].data?.character != null &&
-            match.players[1].data?.character != null
-          ) {
-            setSetupData({
-              seed: match.setupData,
-              player0char: match.players[0].data.character,
-              player1char: match.players[1].data.character,
-            });
-          } else {
-            intervalID = setTimeout(() => {
-              pollMatch();
-            }, 500);
-          }
-        });
-      }
-    };
-
-    pollMatch();
-
-    return () => {
-      if (intervalID) clearInterval(intervalID);
-    };
-  }, [matchID]);
+    if (
+      matchMetadata &&
+      matchMetadata.setupData != null &&
+      matchMetadata.players[0].data?.character != null &&
+      matchMetadata.players[1].data?.character != null
+    ) {
+      setSetupData({
+        seed: matchMetadata.setupData,
+        player0char: matchMetadata.players[0].data.character,
+        player1char: matchMetadata.players[1].data.character,
+      });
+    }
+  }, [matchMetadata]);
 
   // Override the client board props whenever the clientState is set
   useEffect(() => {

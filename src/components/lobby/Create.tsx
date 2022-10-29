@@ -7,9 +7,8 @@ import { Logo } from '../common/Logo';
 import { LobbyPage } from './Wrapper';
 import { Button } from '../common/Button';
 import { ButtonChangeNickname } from '../common/ButtonChangeNickname';
-import { useAppDispatch, useAppSelector } from '../../store';
-import { createMatch } from '../../api';
-import { leaveMatchThunk } from '../../store/user';
+import { useAppSelector } from '../../store';
+import { useCreateMatchMutation, useLeaveMatchMutation } from '../../api';
 
 export const CreatePage = (): JSX.Element => {
   const navigate = useNavigate();
@@ -18,22 +17,23 @@ export const CreatePage = (): JSX.Element => {
   >(null);
   const nickname = useAppSelector((s) => s.user.nickname);
   const activeRoomPlayer = useAppSelector((s) => s.user.activeRoomPlayer);
-  const dispatch = useAppDispatch();
+
+  const [createMatch] = useCreateMatchMutation();
+  const [leaveMatch] = useLeaveMatchMutation();
 
   async function createRoom(unlisted: boolean) {
-    const matchID = await createMatch(2, unlisted);
-    navigate(`/${matchID}`);
+    createMatch({ numPlayers: 2, unlisted })
+      .unwrap()
+      .then((createdMatchID) => navigate(`/${createdMatchID}`));
   }
 
   async function host(unlisted: boolean) {
     if (activeRoomPlayer) {
-      await dispatch(
-        leaveMatchThunk({
-          matchID: activeRoomPlayer.matchID,
-          playerID: activeRoomPlayer.playerID,
-          credentials: activeRoomPlayer.credentials,
-        }),
-      );
+      leaveMatch({
+        matchID: activeRoomPlayer.matchID,
+        playerID: activeRoomPlayer.playerID,
+        credentials: activeRoomPlayer.credentials,
+      });
     }
 
     if (!nickname) {

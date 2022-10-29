@@ -3,9 +3,9 @@ import { useEffect, useMemo, useState } from 'react';
 import { ColumnDef, createColumnHelper } from '@tanstack/react-table';
 import { LobbyPage } from './Wrapper';
 import { ButtonBack } from '../common/ButtonBack';
-import { getMatches } from '../../api';
 import { MatchTable } from '../common/MatchTable';
 import { ReviewTableRow, SpectateTableRow } from '../../types/tables';
+import { useGetMatchesQuery } from '../../api';
 
 export const WatchPage = (): JSX.Element => {
   const spectateColumnHelper = createColumnHelper<SpectateTableRow>();
@@ -17,35 +17,28 @@ export const WatchPage = (): JSX.Element => {
     [],
   );
 
+  const { data: matches } = useGetMatchesQuery(undefined, {
+    pollingInterval: 10000,
+  });
+
   useEffect(() => {
-    function pollMatches(setReviewable: boolean) {
-      getMatches().then((matches) => {
-        setSpectatableMatches(
-          matches.filter(
-            (match) =>
-              match.players[0].isConnected &&
-              match.players[1].isConnected &&
-              !match.gameover,
-          ),
-        );
+    if (matches) {
+      setSpectatableMatches(
+        matches.filter(
+          (match) =>
+            match.players[0].isConnected &&
+            match.players[1].isConnected &&
+            !match.gameover,
+        ),
+      );
 
-        if (setReviewable) {
-          setReviewableMatches(
-            matches
-              .filter((match) => match.gameover)
-              .sort((a, b) => b.createdAt - a.createdAt),
-          );
-        }
-      });
+      setReviewableMatches(
+        matches
+          .filter((match) => match.gameover)
+          .sort((a, b) => b.createdAt - a.createdAt),
+      );
     }
-
-    pollMatches(true);
-    const intervalID = setInterval(() => {
-      pollMatches(false);
-    }, 10000);
-
-    return () => clearInterval(intervalID);
-  }, []);
+  }, [matches]);
 
   const spectateColumns = useMemo(
     () => [

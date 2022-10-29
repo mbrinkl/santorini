@@ -1,94 +1,91 @@
+import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { LobbyAPI } from 'boardgame.io';
-import axios from 'axios';
-import { JoinRoomParams, LeaveRoomParams } from '../types/storeTypes';
-import { SERVER_URL } from '../config/client';
 import { GAME_ID } from '../config';
+import { SERVER_URL } from '../config/client';
+import { JoinRoomParams, LeaveRoomParams } from '../types/storeTypes';
 
-axios.defaults.baseURL = `${SERVER_URL}/games/${GAME_ID}`;
-
-export async function getMatch(
-  matchID: string,
-): Promise<LobbyAPI.Match | undefined> {
-  try {
-    const response = await axios.get<LobbyAPI.Match>(`/${matchID}`);
-    return response.data;
-  } catch {
-    return undefined;
-  }
+interface JoinMatchResponse {
+  playerCredentials: string;
+  playerID: string;
 }
 
-export async function getMatches(): Promise<LobbyAPI.Match[]> {
-  const response = await axios.get<{ matches: LobbyAPI.Match[] }>('/');
-  return response.data.matches;
+interface CreateMatchParams {
+  numPlayers: number;
+  unlisted: boolean;
 }
 
-export async function createMatch(
-  numPlayers: number,
-  unlisted: boolean,
-): Promise<string> {
-  const response = await axios.post<{ matchID: string }>('/create', {
-    numPlayers,
-    unlisted,
-  });
-
-  return response.data.matchID;
+interface UpdatePlayerParams {
+  matchID: string;
+  playerID: string;
+  credentials: string;
+  newName: string;
 }
 
-export async function joinMatch({
-  matchID,
-  playerName,
-}: JoinRoomParams): Promise<[string, string]> {
-  const response = await axios.post<{
-    playerCredentials: string;
-    playerID: string;
-  }>(`/${matchID}/join`, {
-    playerName,
-  });
-
-  return [response.data.playerID, response.data.playerCredentials];
+interface PlayAgainParams {
+  matchID: string;
+  playerID: string;
+  credentials: string;
 }
 
-export async function leaveMatch({
-  matchID,
-  playerID,
-  credentials,
-}: LeaveRoomParams): Promise<void> {
-  try {
-    await axios.post(`/${matchID}/leave`, {
-      playerID,
-      credentials,
-    });
-    // eslint-disable-next-line no-empty
-  } catch {}
-}
+// Define a service using a base URL and expected endpoints
+export const api = createApi({
+  baseQuery: fetchBaseQuery({ baseUrl: `${SERVER_URL}/games/${GAME_ID}` }),
+  endpoints: (builder) => ({
+    getMatch: builder.query<LobbyAPI.Match, string>({
+      query: (matchID) => `/${matchID}`,
+    }),
+    getMatches: builder.query<LobbyAPI.Match[], void>({
+      query: () => '/',
+      transformResponse: (response: { matches: LobbyAPI.Match[] }) =>
+        response.matches,
+    }),
+    createMatch: builder.mutation<string, CreateMatchParams>({
+      query: (body) => ({
+        url: '/create',
+        method: 'POST',
+        body,
+      }),
+      transformResponse: (response: { matchID: string }) => response.matchID,
+    }),
+    joinMatch: builder.query<JoinMatchResponse, JoinRoomParams>({
+      query: ({ matchID, ...body }) => ({
+        url: `${matchID}/join`,
+        method: 'POST',
+        body,
+      }),
+    }),
+    leaveMatch: builder.mutation<void, LeaveRoomParams>({
+      query: ({ matchID, ...body }) => ({
+        url: `/${matchID}/leave`,
+        method: 'POST',
+        body,
+      }),
+    }),
+    updatePlayer: builder.mutation<void, UpdatePlayerParams>({
+      query: ({ matchID, ...body }) => ({
+        url: `/${matchID}/update`,
+        method: 'POST',
+        body,
+      }),
+    }),
+    playAgain: builder.mutation<string, PlayAgainParams>({
+      query: ({ matchID, ...body }) => ({
+        url: `/${matchID}/playAgain`,
+        method: 'POST',
+        body,
+      }),
+      transformResponse: (response: { nextMatchID: string }) =>
+        response.nextMatchID,
+    }),
+  }),
+});
 
-export async function updatePlayer(
-  matchID: string,
-  playerID: string,
-  credentials: string,
-  newName: string,
-): Promise<void> {
-  try {
-    await axios.post(`/${matchID}/update`, {
-      playerID,
-      credentials,
-      newName,
-    });
-    // eslint-disable-next-line no-empty
-  } catch {}
-}
-
-export async function playAgain(
-  matchID: string,
-  playerID: string,
-  credentials: string,
-): Promise<string> {
-  const response = await axios.post<{ nextMatchID: string }>(
-    `/${matchID}/playAgain`,
-    {
-      playerID,
-      credentials,
-    },
-  );
-  return response.data.nextMatchID;
-}
+export const {
+  useGetMatchQuery,
+  useGetMatchesQuery,
+  useCreateMatchMutation,
+  useJoinMatchQuery,
+  useLeaveMatchMutation,
+  useUpdatePlayerMutation,
+  usePlayAgainMutation,
+} = api;

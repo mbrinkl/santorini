@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import Tippy from '@tippyjs/react';
 import { useAppSelector, useAppDispatch } from '../../store';
-import { updatePlayer } from '../../api';
+import { useUpdatePlayerMutation } from '../../api';
 import { ButtonBack } from '../common/ButtonBack';
 import { Button } from '../common/Button';
 import { LobbyPage } from './Wrapper';
@@ -20,17 +20,7 @@ export const SetupNickname = ({
   const [tooltipVisible, setTooltipVisible] = useState(false);
   const activeRoomPlayer = useAppSelector((s) => s.user.activeRoomPlayer);
   const dispatch = useAppDispatch();
-
-  const asyncUpdatePlayer = async () => {
-    if (activeRoomPlayer) {
-      await updatePlayer(
-        activeRoomPlayer.matchID,
-        activeRoomPlayer.playerID.toString(),
-        activeRoomPlayer.credentials,
-        nickname,
-      );
-    }
-  };
+  const [updatePlayer] = useUpdatePlayerMutation();
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -39,7 +29,14 @@ export const SetupNickname = ({
       onSubmit?.();
 
       // update player name if they are in a game
-      asyncUpdatePlayer();
+      if (activeRoomPlayer) {
+        updatePlayer({
+          matchID: activeRoomPlayer.matchID,
+          playerID: activeRoomPlayer.playerID,
+          credentials: activeRoomPlayer.credentials,
+          newName: nickname,
+        });
+      }
     } else {
       setTooltipVisible(true);
       setTimeout(() => setTooltipVisible(false), 1500);
