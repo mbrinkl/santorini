@@ -8,7 +8,7 @@
     "npm": ">=8"
   },
   "scripts": {
-    "start": "concurrently npm:server npm:client",
+    "start": "concurrently -c cyan,magenta npm:server npm:client",
     "start:prod": "npm run server:prod",
     "preview": "vite preview",
     "build": "tsc && vite build",
