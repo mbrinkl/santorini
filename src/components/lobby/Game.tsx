@@ -15,9 +15,9 @@ import { LobbyPage } from './Wrapper';
 import { Button } from '../common/Button';
 import { useGetMatchQuery, useJoinMatchQuery } from '../../api';
 import { LoadingPage } from './LoadingPage';
+import { JoinMatchParams } from '../../types/apiTypes';
 import 'tippy.js/dist/tippy.css';
 import './Game.scss';
-import { JoinRoomParams } from '../../types/storeTypes';
 
 const GameClient = Client({
   game: SantoriniGame,
@@ -34,10 +34,10 @@ export const GameLobbySetup = ({
   const { matchID } = useParams<{ matchID: string }>();
   const [tooltipVisible, setTooltipVisible] = useState(false);
   const nickname = useAppSelector((s) => s.user.nickname);
-  const activeRoomPlayer = useAppSelector((s) => s.user.activeRoomPlayer);
+  const userRoomData = useAppSelector((s) => s.user.roomData);
 
-  const joinMatchParams: JoinRoomParams | typeof skipToken =
-    nickname && matchID && activeRoomPlayer?.matchID !== matchID
+  const joinMatchParams: JoinMatchParams | typeof skipToken =
+    nickname && matchID && userRoomData?.matchID !== matchID
       ? { matchID, playerName: nickname }
       : skipToken;
 
@@ -113,9 +113,9 @@ export const GameLobbySetup = ({
                 className={classNames('lobby__player', 'lobby__player--active')}
               >
                 {`${player.name} ${
-                  activeRoomPlayer &&
-                  activeRoomPlayer.matchID === matchID &&
-                  activeRoomPlayer.playerID === player.id.toString()
+                  userRoomData &&
+                  userRoomData.matchID === matchID &&
+                  userRoomData.playerID === player.id.toString()
                     ? '(You)'
                     : ''
                 }`}
@@ -150,15 +150,15 @@ export const GameLobbySetup = ({
 
 export const GameLobbyPlay = (): JSX.Element => {
   const { matchID } = useParams<{ matchID: string }>();
-  const activeRoomPlayer = useAppSelector((s) => s.user.activeRoomPlayer);
+  const userRoomData = useAppSelector((s) => s.user.roomData);
 
   // Join as a player if the active room player data is set for this match id
-  if (matchID && activeRoomPlayer?.matchID === matchID) {
+  if (matchID && userRoomData?.matchID === matchID) {
     return (
       <GameClient
         matchID={matchID}
-        playerID={String(activeRoomPlayer.playerID)}
-        credentials={activeRoomPlayer.credentials}
+        playerID={userRoomData.playerID}
+        credentials={userRoomData.credentials}
       />
     );
   }

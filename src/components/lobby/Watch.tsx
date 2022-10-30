@@ -4,7 +4,7 @@ import { ColumnDef, createColumnHelper } from '@tanstack/react-table';
 import { LobbyPage } from './Wrapper';
 import { ButtonBack } from '../common/ButtonBack';
 import { MatchTable } from '../common/MatchTable';
-import { ReviewTableRow, SpectateTableRow } from '../../types/tables';
+import { ReviewTableRow, SpectateTableRow } from '../../types/tablesTypes';
 import { useGetMatchesQuery } from '../../api';
 
 export const WatchPage = (): JSX.Element => {

@@ -5,7 +5,7 @@ import { LobbyPage } from './Wrapper';
 import { ButtonBack } from '../common/ButtonBack';
 import { useGetMatchesQuery } from '../../api';
 import { MatchTable } from '../common/MatchTable';
-import { JoinTableRow } from '../../types/tables';
+import { JoinTableRow } from '../../types/tablesTypes';
 
 export const JoinPage = (): JSX.Element => {
   const columnHelper = createColumnHelper<JoinTableRow>();

@@ -16,7 +16,7 @@ export const CreatePage = (): JSX.Element => {
     boolean | null
   >(null);
   const nickname = useAppSelector((s) => s.user.nickname);
-  const activeRoomPlayer = useAppSelector((s) => s.user.activeRoomPlayer);
+  const userRoomData = useAppSelector((s) => s.user.roomData);
 
   const [createMatch] = useCreateMatchMutation();
   const [leaveMatch] = useLeaveMatchMutation();
@@ -28,12 +28,8 @@ export const CreatePage = (): JSX.Element => {
   }
 
   async function host(unlisted: boolean) {
-    if (activeRoomPlayer) {
-      leaveMatch({
-        matchID: activeRoomPlayer.matchID,
-        playerID: activeRoomPlayer.playerID,
-        credentials: activeRoomPlayer.credentials,
-      });
+    if (userRoomData) {
+      leaveMatch(userRoomData);
     }
 
     if (!nickname) {

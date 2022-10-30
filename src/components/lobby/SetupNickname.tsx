@@ -18,7 +18,7 @@ export const SetupNickname = ({
   const initialNickname = useAppSelector((s) => s.user.nickname);
   const [nickname, setNickname] = useState(initialNickname || '');
   const [tooltipVisible, setTooltipVisible] = useState(false);
-  const activeRoomPlayer = useAppSelector((s) => s.user.activeRoomPlayer);
+  const userRoomData = useAppSelector((s) => s.user.roomData);
   const dispatch = useAppDispatch();
   const [updatePlayer] = useUpdatePlayerMutation();
 
@@ -29,11 +29,9 @@ export const SetupNickname = ({
       onSubmit?.();
 
       // update player name if they are in a game
-      if (activeRoomPlayer) {
+      if (userRoomData) {
         updatePlayer({
-          matchID: activeRoomPlayer.matchID,
-          playerID: activeRoomPlayer.playerID,
-          credentials: activeRoomPlayer.credentials,
+          ...userRoomData,
           newName: nickname,
         });
       }

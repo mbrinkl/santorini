@@ -1,18 +1,18 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { NICKNAME_STORAGE_KEY, PLAYER_STORAGE_KEY } from '../config/client';
 import { api } from '../api';
-import { ActiveRoomPlayer } from '../types/storeTypes';
+import { RoomData } from '../types/userTypes';
 
 interface State {
   nickname: string | null;
-  activeRoomPlayer: ActiveRoomPlayer | null;
+  roomData: RoomData | null;
 }
 
 const localRoomData = localStorage.getItem(PLAYER_STORAGE_KEY);
 
 const initialState: State = {
   nickname: localStorage.getItem(NICKNAME_STORAGE_KEY),
-  activeRoomPlayer: localRoomData && JSON.parse(localRoomData),
+  roomData: localRoomData && JSON.parse(localRoomData),
 };
 
 export const userSlice = createSlice({
@@ -28,17 +28,11 @@ export const userSlice = createSlice({
         localStorage.removeItem(NICKNAME_STORAGE_KEY);
       }
     },
-    setActiveRoomPlayer: (
-      state,
-      action: PayloadAction<ActiveRoomPlayer | null>,
-    ) => {
-      const activeRoomPlayer = action.payload;
-      state.activeRoomPlayer = action.payload;
-      if (activeRoomPlayer != null) {
-        localStorage.setItem(
-          PLAYER_STORAGE_KEY,
-          JSON.stringify(activeRoomPlayer),
-        );
+    setRoomData: (state, action: PayloadAction<RoomData | null>) => {
+      const roomData = action.payload;
+      state.roomData = action.payload;
+      if (roomData != null) {
+        localStorage.setItem(PLAYER_STORAGE_KEY, JSON.stringify(roomData));
       } else {
         localStorage.removeItem(PLAYER_STORAGE_KEY);
       }
@@ -47,19 +41,16 @@ export const userSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addMatcher(api.endpoints.joinMatch.matchFulfilled, (state, action) => {
-        const activeRoomPlayer: ActiveRoomPlayer = {
+        const roomData: RoomData = {
           matchID: action.meta.arg.originalArgs.matchID,
           playerID: action.payload.playerID,
           credentials: action.payload.playerCredentials,
         };
-        state.activeRoomPlayer = activeRoomPlayer;
-        localStorage.setItem(
-          PLAYER_STORAGE_KEY,
-          JSON.stringify(activeRoomPlayer),
-        );
+        state.roomData = roomData;
+        localStorage.setItem(PLAYER_STORAGE_KEY, JSON.stringify(roomData));
       })
       .addMatcher(api.endpoints.leaveMatch.matchFulfilled, (state) => {
-        state.activeRoomPlayer = null;
+        state.roomData = null;
         localStorage.removeItem(PLAYER_STORAGE_KEY);
       });
   },

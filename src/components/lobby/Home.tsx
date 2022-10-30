@@ -12,17 +12,17 @@ import { userSlice } from '../../store/user';
 
 export const Home = (): JSX.Element => {
   const [prevGameActive, setPrevGameActive] = useState(false);
-  const activeRoomPlayer = useAppSelector((s) => s.user.activeRoomPlayer);
+  const userRoomData = useAppSelector((s) => s.user.roomData);
   const dispatch = useAppDispatch();
   const { data: currentMatch } = useGetMatchQuery(
-    activeRoomPlayer?.matchID ?? skipToken,
+    userRoomData?.matchID ?? skipToken,
   );
 
   useEffect(() => {
     if (currentMatch && !currentMatch.gameover) {
       setPrevGameActive(true);
     } else {
-      dispatch(userSlice.actions.setActiveRoomPlayer(null));
+      dispatch(userSlice.actions.setRoomData(null));
     }
   }, [currentMatch, dispatch]);
 
@@ -30,10 +30,7 @@ export const Home = (): JSX.Element => {
     <LobbyPage>
       <ButtonChangeNickname />
       {prevGameActive && (
-        <ButtonBack
-          to={`/${activeRoomPlayer?.matchID}`}
-          text="Return to Game"
-        />
+        <ButtonBack to={`/${userRoomData?.matchID}`} text="Return to Game" />
       )}
       <Logo />
 

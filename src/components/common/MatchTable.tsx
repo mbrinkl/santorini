@@ -8,7 +8,7 @@ import {
   getPaginationRowModel,
 } from '@tanstack/react-table';
 import './MatchTable.scss';
-import { RequiredRowProps, TableProps } from '../../types/tables';
+import { RequiredRowProps, TableProps } from '../../types/tablesTypes';
 
 export const MatchTable = <T extends RequiredRowProps>({
   columns,

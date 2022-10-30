@@ -2,30 +2,14 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { LobbyAPI } from 'boardgame.io';
 import { GAME_ID } from '../config';
 import { SERVER_URL } from '../config/client';
-import { JoinRoomParams, LeaveRoomParams } from '../types/storeTypes';
-
-interface JoinMatchResponse {
-  playerCredentials: string;
-  playerID: string;
-}
-
-interface CreateMatchParams {
-  numPlayers: number;
-  unlisted: boolean;
-}
-
-interface UpdatePlayerParams {
-  matchID: string;
-  playerID: string;
-  credentials: string;
-  newName: string;
-}
-
-interface PlayAgainParams {
-  matchID: string;
-  playerID: string;
-  credentials: string;
-}
+import {
+  CreateMatchParams,
+  JoinMatchParams,
+  JoinMatchResponse,
+  LeaveMatchParams,
+  PlayAgainParams,
+  UpdatePlayerParams,
+} from '../types/apiTypes';
 
 // Define a service using a base URL and expected endpoints
 export const api = createApi({
@@ -47,14 +31,14 @@ export const api = createApi({
       }),
       transformResponse: (response: { matchID: string }) => response.matchID,
     }),
-    joinMatch: builder.query<JoinMatchResponse, JoinRoomParams>({
+    joinMatch: builder.query<JoinMatchResponse, JoinMatchParams>({
       query: ({ matchID, ...body }) => ({
         url: `${matchID}/join`,
         method: 'POST',
         body,
       }),
     }),
-    leaveMatch: builder.mutation<void, LeaveRoomParams>({
+    leaveMatch: builder.mutation<void, LeaveMatchParams>({
       query: ({ matchID, ...body }) => ({
         url: `/${matchID}/leave`,
         method: 'POST',
