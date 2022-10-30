@@ -11,7 +11,6 @@ import {
   UpdatePlayerParams,
 } from '../types/apiTypes';
 
-// Define a service using a base URL and expected endpoints
 export const api = createApi({
   baseQuery: fetchBaseQuery({ baseUrl: `${SERVER_URL}/games/${GAME_ID}` }),
   endpoints: (builder) => ({
