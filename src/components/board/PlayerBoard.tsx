@@ -2,12 +2,12 @@ import { Suspense } from 'react';
 import { Canvas } from '@react-three/fiber';
 import { useContextBridge } from '@react-three/drei';
 import classNames from 'classnames';
-import { HelpText } from './HelpText';
+import HelpText from './HelpText';
 import { useBoardContext, BoardContext } from '../../context/boardContext';
-import { Scene } from '../three/Scene';
+import Scene from '../three/Scene';
 import './PlayerBoard.scss';
 
-export const PlayerBoard = (): JSX.Element => {
+const PlayerBoard = (): JSX.Element => {
   const { isActive, ctx, playerID } = useBoardContext();
   const ContextBridge = useContextBridge(BoardContext);
 
@@ -39,3 +39,5 @@ export const PlayerBoard = (): JSX.Element => {
     </div>
   );
 };
+
+export default PlayerBoard;

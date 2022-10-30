@@ -1,6 +1,6 @@
 import { getAdjacentPositions } from '../posUtil';
 import { Character } from '../../types/characterTypes';
-import { Mortal } from './Mortal';
+import Mortal from './Mortal';
 import { Board } from '../boardUtil';
 
 type HermesAttrs = {
@@ -9,7 +9,7 @@ type HermesAttrs = {
   canMoveUpOrDown: boolean;
 };
 
-export const Hermes: Character<HermesAttrs> = {
+const Hermes: Character<HermesAttrs> = {
   ...Mortal,
 
   data: {
@@ -113,3 +113,5 @@ export const Hermes: Character<HermesAttrs> = {
     return 'build';
   },
 };
+
+export default Hermes;

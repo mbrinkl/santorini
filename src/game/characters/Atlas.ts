@@ -1,7 +1,7 @@
 import { Character } from '../../types/characterTypes';
-import { Mortal } from './Mortal';
+import Mortal from './Mortal';
 
-export const Atlas: Character = {
+const Atlas: Character = {
   ...Mortal,
 
   data: {
@@ -33,3 +33,5 @@ export const Atlas: Character = {
     return 'special';
   },
 };
+
+export default Atlas;

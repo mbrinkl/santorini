@@ -1,4 +1,4 @@
-import { Mortal } from './Mortal';
+import Mortal from './Mortal';
 import { Character } from '../../types/characterTypes';
 import { Board } from '../boardUtil';
 import { Token } from '../../types/gameTypes';
@@ -7,7 +7,7 @@ type ClioAttrs = {
   numTokens: number;
 };
 
-export const Clio: Character<ClioAttrs> = {
+const Clio: Character<ClioAttrs> = {
   ...Mortal,
 
   data: {
@@ -46,3 +46,5 @@ export const Clio: Character<ClioAttrs> = {
     }
   },
 };
+
+export default Clio;

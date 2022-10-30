@@ -1,12 +1,12 @@
 import { posIsPerimeter } from '../posUtil';
-import { Mortal } from './Mortal';
+import Mortal from './Mortal';
 import { Character } from '../../types/characterTypes';
 
 type HestiaAttrs = {
   numBuilds: number;
 };
 
-export const Hestia: Character<HestiaAttrs> = {
+const Hestia: Character<HestiaAttrs> = {
   ...Mortal,
 
   data: {
@@ -61,3 +61,5 @@ export const Hestia: Character<HestiaAttrs> = {
     charState.attrs.numBuilds = 0;
   },
 };
+
+export default Hestia;

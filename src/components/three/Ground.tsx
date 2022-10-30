@@ -2,11 +2,7 @@ import { Plane } from '@react-three/drei';
 import { BoardPosition } from '../../types/boardTypes';
 import { GROUND_SIZE } from '../../config/board';
 
-export const Ground = ({
-  boardPos,
-}: {
-  boardPos: BoardPosition;
-}): JSX.Element => (
+const Ground = ({ boardPos }: { boardPos: BoardPosition }): JSX.Element => (
   <Plane
     userData={{ pos: boardPos.pos }}
     args={[GROUND_SIZE, GROUND_SIZE]}
@@ -16,3 +12,5 @@ export const Ground = ({
     <meshStandardMaterial color="green" />
   </Plane>
 );
+
+export default Ground;

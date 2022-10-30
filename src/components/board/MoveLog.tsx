@@ -4,7 +4,7 @@ import { posToReadableCoord } from '../../game/posUtil';
 import { useBoardContext } from '../../context/boardContext';
 import './MoveLog.scss';
 
-export const MoveLog = (): JSX.Element => {
+const MoveLog = (): JSX.Element => {
   const { matchData, log } = useBoardContext();
   const logRef = useRef<HTMLDivElement>(null);
 
@@ -70,3 +70,5 @@ export const MoveLog = (): JSX.Element => {
     </div>
   );
 };
+
+export default MoveLog;

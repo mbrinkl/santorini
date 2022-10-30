@@ -1,7 +1,7 @@
 import { Board } from '../boardUtil';
 import { getCornerPositions, positionsAreAdjacent } from '../posUtil';
 import { Character } from '../../types/characterTypes';
-import { Mortal } from './Mortal';
+import Mortal from './Mortal';
 import { GameContext } from '../../types/gameTypes';
 
 type OdysseusAttrs = {
@@ -22,7 +22,7 @@ function getOpenCorners({ G, playerID }: GameContext): Set<number> {
   return openCorners;
 }
 
-export const Odysseus: Character<OdysseusAttrs> = {
+const Odysseus: Character<OdysseusAttrs> = {
   ...Mortal,
 
   data: {
@@ -122,3 +122,5 @@ export const Odysseus: Character<OdysseusAttrs> = {
     return 'select';
   },
 };
+
+export default Odysseus;

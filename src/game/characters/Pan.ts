@@ -1,7 +1,7 @@
-import { Mortal } from './Mortal';
+import Mortal from './Mortal';
 import { Character } from '../../types/characterTypes';
 
-export const Pan: Character = {
+const Pan: Character = {
   ...Mortal,
 
   data: {
@@ -17,3 +17,5 @@ export const Pan: Character = {
     (G.spaces[posBefore].height < 3 && G.spaces[posAfter].height === 3) ||
     G.spaces[posBefore].height - G.spaces[posAfter].height > 1,
 };
+
+export default Pan;

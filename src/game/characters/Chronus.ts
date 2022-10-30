@@ -1,7 +1,7 @@
 import { tryEndGame } from '../gameUtil';
 import { GameContext } from '../../types/gameTypes';
 import { Character } from '../../types/characterTypes';
-import { Mortal } from './Mortal';
+import Mortal from './Mortal';
 
 function checkWinCondition(context: GameContext, chronusPlayerID: string) {
   const numCompleteTowers = context.G.spaces.filter(
@@ -13,7 +13,7 @@ function checkWinCondition(context: GameContext, chronusPlayerID: string) {
   }
 }
 
-export const Chronus: Character = {
+const Chronus: Character = {
   ...Mortal,
 
   data: {
@@ -50,3 +50,5 @@ export const Chronus: Character = {
     checkWinCondition(context, chronusPlayerID);
   },
 };
+
+export default Chronus;

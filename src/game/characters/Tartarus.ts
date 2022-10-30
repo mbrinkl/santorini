@@ -1,9 +1,9 @@
 import { tryEndGame } from '../gameUtil';
-import { Mortal } from './Mortal';
+import Mortal from './Mortal';
 import { Character } from '../../types/characterTypes';
 import { Board } from '../boardUtil';
 
-export const Tartarus: Character = {
+const Tartarus: Character = {
   ...Mortal,
 
   data: {
@@ -41,3 +41,5 @@ export const Tartarus: Character = {
     }
   },
 };
+
+export default Tartarus;

@@ -7,10 +7,10 @@ import {
   getFilteredRowModel,
   getPaginationRowModel,
 } from '@tanstack/react-table';
-import './MatchTable.scss';
 import { RequiredRowProps, TableProps } from '../../types/tablesTypes';
+import './MatchTable.scss';
 
-export const MatchTable = <T extends RequiredRowProps>({
+const MatchTable = <T extends RequiredRowProps>({
   columns,
   data,
   noDataMessage,
@@ -145,3 +145,5 @@ export const MatchTable = <T extends RequiredRowProps>({
     </div>
   );
 };
+
+export default MatchTable;

@@ -1,7 +1,7 @@
-import { Mortal } from './Mortal';
+import Mortal from './Mortal';
 import { Character } from '../../types/characterTypes';
 
-export const Pegasus: Character = {
+const Pegasus: Character = {
   ...Mortal,
 
   data: {
@@ -17,3 +17,5 @@ export const Pegasus: Character = {
   checkWinByMove: ({ G }, charState, posBefore, posAfter) =>
     G.spaces[posBefore].height === 2 && G.spaces[posAfter].height === 3,
 };
+
+export default Pegasus;

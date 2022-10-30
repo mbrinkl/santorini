@@ -7,8 +7,8 @@ import { Server, Origins } from 'boardgame.io/server';
 import { PostgresStore } from 'bgio-postgres';
 import { DEFAULT_PORT, isProduction } from '../src/config';
 import { SantoriniGame } from '../src/game';
-import { ExtendedStorageCache } from './storage';
-import { setupServerJobs } from './jobs';
+import ExtendedStorageCache from './storage';
+import setupServerJobs from './jobs';
 
 const connectionString = process.env.CONNECTION_STRING;
 let db: ExtendedStorageCache | undefined;

@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import { useBoardContext } from '../../context/boardContext';
 import './ConnectedIndicator.scss';
 
-export const ConnectedIndicator = ({
+const ConnectedIndicator = ({
   playerID,
 }: {
   playerID: string;
@@ -22,3 +22,5 @@ export const ConnectedIndicator = ({
 
   return null;
 };
+
+export default ConnectedIndicator;

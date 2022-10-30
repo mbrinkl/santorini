@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 import { useAppSelector } from '../../store';
 import './ButtonChangeNickname.scss';
 
-export const ButtonChangeNickname = (): JSX.Element => {
+const ButtonChangeNickname = (): JSX.Element => {
   const nickname = useAppSelector((s) => s.user.nickname);
 
   return (
@@ -15,3 +15,5 @@ export const ButtonChangeNickname = (): JSX.Element => {
     </div>
   );
 };
+
+export default ButtonChangeNickname;

@@ -1,5 +1,5 @@
 import { GameContext, GameState, Space } from '../../types/gameTypes';
-import { Mortal } from './Mortal';
+import Mortal from './Mortal';
 import { Character, CharacterState, Worker } from '../../types/characterTypes';
 import { getCharacter } from '.';
 import { tryEndTurn } from '../gameUtil';
@@ -43,7 +43,7 @@ const illegalState = (
   );
 };
 
-export const Hecate: Character<HecateAttrs> = {
+const Hecate: Character<HecateAttrs> = {
   ...Mortal,
 
   data: {
@@ -180,3 +180,5 @@ export const Hecate: Character<HecateAttrs> = {
     }
   },
 };
+
+export default Hecate;

@@ -1,9 +1,9 @@
 import { getWrappedAdjacents } from '../posUtil';
 import { Character } from '../../types/characterTypes';
-import { Mortal } from './Mortal';
+import Mortal from './Mortal';
 import { Board } from '../boardUtil';
 
-export const Urania: Character = {
+const Urania: Character = {
   ...Mortal,
 
   data: {
@@ -43,3 +43,5 @@ export const Urania: Character = {
     return valids;
   },
 };
+
+export default Urania;

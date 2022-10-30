@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import React, { HTMLAttributes } from 'react';
 import './ButtonGroup.scss';
 
-export const ButtonGroup = ({
+const ButtonGroup = ({
   className,
   children,
 }: HTMLAttributes<HTMLDivElement>) => (
@@ -24,3 +24,5 @@ export const ButtonGroup = ({
     })}
   </div>
 );
+
+export default ButtonGroup;

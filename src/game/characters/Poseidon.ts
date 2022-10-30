@@ -1,4 +1,4 @@
-import { Mortal } from './Mortal';
+import Mortal from './Mortal';
 import { Character } from '../../types/characterTypes';
 
 type PoseidonAttrs = {
@@ -6,7 +6,7 @@ type PoseidonAttrs = {
   numUnmovedBuilds: number;
 };
 
-export const Poseidon: Character<PoseidonAttrs> = {
+const Poseidon: Character<PoseidonAttrs> = {
   ...Mortal,
 
   data: {
@@ -77,3 +77,5 @@ export const Poseidon: Character<PoseidonAttrs> = {
     charState.attrs.numUnmovedBuilds = 0;
   },
 };
+
+export default Poseidon;

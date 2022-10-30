@@ -3,7 +3,7 @@ import { Character, Worker } from '../../types/characterTypes';
 import { getAdjacentPositions } from '../posUtil';
 import { Board } from '../boardUtil';
 
-export const Mortal: Character = {
+const Mortal: Character = {
   data: {
     workers: [],
     desc: ['No ability'],
@@ -152,3 +152,5 @@ export const Mortal: Character = {
   checkWinByMove: ({ G }, charState, posBefore, posAfter) =>
     G.spaces[posBefore].height < 3 && G.spaces[posAfter].height === 3,
 };
+
+export default Mortal;

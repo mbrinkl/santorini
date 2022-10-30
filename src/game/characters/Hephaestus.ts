@@ -1,12 +1,12 @@
 import { Character } from '../../types/characterTypes';
-import { Mortal } from './Mortal';
+import Mortal from './Mortal';
 import { Board } from '../boardUtil';
 
 type HephaestusAttrs = {
   firstBuildPos: number;
 };
 
-export const Hephaestus: Character<HephaestusAttrs> = {
+const Hephaestus: Character<HephaestusAttrs> = {
   ...Mortal,
 
   data: {
@@ -73,3 +73,5 @@ export const Hephaestus: Character<HephaestusAttrs> = {
     return 'end';
   },
 };
+
+export default Hephaestus;

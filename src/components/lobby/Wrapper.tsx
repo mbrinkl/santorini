@@ -3,7 +3,7 @@ import { HTMLAttributes } from 'react';
 import { ReactComponent as GithubSvg } from '../../assets/svg/github.svg';
 import './Wrapper.scss';
 
-export const LobbyPage = ({
+const LobbyPage = ({
   className,
   children,
   ...props
@@ -20,3 +20,5 @@ export const LobbyPage = ({
     {children}
   </div>
 );
+
+export default LobbyPage;

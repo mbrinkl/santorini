@@ -1,13 +1,13 @@
 import { getAdjacentPositions } from '../posUtil';
 import { Character } from '../../types/characterTypes';
-import { Mortal } from './Mortal';
+import Mortal from './Mortal';
 import { Board } from '../boardUtil';
 
 type HeraclesAttrs = {
   specialUsed: boolean;
 };
 
-export const Heracles: Character<HeraclesAttrs> = {
+const Heracles: Character<HeraclesAttrs> = {
   ...Mortal,
 
   data: {
@@ -75,3 +75,5 @@ export const Heracles: Character<HeraclesAttrs> = {
     return 'end';
   },
 };
+
+export default Heracles;

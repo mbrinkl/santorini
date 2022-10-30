@@ -1,13 +1,13 @@
 import { useEffect, useMemo, useState } from 'react';
 import { LobbyAPI } from 'boardgame.io';
 import { ColumnDef, createColumnHelper } from '@tanstack/react-table';
-import { LobbyPage } from './Wrapper';
-import { ButtonBack } from '../common/ButtonBack';
+import LobbyPage from './Wrapper';
+import ButtonBack from '../common/ButtonBack';
 import { useGetMatchesQuery } from '../../api';
-import { MatchTable } from '../common/MatchTable';
+import MatchTable from '../common/MatchTable';
 import { JoinTableRow } from '../../types/tablesTypes';
 
-export const JoinPage = (): JSX.Element => {
+const JoinPage = (): JSX.Element => {
   const columnHelper = createColumnHelper<JoinTableRow>();
   const [joinableMatches, setJoinableMatches] = useState<LobbyAPI.Match[]>([]);
 
@@ -63,3 +63,5 @@ export const JoinPage = (): JSX.Element => {
     </LobbyPage>
   );
 };
+
+export default JoinPage;

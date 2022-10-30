@@ -6,7 +6,7 @@ import { Button, ButtonLink, ImageButton } from '../common/Button';
 import undoLogo from '../../assets/png/undo.png';
 import './PlayerControls.scss';
 
-export const PlayerControls = (): JSX.Element | null => {
+const PlayerControls = (): JSX.Element | null => {
   const {
     playerID,
     G,
@@ -149,3 +149,5 @@ export const PlayerControls = (): JSX.Element | null => {
     </div>
   );
 };
+
+export default PlayerControls;

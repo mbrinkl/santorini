@@ -1,8 +1,8 @@
 import { useBoardContext } from '../../context/boardContext';
-import { ConnectedIndicator } from './ConnectedIndicator';
+import ConnectedIndicator from './ConnectedIndicator';
 import './PlayerInfo.scss';
 
-export const PlayerInfo = (): JSX.Element => {
+const PlayerInfo = (): JSX.Element => {
   const { playerID, G, matchData } = useBoardContext();
 
   return (
@@ -45,3 +45,5 @@ export const PlayerInfo = (): JSX.Element => {
     </div>
   );
 };
+
+export default PlayerInfo;

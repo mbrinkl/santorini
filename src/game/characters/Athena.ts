@@ -1,12 +1,12 @@
 import { Character } from '../../types/characterTypes';
-import { Mortal } from './Mortal';
+import Mortal from './Mortal';
 import { Board } from '../boardUtil';
 
 type AthenaAttrs = {
   movedUp: boolean;
 };
 
-export const Athena: Character<AthenaAttrs> = {
+const Athena: Character<AthenaAttrs> = {
   ...Mortal,
 
   data: {
@@ -55,3 +55,5 @@ export const Athena: Character<AthenaAttrs> = {
     return validSet;
   },
 };
+
+export default Athena;

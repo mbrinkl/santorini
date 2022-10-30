@@ -1,6 +1,6 @@
 import { Board } from '../boardUtil';
 import { getAdjacentPositions, getNextPositionInDirection } from '../posUtil';
-import { Mortal } from './Mortal';
+import Mortal from './Mortal';
 import { Character } from '../../types/characterTypes';
 
 type SirenAttrs = {
@@ -8,7 +8,7 @@ type SirenAttrs = {
   movedWorkers: number[];
 };
 
-export const Siren: Character<SirenAttrs> = {
+const Siren: Character<SirenAttrs> = {
   ...Mortal,
 
   data: {
@@ -135,3 +135,5 @@ export const Siren: Character<SirenAttrs> = {
     return 'build';
   },
 };
+
+export default Siren;
