@@ -1,12 +1,11 @@
 /**
  * Adding a new character:
- *  1. Create the character file in this directory
+ *  1. Create the character file in the 'characters' directory
  *  2. In this file:
- *    a. Import the character
- *    b. Add the character name to the characterList
- *    c. In getCharacterByName, add a switch case using the same name
+ *    a. Add the character name to the characterList
+ *    b. In getCharacterByName, add a switch case using the same name
  *        as step (b.)
- *    d. Add any banned matchups in the banList
+ *    c. Add any banned matchups in the banList
  *  3. Add a character image to src/assets/png/characterImages
  *  4. In src/components/board/CharacterCard.scss, add a class linked
  *        to the image added in step (3.). Use the name of the
