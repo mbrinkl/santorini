@@ -168,128 +168,85 @@ export function getSortedCharacters(): string[] {
 /**
  * Get a character by character name
  */
-export function getCharacterByName(name: string): Character {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  let character: Character<any>;
-
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export function getCharacterByName(name: string): Character<any> {
   switch (name) {
-    case 'Mortal':
-      character = Mortal;
-      break;
     case 'Apollo':
-      character = Apollo;
-      break;
+      return Apollo;
     case 'Artemis':
-      character = Artemis;
-      break;
+      return Artemis;
     case 'Athena':
-      character = Athena;
-      break;
+      return Athena;
     case 'Atlas':
-      character = Atlas;
-      break;
+      return Atlas;
     case 'Demeter':
-      character = Demeter;
-      break;
+      return Demeter;
     case 'Hephaestus':
-      character = Hephaestus;
-      break;
+      return Hephaestus;
     case 'Hermes':
-      character = Hermes;
-      break;
+      return Hermes;
     case 'Minotaur':
-      character = Minotaur;
-      break;
+      return Minotaur;
     case 'Pan':
-      character = Pan;
-      break;
+      return Pan;
     case 'Prometheus':
-      character = Prometheus;
-      break;
+      return Prometheus;
     case 'Bia':
-      character = Bia;
-      break;
+      return Bia;
     case 'Triton':
-      character = Triton;
-      break;
+      return Triton;
     case 'Zeus':
-      character = Zeus;
-      break;
+      return Zeus;
     case 'Graeae':
-      character = Graeae;
-      break;
+      return Graeae;
     case 'Heracles':
-      character = Heracles;
-      break;
+      return Heracles;
     case 'Odysseus':
-      character = Odysseus;
-      break;
+      return Odysseus;
     case 'Iris':
-      character = Iris;
-      break;
+      return Iris;
     case 'Pegasus':
-      character = Pegasus;
-      break;
+      return Pegasus;
     case 'Eros':
-      character = Eros;
-      break;
+      return Eros;
     case 'Chaos':
-      character = Chaos;
-      break;
+      return Chaos;
     case 'Chronus':
-      character = Chronus;
-      break;
+      return Chronus;
     case 'Harpies':
-      character = Harpies;
-      break;
+      return Harpies;
     case 'Urania':
-      character = Urania;
-      break;
+      return Urania;
     case 'Charon':
-      character = Charon;
-      break;
+      return Charon;
     case 'Ares':
-      character = Ares;
-      break;
+      return Ares;
     case 'Asteria':
-      character = Asteria;
-      break;
+      return Asteria;
     case 'Maenads':
-      character = Maenads;
-      break;
+      return Maenads;
     case 'Hades':
-      character = Hades;
-      break;
+      return Hades;
     case 'Clio':
-      character = Clio;
-      break;
+      return Clio;
     case 'Tartarus':
-      character = Tartarus;
-      break;
+      return Tartarus;
     case 'Hecate':
-      character = Hecate;
-      break;
+      return Hecate;
     case 'Siren':
-      character = Siren;
-      break;
+      return Siren;
     case 'Hestia':
-      character = Hestia;
-      break;
+      return Hestia;
     case 'Poseidon':
-      character = Poseidon;
-      break;
+      return Poseidon;
     case 'Lernaean Hydra':
-      character = LernaeanHydra;
-      break;
+      return LernaeanHydra;
     case 'Helios':
-      character = Helios;
-      break;
+      return Helios;
+    case 'Mortal':
     default:
-      character = Mortal;
-      break;
+      return Mortal;
   }
-
-  return character;
 }
 
 /**
