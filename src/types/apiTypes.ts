@@ -3,11 +3,6 @@ export interface JoinMatchParams {
   playerName: string;
 }
 
-export interface JoinMatchResponse {
-  playerID: string;
-  playerCredentials: string;
-}
-
 export interface LeaveMatchParams {
   matchID: string;
   playerID: string;

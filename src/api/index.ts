@@ -5,7 +5,6 @@ import { SERVER_URL } from '../config/client';
 import {
   CreateMatchParams,
   JoinMatchParams,
-  JoinMatchResponse,
   LeaveMatchParams,
   PlayAgainParams,
   UpdatePlayerParams,
@@ -19,8 +18,7 @@ export const api = createApi({
     }),
     getMatches: builder.query<LobbyAPI.Match[], void>({
       query: () => '/',
-      transformResponse: (response: { matches: LobbyAPI.Match[] }) =>
-        response.matches,
+      transformResponse: (response: LobbyAPI.MatchList) => response.matches,
     }),
     createMatch: builder.mutation<string, CreateMatchParams>({
       query: (body) => ({
@@ -28,9 +26,9 @@ export const api = createApi({
         method: 'POST',
         body,
       }),
-      transformResponse: (response: { matchID: string }) => response.matchID,
+      transformResponse: (response: LobbyAPI.CreatedMatch) => response.matchID,
     }),
-    joinMatch: builder.query<JoinMatchResponse, JoinMatchParams>({
+    joinMatch: builder.query<LobbyAPI.JoinedMatch, JoinMatchParams>({
       query: ({ matchID, ...body }) => ({
         url: `${matchID}/join`,
         method: 'POST',
@@ -57,8 +55,7 @@ export const api = createApi({
         method: 'POST',
         body,
       }),
-      transformResponse: (response: { nextMatchID: string }) =>
-        response.nextMatchID,
+      transformResponse: (response: LobbyAPI.NextMatch) => response.nextMatchID,
     }),
   }),
 });
