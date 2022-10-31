@@ -1,6 +1,6 @@
 import { Mortal } from './Mortal';
 import { Character } from '../../types/characterTypes';
-import { Board } from '../boardUtil';
+import { Board } from '../util/boardUtil';
 import { Token } from '../../types/gameTypes';
 
 type ClioAttrs = {

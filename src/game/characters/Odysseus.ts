@@ -1,5 +1,5 @@
-import { Board } from '../boardUtil';
-import { getCornerPositions, positionsAreAdjacent } from '../posUtil';
+import { Board } from '../util/boardUtil';
+import { getCornerPositions, positionsAreAdjacent } from '../util/posUtil';
 import { Character } from '../../types/characterTypes';
 import { Mortal } from './Mortal';
 import { GameContext } from '../../types/gameTypes';

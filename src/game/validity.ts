@@ -1,5 +1,5 @@
 import { GameContext, GameStage } from '../types/gameTypes';
-import { getCharacter } from './characters';
+import { getCharacter } from './util/characterUtil';
 
 interface PossibleMove {
   type: GameStage | 'buttonPress';

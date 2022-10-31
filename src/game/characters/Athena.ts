@@ -1,6 +1,6 @@
 import { Character } from '../../types/characterTypes';
 import { Mortal } from './Mortal';
-import { Board } from '../boardUtil';
+import { Board } from '../util/boardUtil';
 
 type AthenaAttrs = {
   movedUp: boolean;

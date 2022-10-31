@@ -1,8 +1,8 @@
 import { Move } from 'boardgame.io';
 import { initCharState } from '.';
 import { GameState } from '../types/gameTypes';
-import { getCharacter } from './characters';
-import { checkWinByMove } from './gameUtil';
+import { getCharacter } from './util/characterUtil';
+import { checkWinByMove } from './util/gameUtil';
 import { updateValids } from './validity';
 
 export const setChar: Move<GameState> = ({ G, playerID }, name: string) => {

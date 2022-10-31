@@ -1,7 +1,7 @@
 import { Mortal } from './Mortal';
 import { GameContext } from '../../types/gameTypes';
 import { Character, CharacterState } from '../../types/characterTypes';
-import { getCharacterByName } from '.';
+import { getCharacterByName } from '../util/characterUtil';
 
 type PossibleCharacters =
   | 'Apollo'

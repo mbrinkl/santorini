@@ -1,7 +1,7 @@
-import { tryEndGame } from '../gameUtil';
+import { tryEndGame } from '../util/gameUtil';
 import { Mortal } from './Mortal';
 import { Character } from '../../types/characterTypes';
-import { Board } from '../boardUtil';
+import { Board } from '../util/boardUtil';
 
 export const Tartarus: Character = {
   ...Mortal,

@@ -1,4 +1,4 @@
-import { posIsPerimeter } from '../posUtil';
+import { posIsPerimeter } from '../util/posUtil';
 import { Mortal } from './Mortal';
 import { Character } from '../../types/characterTypes';
 

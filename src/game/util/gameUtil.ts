@@ -1,5 +1,5 @@
-import { GameContext } from '../types/gameTypes';
-import { getCharacter } from './characters';
+import { GameContext } from '../../types/gameTypes';
+import { getCharacter } from './characterUtil';
 
 /**
  * Check if a player wins after moving

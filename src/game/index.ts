@@ -8,7 +8,7 @@ import {
   characterList,
   getCharacter,
   getCharacterByName,
-} from './characters';
+} from './util/characterUtil';
 import { GameContext, GameState, Player, Space } from '../types/gameTypes';
 import {
   setChar,

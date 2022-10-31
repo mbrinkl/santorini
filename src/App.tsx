@@ -39,12 +39,10 @@ const App = () => {
   );
 };
 
-const AppRoot = () => (
+export const AppRoot = () => (
   <Provider store={store}>
     <Router>
       <App />
     </Router>
   </Provider>
 );
-
-export default AppRoot;

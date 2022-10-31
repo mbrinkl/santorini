@@ -1,7 +1,7 @@
-import { getWrappedAdjacents } from '../posUtil';
+import { getWrappedAdjacents } from '../util/posUtil';
 import { Character } from '../../types/characterTypes';
 import { Mortal } from './Mortal';
-import { Board } from '../boardUtil';
+import { Board } from '../util/boardUtil';
 
 export const Urania: Character = {
   ...Mortal,

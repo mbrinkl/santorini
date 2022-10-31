@@ -1,4 +1,4 @@
-import { tryEndGame } from '../gameUtil';
+import { tryEndGame } from '../util/gameUtil';
 import { GameContext } from '../../types/gameTypes';
 import { Character } from '../../types/characterTypes';
 import { Mortal } from './Mortal';

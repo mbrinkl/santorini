@@ -1,7 +1,10 @@
 import { ChangeEventHandler, useState } from 'react';
 import { ConnectedIndicator } from './ConnectedIndicator';
 import { Button, ButtonLink } from '../common/Button';
-import { getCharacterByName, getSortedCharacters } from '../../game/characters';
+import {
+  getCharacterByName,
+  getSortedCharacters,
+} from '../../game/util/characterUtil';
 import { useBoardContext } from '../../context/boardContext';
 import { CharacterCard, SelectedCharacterCard } from './CharacterCard';
 import { ButtonGroup } from '../common/ButtonGroup';

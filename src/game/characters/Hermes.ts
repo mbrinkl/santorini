@@ -1,7 +1,7 @@
-import { getAdjacentPositions } from '../posUtil';
+import { getAdjacentPositions } from '../util/posUtil';
 import { Character } from '../../types/characterTypes';
 import { Mortal } from './Mortal';
-import { Board } from '../boardUtil';
+import { Board } from '../util/boardUtil';
 
 type HermesAttrs = {
   movedUpOrDown: boolean;

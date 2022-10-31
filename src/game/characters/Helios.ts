@@ -1,8 +1,8 @@
-import { tryEndGame } from '../gameUtil';
+import { tryEndGame } from '../util/gameUtil';
 import { GameContext } from '../../types/gameTypes';
 import { Character } from '../../types/characterTypes';
 import { Mortal } from './Mortal';
-import { posIsPerimeter } from '../posUtil';
+import { posIsPerimeter } from '../util/posUtil';
 
 function checkWinCondition(context: GameContext, heliosPlayerID: string) {
   const middleSpace = context.G.spaces[12];

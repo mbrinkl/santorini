@@ -1,7 +1,7 @@
 import { GameStage } from '../../types/gameTypes';
 import { Character, Worker } from '../../types/characterTypes';
-import { getAdjacentPositions } from '../posUtil';
-import { Board } from '../boardUtil';
+import { getAdjacentPositions } from '../util/posUtil';
+import { Board } from '../util/boardUtil';
 
 export const Mortal: Character = {
   data: {

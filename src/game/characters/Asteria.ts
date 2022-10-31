@@ -1,4 +1,4 @@
-import { Board } from '../boardUtil';
+import { Board } from '../util/boardUtil';
 import { Mortal } from './Mortal';
 import { Character } from '../../types/characterTypes';
 

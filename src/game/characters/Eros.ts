@@ -2,7 +2,7 @@ import {
   getAdjacentPositions,
   getOppositePerimeterPositions,
   posIsPerimeter,
-} from '../posUtil';
+} from '../util/posUtil';
 import { Character } from '../../types/characterTypes';
 import { Mortal } from './Mortal';
 

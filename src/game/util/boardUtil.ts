@@ -1,5 +1,5 @@
-import { GameContext, GameState, Token } from '../types/gameTypes';
-import { getCharacter } from './characters';
+import { GameContext, GameState, Token } from '../../types/gameTypes';
+import { getCharacter } from './characterUtil';
 import { tryEndGame } from './gameUtil';
 
 export const Board = {

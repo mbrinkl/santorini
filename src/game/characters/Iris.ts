@@ -1,7 +1,7 @@
-import { Board } from '../boardUtil';
+import { Board } from '../util/boardUtil';
 import { Character } from '../../types/characterTypes';
 import { Mortal } from './Mortal';
-import { getAdjacentPositions, getNextPosition } from '../posUtil';
+import { getAdjacentPositions, getNextPosition } from '../util/posUtil';
 
 export const Iris: Character = {
   ...Mortal,

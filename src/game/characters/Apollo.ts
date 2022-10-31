@@ -1,7 +1,7 @@
 import { Mortal } from './Mortal';
-import { getAdjacentPositions } from '../posUtil';
+import { getAdjacentPositions } from '../util/posUtil';
 import { Character } from '../../types/characterTypes';
-import { Board } from '../boardUtil';
+import { Board } from '../util/boardUtil';
 
 export const Apollo: Character = {
   ...Mortal,
