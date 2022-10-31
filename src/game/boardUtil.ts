@@ -2,8 +2,6 @@ import { GameContext, GameState, Token } from '../types/gameTypes';
 import { getCharacter } from './characters';
 import { tryEndGame } from './gameUtil';
 
-// TODO: clean this up later don't feel like it rn
-// eslint-disable-next-line import/prefer-default-export
 export const Board = {
   place: (
     context: GameContext,

@@ -1,6 +1,6 @@
 import { useBoardContext } from '../../context/boardContext';
 
-const HelpText = (): JSX.Element => {
+export const HelpText = (): JSX.Element => {
   const { G, isActive, ctx, matchData, playerID } = useBoardContext();
 
   const stage: string | null =
@@ -40,5 +40,3 @@ const HelpText = (): JSX.Element => {
 
   return <span className="player-board__hint">{hint}</span>;
 };
-
-export default HelpText;

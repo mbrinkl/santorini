@@ -1,10 +1,10 @@
 import { GameContext } from '../../types/gameTypes';
 import { getAdjacentPositions, getNextPosition } from '../posUtil';
 import { Character } from '../../types/characterTypes';
-import Mortal from './Mortal';
+import { Mortal } from './Mortal';
 import { Board } from '../boardUtil';
 
-const Minotaur: Character = {
+export const Minotaur: Character = {
   ...Mortal,
 
   data: {
@@ -70,5 +70,3 @@ const Minotaur: Character = {
     Board.place(context, pos, playerID, charState.selectedWorkerNum);
   },
 };
-
-export default Minotaur;

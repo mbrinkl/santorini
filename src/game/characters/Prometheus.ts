@@ -1,11 +1,11 @@
 import { Character } from '../../types/characterTypes';
-import Mortal from './Mortal';
+import { Mortal } from './Mortal';
 
 type PrometheusAttrs = {
   specialUsed: boolean;
 };
 
-const Prometheus: Character<PrometheusAttrs> = {
+export const Prometheus: Character<PrometheusAttrs> = {
   ...Mortal,
 
   data: {
@@ -48,5 +48,3 @@ const Prometheus: Character<PrometheusAttrs> = {
     return 'build';
   },
 };
-
-export default Prometheus;

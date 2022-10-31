@@ -1,9 +1,9 @@
 import { getNextPosition } from '../posUtil';
 import { tryEndGame } from '../gameUtil';
-import Mortal from './Mortal';
+import { Mortal } from './Mortal';
 import { Character } from '../../types/characterTypes';
 
-const Maenads: Character = {
+export const Maenads: Character = {
   ...Mortal,
 
   data: {
@@ -32,5 +32,3 @@ const Maenads: Character = {
     }
   },
 };
-
-export default Maenads;

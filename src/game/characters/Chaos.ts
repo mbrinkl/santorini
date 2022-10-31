@@ -1,4 +1,4 @@
-import Mortal from './Mortal';
+import { Mortal } from './Mortal';
 import { GameContext } from '../../types/gameTypes';
 import { Character, CharacterState } from '../../types/characterTypes';
 import { getCharacterByName } from '.';
@@ -64,7 +64,7 @@ function changeEmulatingCharacter(
   };
 }
 
-const Chaos: Character<ChaosAttrs> = {
+export const Chaos: Character<ChaosAttrs> = {
   ...Mortal,
 
   data: {
@@ -223,5 +223,3 @@ const Chaos: Character<ChaosAttrs> = {
       posAfter,
     ),
 };
-
-export default Chaos;

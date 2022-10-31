@@ -2,7 +2,7 @@ import { Text } from '@react-three/drei';
 import { BoardPosition } from '../../types/boardTypes';
 import { GROUND_SIZE } from '../../config/board';
 
-const TextCoords = ({
+export const TextCoords = ({
   boardPositions,
 }: {
   boardPositions: BoardPosition[];
@@ -49,5 +49,3 @@ const TextCoords = ({
     </>
   );
 };
-
-export default TextCoords;

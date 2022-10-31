@@ -4,9 +4,9 @@ import {
   posIsPerimeter,
 } from '../posUtil';
 import { Character } from '../../types/characterTypes';
-import Mortal from './Mortal';
+import { Mortal } from './Mortal';
 
-const Eros: Character = {
+export const Eros: Character = {
   ...Mortal,
 
   data: {
@@ -55,5 +55,3 @@ const Eros: Character = {
     return normalWin;
   },
 };
-
-export default Eros;

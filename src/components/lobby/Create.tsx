@@ -1,16 +1,16 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import ButtonGroup from '../common/ButtonGroup';
-import ButtonBack from '../common/ButtonBack';
-import SetupNickname from './SetupNickname';
-import Logo from '../common/Logo';
-import LobbyPage from './Wrapper';
+import { ButtonGroup } from '../common/ButtonGroup';
+import { ButtonBack } from '../common/ButtonBack';
+import { SetupNickname } from './SetupNickname';
+import { Logo } from '../common/Logo';
+import { LobbyPage } from './Wrapper';
 import { Button } from '../common/Button';
-import ButtonChangeNickname from '../common/ButtonChangeNickname';
+import { ButtonChangeNickname } from '../common/ButtonChangeNickname';
 import { useAppSelector } from '../../store';
 import { useCreateMatchMutation, useLeaveMatchMutation } from '../../api';
 
-const CreatePage = (): JSX.Element => {
+export const CreatePage = (): JSX.Element => {
   const navigate = useNavigate();
   const [needNicknameGameType, setNeedNicknameGameType] = useState<
     boolean | null
@@ -58,5 +58,3 @@ const CreatePage = (): JSX.Element => {
     </LobbyPage>
   );
 };
-
-export default CreatePage;

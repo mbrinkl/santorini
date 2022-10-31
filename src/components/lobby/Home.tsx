@@ -1,16 +1,16 @@
 import { useEffect, useState } from 'react';
 import { skipToken } from '@reduxjs/toolkit/dist/query';
-import LobbyPage from './Wrapper';
-import Logo from '../common/Logo';
+import { LobbyPage } from './Wrapper';
+import { Logo } from '../common/Logo';
 import { ButtonLink } from '../common/Button';
-import ButtonChangeNickname from '../common/ButtonChangeNickname';
-import ButtonBack from '../common/ButtonBack';
+import { ButtonChangeNickname } from '../common/ButtonChangeNickname';
+import { ButtonBack } from '../common/ButtonBack';
 import { useAppDispatch, useAppSelector } from '../../store';
 import { useGetMatchQuery } from '../../api';
-import ButtonGroup from '../common/ButtonGroup';
-import userSlice from '../../store/user';
+import { ButtonGroup } from '../common/ButtonGroup';
+import { userSlice } from '../../store/user';
 
-const Home = (): JSX.Element => {
+export const Home = (): JSX.Element => {
   const [prevGameActive, setPrevGameActive] = useState(false);
   const userRoomData = useAppSelector((s) => s.user.roomData);
   const dispatch = useAppDispatch();
@@ -50,5 +50,3 @@ const Home = (): JSX.Element => {
     </LobbyPage>
   );
 };
-
-export default Home;

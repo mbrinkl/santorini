@@ -1,9 +1,9 @@
-import Mortal from './Mortal';
+import { Mortal } from './Mortal';
 import { Character } from '../../types/characterTypes';
 import { Board } from '../boardUtil';
 import { getNextPosition } from '../posUtil';
 
-const Harpies: Character = {
+export const Harpies: Character = {
   ...Mortal,
   data: {
     ...Mortal.data,
@@ -36,5 +36,3 @@ const Harpies: Character = {
     }
   },
 };
-
-export default Harpies;

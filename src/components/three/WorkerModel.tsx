@@ -1,7 +1,7 @@
 import { Sphere } from '@react-three/drei';
 import { BoardPosition } from '../../types/boardTypes';
 
-const WorkerModel = ({
+export const WorkerModel = ({
   boardPos,
   height,
   color,
@@ -22,5 +22,3 @@ const WorkerModel = ({
     </Sphere>
   );
 };
-
-export default WorkerModel;

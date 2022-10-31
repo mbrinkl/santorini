@@ -3,16 +3,16 @@ import { ThreeEvent } from '@react-three/fiber';
 import { OrbitControls } from '@react-three/drei';
 import { GameStage } from '../../types/gameTypes';
 import { useBoardContext } from '../../context/boardContext';
-import Ground from './Ground';
+import { Ground } from './Ground';
 import { BuildingBase, BuildingMid, BuildingTop, Dome } from './Buildings';
 import { Indicator } from './Indicators';
-import WorkerModel from './WorkerModel';
+import { WorkerModel } from './WorkerModel';
 import { BoardPosition } from '../../types/boardTypes';
-import TextCoords from './TextCoords';
+import { TextCoords } from './TextCoords';
 import { GenericOffBoardToken, GenericToken } from './Tokens';
 import { GROUND_PADDING, GROUND_SIZE } from '../../config/board';
 
-const Scene = (): JSX.Element => {
+export const Scene = (): JSX.Element => {
   const { G, ctx, moves, isActive } = useBoardContext();
 
   const boardPositions = useMemo(() => {
@@ -144,5 +144,3 @@ const Scene = (): JSX.Element => {
     </>
   );
 };
-
-export default Scene;

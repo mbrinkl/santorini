@@ -1,6 +1,6 @@
 import { StorageCache } from '@boardgame.io/storage-cache';
 
-class ExtendedStorageCache extends StorageCache {
+export class ExtendedStorageCache extends StorageCache {
   async setMetadata(...args: Parameters<StorageCache['setMetadata']>) {
     const [matchID, matchData] = args;
 
@@ -39,5 +39,3 @@ class ExtendedStorageCache extends StorageCache {
     }
   }
 }
-
-export default ExtendedStorageCache;

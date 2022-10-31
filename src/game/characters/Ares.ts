@@ -1,9 +1,9 @@
 import { Board } from '../boardUtil';
 import { getAdjacentPositions } from '../posUtil';
-import Mortal from './Mortal';
+import { Mortal } from './Mortal';
 import { Character } from '../../types/characterTypes';
 
-const Ares: Character = {
+export const Ares: Character = {
   ...Mortal,
 
   data: {
@@ -52,5 +52,3 @@ const Ares: Character = {
     // TODO: tokens
   },
 };
-
-export default Ares;

@@ -1,9 +1,9 @@
 import { Character } from '../../types/characterTypes';
-import Mortal from './Mortal';
+import { Mortal } from './Mortal';
 import { getAdjacentPositions } from '../posUtil';
 import { Board } from '../boardUtil';
 
-const Graeae: Character = {
+export const Graeae: Character = {
   ...Mortal,
 
   data: {
@@ -38,5 +38,3 @@ const Graeae: Character = {
     return valids;
   },
 };
-
-export default Graeae;

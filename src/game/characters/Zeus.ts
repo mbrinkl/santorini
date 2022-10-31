@@ -1,7 +1,7 @@
 import { Character } from '../../types/characterTypes';
-import Mortal from './Mortal';
+import { Mortal } from './Mortal';
 
-const Zeus: Character = {
+export const Zeus: Character = {
   ...Mortal,
 
   data: {
@@ -27,5 +27,3 @@ const Zeus: Character = {
     Mortal.build(context, charState, pos);
   },
 };
-
-export default Zeus;

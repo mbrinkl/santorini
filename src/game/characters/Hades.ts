@@ -1,7 +1,7 @@
-import Mortal from './Mortal';
+import { Mortal } from './Mortal';
 import { Character } from '../../types/characterTypes';
 
-const Hades: Character = {
+export const Hades: Character = {
   ...Mortal,
 
   data: {
@@ -24,5 +24,3 @@ const Hades: Character = {
     return valids;
   },
 };
-
-export default Hades;

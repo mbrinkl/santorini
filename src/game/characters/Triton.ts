@@ -1,8 +1,8 @@
 import { Character } from '../../types/characterTypes';
-import Mortal from './Mortal';
+import { Mortal } from './Mortal';
 import { posIsPerimeter } from '../posUtil';
 
-const Triton: Character = {
+export const Triton: Character = {
   ...Mortal,
 
   data: {
@@ -31,5 +31,3 @@ const Triton: Character = {
     return 'build';
   },
 };
-
-export default Triton;

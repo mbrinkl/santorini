@@ -1,12 +1,12 @@
 import { Board } from '../boardUtil';
-import Mortal from './Mortal';
+import { Mortal } from './Mortal';
 import { Character } from '../../types/characterTypes';
 
 type AsteriaAttrs = {
   movedDown: boolean;
 };
 
-const Asteria: Character<AsteriaAttrs> = {
+export const Asteria: Character<AsteriaAttrs> = {
   ...Mortal,
 
   data: {
@@ -64,5 +64,3 @@ const Asteria: Character<AsteriaAttrs> = {
     charState.buttonActive = false;
   },
 };
-
-export default Asteria;

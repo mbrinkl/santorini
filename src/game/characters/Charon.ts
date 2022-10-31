@@ -1,9 +1,9 @@
 import { getAdjacentPositions, getNextPosition } from '../posUtil';
 import { Board } from '../boardUtil';
-import Mortal from './Mortal';
+import { Mortal } from './Mortal';
 import { Character, CharacterState } from '../../types/characterTypes';
 
-const Charon: Character = {
+export const Charon: Character = {
   ...Mortal,
 
   data: {
@@ -76,5 +76,3 @@ const Charon: Character = {
 
   getStageAfterSpecial: (context, charState) => 'move',
 };
-
-export default Charon;

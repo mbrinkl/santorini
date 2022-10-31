@@ -1,11 +1,11 @@
 import { Character } from '../../types/characterTypes';
-import Mortal from './Mortal';
+import { Mortal } from './Mortal';
 
 type ArtemisAttrs = {
   prevPos: number;
 };
 
-const Artemis: Character<ArtemisAttrs> = {
+export const Artemis: Character<ArtemisAttrs> = {
   ...Mortal,
 
   data: {
@@ -57,5 +57,3 @@ const Artemis: Character<ArtemisAttrs> = {
     return 'build';
   },
 };
-
-export default Artemis;

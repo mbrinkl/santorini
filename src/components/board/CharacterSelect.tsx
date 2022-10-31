@@ -1,13 +1,13 @@
 import { ChangeEventHandler, useState } from 'react';
-import ConnectedIndicator from './ConnectedIndicator';
+import { ConnectedIndicator } from './ConnectedIndicator';
 import { Button, ButtonLink } from '../common/Button';
 import { getCharacterByName, getSortedCharacters } from '../../game/characters';
 import { useBoardContext } from '../../context/boardContext';
 import { CharacterCard, SelectedCharacterCard } from './CharacterCard';
-import ButtonGroup from '../common/ButtonGroup';
+import { ButtonGroup } from '../common/ButtonGroup';
 import './CharacterSelect.scss';
 
-const CharacterSelect = (): JSX.Element => {
+export const CharacterSelect = (): JSX.Element => {
   const { G, moves, matchData, playerID } = useBoardContext();
   const [characterList, setCharacterList] = useState(getSortedCharacters());
 
@@ -95,5 +95,3 @@ const CharacterSelect = (): JSX.Element => {
     </div>
   );
 };
-
-export default CharacterSelect;

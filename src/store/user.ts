@@ -15,7 +15,7 @@ const initialState: State = {
   roomData: localRoomData && JSON.parse(localRoomData),
 };
 
-const userSlice = createSlice({
+export const userSlice = createSlice({
   name: 'user',
   initialState,
   reducers: {
@@ -55,5 +55,3 @@ const userSlice = createSlice({
       });
   },
 });
-
-export default userSlice;

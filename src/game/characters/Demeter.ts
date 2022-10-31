@@ -1,12 +1,12 @@
 import { Character } from '../../types/characterTypes';
-import Mortal from './Mortal';
+import { Mortal } from './Mortal';
 import { Board } from '../boardUtil';
 
 type DemeterAttrs = {
   firstBuildPos: number;
 };
 
-const Demeter: Character<DemeterAttrs> = {
+export const Demeter: Character<DemeterAttrs> = {
   ...Mortal,
 
   data: {
@@ -70,5 +70,3 @@ const Demeter: Character<DemeterAttrs> = {
     return 'end';
   },
 };
-
-export default Demeter;

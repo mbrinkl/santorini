@@ -17,8 +17,6 @@ async function deleteStaleGames(db: StorageAPI.Async | StorageAPI.Sync) {
   });
 }
 
-function jobs(db: StorageAPI.Async | StorageAPI.Sync) {
+export function setupServerJobs(db: StorageAPI.Async | StorageAPI.Sync) {
   setInterval(() => deleteStaleGames(db), hour);
 }
-
-export default jobs;

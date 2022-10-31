@@ -4,17 +4,17 @@ import { useMemo, useState } from 'react';
 import { InspectorControls } from './Inspector';
 import { GameState } from '../../types/gameTypes';
 import { BoardContext } from '../../context/boardContext';
-import PlayerBoard from './PlayerBoard';
-import PlayerControls from './PlayerControls';
-import CharacterSelect from './CharacterSelect';
-import PlayerInfo from './PlayerInfo';
-import PlayerInfoMobile from './PlayerInfoMobile';
+import { PlayerBoard } from './PlayerBoard';
+import { PlayerControls } from './PlayerControls';
+import { CharacterSelect } from './CharacterSelect';
+import { PlayerInfo } from './PlayerInfo';
+import { PlayerInfoMobile } from './PlayerInfoMobile';
 import { Chat } from './Chat';
-import MoveLog from './MoveLog';
+import { MoveLog } from './MoveLog';
 import { isMobile } from '../../util';
 import './GameBoard.scss';
 
-const GameBoard = (boardProps: BoardProps<GameState>): JSX.Element => {
+export const GameBoard = (boardProps: BoardProps<GameState>): JSX.Element => {
   const [overrideState, setOverrideState] =
     useState<BoardProps<GameState> | null>(null);
   const { ctx, playerID, log, matchID } = boardProps;
@@ -97,5 +97,3 @@ const GameBoard = (boardProps: BoardProps<GameState>): JSX.Element => {
     </BoardContext.Provider>
   );
 };
-
-export default GameBoard;

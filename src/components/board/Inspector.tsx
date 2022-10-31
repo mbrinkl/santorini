@@ -9,7 +9,7 @@ import { LogEntry } from 'boardgame.io';
 import { GameState } from '../../types/gameTypes';
 import { SantoriniGame } from '../../game';
 import { Button } from '../common/Button';
-import ButtonGroup from '../common/ButtonGroup';
+import { ButtonGroup } from '../common/ButtonGroup';
 import { useGetMatchQuery } from '../../api';
 import './Inspector.scss';
 

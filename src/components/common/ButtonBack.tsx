@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import './ButtonBack.scss';
 
-const ButtonBack = ({
+export const ButtonBack = ({
   to,
   text = 'Back',
 }: {
@@ -12,5 +12,3 @@ const ButtonBack = ({
     {`↤ ${text}`}
   </Link>
 );
-
-export default ButtonBack;

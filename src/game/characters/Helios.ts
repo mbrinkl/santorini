@@ -1,7 +1,7 @@
 import { tryEndGame } from '../gameUtil';
 import { GameContext } from '../../types/gameTypes';
 import { Character } from '../../types/characterTypes';
-import Mortal from './Mortal';
+import { Mortal } from './Mortal';
 import { posIsPerimeter } from '../posUtil';
 
 function checkWinCondition(context: GameContext, heliosPlayerID: string) {
@@ -12,7 +12,7 @@ function checkWinCondition(context: GameContext, heliosPlayerID: string) {
   }
 }
 
-const Helios: Character = {
+export const Helios: Character = {
   ...Mortal,
 
   data: {
@@ -32,5 +32,3 @@ const Helios: Character = {
 
   restrictOpponentWin: ({ G }, charState, fromPos, pos) => !posIsPerimeter(pos),
 };
-
-export default Helios;

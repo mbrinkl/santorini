@@ -13,44 +13,44 @@
  *        character from (2b.) without spaces as the class name.
  */
 
+import { Mortal } from './Mortal';
+import { Apollo } from './Apollo';
+import { Artemis } from './Artemis';
+import { Athena } from './Athena';
+import { Atlas } from './Atlas';
+import { Demeter } from './Demeter';
+import { Hephaestus } from './Hephaestus';
+import { Hermes } from './Hermes';
+import { Minotaur } from './Minotaur';
+import { Pan } from './Pan';
+import { Prometheus } from './Prometheus';
+import { Bia } from './Bia';
+import { Triton } from './Triton';
+import { Zeus } from './Zeus';
+import { Graeae } from './Graeae';
+import { Heracles } from './Heracles';
+import { Odysseus } from './Odysseus';
+import { Iris } from './Iris';
+import { Pegasus } from './Pegasus';
+import { Eros } from './Eros';
+import { Chaos } from './Chaos';
 import { Character, CharacterState } from '../../types/characterTypes';
-import Mortal from './Mortal';
-import Apollo from './Apollo';
-import Artemis from './Artemis';
-import Athena from './Athena';
-import Atlas from './Atlas';
-import Demeter from './Demeter';
-import Hephaestus from './Hephaestus';
-import Hermes from './Hermes';
-import Minotaur from './Minotaur';
-import Pan from './Pan';
-import Prometheus from './Prometheus';
-import Bia from './Bia';
-import Triton from './Triton';
-import Zeus from './Zeus';
-import Graeae from './Graeae';
-import Heracles from './Heracles';
-import Odysseus from './Odysseus';
-import Iris from './Iris';
-import Pegasus from './Pegasus';
-import Eros from './Eros';
-import Chaos from './Chaos';
-import Chronus from './Chronus';
-import Harpies from './Harpies';
-import Urania from './Urania';
-import Charon from './Charon';
-import Ares from './Ares';
-import Hades from './Hades';
-import Maenads from './Maenads';
-import Asteria from './Asteria';
-import Tartarus from './Tartarus';
-import Clio from './Clio';
-import Hecate from './Hecate';
-import Siren from './Siren';
-import Hestia from './Hestia';
-import Poseidon from './Poseidon';
-import LernaeanHydra from './LernaeanHydra';
-import Helios from './Helios';
+import { Chronus } from './Chronus';
+import { Harpies } from './Harpies';
+import { Urania } from './Urania';
+import { Charon } from './Charon';
+import { Ares } from './Ares';
+import { Hades } from './Hades';
+import { Maenads } from './Maenads';
+import { Asteria } from './Asteria';
+import { Tartarus } from './Tartarus';
+import { Clio } from './Clio';
+import { Hecate } from './Hecate';
+import { Siren } from './Siren';
+import { Hestia } from './Hestia';
+import { Poseidon } from './Poseidon';
+import { LernaeanHydra } from './LernaeanHydra';
+import { Helios } from './Helios';
 
 export const characterList: string[] = [
   'Random',
@@ -168,85 +168,128 @@ export function getSortedCharacters(): string[] {
 /**
  * Get a character by character name
  */
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function getCharacterByName(name: string): Character<any> {
+export function getCharacterByName(name: string): Character {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  let character: Character<any>;
+
   switch (name) {
-    case 'Apollo':
-      return Apollo;
-    case 'Artemis':
-      return Artemis;
-    case 'Athena':
-      return Athena;
-    case 'Atlas':
-      return Atlas;
-    case 'Demeter':
-      return Demeter;
-    case 'Hephaestus':
-      return Hephaestus;
-    case 'Hermes':
-      return Hermes;
-    case 'Minotaur':
-      return Minotaur;
-    case 'Pan':
-      return Pan;
-    case 'Prometheus':
-      return Prometheus;
-    case 'Bia':
-      return Bia;
-    case 'Triton':
-      return Triton;
-    case 'Zeus':
-      return Zeus;
-    case 'Graeae':
-      return Graeae;
-    case 'Heracles':
-      return Heracles;
-    case 'Odysseus':
-      return Odysseus;
-    case 'Iris':
-      return Iris;
-    case 'Pegasus':
-      return Pegasus;
-    case 'Eros':
-      return Eros;
-    case 'Chaos':
-      return Chaos;
-    case 'Chronus':
-      return Chronus;
-    case 'Harpies':
-      return Harpies;
-    case 'Urania':
-      return Urania;
-    case 'Charon':
-      return Charon;
-    case 'Ares':
-      return Ares;
-    case 'Asteria':
-      return Asteria;
-    case 'Maenads':
-      return Maenads;
-    case 'Hades':
-      return Hades;
-    case 'Clio':
-      return Clio;
-    case 'Tartarus':
-      return Tartarus;
-    case 'Hecate':
-      return Hecate;
-    case 'Siren':
-      return Siren;
-    case 'Hestia':
-      return Hestia;
-    case 'Poseidon':
-      return Poseidon;
-    case 'Lernaean Hydra':
-      return LernaeanHydra;
-    case 'Helios':
-      return Helios;
     case 'Mortal':
+      character = Mortal;
+      break;
+    case 'Apollo':
+      character = Apollo;
+      break;
+    case 'Artemis':
+      character = Artemis;
+      break;
+    case 'Athena':
+      character = Athena;
+      break;
+    case 'Atlas':
+      character = Atlas;
+      break;
+    case 'Demeter':
+      character = Demeter;
+      break;
+    case 'Hephaestus':
+      character = Hephaestus;
+      break;
+    case 'Hermes':
+      character = Hermes;
+      break;
+    case 'Minotaur':
+      character = Minotaur;
+      break;
+    case 'Pan':
+      character = Pan;
+      break;
+    case 'Prometheus':
+      character = Prometheus;
+      break;
+    case 'Bia':
+      character = Bia;
+      break;
+    case 'Triton':
+      character = Triton;
+      break;
+    case 'Zeus':
+      character = Zeus;
+      break;
+    case 'Graeae':
+      character = Graeae;
+      break;
+    case 'Heracles':
+      character = Heracles;
+      break;
+    case 'Odysseus':
+      character = Odysseus;
+      break;
+    case 'Iris':
+      character = Iris;
+      break;
+    case 'Pegasus':
+      character = Pegasus;
+      break;
+    case 'Eros':
+      character = Eros;
+      break;
+    case 'Chaos':
+      character = Chaos;
+      break;
+    case 'Chronus':
+      character = Chronus;
+      break;
+    case 'Harpies':
+      character = Harpies;
+      break;
+    case 'Urania':
+      character = Urania;
+      break;
+    case 'Charon':
+      character = Charon;
+      break;
+    case 'Ares':
+      character = Ares;
+      break;
+    case 'Asteria':
+      character = Asteria;
+      break;
+    case 'Maenads':
+      character = Maenads;
+      break;
+    case 'Hades':
+      character = Hades;
+      break;
+    case 'Clio':
+      character = Clio;
+      break;
+    case 'Tartarus':
+      character = Tartarus;
+      break;
+    case 'Hecate':
+      character = Hecate;
+      break;
+    case 'Siren':
+      character = Siren;
+      break;
+    case 'Hestia':
+      character = Hestia;
+      break;
+    case 'Poseidon':
+      character = Poseidon;
+      break;
+    case 'Lernaean Hydra':
+      character = LernaeanHydra;
+      break;
+    case 'Helios':
+      character = Helios;
+      break;
     default:
-      return Mortal;
+      character = Mortal;
+      break;
   }
+
+  return character;
 }
 
 /**

@@ -1,9 +1,9 @@
 import { Character } from '../../types/characterTypes';
-import Mortal from './Mortal';
+import { Mortal } from './Mortal';
 import { Board } from '../boardUtil';
 import { getNextPosition, getPerimeterPositions } from '../posUtil';
 
-const Bia: Character = {
+export const Bia: Character = {
   ...Mortal,
 
   data: {
@@ -56,5 +56,3 @@ const Bia: Character = {
     Mortal.move(context, charState, pos);
   },
 };
-
-export default Bia;

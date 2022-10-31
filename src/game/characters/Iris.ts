@@ -1,9 +1,9 @@
 import { Board } from '../boardUtil';
 import { Character } from '../../types/characterTypes';
-import Mortal from './Mortal';
+import { Mortal } from './Mortal';
 import { getAdjacentPositions, getNextPosition } from '../posUtil';
 
-const Iris: Character = {
+export const Iris: Character = {
   ...Mortal,
 
   data: {
@@ -32,5 +32,3 @@ const Iris: Character = {
     return valids;
   },
 };
-
-export default Iris;

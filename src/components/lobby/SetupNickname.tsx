@@ -2,15 +2,15 @@ import React, { useState } from 'react';
 import Tippy from '@tippyjs/react';
 import { useAppSelector, useAppDispatch } from '../../store';
 import { useUpdatePlayerMutation } from '../../api';
-import ButtonBack from '../common/ButtonBack';
+import { ButtonBack } from '../common/ButtonBack';
 import { Button } from '../common/Button';
-import LobbyPage from './Wrapper';
+import { LobbyPage } from './Wrapper';
 import { Input } from '../common/Input';
-import userSlice from '../../store/user';
+import { userSlice } from '../../store/user';
 import 'tippy.js/dist/tippy.css';
 import './SetupNickname.scss';
 
-const SetupNickname = ({
+export const SetupNickname = ({
   onSubmit,
 }: {
   onSubmit?: () => void;
@@ -70,5 +70,3 @@ const SetupNickname = ({
     </LobbyPage>
   );
 };
-
-export default SetupNickname;

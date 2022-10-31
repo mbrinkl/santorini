@@ -1,13 +1,13 @@
 import { Board } from '../boardUtil';
 import { getAdjacentPositions, positionsAreAdjacent } from '../posUtil';
-import Mortal from './Mortal';
+import { Mortal } from './Mortal';
 import { Character } from '../../types/characterTypes';
 
 type LernaeanHydraAttrs = {
   movingWorkerNum: number;
 };
 
-const LernaeanHydra: Character<LernaeanHydraAttrs> = {
+export const LernaeanHydra: Character<LernaeanHydraAttrs> = {
   ...Mortal,
 
   data: {
@@ -132,5 +132,3 @@ const LernaeanHydra: Character<LernaeanHydraAttrs> = {
     return 'end';
   },
 };
-
-export default LernaeanHydra;

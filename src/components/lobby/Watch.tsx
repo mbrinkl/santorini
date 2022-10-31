@@ -1,13 +1,13 @@
 import { LobbyAPI } from 'boardgame.io';
 import { useEffect, useMemo, useState } from 'react';
 import { ColumnDef, createColumnHelper } from '@tanstack/react-table';
-import LobbyPage from './Wrapper';
-import ButtonBack from '../common/ButtonBack';
-import MatchTable from '../common/MatchTable';
+import { LobbyPage } from './Wrapper';
+import { ButtonBack } from '../common/ButtonBack';
+import { MatchTable } from '../common/MatchTable';
 import { ReviewTableRow, SpectateTableRow } from '../../types/tablesTypes';
 import { useGetMatchesQuery } from '../../api';
 
-const WatchPage = (): JSX.Element => {
+export const WatchPage = (): JSX.Element => {
   const spectateColumnHelper = createColumnHelper<SpectateTableRow>();
   const reviewColumnHelper = createColumnHelper<ReviewTableRow>();
   const [spectatableMatches, setSpectatableMatches] = useState<
@@ -137,5 +137,3 @@ const WatchPage = (): JSX.Element => {
     </LobbyPage>
   );
 };
-
-export default WatchPage;
