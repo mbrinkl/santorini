@@ -11,6 +11,7 @@
  */
 
 import { Character, CharacterState } from '../../types/gameTypes';
+import { deepClone } from '../../util';
 import * as Characters from '../characters';
 
 export const characterList: string[] = [
@@ -223,9 +224,5 @@ export function getCharacter(charState: CharacterState): Character {
 
 export function initCharState(name: string): CharacterState {
   const { data } = getCharacterByName(name);
-  const deepCopyData = JSON.parse(JSON.stringify(data)) as Omit<
-    CharacterState,
-    'name'
-  >;
-  return { name, ...deepCopyData };
+  return { name, ...deepClone(data) };
 }

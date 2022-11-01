@@ -1,4 +1,5 @@
 import { GameContext, GameStage } from '../types/gameTypes';
+import { deepClone } from '../util';
 import { getCharacter } from './util/characterUtil';
 
 interface PossibleMove {
@@ -14,7 +15,7 @@ function getSpawnedMoves(
   context: GameContext,
   fromPossibleMove: PossibleMove,
 ): PossibleMove[] {
-  const cloneContext = JSON.parse(JSON.stringify(context)) as GameContext;
+  const cloneContext = deepClone(context);
   const { G, playerID } = cloneContext;
   G.isDummy = true;
   const { charState, opponentID } = G.players[playerID];

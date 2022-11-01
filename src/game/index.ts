@@ -22,6 +22,7 @@ import {
   endTurn,
 } from './moves';
 import { canReachEndStage, updateValids } from './validity';
+import { deepClone } from '../util';
 
 const TURN_ORDER_ONCE = {
   first: ({ G }: Omit<GameContext, 'playerID'>) => getFirstPlayer(G),
@@ -90,7 +91,7 @@ function stripSecrets(
     return G;
   }
 
-  const strippedState = JSON.parse(JSON.stringify(G)) as GameState;
+  const strippedState = deepClone(G);
 
   Object.values(strippedState.players).forEach((player) => {
     if (player.charState.secretWorkers && player.ID !== playerID) {
