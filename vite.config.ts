@@ -19,4 +19,7 @@ export default defineConfig({
       { find: '~', replacement: __dirname },
     ],
   },
+  test: {
+    globals: true,
+  },
 });

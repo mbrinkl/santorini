@@ -33,7 +33,7 @@
     "no-param-reassign": "off",
     "import/no-extraneous-dependencies": [
       "error",
-      { "devDependencies": ["vite.config.ts"] }
+      { "devDependencies": ["vite.config.ts", "**/*.test.*"] }
     ],
     "import/prefer-default-export": "off",
     "@typescript-eslint/no-use-before-define": "off",
