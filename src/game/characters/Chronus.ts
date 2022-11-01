@@ -1,6 +1,5 @@
 import { tryEndGame } from '../util/gameUtil';
-import { GameContext } from '../../types/gameTypes';
-import { Character } from '../../types/characterTypes';
+import { GameContext, Character } from '../../types/gameTypes';
 import { Mortal } from './Mortal';
 
 function checkWinCondition(context: GameContext, chronusPlayerID: string) {

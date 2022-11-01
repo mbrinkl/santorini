@@ -1,5 +1,5 @@
 import { Mortal } from './Mortal';
-import { Character } from '../../types/characterTypes';
+import { Character } from '../../types/gameTypes';
 
 type PoseidonAttrs = {
   unmovedIsBuilding: boolean;

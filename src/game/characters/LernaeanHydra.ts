@@ -1,7 +1,7 @@
 import { Board } from '../util/boardUtil';
 import { getAdjacentPositions, positionsAreAdjacent } from '../util/posUtil';
 import { Mortal } from './Mortal';
-import { Character } from '../../types/characterTypes';
+import { Character } from '../../types/gameTypes';
 
 type LernaeanHydraAttrs = {
   movingWorkerNum: number;

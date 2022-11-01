@@ -1,8 +1,6 @@
 import { Move } from 'boardgame.io';
-import { initCharState } from '.';
 import { GameState } from '../types/gameTypes';
-import { getCharacter } from './util/characterUtil';
-import { checkWinByMove } from './util/gameUtil';
+import { getCharacter, initCharState } from './util/characterUtil';
 import { updateValids } from './validity';
 
 export const setChar: Move<GameState> = ({ G, playerID }, name: string) => {
@@ -82,7 +80,21 @@ export const move: Move<GameState> = (context, pos: number) => {
 
   // Check to see if the player was forced off of the intended pos
   if (charState.workers[charState.selectedWorkerNum].pos === pos) {
-    checkWinByMove(context, movedFromPos, pos);
+    const winRestricted = opponentCharacter.restrictOpponentWin(
+      context,
+      opponentCharState,
+      movedFromPos,
+      pos,
+    );
+
+    if (
+      !winRestricted &&
+      character.checkWinByMove(context, charState, movedFromPos, pos)
+    ) {
+      events.endGame({
+        winner: playerID,
+      });
+    }
   }
 
   const stage = character.getStageAfterMove(context, charState);

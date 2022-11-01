@@ -4,7 +4,7 @@ import {
   getNextPositionInDirection,
 } from '../util/posUtil';
 import { Mortal } from './Mortal';
-import { Character } from '../../types/characterTypes';
+import { Character } from '../../types/gameTypes';
 
 type SirenAttrs = {
   altTurn: boolean;

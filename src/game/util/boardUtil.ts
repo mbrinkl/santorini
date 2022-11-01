@@ -1,5 +1,5 @@
 import { GameContext, GameState, Token } from '../../types/gameTypes';
-import { getCharacter } from './characterUtil';
+// import { getCharacter } from './characterUtil';
 import { tryEndGame } from './gameUtil';
 
 export const Board = {
@@ -18,11 +18,11 @@ export const Board = {
       workerNum,
     };
 
-    // Resolve token effects
-    G.spaces[pos].tokens.forEach((token) => {
-      const character = getCharacter(G.players[token.playerID].charState);
-      character.tokenEffects(context, charState, pos);
-    });
+    // // Resolve token effects
+    // G.spaces[pos].tokens.forEach((token) => {
+    //   const character = getCharacter(G.players[token.playerID].charState);
+    //   character.tokenEffects(context, charState, pos);
+    // });
   },
 
   free: ({ G }: GameContext, pos: number) => {

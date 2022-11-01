@@ -12,7 +12,7 @@
  *        character from (2b.) without spaces as the class name.
  */
 
-import { Character, CharacterState } from '../../types/characterTypes';
+import { Character, CharacterState } from '../../types/gameTypes';
 import * as Characters from '../characters';
 
 export const characterList: string[] = [
@@ -221,4 +221,13 @@ export function getCharacter(charState: CharacterState): Character {
   }
 
   return getCharacterByName(charState.name);
+}
+
+export function initCharState(name: string): CharacterState {
+  const { data } = getCharacterByName(name);
+  const deepCopyData = JSON.parse(JSON.stringify(data)) as Omit<
+    CharacterState,
+    'name'
+  >;
+  return { name, ...deepCopyData };
 }

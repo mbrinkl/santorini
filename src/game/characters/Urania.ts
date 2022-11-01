@@ -1,5 +1,5 @@
 import { getWrappedAdjacents } from '../util/posUtil';
-import { Character } from '../../types/characterTypes';
+import { Character } from '../../types/gameTypes';
 import { Mortal } from './Mortal';
 import { Board } from '../util/boardUtil';
 

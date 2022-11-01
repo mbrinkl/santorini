@@ -1,7 +1,12 @@
-import { GameContext, GameState, Space } from '../../types/gameTypes';
+import {
+  GameContext,
+  GameState,
+  Space,
+  Character,
+  CharacterState,
+  Worker,
+} from '../../types/gameTypes';
 import { Mortal } from './Mortal';
-import { Character, CharacterState, Worker } from '../../types/characterTypes';
-import { getCharacter } from '../util/characterUtil';
 import { tryEndTurn } from '../util/gameUtil';
 
 type HecateAttrs = {
@@ -69,86 +74,86 @@ export const Hecate: Character<HecateAttrs> = {
     },
   },
 
-  restrictOpponentMove: (context, charState, oppCharState, fromPos) => {
-    // strip inhabitant data, then put it back after calc
-    const { G, playerID } = context;
-    const { opponentID } = G.players[playerID]; // refers to Hecate...
+  // restrictOpponentMove: (context, charState, oppCharState, fromPos) => {
+  //   // strip inhabitant data, then put it back after calc
+  //   const { G, playerID } = context;
+  //   const { opponentID } = G.players[playerID]; // refers to Hecate...
 
-    charState.attrs = {
-      workers: charState.workers,
-      oppWorkers: oppCharState.workers,
-      oppAttrs: oppCharState.attrs,
-      spaces: G.spaces,
-    };
+  //   charState.attrs = {
+  //     workers: charState.workers,
+  //     oppWorkers: oppCharState.workers,
+  //     oppAttrs: oppCharState.attrs,
+  //     spaces: G.spaces,
+  //   };
 
-    charState.workers.forEach((worker) => {
-      G.spaces[worker.pos].inhabitant = undefined;
-    });
-    const oppCharacter = getCharacter(oppCharState);
-    const valids = oppCharacter.validMove(context, oppCharState, fromPos);
-    charState.workers.forEach((worker, index) => {
-      G.spaces[worker.pos].inhabitant = {
-        playerID: opponentID,
-        workerNum: index,
-      };
-    });
+  //   charState.workers.forEach((worker) => {
+  //     G.spaces[worker.pos].inhabitant = undefined;
+  //   });
+  //   const oppCharacter = getCharacter(oppCharState);
+  //   const valids = oppCharacter.validMove(context, oppCharState, fromPos);
+  //   charState.workers.forEach((worker, index) => {
+  //     G.spaces[worker.pos].inhabitant = {
+  //       playerID: opponentID,
+  //       workerNum: index,
+  //     };
+  //   });
 
-    return valids;
-  },
+  //   return valids;
+  // },
 
-  restrictOpponentBuild: (context, charState, oppCharState, fromPos) => {
-    // strip inhabitant data, then put it back after calc
-    const { G, playerID } = context;
-    const { opponentID } = G.players[playerID]; // refers to Hecate...
+  // restrictOpponentBuild: (context, charState, oppCharState, fromPos) => {
+  //   // strip inhabitant data, then put it back after calc
+  //   const { G, playerID } = context;
+  //   const { opponentID } = G.players[playerID]; // refers to Hecate...
 
-    charState.attrs = {
-      workers: charState.workers,
-      oppWorkers: oppCharState.workers,
-      oppAttrs: oppCharState.attrs,
-      spaces: G.spaces,
-    };
+  //   charState.attrs = {
+  //     workers: charState.workers,
+  //     oppWorkers: oppCharState.workers,
+  //     oppAttrs: oppCharState.attrs,
+  //     spaces: G.spaces,
+  //   };
 
-    charState.workers.forEach((worker) => {
-      G.spaces[worker.pos].inhabitant = undefined;
-    });
-    const oppCharacter = getCharacter(oppCharState);
-    const valids = oppCharacter.validBuild(context, oppCharState, fromPos);
-    charState.workers.forEach((worker, index) => {
-      G.spaces[worker.pos].inhabitant = {
-        playerID: opponentID,
-        workerNum: index,
-      };
-    });
+  //   charState.workers.forEach((worker) => {
+  //     G.spaces[worker.pos].inhabitant = undefined;
+  //   });
+  //   const oppCharacter = getCharacter(oppCharState);
+  //   const valids = oppCharacter.validBuild(context, oppCharState, fromPos);
+  //   charState.workers.forEach((worker, index) => {
+  //     G.spaces[worker.pos].inhabitant = {
+  //       playerID: opponentID,
+  //       workerNum: index,
+  //     };
+  //   });
 
-    return valids;
-  },
+  //   return valids;
+  // },
 
-  restrictOpponentSpecial: (context, charState, oppCharState, fromPos) => {
-    // strip inhabitant data, then put it back after calc
-    const { G, playerID } = context;
-    const { opponentID } = G.players[playerID]; // refers to Hecate...
+  // restrictOpponentSpecial: (context, charState, oppCharState, fromPos) => {
+  //   // strip inhabitant data, then put it back after calc
+  //   const { G, playerID } = context;
+  //   const { opponentID } = G.players[playerID]; // refers to Hecate...
 
-    charState.attrs = {
-      workers: charState.workers,
-      oppWorkers: oppCharState.workers,
-      oppAttrs: oppCharState.attrs,
-      spaces: G.spaces,
-    };
+  //   charState.attrs = {
+  //     workers: charState.workers,
+  //     oppWorkers: oppCharState.workers,
+  //     oppAttrs: oppCharState.attrs,
+  //     spaces: G.spaces,
+  //   };
 
-    charState.workers.forEach((worker) => {
-      G.spaces[worker.pos].inhabitant = undefined;
-    });
-    const oppCharacter = getCharacter(oppCharState);
-    const valids = oppCharacter.validSpecial(context, oppCharState, fromPos);
-    charState.workers.forEach((worker, index) => {
-      G.spaces[worker.pos].inhabitant = {
-        playerID: opponentID,
-        workerNum: index,
-      };
-    });
+  //   charState.workers.forEach((worker) => {
+  //     G.spaces[worker.pos].inhabitant = undefined;
+  //   });
+  //   const oppCharacter = getCharacter(oppCharState);
+  //   const valids = oppCharacter.validSpecial(context, oppCharState, fromPos);
+  //   charState.workers.forEach((worker, index) => {
+  //     G.spaces[worker.pos].inhabitant = {
+  //       playerID: opponentID,
+  //       workerNum: index,
+  //     };
+  //   });
 
-    return valids;
-  },
+  //   return valids;
+  // },
 
   afterOpponentMove: (context, charState, oppCharState, movedFromPos) => {
     if (illegalState(context, charState, oppCharState)) {

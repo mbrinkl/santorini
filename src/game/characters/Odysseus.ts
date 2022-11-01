@@ -1,8 +1,7 @@
 import { Board } from '../util/boardUtil';
 import { getCornerPositions, positionsAreAdjacent } from '../util/posUtil';
-import { Character } from '../../types/characterTypes';
+import { Character, GameContext } from '../../types/gameTypes';
 import { Mortal } from './Mortal';
-import { GameContext } from '../../types/gameTypes';
 
 type OdysseusAttrs = {
   specialUsed: boolean;

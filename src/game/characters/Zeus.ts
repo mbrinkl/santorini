@@ -1,4 +1,4 @@
-import { Character } from '../../types/characterTypes';
+import { Character } from '../../types/gameTypes';
 import { Mortal } from './Mortal';
 
 export const Zeus: Character = {

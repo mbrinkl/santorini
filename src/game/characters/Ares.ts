@@ -1,7 +1,7 @@
 import { Board } from '../util/boardUtil';
 import { getAdjacentPositions } from '../util/posUtil';
 import { Mortal } from './Mortal';
-import { Character } from '../../types/characterTypes';
+import { Character } from '../../types/gameTypes';
 
 export const Ares: Character = {
   ...Mortal,

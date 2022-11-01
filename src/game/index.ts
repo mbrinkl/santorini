@@ -2,12 +2,11 @@ import { ActivePlayers } from 'boardgame.io/core';
 import { Ctx, Game } from 'boardgame.io';
 import { RandomAPI } from 'boardgame.io/dist/types/src/plugins/random/random';
 import { GAME_ID } from '../config';
-import { CharacterState } from '../types/characterTypes';
 import {
   banList,
   characterList,
   getCharacter,
-  getCharacterByName,
+  initCharState,
 } from './util/characterUtil';
 import { GameContext, GameState, Player, Space } from '../types/gameTypes';
 import {
@@ -39,15 +38,6 @@ const TURN_ORDER_DEFAULT = {
   next: ({ ctx }: Omit<GameContext, 'playerID'>) =>
     (ctx.playOrderPos + 1) % ctx.numPlayers,
 };
-
-export function initCharState(name: string): CharacterState {
-  const { data } = getCharacterByName(name);
-  const deepCopyData = JSON.parse(JSON.stringify(data)) as Omit<
-    CharacterState,
-    'name'
-  >;
-  return { name, ...deepCopyData };
-}
 
 function initRandomCharacters(G: GameState, random: RandomAPI) {
   // Remove 'Random'
