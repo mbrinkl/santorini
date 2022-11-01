@@ -10,7 +10,6 @@
   "scripts": {
     "start": "concurrently -c cyan,magenta npm:server npm:client",
     "start:prod": "npm run server:prod",
-    "preview": "vite preview",
     "build": "tsc && vite build",
     "client": "vite",
     "server": "ts-node-dev --no-notify ./server/index.ts",

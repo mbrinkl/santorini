@@ -7,9 +7,7 @@
  *        as step (b.)
  *    c. Add any banned matchups in the banList
  *  3. Add a character image to src/assets/png/characterImages
- *  4. In src/components/board/CharacterCard.scss, add a class linked
- *        to the image added in step (3.). Use the name of the
- *        character from (2b.) without spaces as the class name.
+ *        Use the name of the character from (2b.) without spaces
  */
 
 import { Character, CharacterState } from '../../types/gameTypes';

@@ -4,6 +4,11 @@ import { useBoardContext } from '../../context/boardContext';
 import CheckImg from '../../assets/png/check.png';
 import './CharacterCard.scss';
 
+const getCharacterImageUrl = (name: string): string => {
+  name = name.replace(/\s/g, '');
+  return `url(src/assets/png/CharacterImages/${name}.png)`;
+};
+
 export const CharacterCard = ({
   playerID,
   name,
@@ -53,12 +58,14 @@ export const CharacterCard = ({
   return (
     <div
       className={classNames(
-        name.replace(/\s/g, ''),
         'character-card',
         isUnselectable()
           ? 'character-card--grayscale'
           : 'character-card--selectable',
       )}
+      style={{
+        backgroundImage: getCharacterImageUrl(name),
+      }}
       onClick={select}
       onKeyDown={(e) => e.key === 'Enter' && select()}
       role="button"
@@ -79,7 +86,12 @@ export const SelectedCharacterCard = ({
   const { G } = useBoardContext();
 
   return (
-    <div className={`${name.replace(/\s/g, '')} character-card`}>
+    <div
+      className="character-card"
+      style={{
+        backgroundImage: getCharacterImageUrl(name),
+      }}
+    >
       {G.players[playerID].ready && (
         <img className="character-card--ready" alt="ready" src={CheckImg} />
       )}
