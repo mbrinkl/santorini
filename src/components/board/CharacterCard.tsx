@@ -5,8 +5,10 @@ import CheckImg from '../../assets/png/check.png';
 import './CharacterCard.scss';
 
 const getCharacterImageUrl = (name: string): string => {
+  const baseUrl = new URL('../../assets/png/CharacterImages', import.meta.url)
+    .href;
   name = name.replace(/\s/g, '');
-  return `url(src/assets/png/CharacterImages/${name}.png)`;
+  return `url(${baseUrl}/${name}.png)`;
 };
 
 export const CharacterCard = ({
