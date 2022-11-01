@@ -35,7 +35,7 @@ export const characterList: string[] = [
   // "Aphrodite",
   'Ares',
   'Bia',
-  'Chaos',
+  // 'Chaos',
   'Charon',
   'Chronus',
   // "Circe",
