@@ -21,13 +21,13 @@ export const CreatePage = (): JSX.Element => {
   const [createMatch] = useCreateMatchMutation();
   const [leaveMatch] = useLeaveMatchMutation();
 
-  async function createRoom(unlisted: boolean) {
+  const createRoom = (unlisted: boolean) => {
     createMatch({ numPlayers: 2, unlisted })
       .unwrap()
       .then((createdMatchID) => navigate(`/${createdMatchID}`));
-  }
+  };
 
-  async function host(unlisted: boolean) {
+  const host = (unlisted: boolean) => {
     if (userRoomData) {
       leaveMatch(userRoomData);
     }
@@ -37,7 +37,7 @@ export const CreatePage = (): JSX.Element => {
     } else {
       createRoom(unlisted);
     }
-  }
+  };
 
   return needNicknameGameType !== null ? (
     <SetupNickname onSubmit={() => createRoom(needNicknameGameType)} />
