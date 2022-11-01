@@ -19,6 +19,12 @@ import { JoinMatchParams } from '../../types/apiTypes';
 import 'tippy.js/dist/tippy.css';
 import './Game.scss';
 
+interface GameLobbyState {
+  loading: boolean;
+  currentMatchID?: string;
+  gameRunning: boolean;
+}
+
 const GameClient = Client({
   game: SantoriniGame,
   board: GameBoard,
@@ -169,29 +175,33 @@ export const GameLobbyPlay = (): JSX.Element => {
 
 export const GameLobby = (): JSX.Element => {
   const { matchID } = useParams<{ matchID: string }>();
-  const [lobbyState, setLobbyState] = useState({
+  const [lobbyState, setLobbyState] = useState<GameLobbyState>({
     loading: true,
-    matchExists: false,
     gameRunning: false,
   });
 
-  const { data: matchMetadata } = useGetMatchQuery(matchID ?? skipToken, {
-    skip: lobbyState.matchExists,
-  });
+  const { data: matchMetadata, isSuccess } = useGetMatchQuery(
+    matchID ?? skipToken,
+    {
+      skip: lobbyState.currentMatchID === matchID,
+    },
+  );
 
   useEffect(() => {
-    setLobbyState({
-      loading: false,
-      matchExists: matchMetadata !== undefined,
-      gameRunning: matchMetadata?.players.filter((p) => !p.name).length === 0,
-    });
-  }, [matchMetadata, matchID]);
+    if (isSuccess) {
+      setLobbyState({
+        loading: false,
+        currentMatchID: matchMetadata?.matchID,
+        gameRunning: matchMetadata?.players.filter((p) => !p.name).length === 0,
+      });
+    }
+  }, [matchMetadata, isSuccess]);
 
   if (lobbyState.loading) {
     return <LoadingPage />;
   }
 
-  if (!lobbyState.matchExists) {
+  if (!lobbyState.currentMatchID) {
     return <NotFound />;
   }
 
