@@ -50,11 +50,13 @@ export interface CharacterState<T = Record<string, unknown>> {
   pack: Pack;
   turnOrder?: 0 | 1;
   workers: Worker[];
+  selectedWorkerNum: number;
   numWorkersToPlace: number;
   hasBeforeBoardSetup: boolean;
   hasAfterBoardSetup: boolean;
-  selectedWorkerNum: number;
-  secretWorkers: boolean;
+  hasSecretWorkers: boolean;
+  hasSecretSetup: boolean;
+  hasSecretSpecial: boolean;
   moveUpHeight: number;
   specialText: string;
   buttonText: string;
@@ -77,8 +79,8 @@ export interface Space {
 export interface Token {
   playerID: string;
   obstructing: 'none' | 'all' | 'opponent';
-  secret: boolean;
-  removable: boolean;
+  isSecret: boolean;
+  isRemovable: boolean;
   color: string; // just distinguish by color for now
 }
 

@@ -58,10 +58,20 @@ export const Board = {
     Board.free(context, pos);
   },
 
-  isObstructed: (G: GameState, playerID: string, pos: number) =>
-    G.spaces[pos].isDomed ||
-    G.spaces[pos].inhabitant ||
-    Board.tokenObstructing(G, playerID, pos),
+  isObstructed: (G: GameState, playerID: string, pos: number) => {
+    const space = G.spaces[pos];
+    const { opponentID } = G.players[playerID];
+    const isOpponentSecretlyInhabiting =
+      G.players[opponentID].charState.hasSecretWorkers;
+    return (
+      space.isDomed ||
+      (space.inhabitant &&
+        (space.inhabitant.playerID === playerID ||
+          (space.inhabitant?.playerID === opponentID &&
+            !isOpponentSecretlyInhabiting))) ||
+      Board.tokenObstructing(G, playerID, pos)
+    );
+  },
 
   tokenObstructing: (G: GameState, playerID: string, pos: number) =>
     G.spaces[pos].tokens.some(
@@ -85,7 +95,7 @@ export const Board = {
 
   removeTokens: (G: GameState, pos: number) => {
     G.spaces[pos].tokens = G.spaces[pos].tokens.filter(
-      (token) => !token.removable,
+      (token) => !token.isRemovable,
     );
   },
 };

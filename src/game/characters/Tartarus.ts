@@ -26,8 +26,8 @@ export const Tartarus: Character = {
     Board.placeToken(G, pos, {
       playerID,
       obstructing: 'none',
-      secret: true,
-      removable: false,
+      isSecret: true,
+      isRemovable: false,
       color: 'black',
     });
     return 'end';

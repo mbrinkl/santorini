@@ -65,7 +65,7 @@ export const Hecate: Character<HecateAttrs> = {
     ],
     pack: 'gf',
     turnOrder: 1,
-    secretWorkers: true,
+    hasSecretWorkers: true,
     attrs: {
       workers: [],
       oppWorkers: [],
@@ -74,86 +74,39 @@ export const Hecate: Character<HecateAttrs> = {
     },
   },
 
-  // restrictOpponentMove: (context, charState, oppCharState, fromPos) => {
-  //   // strip inhabitant data, then put it back after calc
-  //   const { G, playerID } = context;
-  //   const { opponentID } = G.players[playerID]; // refers to Hecate...
+  restrictOpponentMove: ({ G }, charState, oppCharState, fromPos) => {
+    // not restricting, just capture state before opponent moves
+    charState.attrs = {
+      workers: charState.workers,
+      oppWorkers: oppCharState.workers,
+      oppAttrs: oppCharState.attrs,
+      spaces: G.spaces,
+    };
 
-  //   charState.attrs = {
-  //     workers: charState.workers,
-  //     oppWorkers: oppCharState.workers,
-  //     oppAttrs: oppCharState.attrs,
-  //     spaces: G.spaces,
-  //   };
+    return new Set<number>(G.valids);
+  },
 
-  //   charState.workers.forEach((worker) => {
-  //     G.spaces[worker.pos].inhabitant = undefined;
-  //   });
-  //   const oppCharacter = getCharacter(oppCharState);
-  //   const valids = oppCharacter.validMove(context, oppCharState, fromPos);
-  //   charState.workers.forEach((worker, index) => {
-  //     G.spaces[worker.pos].inhabitant = {
-  //       playerID: opponentID,
-  //       workerNum: index,
-  //     };
-  //   });
+  restrictOpponentBuild: ({ G }, charState, oppCharState, fromPos) => {
+    charState.attrs = {
+      workers: charState.workers,
+      oppWorkers: oppCharState.workers,
+      oppAttrs: oppCharState.attrs,
+      spaces: G.spaces,
+    };
 
-  //   return valids;
-  // },
+    return new Set<number>(G.valids);
+  },
 
-  // restrictOpponentBuild: (context, charState, oppCharState, fromPos) => {
-  //   // strip inhabitant data, then put it back after calc
-  //   const { G, playerID } = context;
-  //   const { opponentID } = G.players[playerID]; // refers to Hecate...
+  restrictOpponentSpecial: ({ G }, charState, oppCharState, fromPos) => {
+    charState.attrs = {
+      workers: charState.workers,
+      oppWorkers: oppCharState.workers,
+      oppAttrs: oppCharState.attrs,
+      spaces: G.spaces,
+    };
 
-  //   charState.attrs = {
-  //     workers: charState.workers,
-  //     oppWorkers: oppCharState.workers,
-  //     oppAttrs: oppCharState.attrs,
-  //     spaces: G.spaces,
-  //   };
-
-  //   charState.workers.forEach((worker) => {
-  //     G.spaces[worker.pos].inhabitant = undefined;
-  //   });
-  //   const oppCharacter = getCharacter(oppCharState);
-  //   const valids = oppCharacter.validBuild(context, oppCharState, fromPos);
-  //   charState.workers.forEach((worker, index) => {
-  //     G.spaces[worker.pos].inhabitant = {
-  //       playerID: opponentID,
-  //       workerNum: index,
-  //     };
-  //   });
-
-  //   return valids;
-  // },
-
-  // restrictOpponentSpecial: (context, charState, oppCharState, fromPos) => {
-  //   // strip inhabitant data, then put it back after calc
-  //   const { G, playerID } = context;
-  //   const { opponentID } = G.players[playerID]; // refers to Hecate...
-
-  //   charState.attrs = {
-  //     workers: charState.workers,
-  //     oppWorkers: oppCharState.workers,
-  //     oppAttrs: oppCharState.attrs,
-  //     spaces: G.spaces,
-  //   };
-
-  //   charState.workers.forEach((worker) => {
-  //     G.spaces[worker.pos].inhabitant = undefined;
-  //   });
-  //   const oppCharacter = getCharacter(oppCharState);
-  //   const valids = oppCharacter.validSpecial(context, oppCharState, fromPos);
-  //   charState.workers.forEach((worker, index) => {
-  //     G.spaces[worker.pos].inhabitant = {
-  //       playerID: opponentID,
-  //       workerNum: index,
-  //     };
-  //   });
-
-  //   return valids;
-  // },
+    return new Set<number>(G.valids);
+  },
 
   afterOpponentMove: (context, charState, oppCharState, movedFromPos) => {
     if (illegalState(context, charState, oppCharState)) {

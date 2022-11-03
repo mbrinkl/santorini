@@ -36,8 +36,8 @@ export const Clio: Character<ClioAttrs> = {
       const token: Token = {
         playerID,
         obstructing: 'opponent',
-        removable: false,
-        secret: false,
+        isRemovable: false,
+        isSecret: false,
         color: 'yellow',
       };
       Board.placeToken(G, pos, token);

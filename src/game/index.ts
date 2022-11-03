@@ -94,7 +94,7 @@ function stripSecrets(
   const strippedState = deepClone(G);
 
   Object.values(strippedState.players).forEach((player) => {
-    if (player.charState.secretWorkers && player.ID !== playerID) {
+    if (player.charState.hasSecretWorkers && player.ID !== playerID) {
       player.charState.workers.forEach((worker) => {
         strippedState.spaces[worker.pos].inhabitant = undefined;
       });
@@ -106,7 +106,7 @@ function stripSecrets(
   strippedState.spaces.forEach((space) => {
     const { tokens } = space;
     for (let i = tokens.length - 1; i >= 0; i--) {
-      if (tokens[i].secret && tokens[i].playerID !== playerID) {
+      if (tokens[i].isSecret && tokens[i].playerID !== playerID) {
         tokens.splice(i, 1);
       }
     }
