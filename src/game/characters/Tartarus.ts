@@ -2,6 +2,7 @@ import { tryEndGame } from '../util/gameUtil';
 import { Mortal } from './Mortal';
 import { Character } from '../../types/gameTypes';
 import { Board } from '../util/boardUtil';
+import { Abyss } from '../tokens';
 
 export const Tartarus: Character = {
   ...Mortal,
@@ -17,19 +18,15 @@ export const Tartarus: Character = {
     ],
     pack: 'gf',
     hasAfterBoardSetup: true,
+    hasSecretSetup: true,
     turnOrder: 0,
   },
 
   validSetup: (context, charState) => Mortal.validPlace(context, charState),
 
   setup: ({ G, playerID }, charState, pos) => {
-    Board.placeToken(G, pos, {
-      playerID,
-      obstructing: 'none',
-      isSecret: true,
-      isRemovable: false,
-      color: 'black',
-    });
+    const tokenState = Abyss.create(playerID);
+    Board.placeToken(G, pos, tokenState);
     return 'end';
   },
 

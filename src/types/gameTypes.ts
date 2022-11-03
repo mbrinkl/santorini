@@ -30,6 +30,44 @@ export interface Player {
   charState: CharacterState;
 }
 
+export interface Space {
+  pos: number;
+  height: number;
+  inhabitant?: {
+    playerID: string;
+    workerNum: number;
+  };
+  isDomed: boolean;
+  tokens: TokenState[];
+}
+
+/**
+ * Tokens
+ */
+
+export interface TokenState {
+  tokenName: string;
+  playerID: string;
+  obstructing: 'none' | 'all' | 'opponent';
+  isSecret: boolean;
+  isRemovable: boolean;
+  color: string; // just distinguish by color for now
+}
+
+export interface Token {
+  create: (playerID: string) => TokenState;
+  effects?: (context: GameContext, tokenState: TokenState, pos: number) => void;
+}
+
+export interface OffBoardToken {
+  playerID: string;
+  direction: number;
+}
+
+/**
+ * Characters
+ */
+
 export interface Worker {
   pos: number;
   height: number;
@@ -65,31 +103,7 @@ export interface CharacterState<T = Record<string, unknown>> {
   attrs: T;
 }
 
-export interface Space {
-  pos: number;
-  height: number;
-  inhabitant?: {
-    playerID: string;
-    workerNum: number;
-  };
-  isDomed: boolean;
-  tokens: Token[];
-}
-
-export interface Token {
-  playerID: string;
-  obstructing: 'none' | 'all' | 'opponent';
-  isSecret: boolean;
-  isRemovable: boolean;
-  color: string; // just distinguish by color for now
-}
-
-export interface OffBoardToken {
-  playerID: string;
-  direction: number;
-}
-
-export interface CharacterFunctions<T> {
+interface CharacterFns<T> {
   initialize: (context: GameContext, charState: CharacterState<T>) => void;
   onTurnBegin: (context: GameContext, charState: CharacterState<T>) => void;
   onTurnEnd: (context: GameContext, charState: CharacterState<T>) => void;
@@ -234,6 +248,6 @@ export interface CharacterFunctions<T> {
   ) => boolean;
 }
 
-export type Character<T = Record<string, unknown>> = CharacterFunctions<T> & {
+export type Character<T = Record<string, unknown>> = CharacterFns<T> & {
   data: Omit<CharacterState<T>, 'name'>;
 };

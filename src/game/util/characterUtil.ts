@@ -65,7 +65,7 @@ export const characterList: string[] = [
   // "Moerae",
   // "Nemesis",
   'Siren',
-  // 'Tartarus',
+  'Tartarus',
   // "Terpsichore",
   'Urania',
 

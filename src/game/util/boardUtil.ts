@@ -1,6 +1,6 @@
-import { GameContext, GameState, Token } from '../../types/gameTypes';
-// import { getCharacter } from './characterUtil';
+import { GameContext, GameState, TokenState } from '../../types/gameTypes';
 import { tryEndGame } from './gameUtil';
+import { getTokenByName } from './tokenUtil';
 
 export const Board = {
   place: (
@@ -18,11 +18,11 @@ export const Board = {
       workerNum,
     };
 
-    // // Resolve token effects
-    // G.spaces[pos].tokens.forEach((token) => {
-    //   const character = getCharacter(G.players[token.playerID].charState);
-    //   character.tokenEffects(context, charState, pos);
-    // });
+    // Resolve token effects
+    G.spaces[pos].tokens.forEach((tokenState) => {
+      const token = getTokenByName(tokenState.tokenName);
+      token?.effects?.(context, tokenState, pos);
+    });
   },
 
   free: ({ G }: GameContext, pos: number) => {
@@ -89,7 +89,7 @@ export const Board = {
     }
   },
 
-  placeToken: (G: GameState, pos: number, token: Token) => {
+  placeToken: (G: GameState, pos: number, token: TokenState) => {
     G.spaces[pos].tokens.push(token);
   },
 

@@ -1,6 +1,6 @@
 import { Cone, Cylinder, RoundedBox } from '@react-three/drei';
 import { Vector3 } from '@react-three/fiber';
-import { OffBoardToken, Token } from '../../types/gameTypes';
+import { OffBoardToken, TokenState } from '../../types/gameTypes';
 import { BoardPosition } from '../../types/boardTypes';
 import { GROUND_SIZE } from '../../config/board';
 
@@ -11,7 +11,7 @@ export const GenericToken = ({
 }: {
   boardPos: BoardPosition;
   height: number;
-  tokens: Token[];
+  tokens: TokenState[];
 }): JSX.Element => {
   const { x, z } = boardPos;
   // Assuming only two tokens per position is possible right now
