@@ -1,4 +1,7 @@
+import chalk from 'chalk';
 import { StorageCache } from '@boardgame.io/storage-cache';
+import { PostgresStore } from 'bgio-postgres';
+import { isProduction } from '../src/config';
 
 export class ExtendedStorageCache extends StorageCache {
   /**
@@ -65,3 +68,30 @@ export class ExtendedStorageCache extends StorageCache {
     return gameData;
   }
 }
+
+export const getDb = (connectionString?: string) => {
+  if (connectionString) {
+    return new ExtendedStorageCache(
+      new PostgresStore(connectionString, {
+        logging: false,
+        ...(isProduction && {
+          dialect: 'postgres',
+          dialectOptions: {
+            ssl: {
+              require: true,
+              rejectUnauthorized: false,
+            },
+          },
+        }),
+      }),
+    );
+  }
+
+  if (isProduction) {
+    throw new Error('CONNECTION_STRING missing from environment variables');
+  }
+
+  // eslint-disable-next-line no-console
+  console.log(chalk.yellow('Starting server with in-memory database'));
+  return undefined;
+};
