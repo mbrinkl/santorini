@@ -7,6 +7,7 @@ import { DEFAULT_PORT } from '../src/config';
 import { SantoriniGame } from '../src/game';
 import { getDb } from './storage';
 import { setupServerJobs } from './jobs';
+import { discordWebhookMiddleware } from './middleware';
 
 const server = Server({
   games: [SantoriniGame],
@@ -23,6 +24,8 @@ server.app.use(
   }),
 );
 server.app.use(serve(path.join(__dirname, '../dist')));
+
+server.router.use(...discordWebhookMiddleware);
 
 server.run(Number(process.env.PORT || DEFAULT_PORT));
 
