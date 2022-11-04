@@ -18,7 +18,7 @@ export const WorkerModel = ({
       args={[1, 16]}
       position={[boardPos.x, yPosHeightMap[height], boardPos.z]}
     >
-      <meshStandardMaterial name="mat" color={color} roughness={0.25} />
+      <meshStandardMaterial color={color} roughness={0.25} />
     </Sphere>
   );
 };
