@@ -10,7 +10,7 @@ import { setupServerJobs } from './jobs';
 
 const server = Server({
   games: [SantoriniGame],
-  db: getDb(process.env.CONNECTION_STRING),
+  db: getDb(),
   origins: [
     process.env.RENDER_EXTERNAL_URL || Origins.LOCALHOST_IN_DEVELOPMENT,
   ],

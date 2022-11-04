@@ -21,7 +21,7 @@ export class ExtendedStorageCache extends StorageCache {
 
   /**
    * setState modification: if the game is over, attach the game's random seed
-   *  and the player's character's names to the game metadata
+   *  and the characters' names to the game metadata
    */
   async setState(...args: Parameters<StorageCache['setState']>) {
     const [matchID, state] = args;
@@ -69,29 +69,31 @@ export class ExtendedStorageCache extends StorageCache {
   }
 }
 
-export const getDb = (connectionString?: string) => {
-  if (connectionString) {
-    return new ExtendedStorageCache(
-      new PostgresStore(connectionString, {
-        logging: false,
-        ...(isProduction && {
-          dialect: 'postgres',
-          dialectOptions: {
-            ssl: {
-              require: true,
-              rejectUnauthorized: false,
-            },
+export const getDb = () => {
+  const connectionString = process.env.CONNECTION_STRING;
+
+  if (!connectionString) {
+    if (isProduction) {
+      throw new Error('CONNECTION_STRING missing from environment variables');
+    }
+
+    // eslint-disable-next-line no-console
+    console.log(chalk.yellow('Starting server with in-memory database'));
+    return undefined;
+  }
+
+  return new ExtendedStorageCache(
+    new PostgresStore(connectionString, {
+      logging: false,
+      ...(isProduction && {
+        dialect: 'postgres',
+        dialectOptions: {
+          ssl: {
+            require: true,
+            rejectUnauthorized: false,
           },
-        }),
+        },
       }),
-    );
-  }
-
-  if (isProduction) {
-    throw new Error('CONNECTION_STRING missing from environment variables');
-  }
-
-  // eslint-disable-next-line no-console
-  console.log(chalk.yellow('Starting server with in-memory database'));
-  return undefined;
+    }),
+  );
 };
