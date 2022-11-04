@@ -1,6 +1,11 @@
 import { StorageCache } from '@boardgame.io/storage-cache';
 
 export class ExtendedStorageCache extends StorageCache {
+  /**
+   * setMetadata modification: if the game is not over, strip all setupData
+   *  (was facing issues with random seed staying attached in a new game
+   *   after playAgain)
+   */
   async setMetadata(...args: Parameters<StorageCache['setMetadata']>) {
     const [matchID, matchData] = args;
 
@@ -11,6 +16,10 @@ export class ExtendedStorageCache extends StorageCache {
     }
   }
 
+  /**
+   * setState modification: if the game is over, attach the game's random seed
+   *  and the player's character's names to the game metadata
+   */
   async setState(...args: Parameters<StorageCache['setState']>) {
     const [matchID, state] = args;
 
@@ -37,5 +46,22 @@ export class ExtendedStorageCache extends StorageCache {
         },
       });
     }
+  }
+
+  /**
+   * fetch modification: if the game is over, remove all redactions so
+   *  secret state is removed and game playback works properly
+   */
+  async fetch(...args: Parameters<StorageCache['fetch']>) {
+    const gameData = await super.fetch(...args);
+
+    if (gameData.metadata?.gameover != null && gameData.log) {
+      gameData.log = gameData.log.map((logEntry) => ({
+        ...logEntry,
+        redact: false,
+      }));
+    }
+
+    return gameData;
   }
 }
