@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import { useEffect, useRef } from 'react';
 import { posToReadableCoord } from '../../game/util/posUtil';
-import { useBoardContext } from '../../context/boardContext';
+import { useBoardContext } from '../../hooks/useBoardContext';
 import './MoveLog.scss';
 
 export const MoveLog = (): JSX.Element => {
