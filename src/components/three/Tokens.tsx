@@ -1,6 +1,6 @@
 import { Cone, Cylinder, RoundedBox } from '@react-three/drei';
 import { Vector3 } from '@react-three/fiber';
-import { OffBoardToken, Token } from '../../types/gameTypes';
+import { OffBoardToken, TokenState } from '../../types/gameTypes';
 import { BoardPosition } from '../../types/boardTypes';
 import { GROUND_SIZE } from '../../config/board';
 
@@ -11,7 +11,7 @@ export const GenericToken = ({
 }: {
   boardPos: BoardPosition;
   height: number;
-  tokens: Token[];
+  tokens: TokenState[];
 }): JSX.Element => {
   const { x, z } = boardPos;
   // Assuming only two tokens per position is possible right now
@@ -33,7 +33,7 @@ export const GenericToken = ({
           radius={0.05}
           smoothness={4}
         >
-          <meshStandardMaterial name="mat" color={token.color} />
+          <meshStandardMaterial color={token.color} />
         </RoundedBox>
       ))}
     </>
@@ -68,11 +68,11 @@ export const GenericOffBoardToken = ({
           rotation={[Math.PI / 2, 0, Math.PI + mapping[token.direction]]}
         >
           <Cone args={[1, 2]} rotation={[0, 0, 0]} position={[0, 1, 0]}>
-            <meshStandardMaterial name="mat" color="blue" />
+            <meshStandardMaterial color="blue" />
           </Cone>
 
           <Cylinder args={[0.5, 0.5, 2]} position={[0, -1, 0]}>
-            <meshStandardMaterial name="mat" color="blue" />
+            <meshStandardMaterial color="blue" />
           </Cylinder>
         </group>
       ))}

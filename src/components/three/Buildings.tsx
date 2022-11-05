@@ -59,7 +59,7 @@ export const Dome = ({
       rotation={[(3 * Math.PI) / 2, 0, 0]}
       position={[boardPos.x, yPosHeightMap[height], boardPos.z]}
     >
-      <meshStandardMaterial name="mat" color="blue" />
+      <meshStandardMaterial color="blue" />
     </Sphere>
   );
 };

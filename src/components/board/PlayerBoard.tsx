@@ -3,7 +3,7 @@ import { Canvas } from '@react-three/fiber';
 import { useContextBridge } from '@react-three/drei';
 import classNames from 'classnames';
 import { HelpText } from './HelpText';
-import { useBoardContext, BoardContext } from '../../context/boardContext';
+import { useBoardContext, BoardContext } from '../../hooks/useBoardContext';
 import { Scene } from '../three/Scene';
 import './PlayerBoard.scss';
 

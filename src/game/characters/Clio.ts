@@ -1,6 +1,7 @@
 import { Mortal } from './Mortal';
 import { Board } from '../util/boardUtil';
-import { Character, Token } from '../../types/gameTypes';
+import { Character } from '../../types/gameTypes';
+import { Coin } from '../tokens';
 
 type ClioAttrs = {
   numTokens: number;
@@ -33,14 +34,8 @@ export const Clio: Character<ClioAttrs> = {
     );
 
     if (charState.attrs.numTokens > 0) {
-      const token: Token = {
-        playerID,
-        obstructing: 'opponent',
-        removable: false,
-        secret: false,
-        color: 'yellow',
-      };
-      Board.placeToken(G, pos, token);
+      const tokenState = Coin.create(playerID);
+      Board.placeToken(G, pos, tokenState);
       charState.attrs.numTokens -= 1;
     }
   },

@@ -1,6 +1,6 @@
 import classNames from 'classnames';
 import { banList } from '../../game/util/characterUtil';
-import { useBoardContext } from '../../context/boardContext';
+import { useBoardContext } from '../../hooks/useBoardContext';
 import CheckImg from '../../assets/png/check.png';
 import './CharacterCard.scss';
 

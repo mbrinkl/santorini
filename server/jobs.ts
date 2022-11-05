@@ -1,14 +1,14 @@
 import { StorageAPI } from 'boardgame.io';
 
-const hour = 60 * 60 * 1000;
-const day = 24 * hour;
+const minute = 60 * 1000;
+const day = 24 * 60 * minute;
 
-// Delete games that have not been updated for 1 day and are not complete
+// Delete games that have not been updated for 3 days and are not complete
 async function deleteStaleGames(db: StorageAPI.Async | StorageAPI.Sync) {
-  const dayAgo = Date.now() - day;
+  const expirationTime = Date.now() - 3 * day;
   const staleMatchIDs = await db.listMatches({
     where: {
-      updatedBefore: dayAgo,
+      updatedBefore: expirationTime,
       isGameover: false,
     },
   });
@@ -18,5 +18,5 @@ async function deleteStaleGames(db: StorageAPI.Async | StorageAPI.Sync) {
 }
 
 export function setupServerJobs(db: StorageAPI.Async | StorageAPI.Sync) {
-  setInterval(() => deleteStaleGames(db), hour);
+  setInterval(() => deleteStaleGames(db), 5 * minute);
 }

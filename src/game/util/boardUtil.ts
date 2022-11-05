@@ -1,6 +1,6 @@
-import { GameContext, GameState, Token } from '../../types/gameTypes';
-// import { getCharacter } from './characterUtil';
+import { GameContext, GameState, TokenState } from '../../types/gameTypes';
 import { tryEndGame } from './gameUtil';
+import { getTokenByName } from './tokenUtil';
 
 export const Board = {
   place: (
@@ -18,11 +18,11 @@ export const Board = {
       workerNum,
     };
 
-    // // Resolve token effects
-    // G.spaces[pos].tokens.forEach((token) => {
-    //   const character = getCharacter(G.players[token.playerID].charState);
-    //   character.tokenEffects(context, charState, pos);
-    // });
+    // Resolve token effects
+    G.spaces[pos].tokens.forEach((tokenState) => {
+      const token = getTokenByName(tokenState.tokenName);
+      token?.effects?.(context, tokenState, pos);
+    });
   },
 
   free: ({ G }: GameContext, pos: number) => {
@@ -58,10 +58,20 @@ export const Board = {
     Board.free(context, pos);
   },
 
-  isObstructed: (G: GameState, playerID: string, pos: number) =>
-    G.spaces[pos].isDomed ||
-    G.spaces[pos].inhabitant ||
-    Board.tokenObstructing(G, playerID, pos),
+  isObstructed: (G: GameState, playerID: string, pos: number) => {
+    const space = G.spaces[pos];
+    const { opponentID } = G.players[playerID];
+    const isOpponentSecretlyInhabiting =
+      G.players[opponentID].charState.hasSecretWorkers;
+    return (
+      space.isDomed ||
+      (space.inhabitant &&
+        (space.inhabitant.playerID === playerID ||
+          (space.inhabitant?.playerID === opponentID &&
+            !isOpponentSecretlyInhabiting))) ||
+      Board.tokenObstructing(G, playerID, pos)
+    );
+  },
 
   tokenObstructing: (G: GameState, playerID: string, pos: number) =>
     G.spaces[pos].tokens.some(
@@ -79,13 +89,13 @@ export const Board = {
     }
   },
 
-  placeToken: (G: GameState, pos: number, token: Token) => {
+  placeToken: (G: GameState, pos: number, token: TokenState) => {
     G.spaces[pos].tokens.push(token);
   },
 
   removeTokens: (G: GameState, pos: number) => {
     G.spaces[pos].tokens = G.spaces[pos].tokens.filter(
-      (token) => !token.removable,
+      (token) => !token.isRemovable,
     );
   },
 };

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useBoardContext } from '../../context/boardContext';
+import { useBoardContext } from '../../hooks/useBoardContext';
 import { ConnectedIndicator } from './ConnectedIndicator';
 import './PlayerInfoMobile.scss';
 

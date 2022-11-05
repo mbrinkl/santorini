@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import { useEffect, useRef } from 'react';
 import { posToReadableCoord } from '../../game/util/posUtil';
-import { useBoardContext } from '../../context/boardContext';
+import { useBoardContext } from '../../hooks/useBoardContext';
 import './MoveLog.scss';
 
 export const MoveLog = (): JSX.Element => {
@@ -50,10 +50,10 @@ export const MoveLog = (): JSX.Element => {
           lastTurn = turn;
         }
         const name = matchData?.[Number(playerID)].name || `Player ${playerID}`;
+        const pos = args?.[0];
+        const coord = Number(pos) ? posToReadableCoord(pos) : '??';
         const move =
-          type === 'onButtonPressed'
-            ? 'button pressed'
-            : `${type} ${posToReadableCoord(args?.[0])}`;
+          type === 'onButtonPressed' ? 'button pressed' : `${type} ${coord}`;
 
         return (
           <p

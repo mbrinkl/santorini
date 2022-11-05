@@ -1,14 +1,15 @@
 import { ActivePlayers } from 'boardgame.io/core';
 import { Ctx, Game } from 'boardgame.io';
-import { RandomAPI } from 'boardgame.io/dist/types/src/plugins/random/random';
 import { GAME_ID } from '../config';
 import {
-  banList,
-  characterList,
+  chooseRandomCharacters,
   getCharacter,
   initCharState,
 } from './util/characterUtil';
 import { GameContext, GameState, Player, Space } from '../types/gameTypes';
+import { canReachEndStage, updateValids } from './validity';
+import { deepClone } from '../util';
+import { getContextWithPlayerID } from './util/gameUtil';
 import {
   setChar,
   ready,
@@ -21,8 +22,17 @@ import {
   onButtonPressed,
   endTurn,
 } from './moves';
-import { canReachEndStage, updateValids } from './validity';
-import { deepClone } from '../util';
+
+const getFirstPlayer = (G: GameState): number => {
+  if (
+    G.players['0'].charState.turnOrder === 1 ||
+    G.players['1'].charState.turnOrder === 0
+  ) {
+    return 1;
+  }
+
+  return 0;
+};
 
 const TURN_ORDER_ONCE = {
   first: ({ G }: Omit<GameContext, 'playerID'>) => getFirstPlayer(G),
@@ -40,53 +50,11 @@ const TURN_ORDER_DEFAULT = {
     (ctx.playOrderPos + 1) % ctx.numPlayers,
 };
 
-function initRandomCharacters(G: GameState, random: RandomAPI) {
-  // Remove 'Random'
-  const listOnlyCharacters = characterList.slice(1);
-
-  Object.values(G.players).forEach((player) => {
-    if (player.charState.name === 'Random') {
-      const opponentCharName = G.players[player.opponentID].charState.name;
-      const bannedPairs = banList.filter((ban) =>
-        ban.includes(opponentCharName),
-      );
-      const bannedChars = bannedPairs
-        .flat()
-        .filter((charName) => charName !== opponentCharName);
-      const possibleChars = listOnlyCharacters.filter(
-        (name) => name !== opponentCharName && !bannedChars.includes(name),
-      );
-      const randomCharName = random.Shuffle(possibleChars)[0];
-      player.charState = initCharState(randomCharName);
-    }
-  });
-}
-
-function getFirstPlayer(G: GameState): number {
-  if (
-    G.players['0'].charState.turnOrder === 1 ||
-    G.players['1'].charState.turnOrder === 0
-  ) {
-    return 1;
-  }
-
-  return 0;
-}
-
-// Uses ctx.currentPlayer as the game context's playerID
-function getContextWithPlayerID(
-  context: Omit<GameContext, 'playerID'>,
-): GameContext {
-  const { ctx } = context;
-  const playerID = ctx.currentPlayer;
-  return { ...context, playerID };
-}
-
-function stripSecrets(
+const stripSecrets = (
   G: GameState,
   ctx: Ctx,
   playerID: string | null,
-): GameState {
+): GameState => {
   if (ctx.gameover) {
     return G;
   }
@@ -94,7 +62,7 @@ function stripSecrets(
   const strippedState = deepClone(G);
 
   Object.values(strippedState.players).forEach((player) => {
-    if (player.charState.secretWorkers && player.ID !== playerID) {
+    if (player.charState.hasSecretWorkers && player.ID !== playerID) {
       player.charState.workers.forEach((worker) => {
         strippedState.spaces[worker.pos].inhabitant = undefined;
       });
@@ -106,16 +74,16 @@ function stripSecrets(
   strippedState.spaces.forEach((space) => {
     const { tokens } = space;
     for (let i = tokens.length - 1; i >= 0; i--) {
-      if (tokens[i].secret && tokens[i].playerID !== playerID) {
+      if (tokens[i].isSecret && tokens[i].playerID !== playerID) {
         tokens.splice(i, 1);
       }
     }
   });
 
   return strippedState;
-}
+};
 
-export const initPlayers = (ctx: Ctx): Record<string, Player> => {
+const initPlayers = (ctx: Ctx): Record<string, Player> => {
   const players: Record<string, Player> = {} as Record<string, Player>;
   for (let i = 0; i < ctx.numPlayers; i++) {
     players[i] = {
@@ -128,7 +96,7 @@ export const initPlayers = (ctx: Ctx): Record<string, Player> => {
   return players;
 };
 
-export const initBoard = (): Space[] => {
+const initBoard = (): Space[] => {
   const spaces: Space[] = [];
   for (let i = 0; i < 25; i++) {
     spaces.push({
@@ -172,7 +140,7 @@ export const SantoriniGame: Game<GameState> = {
         Object.values(G.players).every((player) => player.ready),
       onEnd: (context) => {
         const { G, random } = context;
-        initRandomCharacters(G, random);
+        chooseRandomCharacters(G, random);
         Object.values(G.players).forEach((player) => {
           const character = getCharacter(player.charState);
           character.initialize(

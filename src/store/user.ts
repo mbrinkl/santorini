@@ -8,11 +8,9 @@ interface State {
   roomData: RoomData | null;
 }
 
-const localRoomData = localStorage.getItem(PLAYER_STORAGE_KEY);
-
 const initialState: State = {
   nickname: localStorage.getItem(NICKNAME_STORAGE_KEY),
-  roomData: localRoomData && JSON.parse(localRoomData),
+  roomData: JSON.parse(localStorage.getItem(PLAYER_STORAGE_KEY) ?? 'null'),
 };
 
 export const userSlice = createSlice({
@@ -21,7 +19,7 @@ export const userSlice = createSlice({
   reducers: {
     setNickname: (state, action: PayloadAction<string | null>) => {
       const nickname = action.payload;
-      state.nickname = action.payload;
+      state.nickname = nickname;
       if (nickname != null) {
         localStorage.setItem(NICKNAME_STORAGE_KEY, nickname);
       } else {
@@ -30,7 +28,7 @@ export const userSlice = createSlice({
     },
     setRoomData: (state, action: PayloadAction<RoomData | null>) => {
       const roomData = action.payload;
-      state.roomData = action.payload;
+      state.roomData = roomData;
       if (roomData != null) {
         localStorage.setItem(PLAYER_STORAGE_KEY, JSON.stringify(roomData));
       } else {

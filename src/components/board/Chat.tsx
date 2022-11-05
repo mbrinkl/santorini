@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import classNames from 'classnames';
-import { useBoardContext } from '../../context/boardContext';
+import { useBoardContext } from '../../hooks/useBoardContext';
 import { isMobile } from '../../util';
 import { ImageButton } from '../common/Button';
 import sendIcon from '../../assets/png/send.png';

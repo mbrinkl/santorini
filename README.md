@@ -8,8 +8,13 @@ How to play: [youtube](https://www.youtube.com/watch?v=EZi-MZEylRQ), [rulebook](
 
 ### Tech stack
 
-- [boardgame.io](https://boardgame.io/)
+- Node.js
 - Typescript
 - React
-- Node.js
+- [boardgame.io](https://boardgame.io/)
 - [three.js](https://threejs.org/) / [react-three-fiber](https://github.com/pmndrs/react-three-fiber)
+- PostgreSQL
+
+### Hosting
+
+Using free tier application hosting on render.com and free tier postgres database hosting on supabase. Because of this, loading times may be slow, and the application startup can be especially slow.

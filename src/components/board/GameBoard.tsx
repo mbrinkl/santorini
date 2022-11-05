@@ -3,7 +3,7 @@ import { BoardProps } from 'boardgame.io/react';
 import { useMemo, useState } from 'react';
 import { InspectorControls } from './Inspector';
 import { GameState } from '../../types/gameTypes';
-import { BoardContext } from '../../context/boardContext';
+import { BoardContext } from '../../hooks/useBoardContext';
 import { PlayerBoard } from './PlayerBoard';
 import { PlayerControls } from './PlayerControls';
 import { CharacterSelect } from './CharacterSelect';

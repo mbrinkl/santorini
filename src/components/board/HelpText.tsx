@@ -1,4 +1,4 @@
-import { useBoardContext } from '../../context/boardContext';
+import { useBoardContext } from '../../hooks/useBoardContext';
 
 export const HelpText = (): JSX.Element => {
   const { G, isActive, ctx, matchData, playerID } = useBoardContext();

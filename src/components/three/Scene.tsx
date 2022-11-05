@@ -2,7 +2,7 @@ import React, { useCallback, useMemo } from 'react';
 import { ThreeEvent } from '@react-three/fiber';
 import { OrbitControls } from '@react-three/drei';
 import { GameStage } from '../../types/gameTypes';
-import { useBoardContext } from '../../context/boardContext';
+import { useBoardContext } from '../../hooks/useBoardContext';
 import { Ground } from './Ground';
 import { BuildingBase, BuildingMid, BuildingTop, Dome } from './Buildings';
 import { Indicator } from './Indicators';

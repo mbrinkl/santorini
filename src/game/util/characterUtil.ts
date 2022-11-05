@@ -10,7 +10,8 @@
  *        Use the name of the character from (2b.) without spaces
  */
 
-import { Character, CharacterState } from '../../types/gameTypes';
+import { RandomAPI } from 'boardgame.io/dist/types/src/plugins/random/random';
+import { Character, CharacterState, GameState } from '../../types/gameTypes';
 import { deepClone } from '../../util';
 import * as Characters from '../characters';
 
@@ -61,11 +62,11 @@ export const characterList: string[] = [
   'Graeae',
   'Hades',
   'Harpies',
-  // 'Hecate',
+  'Hecate',
   // "Moerae",
   // "Nemesis",
   'Siren',
-  // 'Tartarus',
+  'Tartarus',
   // "Terpsichore",
   'Urania',
 
@@ -225,4 +226,26 @@ export function getCharacter(charState: CharacterState): Character {
 export function initCharState(name: string): CharacterState {
   const { data } = getCharacterByName(name);
   return { name, ...deepClone(data) };
+}
+
+export function chooseRandomCharacters(G: GameState, random: RandomAPI) {
+  // Remove 'Random'
+  const listOnlyCharacters = characterList.slice(1);
+
+  Object.values(G.players).forEach((player) => {
+    if (player.charState.name === 'Random') {
+      const opponentCharName = G.players[player.opponentID].charState.name;
+      const bannedPairs = banList.filter((ban) =>
+        ban.includes(opponentCharName),
+      );
+      const bannedChars = bannedPairs
+        .flat()
+        .filter((charName) => charName !== opponentCharName);
+      const possibleChars = listOnlyCharacters.filter(
+        (name) => name !== opponentCharName && !bannedChars.includes(name),
+      );
+      const randomCharName = random.Shuffle(possibleChars)[0];
+      player.charState = initCharState(randomCharName);
+    }
+  });
 }

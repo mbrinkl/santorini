@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import { useBoardContext } from '../../context/boardContext';
+import { useBoardContext } from '../../hooks/useBoardContext';
 import './ConnectedIndicator.scss';
 
 export const ConnectedIndicator = ({

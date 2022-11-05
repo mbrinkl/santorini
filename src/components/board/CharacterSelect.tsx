@@ -5,7 +5,7 @@ import {
   getCharacterByName,
   getSortedCharacters,
 } from '../../game/util/characterUtil';
-import { useBoardContext } from '../../context/boardContext';
+import { useBoardContext } from '../../hooks/useBoardContext';
 import { CharacterCard, SelectedCharacterCard } from './CharacterCard';
 import { ButtonGroup } from '../common/ButtonGroup';
 import './CharacterSelect.scss';

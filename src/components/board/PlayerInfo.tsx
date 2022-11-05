@@ -1,4 +1,4 @@
-import { useBoardContext } from '../../context/boardContext';
+import { useBoardContext } from '../../hooks/useBoardContext';
 import { ConnectedIndicator } from './ConnectedIndicator';
 import './PlayerInfo.scss';
 
