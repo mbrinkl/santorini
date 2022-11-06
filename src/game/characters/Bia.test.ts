@@ -76,4 +76,50 @@ describe('Bia', () => {
       expect(state?.ctx.currentPlayer).toBe('1');
     },
   );
+
+  it('should kill opponent worker', () => {
+    p0.moves.setChar('Bia');
+    p1.moves.setChar('Mortal');
+    p0.moves.ready(true);
+    p1.moves.ready(true);
+
+    p0.moves.place(0);
+    p0.moves.place(1);
+    p0.moves.endTurn();
+
+    p1.moves.place(10);
+    p1.moves.place(11);
+    p1.moves.endTurn();
+
+    p0.moves.select(0);
+    p0.moves.move(5);
+
+    const state = p0.getState();
+
+    expect(state?.G.players['1'].charState.workers.length).toBe(1);
+    expect(state?.G.spaces[10].inhabitant).toBeUndefined();
+  });
+
+  it('should not kill own worker', () => {
+    p0.moves.setChar('Bia');
+    p1.moves.setChar('Mortal');
+    p0.moves.ready(true);
+    p1.moves.ready(true);
+
+    p0.moves.place(0);
+    p0.moves.place(10);
+    p0.moves.endTurn();
+
+    p1.moves.place(23);
+    p1.moves.place(24);
+    p1.moves.endTurn();
+
+    p0.moves.select(0);
+    p0.moves.move(5);
+
+    const state = p0.getState();
+
+    expect(state?.G.players['0'].charState.workers.length).toBe(2);
+    expect(state?.G.spaces[10].inhabitant).not.toBeUndefined();
+  });
 });
