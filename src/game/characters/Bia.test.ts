@@ -3,7 +3,7 @@ import { _ClientImpl } from 'boardgame.io/dist/types/src/client/client';
 import { Local } from 'boardgame.io/multiplayer';
 import { SantoriniGame } from '..';
 import { GameState } from '../../types/gameTypes';
-import { banList, characterList } from '../util/characterUtil';
+import { characterList, getBannedOpponents } from '../util/characterUtil';
 
 let p0: _ClientImpl<GameState>;
 let p1: _ClientImpl<GameState>;
@@ -13,10 +13,7 @@ const getOpponentList = (charName: string) => {
     (name) => name !== charName && name !== 'Random',
   );
 
-  const bans = banList
-    .filter((ban) => ban[0] === charName || ban[1] === charName)
-    .flat()
-    .filter((name) => name !== charName);
+  const bans = getBannedOpponents(charName);
 
   return opponentList.filter((name) => !bans.includes(name));
 };
