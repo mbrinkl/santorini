@@ -83,7 +83,7 @@ const stripSecrets = (
   return strippedState;
 };
 
-const initPlayers = (ctx: Ctx): Record<string, Player> => {
+export const initPlayers = (ctx: Ctx): Record<string, Player> => {
   const players: Record<string, Player> = {} as Record<string, Player>;
   for (let i = 0; i < ctx.numPlayers; i++) {
     players[i] = {
@@ -96,7 +96,7 @@ const initPlayers = (ctx: Ctx): Record<string, Player> => {
   return players;
 };
 
-const initBoard = (): Space[] => {
+export const initBoard = (): Space[] => {
   const spaces: Space[] = [];
   for (let i = 0; i < 25; i++) {
     spaces.push({
