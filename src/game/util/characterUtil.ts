@@ -233,17 +233,18 @@ export function getBannedOpponents(name: string) {
   return bannedPairs.flat().filter((n) => n !== name);
 }
 
-export function chooseRandomCharacters(G: GameState, random: RandomAPI) {
-  // Remove 'Random'
-  const listOnlyCharacters = characterList.slice(1);
+export function getValidOpponents(name: string) {
+  const bannedOpponents = getBannedOpponents(name);
+  return characterList.filter(
+    (n) => n !== name && n !== 'Random' && !bannedOpponents.includes(n),
+  );
+}
 
+export function chooseRandomCharacters(G: GameState, random: RandomAPI) {
   Object.values(G.players).forEach((player) => {
     if (player.charState.name === 'Random') {
       const opponentCharName = G.players[player.opponentID].charState.name;
-      const bannedChars = getBannedOpponents(opponentCharName);
-      const possibleChars = listOnlyCharacters.filter(
-        (name) => name !== opponentCharName && !bannedChars.includes(name),
-      );
+      const possibleChars = getValidOpponents(opponentCharName);
       const randomCharName = random.Shuffle(possibleChars)[0];
       player.charState = initCharState(randomCharName);
     }

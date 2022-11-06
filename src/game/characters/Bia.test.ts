@@ -3,22 +3,12 @@ import { _ClientImpl } from 'boardgame.io/dist/types/src/client/client';
 import { Local } from 'boardgame.io/multiplayer';
 import { SantoriniGame } from '..';
 import { GameState } from '../../types/gameTypes';
-import { characterList, getBannedOpponents } from '../util/characterUtil';
+import { getValidOpponents } from '../util/characterUtil';
 
 let p0: _ClientImpl<GameState>;
 let p1: _ClientImpl<GameState>;
 
-const getOpponentList = (charName: string) => {
-  const opponentList = characterList.filter(
-    (name) => name !== charName && name !== 'Random',
-  );
-
-  const bans = getBannedOpponents(charName);
-
-  return opponentList.filter((name) => !bans.includes(name));
-};
-
-const opponentList = getOpponentList('Bia');
+const opponentList = getValidOpponents('Bia');
 
 describe('Bia', () => {
   beforeEach(() => {
@@ -117,6 +107,6 @@ describe('Bia', () => {
     const state = p0.getState();
 
     expect(state?.G.players['0'].charState.workers.length).toBe(2);
-    expect(state?.G.spaces[10].inhabitant).not.toBeUndefined();
+    expect(state?.G.spaces[10].inhabitant).toBeDefined();
   });
 });
