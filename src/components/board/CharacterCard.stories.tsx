@@ -1,22 +1,26 @@
 import type { StoryFn, Meta } from '@storybook/react';
-// import { BoardProps, Client } from 'boardgame.io/react';
-// import { BoardContext } from '../../context/boardContext';
-// import { SantoriniGame } from '../../game';
-// import { GameState } from '../../types/gameTypes';
+import { _ClientImpl } from 'boardgame.io/dist/types/src/client/client';
+import { characterList } from '../../game/util/characterUtil';
+import { BoardContext } from '../../hooks/useBoardContext';
+import { mockBoardProps } from '../../util/mocks';
 import { CharacterCard } from './CharacterCard';
 
 export default {
   title: 'board/CharacterCard',
   component: CharacterCard,
-  // decorators: [
-  //   (Story) => (
-  //     <BoardContext.Provider value={''}>
-  //       <Story />
-  //     </BoardContext.Provider>
-  //   ),
-  // ],
+  argTypes: {
+    name: {
+      control: 'select',
+      options: characterList,
+    },
+  },
+  args: {
+    name: characterList[0],
+  },
 } as Meta<typeof CharacterCard>;
 
-export const Loada: StoryFn<typeof CharacterCard> = () => (
-  <CharacterCard name="Apollo" playerID="1" />
+export const Default: StoryFn<typeof CharacterCard> = (args) => (
+  <BoardContext.Provider value={mockBoardProps}>
+    <CharacterCard {...args} />
+  </BoardContext.Provider>
 );

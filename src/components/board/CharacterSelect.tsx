@@ -92,7 +92,7 @@ export const CharacterSelect = (): JSX.Element => {
         </select>
 
         {characterList.map((character) => (
-          <CharacterCard key={character} playerID={playerID} name={character} />
+          <CharacterCard key={character} name={character} />
         ))}
       </div>
     </div>

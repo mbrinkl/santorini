@@ -9,14 +9,8 @@ const getCharacterImageUrl = (name: string): string => {
   return `url(/characterImages/${name}.png)`;
 };
 
-export const CharacterCard = ({
-  playerID,
-  name,
-}: {
-  playerID: string | null;
-  name: string;
-}): JSX.Element => {
-  const { G, moves } = useBoardContext();
+export const CharacterCard = ({ name }: { name: string }): JSX.Element => {
+  const { G, moves, playerID } = useBoardContext();
   const takenCharacters: string[] = [];
 
   Object.values(G.players).forEach((player) => {
