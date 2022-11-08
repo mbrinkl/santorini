@@ -15,6 +15,11 @@ export type GameContext = DefaultPluginAPIs & {
   playerID: string;
 };
 
+export type OverrideState = {
+  G: GameState;
+  ctx: Ctx;
+};
+
 export interface GameState {
   spaces: Space[];
   players: Record<string, Player>;

@@ -1,12 +1,11 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { Client } from 'boardgame.io/client';
-import { BoardProps } from 'boardgame.io/react';
 import {
   ClientState,
   _ClientImpl as ClientImpl,
 } from 'boardgame.io/dist/types/src/client/client';
 import { LogEntry } from 'boardgame.io';
-import { GameState } from '../../types/gameTypes';
+import { GameState, OverrideState } from '../../types/gameTypes';
 import { SantoriniGame } from '../../game';
 import { Button } from '../common/Button';
 import { ButtonGroup } from '../common/ButtonGroup';
@@ -43,7 +42,7 @@ const getFilteredLog = (log: LogEntry[]): LogEntry[] => {
  * Execute every move in the log, or to a given index
  * (not select character moves)
  */
-export const executeLog = (
+const executeLog = (
   client: ClientImpl<GameState>,
   log: LogEntry[],
   from = 0,
@@ -113,20 +112,22 @@ export const InspectorControls = ({
 }: {
   matchID: string;
   unfilteredLog: LogEntry[];
-  setOverrideState(value: BoardProps<GameState>): void;
+  setOverrideState(value: OverrideState): void;
 }): JSX.Element => {
   const [client, setClient] = useState<ClientImpl<GameState>>();
   const [clientState, setClientState] = useState<ClientState<GameState>>();
-  const [log] = useState(getFilteredLog(unfilteredLog));
   const [setupData, setSetupData] = useState<SetupData>();
-  const [moveNumber, setMoveNumber] = useState(log.length - 1);
-  const [firstMoveInd] = useState(
-    log.findIndex(
-      (logEntry) =>
-        logEntry.action.payload.type === 'setup' ||
-        logEntry.action.payload.type === 'place',
-    ),
+  const log = useMemo(() => getFilteredLog(unfilteredLog), [unfilteredLog]);
+  const firstMoveInd = useMemo(
+    () =>
+      log.findIndex(
+        (logEntry) =>
+          logEntry.action.payload.type === 'setup' ||
+          logEntry.action.payload.type === 'place',
+      ),
+    [log],
   );
+  const [moveNumber, setMoveNumber] = useState(log.length - 1);
 
   // Load match metadata which is set at gameover
   // Poll in case the metadata is not set by the time this component loads
@@ -187,13 +188,10 @@ export const InspectorControls = ({
   }, [client, setupData, log, moveNumber]);
 
   const keyPressHandler = useCallback(
-    // eslint-disable-next-line
-    (event: any) => {
-      if (event.keyCode === 37) {
-        // Left arrow
+    (event: KeyboardEvent) => {
+      if (event.key === 'ArrowLeft') {
         back();
-      } else if (event.keyCode === 39) {
-        // Right arrow
+      } else if (event.key === 'ArrowRight') {
         forward();
       }
     },
@@ -225,32 +223,28 @@ export const InspectorControls = ({
 
   // Override the client board props whenever the clientState is set
   useEffect(() => {
-    if (client && clientState) {
-      setOverrideState({ ...client, ...clientState, isMultiplayer: false });
+    if (clientState) {
+      setOverrideState({ ...clientState });
     }
-  }, [clientState, client, setOverrideState]);
+  }, [clientState, setOverrideState]);
 
   useEffect(() => {
-    const initializeClient = async () => {
-      if (setupData) {
-        const cli = Client({
-          game: {
-            ...SantoriniGame,
-            seed: setupData.seed,
-            setup: (context) => ({
-              // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-              ...SantoriniGame.setup!(context),
-              isDummy: true,
-            }),
-          },
-        });
-        executeInitialSetup(cli, setupData.player0char, setupData.player1char);
-        executeLog(cli, log);
-        setClient(cli);
-      }
-    };
-
-    initializeClient();
+    if (setupData) {
+      const cli = Client({
+        game: {
+          ...SantoriniGame,
+          seed: setupData.seed,
+          setup: (context) => ({
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+            ...SantoriniGame.setup!(context),
+            isDummy: true,
+          }),
+        },
+      });
+      executeInitialSetup(cli, setupData.player0char, setupData.player1char);
+      executeLog(cli, log);
+      setClient(cli);
+    }
   }, [setupData, log]);
 
   if (!(setupData && client)) {
