@@ -5,7 +5,7 @@ import { Mesh } from 'three';
 import { BoardPosition } from '../../types/boardTypes';
 import { GameStage } from '../../types/gameTypes';
 
-export const PlaceIndicator = ({
+const PlaceIndicator = ({
   boardPos,
   height,
 }: {
@@ -37,7 +37,7 @@ export const PlaceIndicator = ({
   );
 };
 
-export const SelectIndicator = ({
+const SelectIndicator = ({
   boardPos,
   height,
 }: {
@@ -81,7 +81,7 @@ export const SelectIndicator = ({
   );
 };
 
-export const MoveIndicator = ({
+const MoveIndicator = ({
   boardPos,
   height,
 }: {
@@ -110,7 +110,7 @@ export const MoveIndicator = ({
   );
 };
 
-export const BuildIndicator = ({
+const BuildIndicator = ({
   boardPos,
   height,
 }: {
@@ -140,7 +140,7 @@ export const BuildIndicator = ({
   );
 };
 
-export const SpecialIndicator = ({
+const SpecialIndicator = ({
   boardPos,
   height,
 }: {
