@@ -5,7 +5,7 @@ import { ButtonBack } from '../common/ButtonBack';
 import { SetupNickname } from './SetupNickname';
 import { Logo } from '../common/Logo';
 import { LobbyPage } from './Wrapper';
-import { Button } from '../common/Button';
+import { Button, ButtonLink } from '../common/Button';
 import { ButtonChangeNickname } from '../common/ButtonChangeNickname';
 import { useAppSelector } from '../../store';
 import { useCreateMatchMutation, useLeaveMatchMutation } from '../../api';
@@ -54,6 +54,10 @@ export const CreatePage = (): JSX.Element => {
         <Button theme="blue" onClick={() => host(true)}>
           Private
         </Button>
+
+        <ButtonLink to="/local" theme="green">
+          Local
+        </ButtonLink>
       </ButtonGroup>
     </LobbyPage>
   );

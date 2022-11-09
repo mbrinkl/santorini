@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import { useBoardContext } from '../../hooks/useBoardContext';
+import { GameType, useBoardContext } from '../../hooks/useBoardContext';
 import './ConnectedIndicator.scss';
 
 export const ConnectedIndicator = ({
@@ -7,9 +7,9 @@ export const ConnectedIndicator = ({
 }: {
   playerID: string;
 }): JSX.Element | null => {
-  const { matchData } = useBoardContext();
+  const { matchData, gameType } = useBoardContext();
 
-  if (matchData) {
+  if (gameType === GameType.Online && matchData) {
     const { isConnected } = matchData[Number(playerID)];
     const status = isConnected ? 'Connected' : 'Disconnected';
     return (

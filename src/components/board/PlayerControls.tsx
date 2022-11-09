@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { usePlayAgainMutation } from '../../api';
-import { useBoardContext } from '../../hooks/useBoardContext';
+import { GameType, useBoardContext } from '../../hooks/useBoardContext';
 import { Button, ButtonLink, ImageButton } from '../common/Button';
 import undoLogo from '../../assets/png/undo.png';
 import './PlayerControls.scss';
@@ -17,6 +17,7 @@ export const PlayerControls = (): JSX.Element | null => {
     sendChatMessage,
     credentials,
     matchID,
+    gameType,
   } = useBoardContext();
 
   const navigate = useNavigate();
@@ -62,12 +63,16 @@ export const PlayerControls = (): JSX.Element | null => {
     moves.endTurn();
   }
 
-  async function rematch() {
-    if (playerID && credentials) {
-      sendChatMessage('wants to rematch...');
-      playAgain({ matchID, playerID, credentials })
-        .unwrap()
-        .then((nextMatchID) => navigate(`/${nextMatchID}`));
+  function rematch() {
+    if (gameType === GameType.Online) {
+      if (playerID && credentials) {
+        sendChatMessage('wants to rematch...');
+        playAgain({ matchID, playerID, credentials })
+          .unwrap()
+          .then((nextMatchID) => navigate(`/${nextMatchID}`));
+      }
+    } else {
+      window.location.reload();
     }
   }
 

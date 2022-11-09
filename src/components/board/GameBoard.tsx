@@ -1,9 +1,12 @@
 import classNames from 'classnames';
-import { BoardProps } from 'boardgame.io/react';
 import { useMemo, useState } from 'react';
 import { InspectorControls } from './Inspector';
-import { GameState, OverrideState } from '../../types/gameTypes';
-import { BoardContext } from '../../hooks/useBoardContext';
+import { OverrideState } from '../../types/gameTypes';
+import {
+  BoardContext,
+  BoardPropsExt,
+  GameType,
+} from '../../hooks/useBoardContext';
 import { PlayerBoard } from './PlayerBoard';
 import { PlayerControls } from './PlayerControls';
 import { CharacterSelect } from './CharacterSelect';
@@ -14,11 +17,11 @@ import { MoveLog } from './MoveLog';
 import { isMobile } from '../../util';
 import './GameBoard.scss';
 
-export const GameBoard = (boardProps: BoardProps<GameState>): JSX.Element => {
+export const GameBoard = (boardProps: BoardPropsExt): JSX.Element => {
   const [overrideState, setOverrideState] = useState<OverrideState>();
   const { ctx: unmodifiedCtx, log: unmodifiedLog } = boardProps;
 
-  const modifiedBoardProps: BoardProps<GameState> = useMemo(() => {
+  const modifiedBoardProps: BoardPropsExt = useMemo(() => {
     if (overrideState) {
       return {
         ...boardProps,
@@ -29,7 +32,7 @@ export const GameBoard = (boardProps: BoardProps<GameState>): JSX.Element => {
     return boardProps;
   }, [overrideState, boardProps]);
 
-  const { ctx, playerID, matchID } = modifiedBoardProps;
+  const { ctx, playerID, matchID, gameType } = modifiedBoardProps;
 
   return (
     <BoardContext.Provider value={modifiedBoardProps}>
@@ -60,7 +63,7 @@ export const GameBoard = (boardProps: BoardProps<GameState>): JSX.Element => {
           <>
             <div className="board-container__player-board">
               <PlayerBoard />
-              {unmodifiedCtx.gameover && (
+              {unmodifiedCtx.gameover && gameType === GameType.Online && (
                 <InspectorControls
                   unfilteredLog={unmodifiedLog}
                   matchID={matchID}

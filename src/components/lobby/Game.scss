@@ -1,6 +1,19 @@
 @import '~styles/shared';
 
 .lobby {
+  &__local {
+    display: flex;
+
+    &-wrapper {
+      display: flex;
+      height: 100%;
+    }
+
+    &-wrapper--hidden {
+      display: none;
+    }
+  }
+
   &__title {
     font-size: 42px;
     color: $c-white;

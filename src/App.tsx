@@ -7,7 +7,7 @@ import {
 import { Provider } from 'react-redux';
 import { CreatePage } from './components/lobby/Create';
 import { JoinPage } from './components/lobby/Join';
-import { GameLobby } from './components/lobby/Game';
+import { GameLobby, GameLobbyLocal } from './components/lobby/Game';
 import { SetupNickname } from './components/lobby/SetupNickname';
 import { store, useAppSelector } from './store';
 import { Home } from './components/lobby/Home';
@@ -29,6 +29,7 @@ const App = () => {
           path="/nickname"
           element={<SetupNickname onSubmit={() => navigate('/')} />}
         />
+        <Route path="/local" element={<GameLobbyLocal />} />
         <Route
           path="/:matchID"
           element={nickname ? <GameLobby /> : <SetupNickname />}
