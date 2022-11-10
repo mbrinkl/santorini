@@ -1,58 +1,18 @@
-import { Client } from 'boardgame.io/client';
-import {
-  ClientOpts,
-  _ClientImpl,
-} from 'boardgame.io/dist/types/src/client/client';
-import { Local } from 'boardgame.io/multiplayer';
-import { initBoard, SantoriniGame } from '..';
+import { _ClientImpl } from 'boardgame.io/dist/types/src/client/client';
 import { GameState } from '../../types/gameTypes';
+import { initializeTestPlayers } from '../../util/testHelpers';
 
 let p0: _ClientImpl<GameState>;
 let p1: _ClientImpl<GameState>;
 
-const Scenarios = {
-  /**
-   *  0  0  0  0  0
-   *  0  1  2  0  0
-   *  0  3  4  0  0
-   *  0  0  0  0  0
-   *  0  0  0  0  0
-   */
-  oneOfEveryHeight: () => {
-    const spaces = initBoard();
-    spaces[6].height = 1;
-    spaces[7].height = 2;
-    spaces[11].height = 3;
-    spaces[12].height = 4;
-    spaces[12].isDomed = true;
-    return spaces;
-  },
-};
-
 describe('Pan', () => {
   beforeEach(() => {
-    const spec: ClientOpts<GameState> = {
-      game: {
-        ...SantoriniGame,
-        setup: (context) => ({
-          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-          ...SantoriniGame.setup!(context),
-          spaces: Scenarios.oneOfEveryHeight(),
-        }),
-      },
-      multiplayer: Local(),
-    };
-
-    p0 = Client({ ...spec, playerID: '0' });
-    p1 = Client({ ...spec, playerID: '1' });
-
-    p0.start();
-    p1.start();
-
-    p0.moves.setChar('Pan');
-    p1.moves.setChar('Mortal');
-    p0.moves.ready(true);
-    p1.moves.ready(true);
+    [p0, p1] = initializeTestPlayers('Pan', 'Mortal', {
+      6: { height: 1 },
+      7: { height: 2 },
+      11: { height: 3 },
+      12: { height: 3, isDomed: true },
+    });
   });
 
   it.each([
