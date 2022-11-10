@@ -4,7 +4,7 @@ import { Mortal } from './Mortal';
 
 function checkWinCondition(context: GameContext, chronusPlayerID: string) {
   const numCompleteTowers = context.G.spaces.filter(
-    (space) => space.isDomed === true && space.height >= 3,
+    (space) => space.isDomed && space.height === 3,
   ).length;
 
   if (numCompleteTowers >= 5) {

@@ -80,12 +80,12 @@ export const Board = {
         (token.obstructing === 'opponent' && token.playerID !== playerID),
     ),
 
-  build: (G: GameState, pos: number) => {
-    if (G.spaces[pos].height < 4) {
-      G.spaces[pos].height += 1;
-    }
-    if (G.spaces[pos].height === 4) {
-      G.spaces[pos].isDomed = true;
+  build: ({ spaces }: GameState, pos: number) => {
+    const space = spaces[pos];
+    if (space.height < 3) {
+      space.height += 1;
+    } else if (space.height === 3) {
+      space.isDomed = true;
     }
   },
 
