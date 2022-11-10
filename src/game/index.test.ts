@@ -27,14 +27,5 @@ describe('game', () => {
 
       expect(state?.ctx.phase).toBe('selectCharacters');
     });
-
-    it('should go to boardSetup when all players are ready', () => {
-      p0.moves.ready(true);
-      p1.moves.ready(true);
-
-      const state = p0.getState();
-
-      expect(state?.ctx.phase).toBe('boardSetup');
-    });
   });
 });
