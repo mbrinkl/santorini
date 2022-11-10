@@ -39,7 +39,7 @@ export const GameBoard = (boardProps: BoardPropsExt): JSX.Element => {
         )}
       >
         <div className="board-container__log-chat">
-          {playerID && (
+          {playerID && gameType === GameType.Online && (
             <div className="board-container__chat">
               <Chat />
             </div>
