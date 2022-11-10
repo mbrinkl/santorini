@@ -1,7 +1,8 @@
 import { useBoardContext } from '../../hooks/useBoardContext';
+import { GameType } from '../../types/gameTypes';
 
 export const HelpText = (): JSX.Element => {
-  const { G, isActive, ctx, matchData, playerID } = useBoardContext();
+  const { G, isActive, ctx, matchData, playerID, gameType } = useBoardContext();
 
   const stage: string | null =
     (ctx.activePlayers && ctx.activePlayers[ctx.currentPlayer]) || null;
@@ -32,7 +33,11 @@ export const HelpText = (): JSX.Element => {
   } else if (!ctx.gameover && !isActive) {
     hint = `${currentPlayerName}'s Turn`;
   } else if (playerID) {
-    hint = ctx.gameover.winner === playerID ? 'You Win!' : 'You Lose';
+    if (gameType === GameType.Online) {
+      hint = ctx.gameover.winner === playerID ? 'You Win!' : 'You Lose';
+    } else {
+      hint = `Player ${ctx.gameover.winner} Wins!`;
+    }
   } else {
     const { winner } = ctx.gameover;
     hint = `${matchData?.[winner].name || `Player ${winner}`} Wins`;

@@ -18,6 +18,7 @@ import { LoadingPage } from './LoadingPage';
 import { JoinMatchParams } from '../../types/apiTypes';
 import 'tippy.js/dist/tippy.css';
 import './Game.scss';
+import { GameType } from '../../types/gameTypes';
 
 interface GameLobbyState {
   loading: boolean;
@@ -25,18 +26,14 @@ interface GameLobbyState {
   gameRunning: boolean;
 }
 
-const GameClient = Client({
+const OnlineClient = Client({
   game: SantoriniGame,
   board: GameBoard,
   multiplayer: SocketIO({ server: SERVER_URL }),
   loading: LoadingPage,
 });
 
-export const GameLobbySetup = ({
-  startGame,
-}: {
-  startGame(): void;
-}): JSX.Element => {
+const Lobby = ({ startGame }: { startGame(): void }): JSX.Element => {
   const { matchID } = useParams<{ matchID: string }>();
   const [tooltipVisible, setTooltipVisible] = useState(false);
   const nickname = useAppSelector((s) => s.user.nickname);
@@ -82,8 +79,6 @@ export const GameLobbySetup = ({
       </div>
       <div className="lobby__subtitle">
         Send a link to someone to invite them to your game.
-        <br />
-        Copy in another browser to play locally. (ie Chrome and Edge)
       </div>
       <div className="lobby__link">
         <div className="lobby__link-box">{window.location.href}</div>
@@ -154,26 +149,27 @@ export const GameLobbySetup = ({
   );
 };
 
-export const GameLobbyPlay = (): JSX.Element => {
+const Play = (): JSX.Element => {
   const { matchID } = useParams<{ matchID: string }>();
   const userRoomData = useAppSelector((s) => s.user.roomData);
 
   // Join as a player if the active room player data is set for this match id
   if (matchID && userRoomData?.matchID === matchID) {
     return (
-      <GameClient
+      <OnlineClient
         matchID={matchID}
         playerID={userRoomData.playerID}
         credentials={userRoomData.credentials}
+        gameType={GameType.Online}
       />
     );
   }
 
   // Join as a spectator
-  return <GameClient matchID={matchID} />;
+  return <OnlineClient matchID={matchID} gameType={GameType.Online} />;
 };
 
-export const GameLobby = (): JSX.Element => {
+export const GameOnline = (): JSX.Element => {
   const { matchID } = useParams<{ matchID: string }>();
   const [lobbyState, setLobbyState] = useState<GameLobbyState>({
     loading: true,
@@ -207,11 +203,11 @@ export const GameLobby = (): JSX.Element => {
 
   if (!lobbyState.gameRunning) {
     return (
-      <GameLobbySetup
+      <Lobby
         startGame={() => setLobbyState({ ...lobbyState, gameRunning: true })}
       />
     );
   }
 
-  return <GameLobbyPlay />;
+  return <Play />;
 };

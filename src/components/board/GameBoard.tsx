@@ -1,9 +1,8 @@
 import classNames from 'classnames';
-import { BoardProps } from 'boardgame.io/react';
 import { useMemo, useState } from 'react';
 import { InspectorControls } from './Inspector';
-import { GameState } from '../../types/gameTypes';
-import { BoardContext } from '../../hooks/useBoardContext';
+import { OverrideState, GameType } from '../../types/gameTypes';
+import { BoardContext, BoardPropsExt } from '../../hooks/useBoardContext';
 import { PlayerBoard } from './PlayerBoard';
 import { PlayerControls } from './PlayerControls';
 import { CharacterSelect } from './CharacterSelect';
@@ -14,39 +13,25 @@ import { MoveLog } from './MoveLog';
 import { isMobile } from '../../util';
 import './GameBoard.scss';
 
-export const GameBoard = (boardProps: BoardProps<GameState>): JSX.Element => {
-  const [overrideState, setOverrideState] =
-    useState<BoardProps<GameState> | null>(null);
-  const { ctx, playerID, log, matchID } = boardProps;
+export const GameBoard = (boardProps: BoardPropsExt): JSX.Element => {
+  const [overrideState, setOverrideState] = useState<OverrideState>();
+  const { ctx: unmodifiedCtx, log: unmodifiedLog } = boardProps;
 
-  const modifiedOverrideState: BoardProps<GameState> = useMemo(() => {
+  const modifiedBoardProps: BoardPropsExt = useMemo(() => {
     if (overrideState) {
-      const {
-        chatMessages,
-        sendChatMessage,
-        credentials,
-        matchData,
-        isConnected,
-      } = boardProps;
       return {
+        ...boardProps,
         ...overrideState,
-        playerID,
-        matchID,
-        matchData,
-        chatMessages,
-        sendChatMessage,
-        credentials,
-        isConnected,
         isActive: false,
       };
     }
     return boardProps;
-  }, [overrideState, playerID, matchID, boardProps]);
+  }, [overrideState, boardProps]);
+
+  const { ctx, playerID, matchID, gameType } = modifiedBoardProps;
 
   return (
-    <BoardContext.Provider
-      value={ctx.gameover ? modifiedOverrideState : boardProps}
-    >
+    <BoardContext.Provider value={modifiedBoardProps}>
       <div
         className={classNames(
           'board-container',
@@ -54,7 +39,7 @@ export const GameBoard = (boardProps: BoardProps<GameState>): JSX.Element => {
         )}
       >
         <div className="board-container__log-chat">
-          {playerID && (
+          {playerID && gameType === GameType.Online && (
             <div className="board-container__chat">
               <Chat />
             </div>
@@ -74,9 +59,9 @@ export const GameBoard = (boardProps: BoardProps<GameState>): JSX.Element => {
           <>
             <div className="board-container__player-board">
               <PlayerBoard />
-              {ctx.gameover && (
+              {unmodifiedCtx.gameover && gameType === GameType.Online && (
                 <InspectorControls
-                  unfilteredLog={log}
+                  unfilteredLog={unmodifiedLog}
                   matchID={matchID}
                   setOverrideState={setOverrideState}
                 />

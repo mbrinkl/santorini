@@ -43,9 +43,9 @@ export const CharacterSelect = (): JSX.Element => {
               <div className="char-select__playerNameDiv">
                 <ConnectedIndicator playerID={player.ID} />
                 <span className="char-select__playerName">
-                  {`${matchData?.[Number(player.ID)].name}${
-                    player.ID === playerID ? ' (You)' : ''
-                  }`}
+                  {`${
+                    matchData?.[Number(player.ID)].name || `player ${player.ID}`
+                  }${player.ID === playerID ? ' (You)' : ''}`}
                 </span>
               </div>
               <SelectedCharacterCard

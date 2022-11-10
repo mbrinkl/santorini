@@ -1,5 +1,11 @@
 import { Ctx, DefaultPluginAPIs } from 'boardgame.io';
 
+export enum GameType {
+  Online,
+  Local,
+  AI,
+}
+
 export type GameStage =
   | 'setup'
   | 'place'
@@ -13,6 +19,11 @@ export type GameContext = DefaultPluginAPIs & {
   G: GameState;
   ctx: Ctx;
   playerID: string;
+};
+
+export type OverrideState = {
+  G: GameState;
+  ctx: Ctx;
 };
 
 export interface GameState {
