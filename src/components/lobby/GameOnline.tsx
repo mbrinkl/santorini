@@ -16,9 +16,9 @@ import { Button } from '../common/Button';
 import { useGetMatchQuery, useJoinMatchQuery } from '../../api';
 import { LoadingPage } from './LoadingPage';
 import { JoinMatchParams } from '../../types/apiTypes';
-import 'tippy.js/dist/tippy.css';
-import './Game.scss';
 import { GameType } from '../../types/gameTypes';
+import 'tippy.js/dist/tippy.css';
+import './GameOnline.scss';
 
 interface GameLobbyState {
   loading: boolean;

@@ -6,7 +6,6 @@ import { SantoriniGame } from '../../game';
 import { BoardPropsExt } from '../../hooks/useBoardContext';
 import { GameBoard } from '../board/GameBoard';
 import { GameState, GameType } from '../../types/gameTypes';
-import './GameOnline.scss';
 
 const LocalGameWrapper = ({
   p0,
