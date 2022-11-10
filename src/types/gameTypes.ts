@@ -1,5 +1,11 @@
 import { Ctx, DefaultPluginAPIs } from 'boardgame.io';
 
+export enum GameType {
+  Online,
+  Local,
+  AI,
+}
+
 export type GameStage =
   | 'setup'
   | 'place'

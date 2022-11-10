@@ -1,10 +1,11 @@
 import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { usePlayAgainMutation } from '../../api';
-import { GameType, useBoardContext } from '../../hooks/useBoardContext';
+import { useBoardContext } from '../../hooks/useBoardContext';
 import { Button, ButtonLink, ImageButton } from '../common/Button';
 import undoLogo from '../../assets/png/undo.png';
 import './PlayerControls.scss';
+import { GameType } from '../../types/gameTypes';
 
 export const PlayerControls = (): JSX.Element | null => {
   const {

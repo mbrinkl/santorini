@@ -1,12 +1,6 @@
 import { useContext, createContext } from 'react';
 import { BoardProps } from 'boardgame.io/react';
-import { GameState } from '../types/gameTypes';
-
-export enum GameType {
-  Online,
-  Local,
-  AI,
-}
+import { GameState, GameType } from '../types/gameTypes';
 
 export interface BoardPropsExt extends BoardProps<GameState> {
   gameType: GameType;

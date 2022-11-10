@@ -1,5 +1,6 @@
 import classNames from 'classnames';
-import { GameType, useBoardContext } from '../../hooks/useBoardContext';
+import { useBoardContext } from '../../hooks/useBoardContext';
+import { GameType } from '../../types/gameTypes';
 import './ConnectedIndicator.scss';
 
 export const ConnectedIndicator = ({

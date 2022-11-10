@@ -1,12 +1,8 @@
 import classNames from 'classnames';
 import { useMemo, useState } from 'react';
 import { InspectorControls } from './Inspector';
-import { OverrideState } from '../../types/gameTypes';
-import {
-  BoardContext,
-  BoardPropsExt,
-  GameType,
-} from '../../hooks/useBoardContext';
+import { OverrideState, GameType } from '../../types/gameTypes';
+import { BoardContext, BoardPropsExt } from '../../hooks/useBoardContext';
 import { PlayerBoard } from './PlayerBoard';
 import { PlayerControls } from './PlayerControls';
 import { CharacterSelect } from './CharacterSelect';

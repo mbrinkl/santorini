@@ -1,8 +1,8 @@
-import { BoardProps } from 'boardgame.io/react';
 import { _ClientImpl } from 'boardgame.io/dist/types/src/client/client';
 import { Ctx } from 'boardgame.io';
 import { initBoard, initPlayers } from '../game';
-import { GameState } from '../types/gameTypes';
+import { BoardPropsExt } from '../hooks/useBoardContext';
+import { GameType } from '../types/gameTypes';
 
 export const mockCtx: Ctx = {
   numPlayers: 2,
@@ -14,7 +14,7 @@ export const mockCtx: Ctx = {
   turn: 0,
 };
 
-export const mockBoardProps: BoardProps<GameState> = {
+export const mockBoardProps: BoardPropsExt = {
   _undo: [],
   _redo: [],
   _stateID: 0,
@@ -44,4 +44,5 @@ export const mockBoardProps: BoardProps<GameState> = {
   credentials: 'defaultCredentials',
   debug: false,
   matchData: undefined,
+  gameType: GameType.Online,
 };

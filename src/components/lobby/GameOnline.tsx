@@ -1,5 +1,5 @@
-import { Local, SocketIO } from 'boardgame.io/multiplayer';
-import { BoardProps, Client } from 'boardgame.io/react';
+import { SocketIO } from 'boardgame.io/multiplayer';
+import { Client } from 'boardgame.io/react';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import Tippy from '@tippyjs/react';
@@ -18,76 +18,13 @@ import { LoadingPage } from './LoadingPage';
 import { JoinMatchParams } from '../../types/apiTypes';
 import 'tippy.js/dist/tippy.css';
 import './Game.scss';
-import { BoardPropsExt, GameType } from '../../hooks/useBoardContext';
+import { GameType } from '../../types/gameTypes';
 
 interface GameLobbyState {
   loading: boolean;
   currentMatchID?: string;
   gameRunning: boolean;
 }
-
-const LocalClient = Client({
-  game: SantoriniGame,
-  board: localBoardWrapper(GameType.Local, GameBoard),
-  multiplayer: Local(),
-  loading: LoadingPage,
-});
-
-export const GameLobbyLocal = (): JSX.Element => (
-  <div className="lobby__local">
-    <LocalClient playerID="0" />
-    <LocalClient playerID="1" />
-  </div>
-);
-
-function localBoardWrapper(
-  gameType: GameType,
-  RawBoard: (props: BoardPropsExt) => JSX.Element,
-) {
-  const Board: React.FC<BoardProps> = (boardProps) => {
-    const { G, ctx, playerID } = boardProps;
-
-    let shouldHideBoard = false;
-
-    if (ctx.phase === 'selectCharacters') {
-      shouldHideBoard =
-        (playerID === '0' && G.players['0'].ready) ||
-        (playerID === '1' && !G.players['0'].ready);
-    } else {
-      shouldHideBoard = ctx.currentPlayer !== playerID;
-    }
-
-    const props = {
-      ...boardProps,
-      gameType,
-    };
-
-    return (
-      <div
-        className={
-          shouldHideBoard
-            ? 'lobby__local-wrapper--hidden'
-            : 'lobby__local-wrapper'
-        }
-      >
-        <RawBoard {...props} />
-      </div>
-    );
-  };
-
-  return Board;
-}
-
-// const BotClient = Client({
-//   game: SantoriniGame,
-//   board: GameBoard,
-//   multiplayer: Local({
-//     bots: {
-//       1: MCTSBot,
-//     },
-//   }),
-//   loading: LoadingPage,
-// });
 
 const OnlineClient = Client({
   game: SantoriniGame,
@@ -96,11 +33,7 @@ const OnlineClient = Client({
   loading: LoadingPage,
 });
 
-export const GameLobbySetup = ({
-  startGame,
-}: {
-  startGame(): void;
-}): JSX.Element => {
+const Lobby = ({ startGame }: { startGame(): void }): JSX.Element => {
   const { matchID } = useParams<{ matchID: string }>();
   const [tooltipVisible, setTooltipVisible] = useState(false);
   const nickname = useAppSelector((s) => s.user.nickname);
@@ -216,7 +149,7 @@ export const GameLobbySetup = ({
   );
 };
 
-export const GameLobbyPlay = (): JSX.Element => {
+const Play = (): JSX.Element => {
   const { matchID } = useParams<{ matchID: string }>();
   const userRoomData = useAppSelector((s) => s.user.roomData);
 
@@ -236,7 +169,7 @@ export const GameLobbyPlay = (): JSX.Element => {
   return <OnlineClient matchID={matchID} gameType={GameType.Online} />;
 };
 
-export const GameLobby = (): JSX.Element => {
+export const GameOnline = (): JSX.Element => {
   const { matchID } = useParams<{ matchID: string }>();
   const [lobbyState, setLobbyState] = useState<GameLobbyState>({
     loading: true,
@@ -270,11 +203,11 @@ export const GameLobby = (): JSX.Element => {
 
   if (!lobbyState.gameRunning) {
     return (
-      <GameLobbySetup
+      <Lobby
         startGame={() => setLobbyState({ ...lobbyState, gameRunning: true })}
       />
     );
   }
 
-  return <GameLobbyPlay />;
+  return <Play />;
 };
