@@ -163,7 +163,7 @@ export const SantoriniGame: Game<GameState> = {
         onBegin: (context) => {
           const { G, ctx, events } = context;
           if (!G.players[ctx.playOrderPos].charState.hasBeforeBoardSetup) {
-            events.endTurn();
+            events.pass();
           } else {
             const contextWithPlayerID = getContextWithPlayerID(context);
             updateValids(contextWithPlayerID, 'setup');
@@ -200,7 +200,7 @@ export const SantoriniGame: Game<GameState> = {
         onBegin: (context) => {
           const { G, ctx, events } = context;
           if (!G.players[ctx.playOrderPos].charState.hasAfterBoardSetup) {
-            events.endTurn();
+            events.pass();
           } else {
             const contextWithPlayerID = getContextWithPlayerID(context);
             updateValids(contextWithPlayerID, 'setup');
