@@ -22,8 +22,8 @@ export const initializeTestPlayers = (
   if (spacesSetup) {
     Object.keys(spacesSetup).forEach((keyString) => {
       const key = Number(keyString);
-      spaces[Number(key)].height = spacesSetup[key].height;
-      spaces[Number(key)].isDomed = spacesSetup[key].isDomed ?? false;
+      spaces[key].height = spacesSetup[key].height;
+      spaces[key].isDomed = spacesSetup[key].isDomed ?? false;
     });
   }
 
@@ -39,16 +39,16 @@ export const initializeTestPlayers = (
     multiplayer: Local(),
   };
 
-  const p00 = Client({ ...spec, playerID: '0' });
-  const p11 = Client({ ...spec, playerID: '1' });
+  const p0 = Client({ ...spec, playerID: '0' });
+  const p1 = Client({ ...spec, playerID: '1' });
 
-  p00.start();
-  p11.start();
+  p0.start();
+  p1.start();
 
-  p00.moves.setChar(p0char);
-  p11.moves.setChar(p1char);
-  p00.moves.ready(true);
-  p11.moves.ready(true);
+  p0.moves.setChar(p0char);
+  p1.moves.setChar(p1char);
+  p0.moves.ready(true);
+  p1.moves.ready(true);
 
-  return [p00, p11];
+  return [p0, p1];
 };
