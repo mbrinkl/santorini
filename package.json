@@ -67,7 +67,7 @@
     "@types/react-table": "^7.7.12",
     "@types/three": "^0.146.0",
     "@typescript-eslint/eslint-plugin": "^5.43.0",
-    "@typescript-eslint/parser": "^5.43.0",
+    "@typescript-eslint/parser": "^5.44.0",
     "@vitejs/plugin-react": "^2.2.0",
     "@vitest/coverage-c8": "^0.25.2",
     "concurrently": "^7.5.0",
