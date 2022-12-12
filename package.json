@@ -52,7 +52,7 @@
     "@storybook/addon-essentials": "^7.0.0-beta.2",
     "@storybook/addon-interactions": "^7.0.0-beta.3",
     "@storybook/addon-links": "^7.0.0-beta.3",
-    "@storybook/react": "^7.0.0-beta.1",
+    "@storybook/react": "^7.0.0-beta.3",
     "@storybook/react-vite": "^7.0.0-beta.2",
     "@testing-library/dom": "^8.19.0",
     "@testing-library/jest-dom": "^5.16.5",
