@@ -28,7 +28,7 @@
     "@react-three/drei": "^9.46.4",
     "@react-three/fiber": "^8.9.1",
     "@reduxjs/toolkit": "^1.9.1",
-    "@tanstack/react-table": "^8.7.2",
+    "@tanstack/react-table": "^8.7.3",
     "@tippyjs/react": "^4.2.6",
     "bgio-postgres": "^1.0.15",
     "boardgame.io": "^0.50.2",
