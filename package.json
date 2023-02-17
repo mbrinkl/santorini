@@ -53,7 +53,7 @@
     "@storybook/addon-interactions": "^7.0.0-beta.48",
     "@storybook/addon-links": "^7.0.0-beta.48",
     "@storybook/react": "^7.0.0-beta.49",
-    "@storybook/react-vite": "^7.0.0-beta.48",
+    "@storybook/react-vite": "^7.0.0-beta.49",
     "@testing-library/dom": "^8.20.0",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
