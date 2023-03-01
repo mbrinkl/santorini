@@ -25,7 +25,7 @@
   },
   "dependencies": {
     "@boardgame.io/storage-cache": "^0.6.0",
-    "@react-three/drei": "^9.56.27",
+    "@react-three/drei": "^9.56.28",
     "@react-three/fiber": "^8.11.5",
     "@reduxjs/toolkit": "^1.9.3",
     "@tanstack/react-table": "^8.7.9",
