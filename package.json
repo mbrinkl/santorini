@@ -51,7 +51,7 @@
   "devDependencies": {
     "@storybook/addon-essentials": "^7.0.0-beta.59",
     "@storybook/addon-interactions": "^7.0.0-beta.59",
-    "@storybook/addon-links": "^7.0.0-beta.56",
+    "@storybook/addon-links": "^7.0.0-beta.60",
     "@storybook/react": "^7.0.0-beta.59",
     "@storybook/react-vite": "^7.0.0-beta.59",
     "@testing-library/dom": "^8.20.0",
