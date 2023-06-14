@@ -43,7 +43,7 @@
     "react-dom": "^18.2.0",
     "react-redux": "^8.1.0",
     "react-router-dom": "^6.12.1",
-    "sass": "^1.63.3",
+    "sass": "^1.63.4",
     "three": "^0.153.0",
     "tippy.js": "^6.3.7",
     "ts-node": "^10.9.1"
