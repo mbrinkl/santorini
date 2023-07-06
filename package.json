@@ -65,7 +65,7 @@
     "@types/react-dom": "^18.2.6",
     "@types/react-router-dom": "^5.3.3",
     "@types/react-table": "^7.7.14",
-    "@types/three": "^0.152.1",
+    "@types/three": "^0.153.0",
     "@typescript-eslint/eslint-plugin": "^5.61.0",
     "@typescript-eslint/parser": "^5.61.0",
     "@vitejs/plugin-react": "^2.2.0",
