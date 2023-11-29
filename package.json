@@ -59,7 +59,7 @@
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^14.5.1",
     "@types/koa-static": "^4.0.4",
-    "@types/node": "^18.18.13",
+    "@types/node": "^18.18.14",
     "@types/node-fetch": "^2.6.3",
     "@types/react": "^18.2.39",
     "@types/react-dom": "^18.2.17",
