@@ -52,7 +52,7 @@
     "@storybook/addon-essentials": "^7.6.10",
     "@storybook/addon-interactions": "^7.6.10",
     "@storybook/addon-links": "^7.6.10",
-    "@storybook/react": "^7.6.9",
+    "@storybook/react": "^7.6.11",
     "@storybook/react-vite": "^7.6.10",
     "@testing-library/dom": "^8.20.1",
     "@testing-library/jest-dom": "^5.17.0",
