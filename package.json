@@ -31,7 +31,6 @@
     "@tippyjs/react": "^4.2.6",
     "bgio-postgres": "^1.0.15",
     "boardgame.io": "^0.50.2",
-    "chalk": "^5.3.0",
     "classnames": "^2.5.1",
     "dotenv": "^16.4.1",
     "koa-static": "^5.0.0",

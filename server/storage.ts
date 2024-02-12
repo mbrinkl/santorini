@@ -1,4 +1,3 @@
-import chalk from 'chalk';
 import { StorageCache } from '@boardgame.io/storage-cache';
 import { PostgresStore } from 'bgio-postgres';
 import { isProduction } from '../src/config';
@@ -78,7 +77,7 @@ export const getDb = () => {
     }
 
     // eslint-disable-next-line no-console
-    console.log(chalk.yellow('Starting server with in-memory database'));
+    console.warn('Starting server with in-memory database');
     return undefined;
   }
 
