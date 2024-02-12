@@ -1,4 +1,3 @@
-import fetch from 'node-fetch';
 import { LobbyAPI } from 'boardgame.io';
 import { Server } from 'boardgame.io/server';
 

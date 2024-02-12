@@ -1,6 +1,6 @@
 import classNames from 'classnames';
 import { HTMLAttributes } from 'react';
-import { ReactComponent as GithubSvg } from '../../assets/svg/github.svg';
+import GithubSvg from '../../assets/svg/github.svg?react';
 import './Wrapper.scss';
 
 export const LobbyPage = ({

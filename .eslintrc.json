@@ -36,6 +36,7 @@
       { "devDependencies": ["vite.config.ts", "**/*.test.*"] }
     ],
     "import/prefer-default-export": "off",
+    "import/no-unresolved": ["error", { "ignore": ["\\.svg\\?react$"] }],
     "@typescript-eslint/no-use-before-define": "off",
     "@typescript-eslint/no-unused-vars": "off",
     "react/react-in-jsx-scope": "off",
