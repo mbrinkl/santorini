@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import Tippy from '@tippyjs/react';
 import classNames from 'classnames';
-import { skipToken } from '@reduxjs/toolkit/dist/query';
+import { skipToken } from '@reduxjs/toolkit/query';
 import { NotFound } from './NotFound';
 import { SERVER_URL } from '../../config/client';
 import { SantoriniGame } from '../../game';

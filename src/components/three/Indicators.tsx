@@ -13,7 +13,7 @@ const PlaceIndicator = ({
   height: number;
 }): JSX.Element => {
   const yMap = [0, 3, 5, 7, 7];
-  const mesh = useRef<Mesh>();
+  const mesh = useRef<Mesh | null>(null);
 
   useFrame(({ clock }) => {
     const time = clock.getElapsedTime();
@@ -45,8 +45,8 @@ const SelectIndicator = ({
   height: number;
 }): JSX.Element => {
   const yMap = [4, 8, 10, 12, 12];
-  const headMesh = useRef<Mesh>();
-  const tailMesh = useRef<Mesh>();
+  const headMesh = useRef<Mesh | null>(null);
+  const tailMesh = useRef<Mesh | null>(null);
 
   useFrame(({ clock }) => {
     const time = clock.getElapsedTime();
@@ -89,7 +89,7 @@ const MoveIndicator = ({
   height: number;
 }): JSX.Element => {
   const yMap = [0, 3, 5, 7, 7];
-  const mesh = useRef<Mesh>();
+  const mesh = useRef<Mesh | null>(null);
 
   useFrame(() => {
     if (mesh.current) {
@@ -118,7 +118,7 @@ const BuildIndicator = ({
   height: number;
 }): JSX.Element => {
   const yMap = [0, 3, 5, 7, 7];
-  const mesh = useRef<Mesh>();
+  const mesh = useRef<Mesh | null>(null);
 
   useFrame(({ clock }) => {
     const time = clock.getElapsedTime();
@@ -148,7 +148,7 @@ const SpecialIndicator = ({
   height: number;
 }): JSX.Element => {
   const yMap = [0, 3, 5, 7, 7];
-  const mesh = useRef<Mesh>();
+  const mesh = useRef<Mesh | null>(null);
 
   useFrame(() => {
     if (mesh.current) {

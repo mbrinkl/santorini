@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { skipToken } from '@reduxjs/toolkit/dist/query';
+import { skipToken } from '@reduxjs/toolkit/query';
 import { LobbyPage } from './Wrapper';
 import { Logo } from '../common/Logo';
 import { ButtonLink } from '../common/Button';
