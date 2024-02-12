@@ -33,7 +33,7 @@
     "no-param-reassign": "off",
     "import/no-extraneous-dependencies": [
       "error",
-      { "devDependencies": ["vite.config.ts", "**/*.test.*"] }
+      { "devDependencies": ["vite.config.mts", "**/*.test.*"] }
     ],
     "import/prefer-default-export": "off",
     "import/no-unresolved": ["error", { "ignore": ["\\.svg\\?react$"] }],

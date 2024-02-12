@@ -73,8 +73,8 @@ export const Scene = (): JSX.Element => {
 
   return (
     <>
-      <hemisphereLight args={['gray', 'black', 0.7]} />
-      <directionalLight args={['white', 0.7]} position={[0, 10, 0]} />
+      <hemisphereLight args={['white', 'black', 0.9]} />
+      <directionalLight args={['white', 0.9]} position={[0, 10, 0]} />
       <OrbitControls
         enablePan={false}
         minDistance={30}
